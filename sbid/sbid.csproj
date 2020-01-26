@@ -5,7 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="_M\" />
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -13,10 +12,23 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Remove="ExtraControls\MessageBox.xaml" />
+    <None Remove="ExtraControls\MessageBox.xaml" />
+    <Folder Include="_M\Process\" />
+    <Folder Include="_M\StateMachine\" />
+    <Folder Include="_M\SafetyProperty\" />
+    <Folder Include="_M\SecurityProperty\" />
+    <Folder Include="_M\Axiom\" />
+    <Folder Include="_VM\Attribute\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.0" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExtraControls\MessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

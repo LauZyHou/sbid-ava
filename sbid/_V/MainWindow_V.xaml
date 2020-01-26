@@ -28,7 +28,7 @@
     <!--菜单栏-->
     <Menu Name="menu" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" MinHeight="23" Background="LightGray">
       <MenuItem Header="文件">
-        <MenuItem Header="新协议"/>
+        <MenuItem Header="新协议" Command="{Binding AddProtocol}"/>
         <MenuItem Header="打开.."/>
         <MenuItem Header="保存"/>
         <MenuItem Header="另存为"/>
@@ -47,7 +47,7 @@
 
     <!--快捷按键-->
     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-      <Button>新协议</Button>
+      <Button Command="{Binding AddProtocol}">新协议</Button>
       <Button>保存</Button>
       <Button>生成XML</Button>
     </StackPanel>
@@ -58,11 +58,24 @@
     </Grid>
 
     <!--图形选项卡-->
-    <TabControl Name="tabControl" Grid.Row="2" Grid.Column="1" Background="LightGoldenrodYellow">
-      
+    <TabControl Name="tabControl" Items="{Binding ProtocolVMs}"
+                Grid.Row="2" Grid.Column="1" Background="LightGoldenrodYellow">
+      <!--TabItem的Header属性的数据模板,即显示在标签上-->
+      <TabControl.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Protocol.Name}"/>
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <!--TabItem的Content属性的数据模板,即显示在内容上-->
+      <TabControl.ContentTemplate>
+        <DataTemplate>
+          <TextBox Text="{Binding Protocol.Name}"/>
+        </DataTemplate>
+      </TabControl.ContentTemplate>
     </TabControl>
-  
+
     <!--底下的提示条-->
-    <TextBlock Name="tipTextBox" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="LightSeaGreen"/>
+    <TextBlock Name="tipTextBox" Text="{Binding Path=Tips, Mode=TwoWay}"
+               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="LightSeaGreen"/>
   </Grid>
 </Window>
