@@ -6,12 +6,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="sbid._V.MainWindow_V"
-        Title="🔮sbid">
+        Title="🔮SBID-内生安全建模工具" WindowState="Maximized">
 
-    <Design.DataContext>
+  <!--<Design.DataContext>
         <vm:MainWindow_VM/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="23"/>
+      <RowDefinition Height="5*" MinHeight="23"/>
+      <RowDefinition Height="90*"/>
+      <RowDefinition Height="5*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="16*"/>
+      <ColumnDefinition Width="84*"/>
+    </Grid.ColumnDefinitions>
 
+    <!--菜单栏-->
+    <Menu Name="menu" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" MinHeight="23" Background="LightGray">
+      <MenuItem Header="文件">
+        <MenuItem Header="新协议"/>
+        <MenuItem Header="打开.."/>
+        <MenuItem Header="保存"/>
+        <MenuItem Header="另存为"/>
+      </MenuItem>
+      <MenuItem Header="模型">
+        <MenuItem Header="添加攻击树(AttackTree)"/>
+        <MenuItem Header="添加计算树逻辑(CTL)"/>
+        <MenuItem Header="添加顺序图(Sequence Diagram)"/>
+        <MenuItem Header="添加拓扑图(Topo Graph)"/>
+      </MenuItem>
+      <MenuItem Header="帮助">
+        <MenuItem Header="使用手册"/>
+        <MenuItem Header="关于.."/>
+      </MenuItem>
+    </Menu>
+
+    <!--快捷按键-->
+    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+      <Button>新协议</Button>
+      <Button>保存</Button>
+      <Button>生成XML</Button>
+    </StackPanel>
+
+    <!--项目结构-->
+    <Grid Grid.Row="2" Grid.Column="0" Background="AliceBlue">
+      <TextBlock HorizontalAlignment="Center">项目结构</TextBlock>
+    </Grid>
+
+    <!--图形选项卡-->
+    <TabControl Name="tabControl" Grid.Row="2" Grid.Column="1" Background="LightGoldenrodYellow">
+      
+    </TabControl>
+  
+    <!--底下的提示条-->
+    <TextBlock Name="tipTextBox" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="LightSeaGreen"/>
+  </Grid>
 </Window>
