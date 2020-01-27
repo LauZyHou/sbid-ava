@@ -69,7 +69,22 @@
       <!--TabItem的Content属性的数据模板,即显示在内容上-->
       <TabControl.ContentTemplate>
         <DataTemplate>
-          <TextBox Text="{Binding Protocol.Name}"/>
+          <!--协议面板下的各个子面板-->
+          <TabControl Items="{Binding PanelVMs}" Background="White" 
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <!--子面板Header-->
+            <TabControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </TabControl.ItemTemplate>
+            <!--子面板Content-->
+            <TabControl.ContentTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </TabControl.ContentTemplate>
+          </TabControl>
         </DataTemplate>
       </TabControl.ContentTemplate>
     </TabControl>
