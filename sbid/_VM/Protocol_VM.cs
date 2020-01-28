@@ -18,11 +18,32 @@ namespace sbid._VM
         {
             protocol = new Protocol("协议" + _id);
             _id++;
-            panelVMs.Add(new Panel_VM("概览"));
+
+            Panel_VM classDiagramPVM = new Panel_VM("概览");
+            classDiagramPVM.SidePanelVMs.Add(new ClassDiagram_P_VM()); // 添加一个默认面板
+            classDiagramPVM.SelectedItem = classDiagramPVM.SidePanelVMs[0];// 设置默认选中项
+            panelVMs.Add(classDiagramPVM);
+
             panelVMs.Add(new Panel_VM("状态机"));
-            panelVMs.Add(new Panel_VM("拓扑图"));
-            panelVMs.Add(new Panel_VM("攻击树"));
-            panelVMs.Add(new Panel_VM("CTL公式的抽象语法树"));
+
+            Panel_VM topoGraphPVM = new Panel_VM("拓扑图");
+            topoGraphPVM.SidePanelVMs.Add(new TopoGraph_P_VM());
+            topoGraphPVM.SelectedItem = topoGraphPVM.SidePanelVMs[0];
+            panelVMs.Add(topoGraphPVM);
+
+            Panel_VM attackTreePVM = new Panel_VM("攻击树");
+            attackTreePVM.SidePanelVMs.Add(new AttackTree_P_VM());
+            attackTreePVM.SidePanelVMs.Add(new AttackTree_P_VM());
+            attackTreePVM.SelectedItem = attackTreePVM.SidePanelVMs[0];
+            panelVMs.Add(attackTreePVM);
+
+            Panel_VM ctlTreePVM = new Panel_VM("CTL语法树");
+            ctlTreePVM.SidePanelVMs.Add(new CTLTree_P_VM());
+            ctlTreePVM.SelectedItem = ctlTreePVM.SidePanelVMs[0];
+            panelVMs.Add(ctlTreePVM);
+
+            // 设置本协议的默认选中项为第一项"概览"
+            selectedItem = panelVMs[0];
         }
 
         public Protocol Protocol { get => protocol; set => protocol = value; }

@@ -8,11 +8,11 @@
         x:Class="sbid._V.MainWindow_V"
         Title="🔮SBID-内生安全建模工具" WindowState="Maximized">
 
-  <!--<Design.DataContext>
-        <vm:MainWindow_VM/>
-    </Design.DataContext>
+  <!--用于在开发设计时正确绑定VM中的命令能在xaml中看到按钮不是灰色,实际设置DataContext是在App.xaml.cs中-->
+  <Design.DataContext>
+    <vm:MainWindow_VM/>
+  </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="23"/>
@@ -20,13 +20,9 @@
       <RowDefinition Height="90*"/>
       <RowDefinition Height="5*"/>
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="16*"/>
-      <ColumnDefinition Width="84*"/>
-    </Grid.ColumnDefinitions>
 
     <!--菜单栏-->
-    <Menu Name="menu" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" MinHeight="23" Background="LightGray">
+    <Menu Name="menu" Grid.Row="0" MinHeight="23" Background="LightGray">
       <MenuItem Header="文件">
         <MenuItem Header="新协议" Command="{Binding AddProtocol}"/>
         <MenuItem Header="打开.."/>
@@ -46,42 +42,54 @@
     </Menu>
 
     <!--快捷按键-->
-    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+    <StackPanel Orientation="Horizontal" Grid.Row="1">
       <Button Command="{Binding AddProtocol}">新协议</Button>
       <Button>保存</Button>
       <Button>生成XML</Button>
     </StackPanel>
 
-    <!--项目结构-->
-    <Grid Grid.Row="2" Grid.Column="0" Background="AliceBlue">
-      <TextBlock HorizontalAlignment="Center">项目结构</TextBlock>
-    </Grid>
-
-    <!--图形选项卡-->
+    <!--协议选项卡-->
     <TabControl Name="tabControl" Items="{Binding ProtocolVMs}"
-                Grid.Row="2" Grid.Column="1" Background="LightGoldenrodYellow">
-      <!--TabItem的Header属性的数据模板,即显示在标签上-->
+                Grid.Row="2" Background="LightGoldenrodYellow">
+      <!--协议选项卡标签(协议1,协议2...)-->
       <TabControl.ItemTemplate>
         <DataTemplate>
           <TextBlock Text="{Binding Protocol.Name}"/>
         </DataTemplate>
       </TabControl.ItemTemplate>
-      <!--TabItem的Content属性的数据模板,即显示在内容上-->
+      <!--协议选项卡内容-->
       <TabControl.ContentTemplate>
         <DataTemplate>
           <!--协议面板下的各个子面板-->
-          <TabControl Items="{Binding PanelVMs}" Background="White" 
+          <TabControl Items="{Binding PanelVMs}" Background="White"
                       SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-            <!--子面板Header-->
+            <!--子面板标签(概览,状态机...)-->
             <TabControl.ItemTemplate>
               <DataTemplate>
                 <TextBlock Text="{Binding Name}"/>
               </DataTemplate>
             </TabControl.ItemTemplate>
-            <!--子面板Content-->
+            <!--子面板内容-->
             <TabControl.ContentTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Name}"/>
+                <!--子面板下的侧栏面板-->
+                <TabControl Items="{Binding SidePanelVMs}" Background="WhiteSmoke"
+                            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                            TabStripPlacement="Left">
+                  <!--侧栏面板标签(如攻击树下就是默认攻击树1,攻击树2)可直接修改-->
+                  <TabControl.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Name, Mode=TwoWay}"/>
+                    </DataTemplate>
+                  </TabControl.ItemTemplate>
+                  <!--侧栏面板内容-->
+                  <TabControl.ContentTemplate>
+                    <DataTemplate>
+                      <!--fixme改成自己的具体面板的视图-->
+                      <ContentControl Content="{Binding Name}"/>
+                    </DataTemplate>
+                  </TabControl.ContentTemplate>
+                </TabControl>
               </DataTemplate>
             </TabControl.ContentTemplate>
           </TabControl>
