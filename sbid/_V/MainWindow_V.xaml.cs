@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using sbid.ExtraControls;
 
 namespace sbid._V
 {
@@ -17,6 +19,11 @@ namespace sbid._V
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void MenuClick_ShowAbout(object sender, RoutedEventArgs e)
+        {
+            new MessageBox("1","2").Show();
         }
     }
 }

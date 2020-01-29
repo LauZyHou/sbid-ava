@@ -37,7 +37,7 @@
       </MenuItem>
       <MenuItem Header="帮助">
         <MenuItem Header="使用手册"/>
-        <MenuItem Header="关于.."/>
+        <MenuItem Header="关于.." Click="MenuClick_ShowAbout"/>
       </MenuItem>
     </Menu>
 
@@ -46,11 +46,15 @@
       <Button Command="{Binding AddProtocol}">新协议</Button>
       <Button>保存</Button>
       <Button>生成XML</Button>
+      <Button Command="{Binding AddClassDiagram}">新类图</Button>
+      <Button Command="{Binding AddTopoGraph}">新拓扑图</Button>
+      <Button Command="{Binding AddAttackTree}">新攻击树</Button>
+      <Button Command="{Binding AddCTLTree}">新CTL语法树</Button>
     </StackPanel>
 
     <!--协议选项卡-->
-    <TabControl Name="tabControl" Items="{Binding ProtocolVMs}" 
-                SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
+    <TabControl Name="tabControl" Items="{Binding ProtocolVMs}"
+                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                 Grid.Row="2" Background="LightGoldenrodYellow">
       <!--协议选项卡标签(协议1,协议2...)-->
       <TabControl.ItemTemplate>

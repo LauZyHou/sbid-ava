@@ -55,5 +55,10 @@ namespace sbid._VM
             get => selectedItem;
             set => this.RaiseAndSetIfChanged(ref selectedItem, value);
         }
+
+        //public static bool IsNull(Protocol_VM p)
+        //{
+        //    return p == null;
+        //}
     }
 }

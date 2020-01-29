@@ -4,6 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Width="200" Height="100"
         x:Class="sbid.ExtraControls.MessageBox"
-        Title="MessageBox">
-    Welcome to Avalonia!
+        Title="">
+  <TextBlock x:Name="textBlock1" Text="1"/>
 </Window>
