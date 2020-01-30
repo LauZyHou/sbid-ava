@@ -16,12 +16,14 @@
     <AvaloniaResource Remove="_V\SidePanel\AttackTree_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\CTLTree_P_V.xaml" />
+    <AvaloniaResource Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <None Remove="ExtraControls\MessageBox.xaml" />
     <None Remove="_V\SidePanel\AttackTree_P_V.xaml" />
     <None Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
     <None Remove="_V\SidePanel\CTLTree_P_V.xaml" />
+    <None Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <None Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <None Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <Folder Include="_M\Process\" />
@@ -63,6 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\SidePanel\StateMachine_P_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\SidePanel\SequenceDiagram_P_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

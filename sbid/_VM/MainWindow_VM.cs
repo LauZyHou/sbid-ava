@@ -102,6 +102,19 @@ namespace sbid._VM
             selectedItem.PanelVMs[4].SidePanelVMs.Add(pvm);
             selectedItem.PanelVMs[4].SelectedItem = pvm;
         }
+        
+        // 添加新顺序图
+        public void AddSequenceDiagram()
+        {
+            if (selectedItem == null)
+                return;
+
+            selectedItem.SelectedItem = selectedItem.PanelVMs[5];
+
+            SequenceDiagram_P_VM pvm = new SequenceDiagram_P_VM();
+            selectedItem.PanelVMs[5].SidePanelVMs.Add(pvm);
+            selectedItem.PanelVMs[5].SelectedItem = pvm;
+        }
 
         #endregion
 

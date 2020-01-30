@@ -1,6 +1,6 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:v="clr-namespace:sbid._V"
+        xmlns:v="clr-namespace:sbid._V;assembly=sbid"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -30,14 +30,15 @@
         <MenuItem Header="另存为"/>
       </MenuItem>
       <MenuItem Header="模型">
-        <MenuItem Header="添加攻击树(AttackTree)"/>
-        <MenuItem Header="添加计算树逻辑(CTL)"/>
-        <MenuItem Header="添加顺序图(Sequence Diagram)"/>
-        <MenuItem Header="添加拓扑图(Topo Graph)"/>
+        <MenuItem Header="新类图(Class Diagram)" Command="{Binding AddClassDiagram}"/>
+        <MenuItem Header="新拓扑图(Topo Graph)" Command="{Binding AddTopoGraph}"/>
+        <MenuItem Header="新攻击树(AttackTree)" Command="{Binding AddAttackTree}"/>
+        <MenuItem Header="新CTL语法树(CTL AST)" Command="{Binding AddCTLTree}"/>
+        <MenuItem Header="新顺序图(Sequence Diagram)" Command="{Binding AddSequenceDiagram}"/>
       </MenuItem>
       <MenuItem Header="帮助">
         <MenuItem Header="使用手册"/>
-        <MenuItem Header="关于.." Click="MenuClick_ShowAbout"/>
+        <MenuItem Header="关于.."/>
       </MenuItem>
     </Menu>
 
@@ -50,6 +51,7 @@
       <Button Command="{Binding AddTopoGraph}">新拓扑图</Button>
       <Button Command="{Binding AddAttackTree}">新攻击树</Button>
       <Button Command="{Binding AddCTLTree}">新CTL语法树</Button>
+      <Button Command="{Binding AddSequenceDiagram}">新顺序图</Button>
     </StackPanel>
 
     <!--协议选项卡-->

@@ -42,6 +42,11 @@ namespace sbid._VM
             ctlTreePVM.SelectedItem = ctlTreePVM.SidePanelVMs[0];
             panelVMs.Add(ctlTreePVM);
 
+            Panel_VM sequenceDiagramPVM = new Panel_VM("顺序图");
+            sequenceDiagramPVM.SidePanelVMs.Add(new SequenceDiagram_P_VM());
+            sequenceDiagramPVM.SelectedItem = sequenceDiagramPVM.SidePanelVMs[0];
+            panelVMs.Add(sequenceDiagramPVM);
+
             // 设置本协议的默认选中项为第一项"概览"
             selectedItem = panelVMs[0];
         }
