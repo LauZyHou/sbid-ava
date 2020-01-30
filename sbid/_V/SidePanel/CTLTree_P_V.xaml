@@ -2,7 +2,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sbid._V.CTLTree_P_V">
-    我是CTL
+
+  <Design.DataContext>
+    <vm:CTLTree_P_VM/>
+  </Design.DataContext>
+
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+      <Button>生成公式</Button>
+      <Button>创建原子命题</Button>
+      <Button>创建"bottom"</Button>
+      <Button>创建"top"</Button>
+      <Button>创建"AX"</Button>
+      <Button>创建"EX"</Button>
+      <Button>创建"AF"</Button>
+      <Button>创建"EF"</Button>
+      <Button>创建"AG"</Button>
+      <Button>创建"EG"</Button>
+      <Button>创建"AU"</Button>
+      <Button>创建"EU"</Button>
+      <Button>创建"非"</Button>
+      <Button>创建"合取"</Button>
+      <Button>创建"析取"</Button>
+      <Button>创建"蕴含"</Button>
+    </StackPanel>
+    <Canvas DockPanel.Dock="Bottom">
+
+    </Canvas>
+  </DockPanel>
+ 
 </UserControl>

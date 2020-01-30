@@ -15,5 +15,15 @@ namespace sbid._VM
             this.Name = "类图" + _id;
             _id++;
         }
+
+        #region 命令控制
+
+        // 创建UserType
+        public void CreateUserType()
+        {
+
+        }
+
+        #endregion
     }
 }

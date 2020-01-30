@@ -2,7 +2,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sbid._V.AttackTree_P_V">
-    我是AttackTree
+  
+  <Design.DataContext>
+    <vm:AttackTree_P_VM/>
+  </Design.DataContext>
+
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+      <Button>创建攻击结点</Button>
+      <Button>创建"或"关系</Button>
+      <Button>创建"与"关系</Button>
+      <Button>创建"非"关系</Button>
+    </StackPanel>
+    <Canvas DockPanel.Dock="Bottom">
+
+    </Canvas>
+  </DockPanel>
+  
 </UserControl>

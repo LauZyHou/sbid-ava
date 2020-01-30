@@ -92,7 +92,7 @@
                   <!--侧栏面板内容-->
                   <TabControl.ContentTemplate>
                     <DataTemplate>
-                      <!--fixme改成自己的具体面板的视图-->
+                      <!--绑定自己的具体侧栏面板的VM-->
                       <ContentControl Content="{Binding .}"/>
                     </DataTemplate>
                   </TabControl.ContentTemplate>
