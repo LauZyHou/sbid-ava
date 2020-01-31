@@ -34,6 +34,9 @@ namespace sbid._VM
             //    () => new ClassDiagram_P_VM(),
             //    addEnabled
             //    );
+            
+            // 把自己挂到全局资源上
+            ResourceManager.mainWindowVM = this;
         }
 
         #endregion
@@ -49,6 +52,7 @@ namespace sbid._VM
         }
 
         // 添加新类图
+        /*
         public void AddClassDiagram()
         {
             // 判定协议已创建
@@ -63,6 +67,7 @@ namespace sbid._VM
             selectedItem.PanelVMs[0].SidePanelVMs.Add(pvm);
             selectedItem.PanelVMs[0].SelectedItem = pvm;
         }
+        */
 
         // 添加新拓扑图
         public void AddTopoGraph()

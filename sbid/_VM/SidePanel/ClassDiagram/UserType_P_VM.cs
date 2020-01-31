@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+
+namespace sbid._VM
+{
+    public class UserType_P_VM : ClassDiagram_P_VM
+    {
+        private ObservableCollection<UserType_VM> userTypeVMs = new ObservableCollection<UserType_VM>();
+
+        public UserType_P_VM() : base("自定义类型")
+        {
+            // 添加int和bool
+            userTypeVMs.Add(
+                new UserType_VM(sbid._M.Type.TYPE_INT)
+                {
+                    X = 50,
+                    Y = 20
+                });
+            // todo 添加bool
+        }
+
+        // 集成协议下所有的UserType
+        public ObservableCollection<UserType_VM> UserTypeVMs { get => userTypeVMs; set => userTypeVMs = value; }
+
+        // 创建新的UserType
+        public void CreateUserType()
+        {
+            userTypeVMs.Add(new UserType_VM());
+            ResourceManager.mainWindowVM.Tips = "创建了新的UserType";
+        }
+    }
+}

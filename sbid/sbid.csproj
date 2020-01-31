@@ -14,14 +14,16 @@
     <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Remove="ExtraControls\MessageBox.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\AttackTree_P_V.xaml" />
-    <AvaloniaResource Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
+    <AvaloniaResource Remove="_V\SidePanel\ClassDiagram\ClassDiagram_P_V.xaml" />
+    <AvaloniaResource Remove="_V\SidePanel\ClassDiagram\UserType_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\CTLTree_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <None Remove="ExtraControls\MessageBox.xaml" />
     <None Remove="_V\SidePanel\AttackTree_P_V.xaml" />
-    <None Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
+    <None Remove="_V\SidePanel\ClassDiagram\ClassDiagram_P_V.xaml" />
+    <None Remove="_V\SidePanel\ClassDiagram\UserType_P_V.xaml" />
     <None Remove="_V\SidePanel\CTLTree_P_V.xaml" />
     <None Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <None Remove="_V\SidePanel\StateMachine_P_V.xaml" />
@@ -31,7 +33,6 @@
     <Folder Include="_M\SafetyProperty\" />
     <Folder Include="_M\SecurityProperty\" />
     <Folder Include="_M\Axiom\" />
-    <Folder Include="_VM\Attribute\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.0" />
@@ -49,7 +50,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="_V\SidePanel\ClassDiagram_P_V.xaml">
+    <EmbeddedResource Include="_V\SidePanel\ClassDiagram\ClassDiagram_P_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -70,6 +71,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\SidePanel\SequenceDiagram_P_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\SidePanel\ClassDiagram\UserType_P_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

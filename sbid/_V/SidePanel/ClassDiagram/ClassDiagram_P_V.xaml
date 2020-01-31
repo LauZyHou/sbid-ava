@@ -12,7 +12,7 @@
   
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
-      <Button Command="{Binding CreateUserType}">创建UserType</Button>
+      <Button>创建UserType</Button>
       <Button>创建Process</Button>
       <Button>创建Axiom</Button>
       <Button>创建Initial Knowledge</Button>
@@ -20,8 +20,15 @@
       <Button>创建Security Property</Button>
     </StackPanel>
     <Canvas DockPanel.Dock="Bottom">
+      <ItemsControl Items="{Binding UserTypeVMs}"/>
       
+      <Canvas.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:UserType_VM}">
+          <Grid Width="220" Height="200" Canvas.Left="100" Canvas.Top="100" Background="AliceBlue">
+
+          </Grid>
+        </DataTemplate>
+      </Canvas.DataTemplates>
     </Canvas>
   </DockPanel>
-
 </UserControl>

@@ -20,15 +20,15 @@ namespace sbid._VM
             _id++;
 
             Panel_VM classDiagramPVM = new Panel_VM("概览");
-            classDiagramPVM.SidePanelVMs.Add(new ClassDiagram_P_VM()); // 添加一个默认面板
-            classDiagramPVM.SelectedItem = classDiagramPVM.SidePanelVMs[0];// 设置默认选中项
+            classDiagramPVM.SidePanelVMs.Add(new UserType_P_VM());
+            classDiagramPVM.SelectedItem = classDiagramPVM.SidePanelVMs[0];
             panelVMs.Add(classDiagramPVM);
 
             panelVMs.Add(new Panel_VM("状态机"));
 
             Panel_VM topoGraphPVM = new Panel_VM("拓扑图");
-            topoGraphPVM.SidePanelVMs.Add(new TopoGraph_P_VM());
-            topoGraphPVM.SelectedItem = topoGraphPVM.SidePanelVMs[0];
+            topoGraphPVM.SidePanelVMs.Add(new TopoGraph_P_VM());// 添加一个默认面板
+            topoGraphPVM.SelectedItem = topoGraphPVM.SidePanelVMs[0];// 设置默认选中项
             panelVMs.Add(topoGraphPVM);
 
             Panel_VM attackTreePVM = new Panel_VM("攻击树");

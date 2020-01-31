@@ -30,7 +30,7 @@
         <MenuItem Header="另存为"/>
       </MenuItem>
       <MenuItem Header="模型">
-        <MenuItem Header="新类图(Class Diagram)" Command="{Binding AddClassDiagram}"/>
+        <!--<MenuItem Header="新类图(Class Diagram)" Command="{Binding AddClassDiagram}"/>-->
         <MenuItem Header="新拓扑图(Topo Graph)" Command="{Binding AddTopoGraph}"/>
         <MenuItem Header="新攻击树(AttackTree)" Command="{Binding AddAttackTree}"/>
         <MenuItem Header="新CTL语法树(CTL AST)" Command="{Binding AddCTLTree}"/>
@@ -47,7 +47,7 @@
       <Button Command="{Binding AddProtocol}">新协议</Button>
       <Button>保存</Button>
       <Button>生成XML</Button>
-      <Button Command="{Binding AddClassDiagram}">新类图</Button>
+      <!--<Button Command="{Binding AddClassDiagram}">新类图</Button>-->
       <Button Command="{Binding AddTopoGraph}">新拓扑图</Button>
       <Button Command="{Binding AddAttackTree}">新攻击树</Button>
       <Button Command="{Binding AddCTLTree}">新CTL语法树</Button>

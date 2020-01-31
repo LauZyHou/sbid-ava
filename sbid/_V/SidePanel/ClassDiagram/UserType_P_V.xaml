@@ -1,0 +1,32 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="sbid._V.UserType_P_V">
+  <Design.DataContext>
+    <vm:UserType_P_VM/>
+  </Design.DataContext>
+
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+      <Button>创建UserType</Button>
+    </StackPanel>
+    <Canvas DockPanel.Dock="Bottom" Background="AntiqueWhite">
+      <!--Canvas内放置一系列UserType_VM-->
+      <ItemsControl Items="{Binding UserTypeVMs}"/>
+      <!--UserType_VM的数据模板-->
+      <Canvas.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:UserType_VM}">
+          <StackPanel MinWidth="130" MinHeight="170" 
+                Canvas.Left="{Binding X, Mode=TwoWay}"
+                Canvas.Top="{Binding Y, Mode=TwoWay}"
+                Background="#99CCFF">
+            <TextBlock Text="{Binding Type.Name}"/>
+          </StackPanel>
+        </DataTemplate>
+      </Canvas.DataTemplates>
+    </Canvas>
+  </DockPanel>
+</UserControl>
