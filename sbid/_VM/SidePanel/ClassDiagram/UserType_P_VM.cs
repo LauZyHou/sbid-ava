@@ -9,7 +9,7 @@ namespace sbid._VM
     {
         private ObservableCollection<UserType_VM> userTypeVMs = new ObservableCollection<UserType_VM>();
 
-        public UserType_P_VM() : base("自定义类型")
+        public UserType_P_VM() : base("数据类型")
         {
             // 添加int和bool
             userTypeVMs.Add(
@@ -18,7 +18,12 @@ namespace sbid._VM
                     X = 50,
                     Y = 20
                 });
-            // todo 添加bool
+            userTypeVMs.Add(
+                new UserType_VM(sbid._M.Type.TYPE_BOOL)
+                {
+                    X = 230,
+                    Y = 20
+                });
         }
 
         // 集成协议下所有的UserType
