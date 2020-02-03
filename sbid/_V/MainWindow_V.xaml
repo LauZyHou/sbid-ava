@@ -105,7 +105,7 @@
     </TabControl>
 
     <!--底下的提示条-->
-    <TextBlock Name="tipTextBox" Text="{Binding Path=Tips, Mode=TwoWay}"
-               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="LightSeaGreen"/>
+    <TextBlock Name="tipTextBox" Text="{Binding Path=Tips, Mode=TwoWay}" Foreground="White" FontSize="20"
+               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="Black"/>
   </Grid>
 </Window>

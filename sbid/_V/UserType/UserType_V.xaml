@@ -3,15 +3,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-             mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="120"
-             x:Class="sbid._V.UserType_V">
+             mc:Ignorable="d" d:DesignWidth="110" d:DesignHeight="120"
+             x:Class="sbid._V.UserType_V" BorderBrush="Black" BorderThickness="2">
   <Design.DataContext>
     <vm:UserType_VM/>
   </Design.DataContext>
 
-  <StackPanel Background="#AADDFF" MinWidth="100" MinHeight="120">
-    <TextBlock Text="{Binding Type.Name}" FontWeight="Bold"/>
-    <ListBox Items="{Binding Type.Attributes}" IsEnabled="False" Background="#AADDFF" BorderBrush="#AADDFF">
+  <Grid RowDefinitions="20,1,*" Background="#AADDFF" MinWidth="110" MinHeight="120">
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <TextBlock Text=" UserType " FontWeight="Bold"/>
+      <TextBlock Text="{Binding Type.Name}"/>
+    </StackPanel>
+    <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
+    <ListBox Grid.Row="2" Items="{Binding Type.Attributes}" IsEnabled="False" Background="#AADDFF" BorderBrush="#AADDFF">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
@@ -23,5 +27,12 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-  </StackPanel>
+    <!--右键菜单-->
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑"/>
+        <MenuItem Header="删除" Command="{Binding DeleteUserTypeVM}"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
+  </Grid>
 </UserControl>

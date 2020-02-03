@@ -27,6 +27,9 @@ namespace sbid._V
         {
             base.OnPointerPressed(e);
 
+            if (e.MouseButton != MouseButton.Left)
+                return;
+
             // 所在面板无法在构造函数里求得
             if (parentIVisual == null)
                 parentIVisual = this.Parent.Parent.Parent;
