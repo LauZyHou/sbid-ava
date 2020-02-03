@@ -1,0 +1,48 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.UserType_EW_V"
+        Title="编辑UserType">
+  <Window.Styles>
+    <Style Selector="Button">
+      <Setter Property="Width" Value="50"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Margin" Value="7,5"/>
+    </Style>
+  </Window.Styles>
+  
+  <TabControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+    <TabItem Header="元信息">
+      <StackPanel Margin="7">
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="自定义类型名：" FontSize="18"/>
+          <TextBox Text="{Binding UserType.Name, Mode=TwoWay}"/>
+        </StackPanel>
+      </StackPanel>
+    </TabItem>
+    <TabItem Header="Attribute">
+      <Grid ColumnDefinitions="50*,50*" Margin="7">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="变量类型：" FontSize="17"/>
+          <ListBox Height="130">
+
+          </ListBox>
+          <TextBlock Text="变量名称：" FontSize="17"/>
+          <TextBox Text=""/>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button>添加</Button>
+            <Button>修改</Button>
+            <Button>删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <Grid Grid.Column="1" Margin="10,0">
+          <ListBox>
+
+          </ListBox>
+        </Grid>
+      </Grid>
+    </TabItem>
+  </TabControl>
+</Window>

@@ -14,6 +14,8 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
+            // 把自己挂到全局资源上
+            ResourceManager.mainWindowV = this;
         }
 
         private void InitializeComponent()

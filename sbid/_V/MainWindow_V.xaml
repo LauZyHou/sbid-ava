@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="sbid._V.MainWindow_V"
-        Title="🔮SBID-内生安全建模工具" WindowState="Maximized">
+        Title="🔮SBID-AVA 跨平台内生安全建模工具" WindowState="Maximized">
 
   <!--用于在开发设计时正确绑定VM中的命令能在xaml中看到按钮不是灰色,实际设置DataContext是在App.xaml.cs中-->
   <Design.DataContext>
@@ -18,7 +18,7 @@
       <RowDefinition Height="23"/>
       <RowDefinition Height="5*" MinHeight="23"/>
       <RowDefinition Height="90*"/>
-      <RowDefinition Height="5*"/>
+      <RowDefinition Height="5*" MinHeight="20"/>
     </Grid.RowDefinitions>
 
     <!--菜单栏-->
@@ -105,7 +105,10 @@
     </TabControl>
 
     <!--底下的提示条-->
-    <TextBlock Name="tipTextBox" Text="{Binding Path=Tips, Mode=TwoWay}" Foreground="White" FontSize="20"
-               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="Black"/>
+    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                Background="Black" MinHeight="15">
+      <TextBlock Text=" > " Foreground="White" Background="Black" FontSize="17"/>
+      <TextBlock Name="tipTextBox" Text="{Binding Path=Tips}" Foreground="White" Background="Black" FontSize="17"/>
+    </StackPanel>
   </Grid>
 </Window>

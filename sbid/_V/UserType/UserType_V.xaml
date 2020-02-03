@@ -30,7 +30,7 @@
     <!--右键菜单-->
     <Grid.ContextMenu>
       <ContextMenu>
-        <MenuItem Header="编辑"/>
+        <MenuItem Header="编辑" Command="{Binding EditUserTypeVM}"/>
         <MenuItem Header="删除" Command="{Binding DeleteUserTypeVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>

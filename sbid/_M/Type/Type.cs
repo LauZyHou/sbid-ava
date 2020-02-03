@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace sbid._M
 {
     // 普适的类型类,基本类型int,bool也属于此类
-    public class Type
+    public class Type : ReactiveObject
     {
         private string name;
 
@@ -15,7 +16,7 @@ namespace sbid._M
         }
 
         // 类型名
-        public string Name { get => name; set => name = value; }
+        public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
 
         // 系统内写死的两个内置类型,使用此唯一引用,且不允许修改
         public static readonly Type TYPE_INT = new Type("int");

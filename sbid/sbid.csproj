@@ -20,6 +20,7 @@
     <AvaloniaResource Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
+    <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
     <None Remove="ExtraControls\MessageBox.xaml" />
     <None Remove="_V\SidePanel\AttackTree_P_V.xaml" />
@@ -29,6 +30,7 @@
     <None Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <None Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <None Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
+    <None Remove="_V\UserType\UserType_EW_V.xaml" />
     <None Remove="_V\UserType\UserType_V.xaml" />
     <Folder Include="_M\Process\" />
     <Folder Include="_M\StateMachine\" />
@@ -83,6 +85,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\UserType\UserType_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\UserType\UserType_EW_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -3,6 +3,7 @@ using sbid._M;
 using System.Collections.Generic;
 using System.Text;
 using ReactiveUI;
+using sbid._V;
 
 namespace sbid._VM
 {
@@ -39,6 +40,28 @@ namespace sbid._VM
             }
             ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs.Remove(this);
             ResourceManager.mainWindowVM.Tips = "删除了自定义类型：" + type.Name;
+        }
+
+        // 尝试打开当前UserType_VM的编辑窗体
+        public void EditUserTypeVM()
+        {
+            if (type == sbid._M.Type.TYPE_INT || type == sbid._M.Type.TYPE_BOOL)
+            {
+                ResourceManager.mainWindowVM.Tips = "无效的操作，禁止编辑内置类型！";
+                return;
+            }
+
+            // 从主窗体打开编辑窗体,并在其DataContext中集成当前UserType_VM里集成的UserType对象,以能对其作修改
+            UserType_EW_V userTypeEWV = new UserType_EW_V()
+            {
+                DataContext = new UserType_EW_VM()
+                {
+                    UserType = (UserType)type
+                }
+            };
+
+            userTypeEWV.ShowDialog(ResourceManager.mainWindowV);
+            ResourceManager.mainWindowVM.Tips = "打开了自定义类型：" + type.Name + "的编辑窗体";
         }
 
         #endregion

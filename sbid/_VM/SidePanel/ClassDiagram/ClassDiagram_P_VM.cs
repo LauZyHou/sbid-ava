@@ -32,5 +32,17 @@ namespace sbid._VM
                     Y = 20
                 });
         }
+
+        #region 按钮和右键菜单命令
+
+        // 创建自定义类型
+        public void CreateUserType()
+        {
+            UserType_VM userTypeVM = new UserType_VM();
+            NetworkItemVMs.Add(userTypeVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的自定义类型：" + userTypeVM.Type.Name;
+        }
+
+        #endregion
     }
 }
