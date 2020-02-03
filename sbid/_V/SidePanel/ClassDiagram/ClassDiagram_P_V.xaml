@@ -9,6 +9,35 @@
   <Design.DataContext>
     <vm:ClassDiagram_P_VM/>
   </Design.DataContext>
+
+  <UserControl.Styles>
+    <!--ItemsControl的样式-->
+    <Style Selector="ItemsControl">
+      <!--使用Canvas作面板-->
+      <Setter Property="ItemsPanel">
+        <Setter.Value>
+          <ItemsPanelTemplate>
+            <!--这里需要为Canvas设置颜色才能在按下时相应鼠标事件-->
+            <Canvas Background="#EEEEEE"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+          </ItemsPanelTemplate>
+        </Setter.Value>
+      </Setter>
+      <!--里面放控件,即UserType_VM-->
+      <Setter Property="ItemTemplate">
+        <Setter.Value>
+          <DataTemplate DataType="vm:NetworkItem_VM">
+            <ContentControl Content="{Binding .}"/>
+          </DataTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
+    <Style Selector="ItemsControl > ContentPresenter">
+      <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}"/>
+      <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}"/>
+    </Style>
+  </UserControl.Styles>
   
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
@@ -19,16 +48,7 @@
       <Button>创建Safety Property</Button>
       <Button>创建Security Property</Button>
     </StackPanel>
-    <Canvas DockPanel.Dock="Bottom">
-      <ItemsControl Items="{Binding UserTypeVMs}"/>
-      
-      <Canvas.DataTemplates>
-        <DataTemplate DataType="{x:Type vm:UserType_VM}">
-          <Grid Width="220" Height="200" Canvas.Left="100" Canvas.Top="100" Background="AliceBlue">
-
-          </Grid>
-        </DataTemplate>
-      </Canvas.DataTemplates>
-    </Canvas>
+    <!--面板-->
+    <ItemsControl DockPanel.Dock="Bottom" Items="{Binding NetworkItemVMs}"/>
   </DockPanel>
 </UserControl>

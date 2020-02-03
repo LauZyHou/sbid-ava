@@ -16,7 +16,9 @@
       <Setter Property="ItemsPanel">
         <Setter.Value>
           <ItemsPanelTemplate>
-            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <!--这里需要为Canvas设置颜色才能在按下时相应鼠标事件-->
+            <Canvas Background="#EEEEEE" 
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
           </ItemsPanelTemplate>
         </Setter.Value>
       </Setter>
@@ -31,15 +33,15 @@
     </Style>
     <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
     <Style Selector="ItemsControl > ContentPresenter">
-      <Setter Property="Canvas.Left" Value="{Binding X}"/>
-      <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+      <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}"/>
+      <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}"/>
     </Style>
   </UserControl.Styles>
 
   <DockPanel>
     <!--按钮-->
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
-      <Button>创建UserType</Button>
+      <Button Command="{Binding CreateUserType}">创建UserType</Button>
     </StackPanel>
     <!--面板-->
     <ItemsControl DockPanel.Dock="Bottom" Items="{Binding UserTypeVMs}"/>

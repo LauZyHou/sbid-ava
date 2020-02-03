@@ -11,7 +11,17 @@
 
   <StackPanel Background="#AADDFF" MinWidth="100" MinHeight="120">
     <TextBlock Text="{Binding Type.Name}" FontWeight="Bold"/>
-    <TextBlock Text="{Binding X}"/>
-    <TextBlock Text="{Binding Y}"/>
+    <ListBox Items="{Binding Type.Attributes}" IsEnabled="False" Background="#AADDFF" BorderBrush="#AADDFF">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Type.Name}"/>
+            <TextBlock Text=" "/>
+            <TextBlock Text="{Binding Identifier}"/>
+            <TextBlock Text=";"/>
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
   </StackPanel>
 </UserControl>

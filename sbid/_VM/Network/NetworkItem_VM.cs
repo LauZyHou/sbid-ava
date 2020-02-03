@@ -6,7 +6,7 @@ using System.Text;
 namespace sbid._VM
 {
     // 可以 移动/选中 的结点
-    public class NetworkNode : ViewModelBase
+    public class NetworkItem_VM : ViewModelBase
     {
         private int x;
         private int y;

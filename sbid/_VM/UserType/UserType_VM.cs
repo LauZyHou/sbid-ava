@@ -6,7 +6,7 @@ using ReactiveUI;
 
 namespace sbid._VM
 {
-    public class UserType_VM : NetworkNode
+    public class UserType_VM : NetworkItem_VM
     {
         private static int _id = 1;
         private sbid._M.Type type;

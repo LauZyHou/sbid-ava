@@ -12,8 +12,15 @@ namespace sbid._M
 
         public UserType(string name) : base(name)
         {
+            test_data();
         }
 
         public ObservableCollection<Attribute> Attributes { get => attributes; set => attributes = value; }
+
+        private void test_data()
+        {
+            attributes.Add(new Attribute(Type.TYPE_INT, "a"));
+            attributes.Add(new Attribute(Type.TYPE_BOOL, "b"));
+        }
     }
 }

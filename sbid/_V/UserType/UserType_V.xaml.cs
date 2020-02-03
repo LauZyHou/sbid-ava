@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace sbid._V
 {
-    public class UserType_V : UserControl
+    public class UserType_V : NetworkItem_V
     {
         public UserType_V()
         {

@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace sbid._V
 {
-    public class ClassDiagram_P_V : UserControl
+    public class ClassDiagram_P_V : Network_P_V
     {
         public ClassDiagram_P_V()
         {

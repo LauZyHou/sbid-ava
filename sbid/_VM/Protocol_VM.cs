@@ -20,7 +20,8 @@ namespace sbid._VM
             _id++;
 
             Panel_VM classDiagramPVM = new Panel_VM("概览");
-            classDiagramPVM.SidePanelVMs.Add(new UserType_P_VM());
+            //classDiagramPVM.SidePanelVMs.Add(new UserType_P_VM());
+            classDiagramPVM.SidePanelVMs.Add(new ClassDiagram_P_VM());
             classDiagramPVM.SelectedItem = classDiagramPVM.SidePanelVMs[0];
             panelVMs.Add(classDiagramPVM);
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace sbid._VM
 {
-    public class UserType_P_VM : ClassDiagram_P_VM
+    public class UserType_P_VM : SidePanel_VM
     {
         private ObservableCollection<UserType_VM> userTypeVMs = new ObservableCollection<UserType_VM>();
 
@@ -32,7 +32,10 @@ namespace sbid._VM
         // 创建新的UserType
         public void CreateUserType()
         {
-            userTypeVMs.Add(new UserType_VM());
+            userTypeVMs.Add(new UserType_VM() { 
+                X = 400,
+                Y = 20
+            });
             ResourceManager.mainWindowVM.Tips = "创建了新的UserType";
         }
     }
