@@ -34,8 +34,8 @@
     </Style>
     <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
     <Style Selector="ItemsControl > ContentPresenter">
-      <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}"/>
-      <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}"/>
+      <Setter Property="Canvas.Left" Value="{Binding X}"/>
+      <Setter Property="Canvas.Top" Value="{Binding Y}"/>
     </Style>
   </UserControl.Styles>
   

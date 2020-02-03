@@ -8,10 +8,10 @@ namespace sbid._VM
     // 可以 移动/选中 的结点
     public class NetworkItem_VM : ViewModelBase
     {
-        private int x;
-        private int y;
+        private double x;
+        private double y;
 
-        public int X { get => x; set => this.RaiseAndSetIfChanged(ref x, value); }
-        public int Y { get => y; set => this.RaiseAndSetIfChanged(ref y, value); }
+        public double X { get => x; set => this.RaiseAndSetIfChanged(ref x, value); }
+        public double Y { get => y; set => this.RaiseAndSetIfChanged(ref y, value); }
     }
 }
