@@ -19,9 +19,13 @@ namespace sbid._M
             this.name = name;
         }
 
+        // 进程模板名
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
+        // 成员参数列表
         public ObservableCollection<Attribute> Attributes { get => attributes; set => attributes = value; }
+        // 方法列表
         public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
+        // 通信方法列表
         public ObservableCollection<CommMethod> CommMethods { get => commMethods; set => commMethods = value; }
     }
 }

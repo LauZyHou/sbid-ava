@@ -1,0 +1,171 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.Process.Process_EW_V"
+        Title="编辑Process">
+
+  <Design.DataContext>
+    <vm:Process_EW_VM/>
+  </Design.DataContext>
+
+  <Window.Styles>
+    <Style Selector="Button">
+      <Setter Property="Width" Value="50"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Margin" Value="7,5"/>
+    </Style>
+    <Style Selector="TabItem > StackPanel">
+      <Setter Property="Margin" Value="7"/>
+    </Style>
+    <Style Selector="TabItem > Grid">
+      <Setter Property="Margin" Value="7"/>
+    </Style>
+    <Style Selector="StackPanel.SmallButtonGroup > Button">
+      <Setter Property="Width" Value="30"/>
+      <Setter Property="Height" Value="20"/>
+      <Setter Property="Margin" Value="3"/>
+      <Setter Property="FontSize" Value="9"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Height" Value="23"/>
+    </Style>
+  </Window.Styles>
+
+  <TabControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+    <TabItem Header="元信息">
+      <StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="自定义类型名：" FontSize="18"/>
+          <TextBox Text="{Binding Process.Name, Mode=TwoWay}"/>
+        </StackPanel>
+      </StackPanel>
+    </TabItem>
+    <TabItem Header="Attribute">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="变量类型：" FontSize="17"/>
+          <ListBox Name="type_ListBox" Height="142" Items="{Binding Types}"
+                   SelectedItem="{Binding #attr_ListBox.SelectedItem.Type, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock Text="变量名称：" FontSize="17"/>
+          <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button>添加</Button>
+            <Button>修改</Button>
+            <Button>删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0" Name="attr_ListBox" Items="{Binding Process.Attributes}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0} {1};">
+                    <Binding Path="Type.Name"/>
+                    <Binding Path="Identifier"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
+    <TabItem Header="内置Method">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="内置方法：" FontSize="17"/>
+          <ListBox Height="97"></ListBox>
+          <TextBlock Text="加密算法：" FontSize="17"/>
+          <ComboBox></ComboBox>
+          <TextBlock Text="映射关系(todo)：" FontSize="17"/>
+          <TextBox></TextBox>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button>添加</Button>
+            <Button>修改</Button>
+            <Button>删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0"></ListBox>
+      </Grid>
+    </TabItem>
+    <TabItem Header="自定Method">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="返回类型：" FontSize="17"/>
+          <ComboBox/>
+          <TextBlock Text="方法名称：" FontSize="17"/>
+          <TextBox/>
+          <Grid ColumnDefinitions="25*,25*">
+            <StackPanel Grid.Column="0" Margin="0,0,5,0">
+              <TextBlock Text="参数类型：" FontSize="17"/>
+              <ComboBox/>
+              <TextBlock Text="参数名称：" FontSize="17"/>
+              <TextBox/>
+              <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button>添加</Button>
+                <Button>修改</Button>
+                <Button>删除</Button>
+              </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+              <TextBlock Text="参数列表：" FontSize="17"/>
+              <ListBox Height="90"></ListBox>
+            </StackPanel>
+          </Grid>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button>添加</Button>
+            <Button>修改</Button>
+            <Button>删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0"></ListBox>
+      </Grid>
+    </TabItem>
+    <TabItem Header="CommMethod">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="输入/输出：" FontSize="17"/>
+          <StackPanel Orientation="Horizontal" Height="23">
+            <RadioButton GroupName="io" IsChecked="True" Margin="0,0,10,0">IN</RadioButton>
+            <RadioButton GroupName="io" Margin="10,0,0,0">OUT</RadioButton>
+          </StackPanel>
+          <TextBlock Text="方法名称：" FontSize="17"/>
+          <TextBox></TextBox>
+          <Grid ColumnDefinitions="25*,25*">
+            <StackPanel Grid.Column="0" Margin="0,0,5,0">
+              <TextBlock Text="参数类型：" FontSize="17"/>
+              <ComboBox/>
+              <TextBlock Text="参数名称：" FontSize="17"/>
+              <TextBox/>
+              <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button>添加</Button>
+                <Button>修改</Button>
+                <Button>删除</Button>
+              </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+              <TextBlock Text="参数列表：" FontSize="17"/>
+              <ListBox Height="90"></ListBox>
+            </StackPanel>
+          </Grid>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button>添加</Button>
+            <Button>修改</Button>
+            <Button>删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0"></ListBox>
+      </Grid>
+    </TabItem>
+  </TabControl>
+
+</Window>

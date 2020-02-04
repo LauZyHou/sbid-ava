@@ -33,5 +33,12 @@
     <ListBox Grid.Row="9" Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
 
     </ListBox>
+    <!--右键菜单-->
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑" Command="{Binding EditProcessVM}"/>
+        <MenuItem Header="删除" Command="{Binding DeleteProcessVM}"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
   </Grid>
 </UserControl>
