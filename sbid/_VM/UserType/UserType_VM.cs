@@ -59,6 +59,14 @@ namespace sbid._VM
                     UserType = (UserType)type
                 }
             };
+            // 将所有的Type也传入,作为可添加的Attribute的可选类型
+            foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs)
+            {
+                if (item is UserType_VM && item != this) 
+                {
+                    ((UserType_EW_VM)userTypeEWV.DataContext).Types.Add(((UserType_VM)item).Type);
+                } 
+            }
 
             userTypeEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了自定义类型：" + type.Name + "的编辑窗体";

@@ -18,12 +18,15 @@
     <ListBox Grid.Row="2" Items="{Binding Type.Attributes}" IsEnabled="False" Background="#AADDFF" BorderBrush="#AADDFF">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Type.Name}"/>
-            <TextBlock Text=" "/>
-            <TextBlock Text="{Binding Identifier}"/>
-            <TextBlock Text=";"/>
-          </StackPanel>
+          <!--使用多源绑定-->
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0} {1};">
+                <Binding Path="Type.Name"/>
+                <Binding Path="Identifier"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>

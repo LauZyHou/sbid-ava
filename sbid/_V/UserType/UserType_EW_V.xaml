@@ -12,7 +12,7 @@
       <Setter Property="Margin" Value="7,5"/>
     </Style>
   </Window.Styles>
-  
+
   <TabControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
     <TabItem Header="元信息">
       <StackPanel Margin="7">
@@ -26,20 +26,37 @@
       <Grid ColumnDefinitions="50*,50*" Margin="7">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="变量类型：" FontSize="17"/>
-          <ListBox Height="130">
-
+          <ListBox Name="type_ListBox" Height="130" Items="{Binding Types}"
+                   SelectedItem="{Binding #attr_ListBox.SelectedItem.Type}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
           </ListBox>
           <TextBlock Text="变量名称：" FontSize="17"/>
-          <TextBox Text=""/>
+          <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier}"/>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>添加</Button>
+            <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
             <Button>修改</Button>
             <Button>删除</Button>
           </StackPanel>
         </StackPanel>
         <Grid Grid.Column="1" Margin="10,0">
-          <ListBox>
-
+          <ListBox Name="attr_ListBox" Items="{Binding UserType.Attributes}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <!--使用多源绑定-->
+                <TextBlock>
+                  <TextBlock.Text>
+                    <MultiBinding StringFormat=" {0} {1};">
+                      <Binding Path="Type.Name"/>
+                      <Binding Path="Identifier"/>
+                    </MultiBinding>
+                  </TextBlock.Text>
+                </TextBlock>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
           </ListBox>
         </Grid>
       </Grid>
