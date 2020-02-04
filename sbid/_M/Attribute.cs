@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace sbid._M
 {
     // 类型->名称 的参数类,如<int,a>,<bool,b>,<Msg,m>
-    public class Attribute
+    public class Attribute : ReactiveObject
     {
         private Type type;
         private string identifier;
@@ -16,7 +17,12 @@ namespace sbid._M
             this.identifier = identifier;
         }
 
-        public Type Type { get => type; set => type = value; }
-        public string Identifier { get => identifier; set => identifier = value; }
+        public Type Type { get => type; set => this.RaiseAndSetIfChanged(ref type, value); }
+        public string Identifier { get => identifier; set => this.RaiseAndSetIfChanged(ref identifier, value); }
+
+        public override string ToString()
+        {
+            return type.Name + " " + identifier;
+        }
     }
 }

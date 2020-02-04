@@ -27,7 +27,7 @@
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="变量类型：" FontSize="17"/>
           <ListBox Name="type_ListBox" Height="130" Items="{Binding Types}"
-                   SelectedItem="{Binding #attr_ListBox.SelectedItem.Type}">
+                   SelectedItem="{Binding #attr_ListBox.SelectedItem.Type, Mode=OneWay}">
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <TextBlock Text="{Binding Name}"/>
@@ -35,10 +35,10 @@
             </ListBox.ItemTemplate>
           </ListBox>
           <TextBlock Text="变量名称：" FontSize="17"/>
-          <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier}"/>
+          <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
-            <Button>修改</Button>
+            <Button Command="{Binding $parent[Window].Update_Attribute}">修改</Button>
             <Button>删除</Button>
           </StackPanel>
         </StackPanel>
