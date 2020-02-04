@@ -24,7 +24,7 @@
               <Canvas.ContextMenu>
                 <ContextMenu>
                   <MenuItem Header="创建UserType" Command="{Binding CreateUserType}"/>
-                  <MenuItem Header="创建Process"/>
+                  <MenuItem Header="创建Process" Command="{Binding CreateProcess}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -50,7 +50,7 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
       <Button Command="{Binding CreateUserType}">创建UserType</Button>
-      <Button>创建Process</Button>
+      <Button Command="{Binding CreateProcess}">创建Process</Button>
       <Button>创建Axiom</Button>
       <Button>创建Initial Knowledge</Button>
       <Button>创建Safety Property</Button>

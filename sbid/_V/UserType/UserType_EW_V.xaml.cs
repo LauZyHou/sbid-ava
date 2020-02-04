@@ -78,6 +78,20 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "为自定义类型[" + ((UserType_EW_VM)DataContext).UserType.Name + "]更新了成员变量：" + attribute;
         }
 
+        public void Delete_Attribute()
+        {
+            ListBox attr_ListBox = ControlExtensions.FindControl<ListBox>(this, "attr_ListBox");
+            if (attr_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要删除的Attribute！";
+                return;
+            }
+
+            Attribute attribute = (Attribute)attr_ListBox.SelectedItem;
+            ((UserType_EW_VM)DataContext).UserType.Attributes.Remove(attribute);
+            ResourceManager.mainWindowVM.Tips = "为自定义类型[" + ((UserType_EW_VM)DataContext).UserType.Name + "]删除了成员变量：" + attribute;
+        }
+
         #endregion
     }
 }

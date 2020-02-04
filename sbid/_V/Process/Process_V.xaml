@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="110" d:DesignHeight="120"
+             x:Class="sbid._V.Process_V" BorderBrush="Black" BorderThickness="2">
+  <Design.DataContext>
+    <vm:Process_VM/>
+  </Design.DataContext>
+
+  <UserControl.Resources>
+    <SolidColorBrush x:Key="MyColor" Color="#FFDD99" />
+  </UserControl.Resources>
+
+  <Grid RowDefinitions="20,1,15,*,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="110" MinHeight="120">
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <TextBlock Text=" Process " FontWeight="Bold"/>
+      <TextBlock Text="{Binding Process.Name}"/>
+    </StackPanel>
+    <TextBlock Grid.Row="1" Background="Black"/>
+    <TextBlock Grid.Row="2" Text=" Attribute:"/>
+    <ListBox Grid.Row="3" Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+
+    </ListBox>
+    <TextBlock Grid.Row="4" Background="Black"/>
+    <TextBlock Grid.Row="5" Text=" Method:"/>
+    <ListBox Grid.Row="6" Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+
+    </ListBox>
+    <TextBlock Grid.Row="7" Background="Black"/>
+    <TextBlock Grid.Row="8" Text=" CommMethod:"/>
+    <ListBox Grid.Row="9" Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+
+    </ListBox>
+  </Grid>
+</UserControl>

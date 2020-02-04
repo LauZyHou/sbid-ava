@@ -8,16 +8,17 @@ namespace sbid._VM
     // 类图面板
     public class ClassDiagram_P_VM : SidePanel_VM
     {
-        private static int _id = 1;
+        //private static int _id = 1;
 
         public ClassDiagram_P_VM()
         {
-            Name = "概览" + _id;
-            _id++;
-            test_data();
+            //Name = "概览" + _id;
+            //_id++;
+            Name = "类图";
+            init_data();
         }
 
-        private void test_data()
+        private void init_data()
         {
             NetworkItemVMs.Add(
                 new UserType_VM(sbid._M.Type.TYPE_INT)
@@ -41,6 +42,14 @@ namespace sbid._VM
             UserType_VM userTypeVM = new UserType_VM();
             NetworkItemVMs.Add(userTypeVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的自定义类型：" + userTypeVM.Type.Name;
+        }
+
+        // 创建进程模板
+        public void CreateProcess()
+        {
+            Process_VM processVM = new Process_VM();
+            NetworkItemVMs.Add(processVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.Name;
         }
 
         #endregion
