@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-             mc:Ignorable="d" d:DesignWidth="110" d:DesignHeight="120"
+             mc:Ignorable="d" d:DesignWidth="225" d:DesignHeight="180"
              x:Class="sbid._V.Process_V" BorderBrush="Black" BorderThickness="2">
   <Design.DataContext>
     <vm:Process_VM/>
@@ -20,18 +20,33 @@
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
     <TextBlock Grid.Row="2" Text=" Attribute:"/>
-    <ListBox Grid.Row="3" Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
-
+    <ListBox Grid.Row="3" Items="{Binding Process.Attributes}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <!--使用多源绑定-->
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0} {1};">
+                <Binding Path="Type.Name"/>
+                <Binding Path="Identifier"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
     <TextBlock Grid.Row="5" Text=" Method:"/>
-    <ListBox Grid.Row="6" Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
-
+    <ListBox Grid.Row="6" Items="{Binding Process.Methods}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <!--这里直接给Method定义ToString()了所以不用数据模板了-->
     </ListBox>
     <TextBlock Grid.Row="7" Background="Black"/>
     <TextBlock Grid.Row="8" Text=" CommMethod:"/>
-    <ListBox Grid.Row="9" Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
-
+    <ListBox Grid.Row="9" Items="{Binding Process.CommMethods}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <!--这里直接给CommMethod定义ToString()了所以不用数据模板了-->
     </ListBox>
     <!--右键菜单-->
     <Grid.ContextMenu>

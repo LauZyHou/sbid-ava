@@ -19,11 +19,29 @@ namespace sbid._M
         private ObservableCollection<Attribute> parameters; // 这里不创建,在构造时传入
         private InOut inOutSuffix;
 
+        public CommMethod(string name, ObservableCollection<Attribute> parameters, InOut inOutSuffix)
+        {
+            this.name = name;
+            this.parameters = parameters;
+            this.inOutSuffix = inOutSuffix;
+        }
+
         // 函数名
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         // 参数列表
         public ObservableCollection<Attribute> Parameters { get => parameters; set => parameters = value; }
         // 输入输出(必选)
         public InOut InOutSuffix { get => inOutSuffix; set => this.RaiseAndSetIfChanged(ref inOutSuffix, value); }
+
+        public override string ToString()
+        {
+            string paramString = "";
+            foreach (Attribute attribute in parameters)
+            {
+                paramString += attribute + ", ";
+            }
+            //todo 去除末尾", "
+            return name + "(" + paramString + ")[" + InOutSuffix + "]";
+        }
     }
 }

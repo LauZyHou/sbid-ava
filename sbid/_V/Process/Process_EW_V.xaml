@@ -58,9 +58,9 @@
           <TextBlock Text="变量名称：" FontSize="17"/>
           <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>添加</Button>
-            <Button>修改</Button>
-            <Button>删除</Button>
+            <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_Attribute}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_Attribute}">删除</Button>
           </StackPanel>
         </StackPanel>
         <ListBox Grid.Column="1" Margin="10,0" Name="attr_ListBox" Items="{Binding Process.Attributes}">

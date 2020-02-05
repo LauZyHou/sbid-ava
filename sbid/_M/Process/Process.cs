@@ -17,6 +17,7 @@ namespace sbid._M
         public Process(string name)
         {
             this.name = name;
+            test_data();
         }
 
         // 进程模板名
@@ -27,5 +28,20 @@ namespace sbid._M
         public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
         // 通信方法列表
         public ObservableCollection<CommMethod> CommMethods { get => commMethods; set => commMethods = value; }
+
+        private void test_data()
+        {
+            attributes.Add(new Attribute(Type.TYPE_INT, "a"));
+            attributes.Add(new Attribute(Type.TYPE_BOOL, "b"));
+
+            ObservableCollection<Attribute> parameters1 = new ObservableCollection<Attribute>();
+            parameters1.Add(new Attribute(Type.TYPE_INT, "msg"));
+            parameters1.Add(new Attribute(Type.TYPE_BOOL, "key"));
+            methods.Add(new Method(Type.TYPE_INT, "enc", parameters1, Crypto.SHA256));
+
+            ObservableCollection<Attribute> parameters2 = new ObservableCollection<Attribute>();
+            parameters2.Add(new Attribute(Type.TYPE_INT, "msg"));
+            commMethods.Add(new CommMethod("send", parameters2, InOut.Out));
+        }
     }
 }

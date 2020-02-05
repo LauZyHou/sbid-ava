@@ -18,7 +18,15 @@ namespace sbid._M
         private Type returnType;
         private string name;
         private ObservableCollection<Attribute> parameters; // 这里不创建,在构造时传入
-        private Crypto cryptoSuffix = Crypto.None;
+        private Crypto cryptoSuffix;
+
+        public Method(Type returnType, string name, ObservableCollection<Attribute> parameters, Crypto cryptoSuffix)
+        {
+            this.returnType = returnType;
+            this.name = name;
+            this.parameters = parameters;
+            this.cryptoSuffix = cryptoSuffix;
+        }
 
         // 返回值
         public Type ReturnType { get => returnType; set => this.RaiseAndSetIfChanged(ref returnType, value); }
@@ -28,5 +36,16 @@ namespace sbid._M
         public ObservableCollection<Attribute> Parameters { get => parameters; set => parameters = value; }
         // 加解密方式(可选)
         public Crypto CryptoSuffix { get => cryptoSuffix; set => this.RaiseAndSetIfChanged(ref cryptoSuffix, value); }
+
+        public override string ToString()
+        {
+            string paramString = "";
+            foreach (Attribute attribute in parameters)
+            {
+                paramString += attribute + ", ";
+            }
+            //todo 去除末尾", "
+            return returnType.Name + " " + name + "(" + paramString + ")[" + cryptoSuffix + "]";
+        }
     }
 }
