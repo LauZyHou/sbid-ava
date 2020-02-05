@@ -162,36 +162,57 @@
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="输入/输出：" FontSize="17"/>
-          <StackPanel Orientation="Horizontal" Height="23">
+          <!--<StackPanel Orientation="Horizontal" Height="23">
             <RadioButton GroupName="io" IsChecked="True" Margin="0,0,10,0">IN</RadioButton>
             <RadioButton GroupName="io" Margin="10,0,0,0">OUT</RadioButton>
-          </StackPanel>
+          </StackPanel>-->
+          <ComboBox Name="inout_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.InOutSuffix, Mode=OneWay}"/>
           <TextBlock Text="方法名称：" FontSize="17"/>
-          <TextBox></TextBox>
+          <TextBox Name="commMethodName_TextBox" Text="{Binding #commMethod_ListBox.SelectedItem.Name, Mode=OneWay}"/>
           <Grid ColumnDefinitions="25*,25*">
             <StackPanel Grid.Column="0" Margin="0,0,5,0">
               <TextBlock Text="参数类型：" FontSize="17"/>
-              <ComboBox/>
+              <ComboBox Name="paramType_Comm_ComboBox" Items="{Binding Types}" SelectedItem="{Binding #param_Comm_ListBox.SelectedItem.Type, Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
               <TextBlock Text="参数名称：" FontSize="17"/>
-              <TextBox/>
+              <TextBox Name="paramName_Comm_TextBox" Text="{Binding #param_Comm_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
               <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button>添加</Button>
-                <Button>修改</Button>
-                <Button>删除</Button>
+                <Button Command="{Binding $parent[Window].Add_CommParam}">添加</Button>
+                <Button Command="{Binding $parent[Window].Update_CommParam}">修改</Button>
+                <Button Command="{Binding $parent[Window].Delete_CommParam}">删除</Button>
               </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="5,0,0,0">
               <TextBlock Text="参数列表：" FontSize="17"/>
-              <ListBox Height="90"></ListBox>
+              <!--这里绑定一个Process_EW_VM中额外增加的列表,当右侧选项变化时再拷贝各个Attribute到其中-->
+              <ListBox Name="param_Comm_ListBox" Items="{Binding CommParams}" Height="90">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock>
+                      <TextBlock.Text>
+                        <MultiBinding StringFormat=" {0} {1}">
+                          <Binding Path="Type.Name"/>
+                          <Binding Path="Identifier"/>
+                        </MultiBinding>
+                      </TextBlock.Text>
+                    </TextBlock>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
             </StackPanel>
           </Grid>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>添加</Button>
-            <Button>修改</Button>
-            <Button>删除</Button>
+            <Button Command="{Binding $parent[Window].Add_CommMethod}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_CommMethod}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_CommMethod}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0"></ListBox>
+        <ListBox Grid.Column="1" Margin="10,0" Name="commMethod_ListBox" Items="{Binding Process.CommMethods}"/>
       </Grid>
     </TabItem>
   </TabControl>

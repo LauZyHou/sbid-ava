@@ -227,7 +227,7 @@ namespace sbid._V.Process
         public void Update_ZDParam()
         {
             ListBox param_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_ZD_ListBox");
-            if(param_ZD_ListBox.SelectedItem == null)
+            if (param_ZD_ListBox.SelectedItem == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要在临时参数列表中选定要修改的参数！";
                 return;
@@ -361,6 +361,163 @@ namespace sbid._V.Process
             ResourceManager.mainWindowVM.Tips = "已删除成员方法：" + method;
         }
 
+        public void Add_CommParam()
+        {
+            ComboBox paramType_Comm_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "paramType_Comm_ComboBox");
+            if (paramType_Comm_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定参数类型！";
+                return;
+            }
+
+            TextBox paramName_Comm_TextBox = ControlExtensions.FindControl<TextBox>(this, "paramName_Comm_TextBox");
+            if (paramName_Comm_TextBox.Text == null || paramName_Comm_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要提供参数名称！";
+                return;
+            }
+
+            Attribute attribute = new Attribute((Type)paramType_Comm_ComboBox.SelectedItem, paramName_Comm_TextBox.Text);
+            ((Process_EW_VM)DataContext).CommParams.Add(attribute);
+            ResourceManager.mainWindowVM.Tips = "已在临时参数列表中添加参数：" + attribute;
+        }
+
+        public void Update_CommParam()
+        {
+            ListBox param_Comm_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_Comm_ListBox");
+            if (param_Comm_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要在临时参数列表中选定要修改的参数！";
+                return;
+            }
+
+            ComboBox paramType_Comm_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "paramType_Comm_ComboBox");
+            if (paramType_Comm_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定参数类型！";
+                return;
+            }
+
+            TextBox paramName_Comm_TextBox = ControlExtensions.FindControl<TextBox>(this, "paramName_Comm_TextBox");
+            if (paramName_Comm_TextBox.Text == null || paramName_Comm_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要提供参数名称！";
+                return;
+            }
+
+            Attribute attribute = (Attribute)param_Comm_ListBox.SelectedItem;
+            attribute.Type = (Type)paramType_Comm_ComboBox.SelectedItem;
+            attribute.Identifier = paramName_Comm_TextBox.Text;
+            ResourceManager.mainWindowVM.Tips = "已在临时参数列表中更新参数：" + attribute;
+        }
+
+        public void Delete_CommParam()
+        {
+            ListBox param_Comm_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_Comm_ListBox");
+            if (param_Comm_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要在临时参数列表中选定要删除的参数！";
+                return;
+            }
+
+            Attribute attribute = (Attribute)param_Comm_ListBox.SelectedItem;
+            ((Process_EW_VM)DataContext).CommParams.Remove(attribute);
+            ResourceManager.mainWindowVM.Tips = "已在临时参数列表中删除参数：" + attribute;
+        }
+
+        public void Add_CommMethod()
+        {
+            ComboBox inout_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "inout_ComboBox");
+            if (inout_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定CommMethod的输入/输出类型！";
+                return;
+            }
+
+            TextBox commMethodName_TextBox = ControlExtensions.FindControl<TextBox>(this, "commMethodName_TextBox");
+            if (commMethodName_TextBox.Text == null || commMethodName_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要给出CommMethod的方法名！";
+                return;
+            }
+
+            ObservableCollection<Attribute> parameters = ((Process_EW_VM)DataContext).CommParams;
+            if (parameters.Count == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
+                return;
+            }
+
+            CommMethod commMethod = new CommMethod(
+                commMethodName_TextBox.Text,
+                parameters,
+                (InOut)inout_ComboBox.SelectedItem
+            );
+
+            ((Process_EW_VM)DataContext).Process.CommMethods.Add(commMethod);
+            ResourceManager.mainWindowVM.Tips = "添加了CommMethod：" + commMethod;
+
+            // 添加完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的CommMethod
+            ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
+        }
+
+        public void Update_CommMethod()
+        {
+            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
+            if (commMethod_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要更新的CommMethod！";
+                return;
+            }
+
+            ComboBox inout_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "inout_ComboBox");
+            if (inout_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定CommMethod的输入/输出类型！";
+                return;
+            }
+
+            TextBox commMethodName_TextBox = ControlExtensions.FindControl<TextBox>(this, "commMethodName_TextBox");
+            if (commMethodName_TextBox.Text == null || commMethodName_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要给出CommMethod的方法名！";
+                return;
+            }
+
+            ObservableCollection<Attribute> parameters = ((Process_EW_VM)DataContext).CommParams;
+            if (parameters.Count == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
+                return;
+            }
+
+            CommMethod commMethod = new CommMethod(
+                commMethodName_TextBox.Text,
+                parameters,
+                (InOut)inout_ComboBox.SelectedItem
+            );
+
+            ((Process_EW_VM)DataContext).Process.CommMethods[commMethod_ListBox.SelectedIndex] = commMethod;
+            ResourceManager.mainWindowVM.Tips = "更新了CommMethod：" + commMethod;
+
+            // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的CommMethod
+            ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
+        }
+
+        public void Delete_CommMethod()
+        {
+            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
+            if (commMethod_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要删除的CommMethod！";
+                return;
+            }
+
+            CommMethod commMethod = (CommMethod)commMethod_ListBox.SelectedItem;
+            ((Process_EW_VM)DataContext).Process.CommMethods.Remove(commMethod);
+            ResourceManager.mainWindowVM.Tips = "已删除CommMethod：" + commMethod;
+        }
+
         #endregion
 
         #region 事件
@@ -378,6 +535,19 @@ namespace sbid._V.Process
             ResourceManager.mainWindowVM.Tips = "选中了Method：" + (Method)method_ZD_ListBox.SelectedItem + "，已拷贝其参数列表";
         }
 
+        // CommMethod右侧列表选中项变化的处理
+        private void commMethod_ListBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // 将右侧选中项的参数列表拷贝到param_Comm_ListBox绑定的CommParams里
+            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
+            ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
+            foreach (Attribute attribute in ((CommMethod)commMethod_ListBox.SelectedItem).Parameters)
+            {
+                ((Process_EW_VM)DataContext).CommParams.Add(new Attribute(attribute.Type, attribute.Identifier));
+            }
+            ResourceManager.mainWindowVM.Tips = "选中了CommMethod：" + (CommMethod)commMethod_ListBox.SelectedItem + "，已拷贝其参数列表";
+        }
+
         #endregion
 
         #region 私有
@@ -389,10 +559,15 @@ namespace sbid._V.Process
             ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
             innerMethod_ListBox.Items = Method.InnerMethods;
 
-            // 绑定Method的加密算法
+            // 绑定Method的加密算法枚举
             ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "crypto_ComboBox");
             crypto_ComboBox.Items = System.Enum.GetValues(typeof(Crypto));
             crypto_ComboBox.SelectedItem = Crypto.None;
+
+            // 绑定CommMethod的InOut枚举
+            ComboBox inout_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "inout_ComboBox");
+            inout_ComboBox.Items = System.Enum.GetValues(typeof(InOut));
+            inout_ComboBox.SelectedItem = InOut.In;
         }
 
         // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
@@ -402,7 +577,9 @@ namespace sbid._V.Process
             ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
             method_ZD_ListBox.SelectionChanged += method_ZD_ListBox_Changed;
 
-            // todo commmethod
+            // 绑定CommMethod右侧列表选中项变化的处理方法
+            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
+            commMethod_ListBox.SelectionChanged += commMethod_ListBox_Changed;
         }
 
         #endregion
