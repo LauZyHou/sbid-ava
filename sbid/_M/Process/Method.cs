@@ -33,7 +33,7 @@ namespace sbid._M
         // 方法名
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         // 参数列表
-        public ObservableCollection<Attribute> Parameters { get => parameters; set => parameters = value; }
+        public ObservableCollection<Attribute> Parameters { get => parameters; set => this.RaiseAndSetIfChanged(ref parameters, value); }
         // 加解密方式(可选)
         public Crypto CryptoSuffix { get => cryptoSuffix; set => this.RaiseAndSetIfChanged(ref cryptoSuffix, value); }
 
@@ -47,5 +47,28 @@ namespace sbid._M
             //todo 去除末尾", "
             return returnType.Name + " " + name + "(" + paramString + ")[" + cryptoSuffix + "]";
         }
+
+        #region 静态成员和静态构造
+
+        // 内置Method
+        public static readonly List<Method> InnerMethods = new List<Method>();
+        // 静态构造
+        static Method()
+        {
+            // 添加内置Method
+            // enc
+            ObservableCollection<Attribute> encParams = new ObservableCollection<Attribute>();
+            encParams.Add(new Attribute(Type.TYPE_INT, "key"));
+            encParams.Add(new Attribute(Type.TYPE_INT, "msg"));
+            Method enc = new Method(Type.TYPE_INT, "enc", encParams, Crypto.None);
+            InnerMethods.Add(enc);
+            // dec
+            ObservableCollection<Attribute> decParams = new ObservableCollection<Attribute>();
+            decParams.Add(new Attribute(Type.TYPE_INT, "key"));
+            Method dec = new Method(Type.TYPE_INT, "dec", decParams, Crypto.None);
+            InnerMethods.Add(dec);
+        }
+
+        #endregion
     }
 }

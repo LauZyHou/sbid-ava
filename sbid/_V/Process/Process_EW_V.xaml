@@ -83,18 +83,19 @@
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="内置方法：" FontSize="17"/>
-          <ListBox Height="97"></ListBox>
+          <ListBox Name="innerMethod_ListBox" Height="97"></ListBox>
           <TextBlock Text="加密算法：" FontSize="17"/>
-          <ComboBox></ComboBox>
+          <ComboBox Name="crypto_ComboBox" SelectedItem="{Binding #method_NZ_ListBox.SelectedItem.CryptoSuffix, Mode=OneWay}"/>
           <TextBlock Text="映射关系(todo)：" FontSize="17"/>
           <TextBox></TextBox>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>添加</Button>
-            <Button>修改</Button>
-            <Button>删除</Button>
+            <Button Command="{Binding $parent[Window].Add_NZMethod}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_NZMethod}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_NZMethod}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0"></ListBox>
+        <ListBox Grid.Column="1" Margin="10,0" Name="method_NZ_ListBox" Items="{Binding Process.Methods}">
+        </ListBox>
       </Grid>
     </TabItem>
     <TabItem Header="自定Method">
