@@ -102,33 +102,60 @@
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="返回类型：" FontSize="17"/>
-          <ComboBox/>
+          <ComboBox Name="returnType_ComboBox" Items="{Binding Types}"
+                    SelectedItem="{Binding #method_ZD_ListBox.SelectedItem.ReturnType, Mode=OneWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
           <TextBlock Text="方法名称：" FontSize="17"/>
-          <TextBox/>
+          <TextBox Name="methodName_TextBox" Text="{Binding #method_ZD_ListBox.SelectedItem.Name, Mode=OneWay}"/>
           <Grid ColumnDefinitions="25*,25*">
             <StackPanel Grid.Column="0" Margin="0,0,5,0">
               <TextBlock Text="参数类型：" FontSize="17"/>
-              <ComboBox/>
+              <ComboBox Name="paramType_ZD_ComboBox" Items="{Binding Types}" SelectedItem="{Binding #param_ZD_ListBox.SelectedItem.Type, Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
               <TextBlock Text="参数名称：" FontSize="17"/>
-              <TextBox/>
+              <TextBox Name="paramName_ZD_TextBox" Text="{Binding #param_ZD_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
               <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button>添加</Button>
-                <Button>修改</Button>
-                <Button>删除</Button>
+                <Button Command="{Binding $parent[Window].Add_ZDParam}">添加</Button>
+                <Button Command="{Binding $parent[Window].Update_ZDParam}">修改</Button>
+                <Button Command="{Binding $parent[Window].Delete_ZDParam}">删除</Button>
               </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="5,0,0,0">
               <TextBlock Text="参数列表：" FontSize="17"/>
-              <ListBox Height="90"></ListBox>
+              <!--这里绑定一个Process_EW_VM中额外增加的列表,当右侧选项变化时再拷贝各个Attribute到其中-->
+              <ListBox Name="param_ZD_ListBox" Items="{Binding ZDParams}" Height="90">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock>
+                      <TextBlock.Text>
+                        <MultiBinding StringFormat=" {0} {1}">
+                          <Binding Path="Type.Name"/>
+                          <Binding Path="Identifier"/>
+                        </MultiBinding>
+                      </TextBlock.Text>
+                    </TextBlock>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
             </StackPanel>
           </Grid>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>添加</Button>
-            <Button>修改</Button>
-            <Button>删除</Button>
+            <Button Command="{Binding $parent[Window].Add_ZDMethod}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_ZDMethod}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_ZDMethod}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0"></ListBox>
+        <ListBox Grid.Column="1" Margin="10,0" Name="method_ZD_ListBox" Items="{Binding Process.Methods}"/>
       </Grid>
     </TabItem>
     <TabItem Header="CommMethod">

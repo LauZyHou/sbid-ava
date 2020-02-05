@@ -19,6 +19,8 @@ namespace sbid._V.Process
 #endif
             // 初始化.cs文件中的数据绑定
             init_binding();
+            // 
+            init_event();
         }
 
         private void InitializeComponent()
@@ -178,9 +180,9 @@ namespace sbid._V.Process
              如果用上面注释掉的方式对Method直接进行修改
              Method本身能获取各个属性修改的通知
              但是Process没法获取到Methods列表修改的通知
-             除非在数据模板里不用ToString()或者多源绑定
-             而是用StackPanel里装Method的每个字段
-             但这样写起来比较麻烦
+             除非在数据模板里不用ToString()
+             而是用StackPanel里装Method的每个字段,或者用多源绑定
+             但这样写起来比较麻烦(现在觉得就应该用多源绑定)
              这里创建一个新的Method,然后在列表里把那一项改掉
              实际上是利用了ObervableCollection能在成员修改时发出通知
              使得Process获取到了这个通知
@@ -198,7 +200,182 @@ namespace sbid._V.Process
 
             Method method = (Method)method_NZ_ListBox.SelectedItem;
             ((Process_EW_VM)DataContext).Process.Methods.Remove(method);
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]删除了成员方法：" + method;
+            ResourceManager.mainWindowVM.Tips = "已删除成员方法：" + method;
+        }
+
+        public void Add_ZDParam()
+        {
+            ComboBox paramType_ZD_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "paramType_ZD_ComboBox");
+            if (paramType_ZD_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定参数类型！";
+                return;
+            }
+
+            TextBox paramName_ZD_TextBox = ControlExtensions.FindControl<TextBox>(this, "paramName_ZD_TextBox");
+            if (paramName_ZD_TextBox.Text == null || paramName_ZD_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要提供参数名称！";
+                return;
+            }
+
+            Attribute attribute = new Attribute((Type)paramType_ZD_ComboBox.SelectedItem, paramName_ZD_TextBox.Text);
+            ((Process_EW_VM)DataContext).ZDParams.Add(attribute);
+            ResourceManager.mainWindowVM.Tips = "已在临时参数列表中添加参数：" + attribute;
+        }
+
+        public void Update_ZDParam()
+        {
+            ListBox param_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_ZD_ListBox");
+            if(param_ZD_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要在临时参数列表中选定要修改的参数！";
+                return;
+            }
+
+            ComboBox paramType_ZD_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "paramType_ZD_ComboBox");
+            if (paramType_ZD_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定参数类型！";
+                return;
+            }
+
+            TextBox paramName_ZD_TextBox = ControlExtensions.FindControl<TextBox>(this, "paramName_ZD_TextBox");
+            if (paramName_ZD_TextBox.Text == null || paramName_ZD_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要提供参数名称！";
+                return;
+            }
+
+            Attribute attribute = (Attribute)param_ZD_ListBox.SelectedItem;
+            attribute.Type = (Type)paramType_ZD_ComboBox.SelectedItem;
+            attribute.Identifier = paramName_ZD_TextBox.Text;
+            ResourceManager.mainWindowVM.Tips = "已在临时参数列表中更新参数：" + attribute;
+        }
+
+        public void Delete_ZDParam()
+        {
+            ListBox param_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_ZD_ListBox");
+            if (param_ZD_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要在临时参数列表中选定要删除的参数！";
+                return;
+            }
+
+            Attribute attribute = (Attribute)param_ZD_ListBox.SelectedItem;
+            ((Process_EW_VM)DataContext).ZDParams.Remove(attribute);
+            ResourceManager.mainWindowVM.Tips = "已在临时参数列表中删除参数：" + attribute;
+        }
+
+        public void Add_ZDMethod()
+        {
+            ComboBox returnType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "returnType_ComboBox");
+            if (returnType_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定自定Method的返回类型！";
+                return;
+            }
+
+            TextBox methodName_TextBox = ControlExtensions.FindControl<TextBox>(this, "methodName_TextBox");
+            if (methodName_TextBox.Text == null || methodName_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要给出自定Method的方法名！";
+                return;
+            }
+
+            ObservableCollection<Attribute> parameters = ((Process_EW_VM)DataContext).ZDParams;
+            if (parameters.Count == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
+                return;
+            }
+
+            Method method = new Method(
+                (Type)returnType_ComboBox.SelectedItem,
+                methodName_TextBox.Text,
+                parameters,
+                Crypto.None
+            );
+
+            ((Process_EW_VM)DataContext).Process.Methods.Add(method);
+            ResourceManager.mainWindowVM.Tips = "添加了自定Method：" + method;
+
+            // 添加完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method
+            ((Process_EW_VM)DataContext).ZDParams = new ObservableCollection<Attribute>();
+        }
+
+        public void Update_ZDMethod()
+        {
+            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
+            if (method_ZD_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要更新的Method！";
+                return;
+            }
+
+            ComboBox returnType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "returnType_ComboBox");
+            if (returnType_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定自定Method的返回类型！";
+                return;
+            }
+
+            TextBox methodName_TextBox = ControlExtensions.FindControl<TextBox>(this, "methodName_TextBox");
+            if (methodName_TextBox.Text == null || methodName_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要给出自定Method的方法名！";
+                return;
+            }
+
+            ObservableCollection<Attribute> parameters = ((Process_EW_VM)DataContext).ZDParams;
+            if (parameters.Count == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
+                return;
+            }
+
+            Method method = new Method(
+                (Type)returnType_ComboBox.SelectedItem,
+                methodName_TextBox.Text,
+                parameters,
+                Crypto.None
+            );
+            ((Process_EW_VM)DataContext).Process.Methods[method_ZD_ListBox.SelectedIndex] = method;
+            ResourceManager.mainWindowVM.Tips = "更新了自定Method：" + method;
+
+            // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method
+            ((Process_EW_VM)DataContext).ZDParams = new ObservableCollection<Attribute>();
+        }
+
+        public void Delete_ZDMethod()
+        {
+            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
+            if (method_ZD_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要删除的Method！";
+                return;
+            }
+
+            Method method = (Method)method_ZD_ListBox.SelectedItem;
+            ((Process_EW_VM)DataContext).Process.Methods.Remove(method);
+            ResourceManager.mainWindowVM.Tips = "已删除成员方法：" + method;
+        }
+
+        #endregion
+
+        #region 事件
+
+        // 自定Method右侧列表选中项变化的处理
+        private void method_ZD_ListBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // 将右侧选中项的参数列表拷贝到param_ZD_ListBox绑定的ZDParams里
+            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
+            ((Process_EW_VM)DataContext).ZDParams = new ObservableCollection<Attribute>();
+            foreach (Attribute attribute in ((Method)method_ZD_ListBox.SelectedItem).Parameters)
+            {
+                ((Process_EW_VM)DataContext).ZDParams.Add(new Attribute(attribute.Type, attribute.Identifier));
+            }
+            ResourceManager.mainWindowVM.Tips = "选中了Method：" + (Method)method_ZD_ListBox.SelectedItem + "，已拷贝其参数列表";
         }
 
         #endregion
@@ -216,6 +393,16 @@ namespace sbid._V.Process
             ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "crypto_ComboBox");
             crypto_ComboBox.Items = System.Enum.GetValues(typeof(Crypto));
             crypto_ComboBox.SelectedItem = Crypto.None;
+        }
+
+        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
+        private void init_event()
+        {
+            // 绑定自定Method右侧列表选中项变化的处理方法
+            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
+            method_ZD_ListBox.SelectionChanged += method_ZD_ListBox_Changed;
+
+            // todo commmethod
         }
 
         #endregion
