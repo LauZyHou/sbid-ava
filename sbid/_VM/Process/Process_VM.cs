@@ -27,8 +27,13 @@ namespace sbid._VM
         // 尝试删除当前Process_VM
         public void DeleteProcessVM()
         {
-            ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs.Remove(this);
-            ResourceManager.mainWindowVM.Tips = "删除了进程模板：" + process.Name;
+            Protocol_VM nowProtocolPanel = ResourceManager.mainWindowVM.SelectedItem;
+            nowProtocolPanel.SelectedItem.SelectedItem.NetworkItemVMs.Remove(this);
+
+            // 将对应状态机面板也删除
+            nowProtocolPanel.PanelVMs[1].SidePanelVMs.Remove(stateMachine_P_VM);
+
+            ResourceManager.mainWindowVM.Tips = "删除了进程模板：" + process.Name + "及对应状态机";
         }
 
         // 查看当前Process_VM对应的状态机

@@ -1,0 +1,20 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             Height="48"
+             x:Class="sbid._V.InitState_V">
+  
+  <Design.DataContext>
+    <vm:InitState_VM/>
+  </Design.DataContext>
+  
+  <Grid Width="40" Height="40">
+    <Ellipse Stroke="Black" Fill="Black"/>
+    <Grid RowDefinitions="1*,2*,1*" ColumnDefinitions="1*,2*,1*" Margin="-6">
+      <v:Connector_V DataContext="{Binding Connectors[0]}" Grid.Row="2" Grid.Column="1"/>
+    </Grid>
+  </Grid>
+</UserControl>

@@ -54,6 +54,17 @@ namespace sbid._V
                 NetworkItemVM.X = oldLocation.X + pos.X - pressPoint.X;
                 NetworkItemVM.Y = oldLocation.Y + pos.Y - pressPoint.Y;
 
+                // 对所有锚点也要作相同的移动
+                // fixme
+                if (NetworkItemVM.ConnectorVMs != null)
+                {
+                    foreach (Connector_VM connectorVM in NetworkItemVM.ConnectorVMs)
+                    {
+                        connectorVM.X = oldLocation.X + pos.X - pressPoint.X;
+                        connectorVM.Y = oldLocation.Y + pos.Y - pressPoint.Y;
+                    }
+                }
+
                 ResourceManager.mainWindowVM.Tips = "拖拽图形，图形当前位置：" + NetworkItemVM.X + "," + NetworkItemVM.Y;
             }
 

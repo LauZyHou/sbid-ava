@@ -18,9 +18,8 @@
         <Setter.Value>
           <ItemsPanelTemplate>
             <!--这里需要为Canvas设置颜色才能在按下时相应鼠标事件-->
-            <Canvas Background="#EEEEEE" 
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-              <!--todo右键菜单行为-->
+            <Canvas Background="#EEEEEE" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <!--右键菜单行为-->
               <Canvas.ContextMenu>
                 <ContextMenu>
                   <MenuItem Header="创建UserType" Command="{Binding CreateUserType}"/>
