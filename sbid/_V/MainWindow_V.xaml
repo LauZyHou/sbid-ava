@@ -83,7 +83,7 @@
                 <TabControl Items="{Binding SidePanelVMs}" Background="WhiteSmoke"
                             SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                             TabStripPlacement="Left">
-                  <!--侧栏面板标签(如攻击树下就是默认攻击树1,攻击树2)可直接修改-->
+                  <!--侧栏面板标签(如攻击树下就是默认攻击树1,攻击树2)-->
                   <TabControl.ItemTemplate>
                     <DataTemplate>
                       <TextBlock Text="{Binding Name, Mode=TwoWay}"/>

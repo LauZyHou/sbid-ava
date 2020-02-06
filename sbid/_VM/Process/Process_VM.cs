@@ -10,6 +10,7 @@ namespace sbid._VM
     {
         private static int _id = 1;
         private Process process;
+        private StateMachine_P_VM stateMachine_P_VM;
 
         public Process_VM()
         {
@@ -18,6 +19,8 @@ namespace sbid._VM
         }
 
         public Process Process { get => process; set => process = value; }
+        // 集成当前Process对应的状态机的面板VM
+        public StateMachine_P_VM StateMachine_P_VM { get => stateMachine_P_VM; set => stateMachine_P_VM = value; }
 
         #region 右键菜单命令
 
@@ -28,7 +31,15 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "删除了进程模板：" + process.Name;
         }
 
-        // 尝试打开当前Process_VM的编辑窗体
+        // 查看当前Process_VM对应的状态机
+        public void FindStateMachinePVM()
+        {
+            Protocol_VM nowProtocolPanel = ResourceManager.mainWindowVM.SelectedItem;
+            nowProtocolPanel.SelectedItem = nowProtocolPanel.PanelVMs[1];
+            nowProtocolPanel.PanelVMs[1].SelectedItem = stateMachine_P_VM;
+        }
+
+        // 打开当前Process_VM的编辑窗体
         public void EditProcessVM()
         {
             // 从主窗体打开编辑窗体,并在其DataContext中集成当前Process_VM里集成的Process对象,以能对其作修改

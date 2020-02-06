@@ -48,6 +48,10 @@ namespace sbid._VM
         public void CreateProcess()
         {
             Process_VM processVM = new Process_VM();
+
+            // 创建相应的状态机,并集成到当前Process_VM里
+            processVM.StateMachine_P_VM = ResourceManager.mainWindowVM.AddStateMachine(processVM.Process);
+
             NetworkItemVMs.Add(processVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.Name;
         }

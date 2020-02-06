@@ -52,6 +52,7 @@
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditProcessVM}"/>
+        <MenuItem Header="查看状态机" Command="{Binding FindStateMachinePVM}"/>
         <MenuItem Header="删除" Command="{Binding DeleteProcessVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>

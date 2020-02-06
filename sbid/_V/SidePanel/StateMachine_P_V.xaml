@@ -4,5 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sbid._V.StateMachine_P_V">
-    我是状态机
+  <Grid>
+    <Button>123</Button>
+  </Grid>
 </UserControl>

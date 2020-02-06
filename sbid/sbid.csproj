@@ -12,7 +12,6 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
-    <AvaloniaResource Remove="ExtraControls\MessageBox.xaml" />
     <AvaloniaResource Remove="_V\Process\Process_EW_V.xaml" />
     <AvaloniaResource Remove="_V\Process\Process_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\AttackTree_P_V.xaml" />
@@ -22,7 +21,6 @@
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
-    <None Remove="ExtraControls\MessageBox.xaml" />
     <None Remove="_V\Process\Process_EW_V.xaml" />
     <None Remove="_V\Process\Process_V.xaml" />
     <None Remove="_V\SidePanel\AttackTree_P_V.xaml" />
@@ -41,11 +39,6 @@
     <PackageReference Include="Avalonia" Version="0.9.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.0" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ExtraControls\MessageBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\SidePanel\AttackTree_P_V.xaml">

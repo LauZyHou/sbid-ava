@@ -5,7 +5,6 @@ using System.Text;
 using ReactiveUI;
 using System.Reactive;
 using sbid._M;
-using sbid.ExtraControls;
 
 namespace sbid._VM
 {
@@ -68,6 +67,19 @@ namespace sbid._VM
             selectedItem.PanelVMs[0].SelectedItem = pvm;
         }
         */
+
+        // 添加状态机,要将所在Process引用传入以反向查询,将状态机面板返回以给Process_VM集成
+        // 此方法在用户创建Process时调用
+        public StateMachine_P_VM AddStateMachine(Process process)
+        {
+            StateMachine_P_VM pvm = new StateMachine_P_VM(process);
+
+            // 添加到当前协议的状态机下
+            selectedItem.PanelVMs[1].SidePanelVMs.Add(pvm);
+            selectedItem.PanelVMs[1].SelectedItem = pvm;
+
+            return pvm;
+        }
 
         // 添加新拓扑图
         public void AddTopoGraph()
