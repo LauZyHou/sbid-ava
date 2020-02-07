@@ -12,7 +12,8 @@ namespace sbid._VM
     {
         private Point pos;
         private Point oldPos;
-        private ISolidColorBrush color = Brushes.White;
+        private Connection_VM connectionVM = null;
+        private bool isActive = false;
 
         // 无参构造用于xaml里Design
         public Connector_VM() { }
@@ -29,7 +30,39 @@ namespace sbid._VM
         // 锚点旧位置,用于在拖拽图形按下时记录,以保证连线跟着变化
         public Point OldPos { get => oldPos; set => oldPos = value; }
 
-        // 锚点颜色
-        public ISolidColorBrush Color { get => color; set => this.RaiseAndSetIfChanged(ref color, value); }
+        // 锚点颜色,反映 被占用/活动/空闲
+        public ISolidColorBrush Color
+        {
+            get
+            {
+                if (connectionVM != null) // 被占用:红
+                    return Brushes.Red;
+                else if (isActive) // 活动:绿
+                    return Brushes.LightGreen;
+                return Brushes.White; // 空闲:白
+            }
+        }
+
+        // 反引所在的Connection_VM,没有连线时就是null
+        public Connection_VM ConnectionVM
+        {
+            get => connectionVM;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref connectionVM, value);
+                this.RaisePropertyChanged("Color"); // 通知颜色要重新计算了
+            }
+        }
+
+        // 是否是活动锚点
+        public bool IsActive
+        {
+            get => isActive;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref isActive, value);
+                this.RaisePropertyChanged("Color"); // 通知颜色要重新计算了
+            }
+        }
     }
 }
