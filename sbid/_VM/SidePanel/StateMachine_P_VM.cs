@@ -28,7 +28,7 @@ namespace sbid._VM
         {
             InitState_VM initStateVM = new InitState_VM(70, 20); // 初始状态
             State_VM state_VM = new State_VM(40, 140); // 白给状态
-            Connection_VM connection_VM = new Connection_VM() // 连线
+            Connection_VM connection_VM = new Arrow_VM() // 连线(箭头)
             {
                 Source = initStateVM.ConnectorVMs[0],
                 Dest = state_VM.ConnectorVMs[2]
