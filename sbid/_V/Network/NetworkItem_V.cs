@@ -38,6 +38,15 @@ namespace sbid._V
             pressPoint = e.GetPosition(parentIVisual);
             oldLocation = new Point(NetworkItemVM.X, NetworkItemVM.Y);
 
+            // 记录每个锚点的旧位置
+            if (NetworkItemVM.ConnectorVMs != null)
+            {
+                foreach (Connector_VM connectorVM in NetworkItemVM.ConnectorVMs)
+                {
+                    connectorVM.OldPos = connectorVM.Pos;
+                }
+            }
+
             ResourceManager.mainWindowVM.Tips = "鼠标按下，记录图形位置：" + oldLocation;
 
             e.Handled = true;
@@ -50,18 +59,21 @@ namespace sbid._V
 
             if (isPressed)
             {
+                // 计算X,Y方向的偏移量
                 Point pos = e.GetPosition(parentIVisual);
-                NetworkItemVM.X = oldLocation.X + pos.X - pressPoint.X;
-                NetworkItemVM.Y = oldLocation.Y + pos.Y - pressPoint.Y;
+                double deltaX = pos.X - pressPoint.X;
+                double deltaY = pos.Y - pressPoint.Y;
+                Point deltaPos = new Point(deltaX, deltaY);
 
-                // 对所有锚点也要作相同的移动
-                // fixme
+                NetworkItemVM.X = oldLocation.X + deltaX;
+                NetworkItemVM.Y = oldLocation.Y + deltaY;
+
+                // 对所有锚点也要维护相同的偏移量
                 if (NetworkItemVM.ConnectorVMs != null)
                 {
                     foreach (Connector_VM connectorVM in NetworkItemVM.ConnectorVMs)
                     {
-                        connectorVM.X = oldLocation.X + pos.X - pressPoint.X;
-                        connectorVM.Y = oldLocation.Y + pos.Y - pressPoint.Y;
+                        connectorVM.Pos = connectorVM.OldPos + deltaPos;
                     }
                 }
 

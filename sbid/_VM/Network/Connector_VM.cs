@@ -9,32 +9,19 @@ namespace sbid._VM
     // 锚点VM
     public class Connector_VM : ViewModelBase
     {
-        private double x;
-        private double y;
         private Point pos;
+        private Point oldPos;
 
-        // 锚点位置(fixme 改成中心位置?)
-        public double X
+        // 带位置的构造
+        public Connector_VM(double x, double y)
         {
-            get => x;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref x, value);
-                Pos = new Point(x, y);
-            }
+            Pos = new Point(x, y);
         }
 
-        public double Y
-        {
-            get => y;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref y, value);
-                Pos = new Point(x, y);
-            }
-        }
-
-        // 在X,Y变化时通知Pos
+        // 锚点位置
         public Point Pos { get => pos; set => this.RaiseAndSetIfChanged(ref pos, value); }
+
+        // 锚点旧位置,用于在拖拽图形按下时记录,以保证连线跟着变化
+        public Point OldPos { get => oldPos; set => oldPos = value; }
     }
 }

@@ -3,18 +3,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:v="clr-namespace:sbid._V;assembly=sbid"
-             Height="58" Width="107"
+             Height="64" Width="110"
              x:Class="sbid._V.State_V">
   <Grid Width="100" Height="50">
     <Rectangle Stroke="Black" Fill="White" StrokeThickness="2"/>
-    <Grid Margin="-8" ColumnDefinitions="1*,70,1*" RowDefinitions="1*,24,1*">
-      <TextBlock Text="状态名" Grid.Row="1" Grid.Column="1" FontSize="16" TextAlignment="Center"/>
+    <Grid Margin="-11,-7" ColumnDefinitions="1*,1*,1*,1*,1*" RowDefinitions="1*,1*,1*,1*">
+      <TextBlock Text="状态名" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" FontSize="16" TextAlignment="Center" VerticalAlignment="Center"/>
+      
       <v:Connector_V DataContext="{Binding Connectors[0]}" Grid.Row="0" Grid.Column="0"/>
       <v:Connector_V DataContext="{Binding Connectors[1]}" Grid.Row="0" Grid.Column="1"/>
       <v:Connector_V DataContext="{Binding Connectors[2]}" Grid.Row="0" Grid.Column="2"/>
-      <v:Connector_V DataContext="{Binding Connectors[3]}" Grid.Row="2" Grid.Column="0"/>
-      <v:Connector_V DataContext="{Binding Connectors[4]}" Grid.Row="2" Grid.Column="1"/>
-      <v:Connector_V DataContext="{Binding Connectors[5]}" Grid.Row="2" Grid.Column="2"/>
+      <v:Connector_V DataContext="{Binding Connectors[3]}" Grid.Row="0" Grid.Column="3"/>
+      <v:Connector_V DataContext="{Binding Connectors[4]}" Grid.Row="0" Grid.Column="4"/>
+
+      <v:Connector_V DataContext="{Binding Connectors[5]}" Grid.Row="1" Grid.Column="0"/>
+      <v:Connector_V DataContext="{Binding Connectors[6]}" Grid.Row="1" Grid.Column="4"/>
+      
+      <v:Connector_V DataContext="{Binding Connectors[7]}" Grid.Row="2" Grid.Column="0"/>
+      <v:Connector_V DataContext="{Binding Connectors[8]}" Grid.Row="2" Grid.Column="4"/>
+      
+      <v:Connector_V DataContext="{Binding Connectors[9]}" Grid.Row="3" Grid.Column="0"/>
+      <v:Connector_V DataContext="{Binding Connectors[10]}" Grid.Row="3" Grid.Column="1"/>
+      <v:Connector_V DataContext="{Binding Connectors[11]}" Grid.Row="3" Grid.Column="2"/>
+      <v:Connector_V DataContext="{Binding Connectors[12]}" Grid.Row="3" Grid.Column="3"/>
+      <v:Connector_V DataContext="{Binding Connectors[13]}" Grid.Row="3" Grid.Column="4"/>
     </Grid>
   </Grid>
 </UserControl>
