@@ -9,7 +9,7 @@ using System.Text;
 namespace sbid._V
 {
     // 带箭头的直线图形
-    class Arrow : Line
+    public class Arrow : Line
     {
         // 在此覆写方法中实现图形
         protected override Geometry CreateDefiningGeometry()

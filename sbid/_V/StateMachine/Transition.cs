@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace sbid._VM
+namespace sbid._V
 {
-    public class Arrow_VM : Connection_VM
+    public class Transition : Arrow
     {
     }
 }

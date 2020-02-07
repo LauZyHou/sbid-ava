@@ -47,7 +47,7 @@ namespace sbid._V
                 }
             }
 
-            ResourceManager.mainWindowVM.Tips = "鼠标按下，记录图形位置：" + oldLocation;
+            //ResourceManager.mainWindowVM.Tips = "鼠标按下，记录图形位置：" + oldLocation;
 
             e.Handled = true;
         }
@@ -77,7 +77,7 @@ namespace sbid._V
                     }
                 }
 
-                ResourceManager.mainWindowVM.Tips = "拖拽图形，图形当前位置：" + NetworkItemVM.X + "," + NetworkItemVM.Y;
+                //ResourceManager.mainWindowVM.Tips = "拖拽图形，图形当前位置：" + NetworkItemVM.X + "," + NetworkItemVM.Y;
             }
 
             e.Handled = true;
@@ -90,7 +90,7 @@ namespace sbid._V
 
             isPressed = false;
 
-            ResourceManager.mainWindowVM.Tips = "完成移动";
+            //ResourceManager.mainWindowVM.Tips = "完成移动";
 
             e.Handled = true;
         }

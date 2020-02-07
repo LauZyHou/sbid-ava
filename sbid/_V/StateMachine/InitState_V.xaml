@@ -14,7 +14,7 @@
   <Grid Width="40" Height="40">
     <Ellipse Stroke="Black" Fill="Black"/>
     <Grid RowDefinitions="1*,2*,1*" ColumnDefinitions="1*,2*,1*" Margin="-6">
-      <v:Connector_V DataContext="{Binding Connectors[0]}" Grid.Row="2" Grid.Column="1"/>
+      <v:Connector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="2" Grid.Column="1"/>
     </Grid>
   </Grid>
 </UserControl>

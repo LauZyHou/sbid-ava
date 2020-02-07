@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
              Width="8" Height="8"
-             x:Class="sbid._V.Connector_V" Background="AliceBlue" BorderBrush="Black" BorderThickness="2">
+             x:Class="sbid._V.Connector_V" Background="{Binding Color}" BorderBrush="Black" BorderThickness="2">
   
   <Design.DataContext>
     <vm:Connector_VM/>
   </Design.DataContext>
-  
+
 </UserControl>
