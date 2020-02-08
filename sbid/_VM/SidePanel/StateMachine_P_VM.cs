@@ -28,7 +28,7 @@ namespace sbid._VM
         private void init_data()
         {
             InitState_VM initStateVM = new InitState_VM(70, 20); // 初始状态
-            State_VM stateVM = new State_VM(40, 140); // 白给状态
+            State_VM stateVM = new State_VM(35, 240); // 白给状态
 
             // 全加到表里
             UserControlVMs.Add(initStateVM);

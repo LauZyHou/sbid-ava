@@ -19,7 +19,7 @@ namespace sbid._V.Process
 #endif
             // 初始化.cs文件中的数据绑定
             init_binding();
-            // 
+            // 初始化.cs文件中的事件处理
             init_event();
         }
 

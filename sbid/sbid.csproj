@@ -44,7 +44,6 @@
     <None Remove="_V\StateMachine\Transition_V.xaml" />
     <None Remove="_V\UserType\UserType_EW_V.xaml" />
     <None Remove="_V\UserType\UserType_V.xaml" />
-    <Folder Include="_M\StateMachine\" />
     <Folder Include="_M\SafetyProperty\" />
     <Folder Include="_M\SecurityProperty\" />
     <Folder Include="_M\Axiom\" />

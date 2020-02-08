@@ -25,7 +25,17 @@ namespace sbid._VM
         }
 
         // 锚点位置
-        public Point Pos { get => pos; set => this.RaiseAndSetIfChanged(ref pos, value); }
+        public Point Pos
+        {
+            get => pos;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref pos, value);
+                // 对于状态机而言,锚点位置变化时,还应通知计算中心位置
+                if (connectionVM != null && connectionVM is Transition_VM)
+                    connectionVM.RaisePropertyChanged("MidPos");
+            }
+        }
 
         // 锚点旧位置,用于在拖拽图形按下时记录,以保证连线跟着变化
         public Point OldPos { get => oldPos; set => oldPos = value; }

@@ -3,7 +3,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:v="clr-namespace:sbid._V;assembly=sbid"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
              x:Class="sbid._V.Transition_V">
-  <v:Transition Stroke="Red" StrokeThickness="2" StartPoint="{Binding Source.Pos, Mode=OneWay}" EndPoint="{Binding Dest.Pos, Mode=OneWay}"/>
+  
+  <Design.DataContext>
+    <vm:Transition_VM/>
+  </Design.DataContext>
+
+  <!--必须为Canvas设置足够的宽高,否则这个容器没有宽高.也可以用自适应子元素宽高但是似乎没必要-->
+  <Canvas Width="1000" Height="1000">
+    <v:Transition_Shape Stroke="Black" StrokeThickness="2" StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
+    <StackPanel Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White">
+      <TextBlock TextAlignment="Center">
+        <TextBlock.Text>
+          <MultiBinding StringFormat="IF {0} THEN">
+            <Binding Path="Transition.Guard"/>
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
+      <ListBox Items="{Binding Transition.Actions}" IsHitTestVisible="False"/>
+      <StackPanel.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="编辑转移关系"/>
+        </ContextMenu>
+      </StackPanel.ContextMenu>
+    </StackPanel>
+  </Canvas>
 </UserControl>

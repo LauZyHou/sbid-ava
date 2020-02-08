@@ -1,13 +1,9 @@
 ﻿using Avalonia.Input;
-using Avalonia.Media;
 using sbid._VM;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace sbid._V
 {
-    class StateConnector_V : Connector_V
+    public class StateConnector_V : Connector_V
     {
         // 鼠标按下
         protected override void OnPointerPressed(PointerPressedEventArgs e)
