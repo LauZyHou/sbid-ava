@@ -8,12 +8,8 @@ namespace sbid._VM
     // 类图面板
     public class ClassDiagram_P_VM : SidePanel_VM
     {
-        //private static int _id = 1;
-
         public ClassDiagram_P_VM()
         {
-            //Name = "概览" + _id;
-            //_id++;
             Name = "类图";
             init_data();
         }

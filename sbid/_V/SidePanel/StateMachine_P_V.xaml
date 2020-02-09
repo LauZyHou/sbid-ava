@@ -23,8 +23,8 @@
               <!--右键菜单行为-->
               <Canvas.ContextMenu>
                 <ContextMenu>
-                  <MenuItem Header="创建普通状态结点"/>
-                  <MenuItem Header="创建终止状态结点"/>
+                  <MenuItem Header="创建普通状态结点" Command="{Binding CreateStateVM}"/>
+                  <MenuItem Header="创建终止状态结点" Command="{Binding CreateFinalStateVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>

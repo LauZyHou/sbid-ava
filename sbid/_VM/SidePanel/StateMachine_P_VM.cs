@@ -90,5 +90,25 @@ namespace sbid._VM
         }
 
         #endregion
+
+        #region 按钮和右键菜单命令
+
+        // 创建普通状态结点
+        public void CreateStateVM()
+        {
+            State_VM stateVM = new State_VM(0, 0);
+            UserControlVMs.Add(stateVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的状态结点：" + stateVM.State.Name;
+        }
+
+        // 创建终止状态结点
+        public void CreateFinalStateVM()
+        {
+            FinalState_VM finalStateVM = new FinalState_VM(0, 0);
+            UserControlVMs.Add(finalStateVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的终止状态结点";
+        }
+
+        #endregion
     }
 }
