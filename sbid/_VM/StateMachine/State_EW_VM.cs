@@ -9,6 +9,7 @@ namespace sbid._VM
     {
         private State state;
 
+        // 要编辑的状态
         public State State { get => state; set => state = value; }
     }
 }

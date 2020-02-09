@@ -1,27 +1,28 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
 namespace sbid._M
 {
-    public class Transition
+    public class Transition : ReactiveObject
     {
         private string guard = "True";
-        private ObservableCollection<string> actions = new ObservableCollection<string>();
+        private ObservableCollection<Action> actions = new ObservableCollection<Action>();
 
         public Transition()
         {
             test_data();
         }
 
-        public string Guard { get => guard; set => guard = value; }
-        public ObservableCollection<string> Actions { get => actions; set => actions = value; }
+        public string Guard { get => guard; set => this.RaiseAndSetIfChanged(ref guard, value); }
+        public ObservableCollection<Action> Actions { get => actions; set => actions = value; }
 
         private void test_data()
         {
-            actions.Add("测试Action");
-            actions.Add("测试Action");
+            actions.Add(new Action("测试Action 1"));
+            actions.Add(new Action("测试Action 2"));
         }
     }
 }

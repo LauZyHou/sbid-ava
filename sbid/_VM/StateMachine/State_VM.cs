@@ -50,7 +50,7 @@ namespace sbid._VM
 
         #region 右键菜单命令
 
-        // 尝试打开编辑窗口
+        // 尝试打开编辑状态结点的窗口
         public void EditStateVM()
         {
             // 从主窗体打开编辑窗体,并在其DataContext中集成当前State_VM里集成的State对象,以能对其作修改

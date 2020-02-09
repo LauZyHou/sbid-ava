@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="80" Width="140" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.State_EW_V"
-        Title="State_EW_V">
+        Title="编辑状态结点">
 
   <Design.DataContext>
     <vm:State_EW_VM/>

@@ -1,0 +1,38 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Height="240" Width="200" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.Transition_EW_V"
+        Title="编辑转移关系">
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="17"/>
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="FontSize" Value="17"/>
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Margin" Value="11, 2"/>
+    </Style>
+  </Window.Styles>
+  
+  <StackPanel>
+    <TextBlock Text="Guard："/>
+    <TextBox Text="{Binding Transition.Guard}"/>
+    <TextBlock Text="Actions："/>
+    <ListBox Name="action_ListBox" Items="{Binding Transition.Actions}" Height="95">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Formula}"/>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBox Name="action_TextBox" Text="{Binding #action_ListBox.SelectedItem.Formula, Mode=OneWay}"/>
+    <StackPanel Orientation="Horizontal">
+      <Button Command="{Binding $parent[Window].Add_Action}">添加</Button>
+      <Button Command="{Binding $parent[Window].Update_Action}">修改</Button>
+      <Button Command="{Binding $parent[Window].Delete_Action}">删除</Button>
+    </StackPanel>
+  </StackPanel>
+</Window>

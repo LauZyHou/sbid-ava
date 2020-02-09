@@ -34,17 +34,6 @@ namespace sbid._VM
             UserControlVMs.Add(initStateVM);
             UserControlVMs.Add(stateVM);
 
-            //Transition_VM connection_VM = new Transition_VM() // 转移关系
-            //{
-            //    Source = initStateVM.ConnectorVMs[0],
-            //    Dest = state_VM.ConnectorVMs[2]
-            //};
-            //// 锚点的反引
-            //initStateVM.ConnectorVMs[0].ConnectionVM = connection_VM;
-            //state_VM.ConnectorVMs[2].ConnectionVM = connection_VM;
-
-            //UserControlVMs.Add(connection_VM);
-
             // 创建转移关系,也加到表里
             CreateTransitionVM(initStateVM.ConnectorVMs[0], stateVM.ConnectorVMs[2]);
         }
@@ -66,6 +55,7 @@ namespace sbid._VM
                 Dest = connectorVM2
             };
 
+            // 锚点反引连接关系
             connectorVM1.ConnectionVM = transitionVM;
             connectorVM2.ConnectionVM = transitionVM;
 
