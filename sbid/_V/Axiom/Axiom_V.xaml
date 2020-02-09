@@ -38,6 +38,11 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑" Command="{Binding EditAxiomVM}"/>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
   </Grid>
-
 </UserControl>
