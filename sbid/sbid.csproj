@@ -24,6 +24,7 @@
     <AvaloniaResource Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\InitState_V.xaml" />
+    <AvaloniaResource Remove="_V\StateMachine\State_EW_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\State_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\Transition_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
@@ -40,6 +41,7 @@
     <None Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <None Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <None Remove="_V\StateMachine\InitState_V.xaml" />
+    <None Remove="_V\StateMachine\State_EW_V.xaml" />
     <None Remove="_V\StateMachine\State_V.xaml" />
     <None Remove="_V\StateMachine\Transition_V.xaml" />
     <None Remove="_V\UserType\UserType_EW_V.xaml" />
@@ -130,6 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\StateMachine\Transition_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\StateMachine\State_EW_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

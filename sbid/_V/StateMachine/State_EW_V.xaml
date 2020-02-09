@@ -1,0 +1,18 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="80" Width="140" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.State_EW_V"
+        Title="State_EW_V">
+
+  <Design.DataContext>
+    <vm:State_EW_VM/>
+  </Design.DataContext>
+
+  <StackPanel Margin="10">
+    <TextBlock Text="状态名：" FontSize="17"/>
+    <TextBox Text="{Binding State.Name, Mode=TwoWay}" FontSize="17"/>
+  </StackPanel>
+</Window>

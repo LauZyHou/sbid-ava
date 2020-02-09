@@ -8,7 +8,7 @@
   <Grid Width="100" Height="50">
     <Rectangle Stroke="Black" Fill="White" StrokeThickness="2"/>
     <Grid Margin="-11,-7" ColumnDefinitions="1*,1*,1*,1*,1*" RowDefinitions="1*,1*,1*,1*">
-      <TextBlock Text="状态名" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" FontSize="16" TextAlignment="Center" VerticalAlignment="Center"/>
+      <TextBlock Text="{Binding State.Name}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" FontSize="16" TextAlignment="Center" VerticalAlignment="Center"/>
 
       <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="0"/>
       <v:StateConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="0" Grid.Column="1"/>
@@ -30,7 +30,7 @@
     </Grid>
     <Grid.ContextMenu>
       <ContextMenu>
-        <MenuItem Header="编辑"/>
+        <MenuItem Header="编辑" Command="{Binding EditStateVM}"/>
         <MenuItem Header="删除"/>
       </ContextMenu>
     </Grid.ContextMenu>
