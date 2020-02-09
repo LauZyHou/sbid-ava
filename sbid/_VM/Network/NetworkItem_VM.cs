@@ -6,7 +6,7 @@ using System.Text;
 
 namespace sbid._VM
 {
-    // 可以 移动/选中 的结点
+    // 可以 移动/连线 的结点的通用VM(在这里放置XY位置和锚点表)
     public class NetworkItem_VM : ViewModelBase
     {
         private double x;

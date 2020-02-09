@@ -24,11 +24,11 @@
     <ListBox Name="action_ListBox" Items="{Binding Transition.Actions}" Height="95">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <TextBlock Text="{Binding Formula}"/>
+          <TextBlock Text="{Binding Content}"/>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <TextBox Name="action_TextBox" Text="{Binding #action_ListBox.SelectedItem.Formula, Mode=OneWay}"/>
+    <TextBox Name="action_TextBox" Text="{Binding #action_ListBox.SelectedItem.Content, Mode=OneWay}"/>
     <StackPanel Orientation="Horizontal">
       <Button Command="{Binding $parent[Window].Add_Action}">添加</Button>
       <Button Command="{Binding $parent[Window].Update_Action}">修改</Button>

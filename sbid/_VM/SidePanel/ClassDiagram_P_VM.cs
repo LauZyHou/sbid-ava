@@ -33,7 +33,7 @@ namespace sbid._VM
         #region 按钮和右键菜单命令
 
         // 创建自定义类型
-        public void CreateUserType()
+        public void CreateUserTypeVM()
         {
             UserType_VM userTypeVM = new UserType_VM();
             NetworkItemVMs.Add(userTypeVM);
@@ -41,7 +41,7 @@ namespace sbid._VM
         }
 
         // 创建进程模板
-        public void CreateProcess()
+        public void CreateProcessVM()
         {
             Process_VM processVM = new Process_VM();
 
@@ -50,6 +50,14 @@ namespace sbid._VM
 
             NetworkItemVMs.Add(processVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.Name;
+        }
+
+        // 创建公理
+        public void CreateAxiomVM()
+        {
+            Axiom_VM axiomVM = new Axiom_VM();
+            NetworkItemVMs.Add(axiomVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的公理：" + axiomVM.Axiom.Name;
         }
 
         #endregion

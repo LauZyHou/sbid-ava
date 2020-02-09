@@ -32,12 +32,12 @@ namespace sbid._V
                 return;
             }
 
-            Action action = new Action(action_TextBox.Text);
+            Formula action = new Formula(action_TextBox.Text);
             ((Transition_EW_VM)DataContext).Transition.Actions.Add(action);
 
             // todo 转移上StackPanel位置随Action数量变化
 
-            ResourceManager.mainWindowVM.Tips = "添加了转移动作：" + action.Formula;
+            ResourceManager.mainWindowVM.Tips = "添加了转移动作：" + action.Content;
         }
 
         public void Update_Action()
@@ -56,9 +56,9 @@ namespace sbid._V
                 return;
             }
 
-            Action action = (Action)action_ListBox.SelectedItem;
-            action.Formula = action_TextBox.Text;
-            ResourceManager.mainWindowVM.Tips = "修改了转移动作：" + action.Formula;
+            Formula action = (Formula)action_ListBox.SelectedItem;
+            action.Content = action_TextBox.Text;
+            ResourceManager.mainWindowVM.Tips = "修改了转移动作：" + action.Content;
         }
 
         public void Delete_Action()
@@ -70,12 +70,12 @@ namespace sbid._V
                 return;
             }
 
-            Action action = (Action)action_ListBox.SelectedItem;
+            Formula action = (Formula)action_ListBox.SelectedItem;
             ((Transition_EW_VM)DataContext).Transition.Actions.Remove(action);
 
             // todo 转移上StackPanel位置随Action数量变化
 
-            ResourceManager.mainWindowVM.Tips = "删除了转移动作：" + action.Formula;
+            ResourceManager.mainWindowVM.Tips = "删除了转移动作：" + action.Content;
         }
 
         #endregion

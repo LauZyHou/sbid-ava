@@ -12,6 +12,7 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Remove="_V\Axiom\Axiom_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Arrow_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Connection_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Connector_V.xaml" />
@@ -31,6 +32,7 @@
     <AvaloniaResource Remove="_V\StateMachine\Transition_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
+    <None Remove="_V\Axiom\Axiom_V.xaml" />
     <None Remove="_V\Network\Arrow_V.xaml" />
     <None Remove="_V\Network\Connection_V.xaml" />
     <None Remove="_V\Network\Connector_V.xaml" />
@@ -52,7 +54,6 @@
     <None Remove="_V\UserType\UserType_V.xaml" />
     <Folder Include="_M\SafetyProperty\" />
     <Folder Include="_M\SecurityProperty\" />
-    <Folder Include="_M\Axiom\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.0" />
@@ -151,6 +152,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\StateMachine\Transition_EW_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\Axiom\Axiom_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

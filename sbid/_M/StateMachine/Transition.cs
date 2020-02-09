@@ -9,20 +9,20 @@ namespace sbid._M
     public class Transition : ReactiveObject
     {
         private string guard = "True";
-        private ObservableCollection<Action> actions = new ObservableCollection<Action>();
+        private ObservableCollection<Formula> actions = new ObservableCollection<Formula>();
 
         public Transition()
         {
-            test_data();
+            //test_data();
         }
 
         public string Guard { get => guard; set => this.RaiseAndSetIfChanged(ref guard, value); }
-        public ObservableCollection<Action> Actions { get => actions; set => actions = value; }
+        public ObservableCollection<Formula> Actions { get => actions; set => actions = value; }
 
         private void test_data()
         {
-            actions.Add(new Action("测试Action 1"));
-            actions.Add(new Action("测试Action 2"));
+            actions.Add(new Formula("测试Action 1"));
+            actions.Add(new Formula("测试Action 2"));
         }
     }
 }

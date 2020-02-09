@@ -6,8 +6,9 @@
              Width="40" Height="48"
              x:Class="sbid._V.FinalState_V">
   <Grid Width="40" Height="40">
-    <Ellipse Stroke="Black" Fill="Black"/>
+    <Ellipse Fill="White" Stroke="Black" StrokeThickness="3.5"/>
     <Grid RowDefinitions="1*,2*,1*" ColumnDefinitions="1*,2*,1*" Margin="-6">
+      <Ellipse Fill="Black" Grid.Row="1" Grid.Column="1"/>
       <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="1"/>
     </Grid>
   </Grid>
