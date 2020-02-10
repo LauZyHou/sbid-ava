@@ -5,7 +5,7 @@ using sbid._M;
 using sbid._VM;
 using System.Collections.ObjectModel;
 
-namespace sbid._V.Process
+namespace sbid._V
 {
     public class Process_EW_V : Window
     {

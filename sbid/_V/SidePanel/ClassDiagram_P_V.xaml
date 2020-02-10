@@ -52,7 +52,7 @@
       <Button Command="{Binding CreateUserTypeVM}">创建UserType</Button>
       <Button Command="{Binding CreateProcessVM}">创建Process</Button>
       <Button Command="{Binding CreateAxiomVM}">创建Axiom</Button>
-      <Button>创建Initial Knowledge</Button>
+      <Button Command="{Binding CreateInitialKnowledgeVM}">创建Initial Knowledge</Button>
       <Button>创建Safety Property</Button>
       <Button>创建Security Property</Button>
     </StackPanel>

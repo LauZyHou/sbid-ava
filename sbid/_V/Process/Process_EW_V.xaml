@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="300" Width="500" WindowStartupLocation="CenterOwner"
-        x:Class="sbid._V.Process.Process_EW_V"
+        x:Class="sbid._V.Process_EW_V"
         Title="编辑Process">
 
   <Design.DataContext>

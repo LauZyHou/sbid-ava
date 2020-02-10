@@ -19,14 +19,14 @@ namespace sbid._VM
             NetworkItemVMs.Add(
                 new UserType_VM(sbid._M.Type.TYPE_INT)
                 {
-                    X = 50,
+                    X = 1000,
                     Y = 20
                 });
             NetworkItemVMs.Add(
                 new UserType_VM(sbid._M.Type.TYPE_BOOL)
                 {
-                    X = 230,
-                    Y = 20
+                    X = 970,
+                    Y = 50
                 });
         }
 
@@ -58,6 +58,14 @@ namespace sbid._VM
             Axiom_VM axiomVM = new Axiom_VM();
             NetworkItemVMs.Add(axiomVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的公理：" + axiomVM.Axiom.Name;
+        }
+        
+        // 创建初始知识
+        public void CreateInitialKnowledgeVM()
+        {
+            InitialKnowledge_VM initialKnowledgeVM = new InitialKnowledge_VM();
+            NetworkItemVMs.Add(initialKnowledgeVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的InitialKnowledge：" + initialKnowledgeVM.InitialKnowledge.Name;
         }
 
         #endregion

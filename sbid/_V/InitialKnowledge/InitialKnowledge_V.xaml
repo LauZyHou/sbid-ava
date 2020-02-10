@@ -1,0 +1,46 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="100"
+             x:Class="sbid._V.InitialKnowledge_V"  BorderBrush="Black" BorderThickness="2">
+  <Design.DataContext>
+    <vm:InitialKnowledge_VM/>
+  </Design.DataContext>
+
+  <UserControl.Resources>
+    <SolidColorBrush x:Key="MyColor" Color="#82D782" />
+  </UserControl.Resources>
+
+  <Grid RowDefinitions="20,1,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="100">
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <TextBlock Text=" InitialKnowledge " FontWeight="Bold"/>
+      <TextBlock Text="{Binding InitialKnowledge.Name}"/>
+    </StackPanel>
+    <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
+    <ListBox Grid.Row="2" Items="{Binding InitialKnowledge.KnowledgePairs}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <!--使用多源绑定-->
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0}.{1}">
+                <Binding Path="Process.Name"/>
+                <Binding Path="Attribute.Identifier"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <!--右键菜单-->
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑" Command="{Binding EditInitialKnowledgeVM}"/>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
+  </Grid>
+</UserControl>
