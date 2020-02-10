@@ -1,0 +1,48 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="120"
+             x:Class="sbid._V.SafetyProperty_V" BorderBrush="Black" BorderThickness="2">
+  <Design.DataContext>
+    <vm:SafetyProperty_VM/>
+  </Design.DataContext>
+
+  <UserControl.Resources>
+    <SolidColorBrush x:Key="MyColor" Color="#C8B4EF" />
+  </UserControl.Resources>
+
+  <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <TextBlock Text=" SafetyProperty " FontWeight="Bold"/>
+      <TextBlock Text="{Binding SafetyProperty.Name}"/>
+    </StackPanel>
+    <TextBlock Grid.Row="1" Background="Black"/>
+    <TextBlock Grid.Row="2" Text=" CTL:"/>
+    <ListBox Grid.Row="3" Items="{Binding SafetyProperty.CTLs}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Content}"/>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBlock Grid.Row="4" Background="Black"/>
+    <TextBlock Grid.Row="5" Text=" Invariant:"/>
+    <ListBox Grid.Row="6" Items="{Binding SafetyProperty.Invariants}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Content}"/>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑" Command="{Binding EditSafetyPropertyVM}"/>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
+  </Grid>
+</UserControl>

@@ -68,6 +68,14 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "创建了新的InitialKnowledge：" + initialKnowledgeVM.InitialKnowledge.Name;
         }
 
+        // 创建功能安全性质
+        public void CreateSafetyPropertyVM()
+        {
+            SafetyProperty_VM safetyPropertyVM = new SafetyProperty_VM();
+            NetworkItemVMs.Add(safetyPropertyVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的SafetyProperty：" + safetyPropertyVM.SafetyProperty.Name;
+        }
+
         #endregion
     }
 }

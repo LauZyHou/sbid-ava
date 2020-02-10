@@ -25,6 +25,8 @@
                   <MenuItem Header="创建UserType" Command="{Binding CreateUserTypeVM}"/>
                   <MenuItem Header="创建Process" Command="{Binding CreateProcessVM}"/>
                   <MenuItem Header="创建Axiom" Command="{Binding CreateAxiomVM}"/>
+                  <MenuItem Header="创建Initial Knowledge" Command="{Binding CreateInitialKnowledgeVM}"/>
+                  <MenuItem Header="创建SafetyProperty" Command="{Binding CreateSafetyPropertyVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -53,7 +55,7 @@
       <Button Command="{Binding CreateProcessVM}">创建Process</Button>
       <Button Command="{Binding CreateAxiomVM}">创建Axiom</Button>
       <Button Command="{Binding CreateInitialKnowledgeVM}">创建Initial Knowledge</Button>
-      <Button>创建Safety Property</Button>
+      <Button Command="{Binding CreateSafetyPropertyVM}">创建Safety Property</Button>
       <Button>创建Security Property</Button>
     </StackPanel>
     <!--面板-->
