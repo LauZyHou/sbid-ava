@@ -1,0 +1,192 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.SecurityProperty_EW_V"
+        Title="编辑SecurityProperty">
+  <Design.DataContext>
+    <vm:SecurityProperty_EW_VM/>
+  </Design.DataContext>
+
+  <Window.Styles>
+    <Style Selector="Button">
+      <Setter Property="Width" Value="50"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Margin" Value="7,5"/>
+    </Style>
+    <Style Selector="TabItem > StackPanel">
+      <Setter Property="Margin" Value="7"/>
+    </Style>
+    <Style Selector="TabItem > Grid">
+      <Setter Property="Margin" Value="7"/>
+    </Style>
+    <Style Selector="StackPanel.authHori">
+      <Setter Property="Margin" Value="0,5"/>
+      <Setter Property="Orientation" Value="Horizontal"/>
+    </Style>
+    <Style Selector="StackPanel.authHori > ComboBox">
+      <Setter Property="Width" Value="120"/>
+      <Setter Property="Height" Value="24"/>
+    </Style>
+  </Window.Styles>
+
+  <TabControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+    <TabItem Header="元信息">
+      <StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="SecurityProperty名称：" FontSize="18"/>
+          <TextBox Text="{Binding SecurityProperty.Name, Mode=TwoWay}"/>
+        </StackPanel>
+      </StackPanel>
+    </TabItem>
+    <TabItem Header="Confidential">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="进程模板：" FontSize="17"/>
+          <ListBox Name="process_Con_ListBox" Height="82" Items="{Binding Processes}"
+                   SelectedItem="{Binding #confidential_ListBox.SelectedItem.Process, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock Text="进程模板下的Attribute：" FontSize="17"/>
+          <ListBox Name="attribute_Con_ListBox" Height="82" Items="{Binding #process_Con_ListBox.SelectedItem.Attributes}"
+                   SelectedItem="{Binding #confidential_ListBox.SelectedItem.Attribute, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                  <TextBlock.Text>
+                    <MultiBinding StringFormat=" {0} {1};">
+                      <Binding Path="Type.Name"/>
+                      <Binding Path="Identifier"/>
+                    </MultiBinding>
+                  </TextBlock.Text>
+                </TextBlock>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Command="{Binding $parent[Window].Add_Confidential}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_Confidential}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_Confidential}">删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0" Name="confidential_ListBox"
+                 Items="{Binding SecurityProperty.Confidentials}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0}.{1}">
+                    <Binding Path="Process.Name"/>
+                    <Binding Path="Attribute.Identifier"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
+    <TabItem Header="Authenticity">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <StackPanel Classes="authHori">
+            <TextBlock Text="进程模板A：" FontSize="17"/>
+            <ComboBox Name="processA_ComboBox" Items="{Binding Processes}"
+                      SelectedItem="{Binding #authenticity_ListBox.SelectedItem.ProcessA, Mode=OneWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Classes="authHori">
+            <TextBlock Text="A上的状态：" FontSize="17"/>
+            <ComboBox Name="stateA_ComboBox" Items="{Binding #processA_ComboBox.SelectedItem.States}"
+                      SelectedItem="{Binding #authenticity_ListBox.SelectedItem.StateA, Mode=OneWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Classes="authHori">
+            <TextBlock Text="A上的属性：" FontSize="17"/>
+            <ComboBox Name="attributeA_ComboBox" Items="{Binding #processA_ComboBox.SelectedItem.Attributes}"
+                      SelectedItem="{Binding #authenticity_ListBox.SelectedItem.AttributeA, Mode=OneWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Identifier}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Classes="authHori">
+            <TextBlock Text="进程模板B：" FontSize="17"/>
+            <ComboBox Name="processB_ComboBox" Items="{Binding Processes}"
+                      SelectedItem="{Binding #authenticity_ListBox.SelectedItem.ProcessB, Mode=OneWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Classes="authHori">
+            <TextBlock Text="B上的状态：" FontSize="17"/>
+            <ComboBox Name="stateB_ComboBox" Items="{Binding #processB_ComboBox.SelectedItem.States}"
+                      SelectedItem="{Binding #authenticity_ListBox.SelectedItem.StateB, Mode=OneWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Classes="authHori">
+            <TextBlock Text="B上的属性：" FontSize="17"/>
+            <ComboBox Name="attributeB_ComboBox" Items="{Binding #processB_ComboBox.SelectedItem.Attributes}"
+                      SelectedItem="{Binding #authenticity_ListBox.SelectedItem.AttributeB, Mode=OneWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Identifier}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Command="{Binding $parent[Window].Add_Authenticity}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_Authenticity}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_Authenticity}">删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0" Name="authenticity_ListBox"
+                 Items="{Binding SecurityProperty.Authenticities}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0}.{1}.{2} | {3}.{4}.{5}">
+                    <Binding Path="ProcessA.Name"/>
+                    <Binding Path="StateA.Name"/>
+                    <Binding Path="AttributeA.Identifier"/>
+                    <Binding Path="ProcessB.Name"/>
+                    <Binding Path="StateB.Name"/>
+                    <Binding Path="AttributeB.Identifier"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
+  </TabControl>
+</Window>

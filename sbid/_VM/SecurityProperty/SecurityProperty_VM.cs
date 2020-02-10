@@ -1,0 +1,64 @@
+﻿using sbid._M;
+using sbid._V;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+
+namespace sbid._VM
+{
+    public class SecurityProperty_VM : NetworkItem_VM
+    {
+        private static int _id = 1;
+        private SecurityProperty securityProperty;
+
+        public SecurityProperty_VM()
+        {
+            securityProperty = new SecurityProperty("未命名" + _id);
+            _id++;
+        }
+
+        public SecurityProperty SecurityProperty { get => securityProperty; set => securityProperty = value; }
+
+        #region 右键菜单命令
+
+        // 尝试打开当前SecurityProperty_VM的编辑窗体
+        public void EditSecurityPropertyVM()
+        {
+            // 从主窗体打开编辑窗体,并在其DataContext中集成当前SecurityProperty_VM里集成的SecurityProperty对象,以能对其作修改
+            SecurityProperty_EW_V securityPropertyEWV = new SecurityProperty_EW_V()
+            {
+                DataContext = new SecurityProperty_EW_VM()
+                {
+                    SecurityProperty = securityProperty
+                }
+            };
+            // 将所有的Process传入,作为Confidential和Authenticity去选用的参数
+            foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs)
+            {
+                if (item is Process_VM)
+                {
+                    Process_VM processVM = (Process_VM)item;
+
+                    // 计算Process对应状态机的所有状态,写入Process附加的States字段中
+                    processVM.Process.States = new ObservableCollection<State>();
+                    foreach (ViewModelBase vm in processVM.StateMachine_P_VM.UserControlVMs)
+                    {
+                        if (vm is State_VM)
+                        {
+                            State_VM stateVM = (State_VM)vm;
+                            processVM.Process.States.Add(stateVM.State);
+                        }
+                    }
+
+                    ((SecurityProperty_EW_VM)securityPropertyEWV.DataContext).Processes.Add(processVM.Process);
+                }
+            }
+
+            securityPropertyEWV.ShowDialog(ResourceManager.mainWindowV);
+            ResourceManager.mainWindowVM.Tips = "打开了SecurityProperty[" + securityProperty.Name + "]的编辑窗体";
+        }
+
+        #endregion
+    }
+}

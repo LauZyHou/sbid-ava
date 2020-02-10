@@ -76,6 +76,14 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "创建了新的SafetyProperty：" + safetyPropertyVM.SafetyProperty.Name;
         }
 
+        // 创建信息安全性质
+        public void CreateSecurityPropertyVM()
+        {
+            SecurityProperty_VM securityPropertyVM = new SecurityProperty_VM();
+            NetworkItemVMs.Add(securityPropertyVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的SecurityProperty：" + securityPropertyVM.SecurityProperty.Name;
+        }
+
         #endregion
     }
 }
