@@ -31,7 +31,7 @@
           </ItemsPanelTemplate>
         </Setter.Value>
       </Setter>
-      <!--里面放控件,即UserType_VM-->
+      <!--里面放控件,即xxx_VM-->
       <Setter Property="ItemTemplate">
         <Setter.Value>
           <DataTemplate DataType="vm:ViewModelBase">

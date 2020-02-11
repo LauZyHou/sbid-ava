@@ -34,6 +34,9 @@ namespace sbid._VM
                 // 对于状态机而言,锚点位置变化时,还应通知计算中心位置
                 if (connectionVM != null && connectionVM is Transition_VM)
                     connectionVM.RaisePropertyChanged("MidPos");
+                // 顺序图也是一样
+                else if (connectionVM is SyncMessage_VM)
+                    connectionVM.RaisePropertyChanged("MidPos");
             }
         }
 

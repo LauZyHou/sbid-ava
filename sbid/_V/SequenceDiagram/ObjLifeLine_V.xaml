@@ -1,0 +1,38 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             Width="140" Height="500"
+             x:Class="sbid._V.ObjLifeLine_V">
+  <Design.DataContext>
+    <vm:ObjLifeLine_VM/>
+  </Design.DataContext>
+  
+  <StackPanel>
+    <Grid Width="140" Height="30" Background="Black">
+      <TextBlock Width="136" Height="26" Text="对象名:类名" HorizontalAlignment="Center" VerticalAlignment="Center"
+                 TextAlignment="Center" FontSize="17" Background="White"/>
+    </Grid>
+    <Grid>
+      <Line StartPoint="70,0" EndPoint="70,470" Stroke="Black" StrokeThickness="2" StrokeDashArray="1,1"/>
+      <!--调整这里以保证锚点居中-->
+      <Grid ColumnDefinitions="60*,40*,60*">
+        <ItemsControl Grid.Column="1" Items="{Binding ConnectorVMs}" Background="Transparent" Height="440"
+                 BorderBrush="Transparent">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <v:MessageConnector_V DataContext="{Binding .}" Margin="0,5"/>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Grid>
+    </Grid>
+  </StackPanel>
+</UserControl>
