@@ -35,7 +35,7 @@ namespace sbid._VM
                 if (connectionVM != null && connectionVM is Transition_VM)
                     connectionVM.RaisePropertyChanged("MidPos");
                 // 顺序图也是一样
-                else if (connectionVM is SyncMessage_VM)
+                else if (connectionVM is Message_VM)
                     connectionVM.RaisePropertyChanged("MidPos");
             }
         }

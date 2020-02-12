@@ -16,7 +16,6 @@
     <AvaloniaResource Remove="_V\Axiom\Axiom_V.xaml" />
     <AvaloniaResource Remove="_V\InitialKnowledge\InitialKnowledge_EW_V.xaml" />
     <AvaloniaResource Remove="_V\InitialKnowledge\InitialKnowledge_V.xaml" />
-    <AvaloniaResource Remove="_V\Network\Arrow_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Connection_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Connector_V.xaml" />
     <AvaloniaResource Remove="_V\Process\Process_EW_V.xaml" />
@@ -25,7 +24,9 @@
     <AvaloniaResource Remove="_V\SafetyProperty\SafetyProperty_V.xaml" />
     <AvaloniaResource Remove="_V\SecurityProperty\SecurityProperty_EW_V.xaml" />
     <AvaloniaResource Remove="_V\SecurityProperty\SecurityProperty_V.xaml" />
+    <AvaloniaResource Remove="_V\SequenceDiagram\AsyncMessage_V.xaml" />
     <AvaloniaResource Remove="_V\SequenceDiagram\ObjLifeLine_V.xaml" />
+    <AvaloniaResource Remove="_V\SequenceDiagram\ReturnMessage_V.xaml" />
     <AvaloniaResource Remove="_V\SequenceDiagram\SyncMessage_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\AttackTree_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
@@ -45,7 +46,6 @@
     <None Remove="_V\Axiom\Axiom_V.xaml" />
     <None Remove="_V\InitialKnowledge\InitialKnowledge_EW_V.xaml" />
     <None Remove="_V\InitialKnowledge\InitialKnowledge_V.xaml" />
-    <None Remove="_V\Network\Arrow_V.xaml" />
     <None Remove="_V\Network\Connection_V.xaml" />
     <None Remove="_V\Network\Connector_V.xaml" />
     <None Remove="_V\Process\Process_EW_V.xaml" />
@@ -54,7 +54,9 @@
     <None Remove="_V\SafetyProperty\SafetyProperty_V.xaml" />
     <None Remove="_V\SecurityProperty\SecurityProperty_EW_V.xaml" />
     <None Remove="_V\SecurityProperty\SecurityProperty_V.xaml" />
+    <None Remove="_V\SequenceDiagram\AsyncMessage_V.xaml" />
     <None Remove="_V\SequenceDiagram\ObjLifeLine_V.xaml" />
+    <None Remove="_V\SequenceDiagram\ReturnMessage_V.xaml" />
     <None Remove="_V\SequenceDiagram\SyncMessage_V.xaml" />
     <None Remove="_V\SidePanel\AttackTree_P_V.xaml" />
     <None Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
@@ -147,11 +149,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="_V\Network\Arrow_V.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="_V\StateMachine\Transition_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -218,6 +215,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\SequenceDiagram\SyncMessage_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\SequenceDiagram\AsyncMessage_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\SequenceDiagram\ReturnMessage_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -550,7 +550,7 @@ namespace sbid._V
 
         #endregion
 
-        #region 私有
+        #region 初始化
 
         // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
         private void init_binding()

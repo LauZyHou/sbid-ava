@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace sbid._V
 {
-    public class Arrow_V : UserControl
+    public class ReturnMessage_V : UserControl
     {
-        public Arrow_V()
+        public ReturnMessage_V()
         {
             this.InitializeComponent();
         }

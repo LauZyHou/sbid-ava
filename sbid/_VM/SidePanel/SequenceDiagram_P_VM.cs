@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ReactiveUI;
+using sbid._M;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +10,7 @@ namespace sbid._VM
     {
         private static int _id = 1;
         private Connector_VM activeConnector;
+        private SeqMessage seqMessage = SeqMessage.SyncMessage;
 
         // 默认构造时使用默认名称
         public SequenceDiagram_P_VM()
@@ -18,6 +21,8 @@ namespace sbid._VM
 
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
+        // 当前选中的SeqMessage
+        public SeqMessage SeqMessage { get => seqMessage; set => this.RaiseAndSetIfChanged(ref seqMessage, value); }
 
         #region 按钮和右键菜单命令
 
@@ -33,24 +38,30 @@ namespace sbid._VM
 
         #region 顺序图上的VM操作接口
 
-        // 创建转移关系
-        public void CreateTransitionVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
+        // 创建Message传递关系
+        public void CreateSeqMessageVM(Connector_VM connectorVM1, Connector_VM connectorVM2, SeqMessage type)
         {
-            SyncMessage_VM transitionVM = new SyncMessage_VM()
-            {
-                Source = connectorVM1,
-                Dest = connectorVM2
-            };
+            // 根据传入的信息类型来创建不同类型的Message_VM
+            Message_VM messageVM;
+            if (type == SeqMessage.SyncMessage)
+                messageVM = new SyncMessage_VM();
+            else if (type == SeqMessage.AsyncMessage)
+                messageVM = new AsyncMessage_VM();
+            else
+                messageVM = new ReturnMessage_VM();
+
+            messageVM.Source = connectorVM1;
+            messageVM.Dest = connectorVM2;
 
             // 锚点反引连接关系
-            connectorVM1.ConnectionVM = transitionVM;
-            connectorVM2.ConnectionVM = transitionVM;
+            connectorVM1.ConnectionVM = messageVM;
+            connectorVM2.ConnectionVM = messageVM;
 
-            UserControlVMs.Add(transitionVM);
+            UserControlVMs.Add(messageVM);
         }
 
-        // 删除锚点上的转移关系
-        public void BreakTransitionVM(Connector_VM connectorVM)
+        // 删除锚点上的Message传递关系
+        public void BreakSeqMessageVM(Connector_VM connectorVM)
         {
             // 要删除的转移关系
             Connection_VM connectionVM = connectorVM.ConnectionVM;

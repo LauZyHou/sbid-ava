@@ -20,8 +20,8 @@ namespace sbid._V
             // 如果有连线,那么要做的是删除连线
             if (ConnectorVM.ConnectionVM != null)
             {
-                nowSDPVM.BreakTransitionVM(ConnectorVM);
-                ResourceManager.mainWindowVM.Tips = "删除了转移关系";
+                nowSDPVM.BreakSeqMessageVM(ConnectorVM);
+                ResourceManager.mainWindowVM.Tips = "删除了消息传递关系";
             }
             // 如果已经是活动锚点,要清除活动状态
             else if (nowSDPVM.ActiveConnector == ConnectorVM) // 也可用ConnectorVM.IsActive
@@ -41,11 +41,12 @@ namespace sbid._V
             // 至此,说明已经有一个活动锚点了,且当前锚点是另一个空闲锚点,这时要从活动锚点连线到此锚点
             else
             {
-                nowSDPVM.CreateTransitionVM(nowSDPVM.ActiveConnector, ConnectorVM);
+                // 创建时要传入SeqMessage类型
+                nowSDPVM.CreateSeqMessageVM(nowSDPVM.ActiveConnector, ConnectorVM, nowSDPVM.SeqMessage);
                 // 清除活动锚点
                 nowSDPVM.ActiveConnector.IsActive = false;
                 nowSDPVM.ActiveConnector = null;
-                ResourceManager.mainWindowVM.Tips = "创建了新的消息传递关系";
+                ResourceManager.mainWindowVM.Tips = "创建了新的" + nowSDPVM.SeqMessage + "传递关系";
             }
 
             e.Handled = true;

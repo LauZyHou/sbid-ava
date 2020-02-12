@@ -11,6 +11,9 @@ namespace sbid._V
     // 带箭头的直线图形
     public class Arrow : Line
     {
+        private double headWidth = 15;
+        private double headHeight = 8;
+
         // 在此覆写方法中实现图形
         protected override Geometry CreateDefiningGeometry()
         {
@@ -29,9 +32,8 @@ namespace sbid._V
                 Point pt1 = new Point(X1, Y1);
                 Point pt2 = new Point(X2, Y2);
 
-                // 这里决定箭头尖部的张角和线长
-                double HeadWidth = 15;
-                double HeadHeight = 8;
+                double HeadWidth = this.headWidth;
+                double HeadHeight = this.headHeight;
 
                 Point pt3 = new Point(
                     X2 + (HeadWidth * cost - HeadHeight * sint),
@@ -49,5 +51,9 @@ namespace sbid._V
             }
             return streamGeometry;
         }
+
+        // 这里决定箭头尖部的张角和线长
+        public double HeadWidth { get => headWidth; set => headWidth = value; }
+        public double HeadHeight { get => headHeight; set => headHeight = value; }
     }
 }

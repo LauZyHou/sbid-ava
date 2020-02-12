@@ -1,9 +1,0 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="sbid._V.Arrow_V">
-  <v:Arrow Stroke="Red" StrokeThickness="2" StartPoint="{Binding Source.Pos, Mode=OneWay}" EndPoint="{Binding Dest.Pos, Mode=OneWay}"/>
-</UserControl>
