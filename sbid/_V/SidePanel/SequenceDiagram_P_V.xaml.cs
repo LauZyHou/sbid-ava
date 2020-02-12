@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
+using System.Collections.Generic;
 
 namespace sbid._V
 {
@@ -27,6 +28,12 @@ namespace sbid._V
             // 绑定SeqMessage的InOut枚举
             ComboBox seqMessage_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "seqMessage_ComboBox");
             seqMessage_ComboBox.Items = System.Enum.GetValues(typeof(SeqMessage));
+            // 绑定ConnectorVisible
+            ComboBox connectorVisible_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "connectorVisible_ComboBox");
+            List<bool> boolList = new List<bool>();
+            boolList.Add(true);
+            boolList.Add(false);
+            connectorVisible_ComboBox.Items = boolList;
         }
 
         #endregion

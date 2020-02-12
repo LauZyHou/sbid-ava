@@ -50,12 +50,6 @@ namespace sbid._V
                     X2 + (HeadWidth * cost + HeadHeight * sint),
                     Y2 - (HeadHeight * cost - HeadWidth * sint));
 
-                context.BeginFigure(pt5, true); // 带填充
-                context.LineTo(pt4);
-                context.LineTo(pt6);
-                context.EndFigure(true); // 箭帽闭合
-                Fill = Brushes.Black;
-
                 context.BeginFigure(pt1, false);
                 context.LineTo(pt2);
                 context.LineTo(pt3);
@@ -63,6 +57,12 @@ namespace sbid._V
                 context.LineTo(pt3); // 这里回到pt3和到pt2是避免从pt4闭合到pt1导致一大块Fill
                 context.LineTo(pt2);
                 context.EndFigure(false);
+
+                context.BeginFigure(pt5, true); // 带填充
+                context.LineTo(pt4);
+                context.LineTo(pt6);
+                context.EndFigure(true); // 箭帽闭合
+                Fill = Brushes.Black;
             }
             return streamGeometry;
         }

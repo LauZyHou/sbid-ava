@@ -11,6 +11,7 @@ namespace sbid._VM
         private static int _id = 1;
         private Connector_VM activeConnector;
         private SeqMessage seqMessage = SeqMessage.SyncMessage;
+        private bool connectorVisible = true;
 
         // 默认构造时使用默认名称
         public SequenceDiagram_P_VM()
@@ -23,6 +24,8 @@ namespace sbid._VM
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
         // 当前选中的SeqMessage
         public SeqMessage SeqMessage { get => seqMessage; set => this.RaiseAndSetIfChanged(ref seqMessage, value); }
+        // 锚点是否可见
+        public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
         #region 按钮和右键菜单命令
 

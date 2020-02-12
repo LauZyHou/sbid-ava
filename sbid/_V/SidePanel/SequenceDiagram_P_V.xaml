@@ -48,7 +48,10 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
       <Button Command="{Binding CreateObjLifeLineVM}">创建对象-生命线</Button>
+      <TextBlock Text=" 连线类型：" FontSize="17"/>
       <ComboBox Name="seqMessage_ComboBox" Width="140" Background="WhiteSmoke" SelectedItem="{Binding SeqMessage, Mode=TwoWay}"/>
+      <TextBlock Text=" 锚点可见：" FontSize="17"/>
+      <ComboBox Name="connectorVisible_ComboBox" Width="60" Background="WhiteSmoke" SelectedItem="{Binding ConnectorVisible, Mode=TwoWay}"/>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Items="{Binding UserControlVMs}" Height="700"/>
