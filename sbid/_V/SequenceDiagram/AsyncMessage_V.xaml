@@ -18,7 +18,7 @@
                Text="{Binding Message.Content}" TextAlignment="Center" Background="White">
       <TextBlock.ContextMenu>
         <ContextMenu>
-          <MenuItem Header="编辑异步消息"/>
+          <MenuItem Header="编辑异步消息" Command="{Binding EditMessage}"/>
         </ContextMenu>
       </TextBlock.ContextMenu>
     </TextBlock>

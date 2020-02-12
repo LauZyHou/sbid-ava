@@ -1,4 +1,6 @@
-﻿using System;
+﻿using sbid._M;
+using sbid._V;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -7,6 +9,9 @@ namespace sbid._VM
 {
     public class ObjLifeLine_VM : NetworkItem_VM
     {
+        private static int _id = 1;
+        private SeqObject seqObject;
+
         public ObjLifeLine_VM()
         {
             double baseX = X + 70;
@@ -18,6 +23,9 @@ namespace sbid._VM
             {
                 ConnectorVMs.Add(new Connector_VM(baseX, baseY + i * deltaY));
             }
+
+            seqObject = new SeqObject("对象名" + _id, "类名" + _id);
+            _id++;
         }
 
         public ObjLifeLine_VM(double x, double y)
@@ -34,6 +42,31 @@ namespace sbid._VM
             {
                 ConnectorVMs.Add(new Connector_VM(baseX, baseY + i * deltaY));
             }
+
+            seqObject = new SeqObject("对象名" + _id, "类名" + _id);
+            _id++;
         }
+
+        // 序列图对象
+        public SeqObject SeqObject { get => seqObject; set => seqObject = value; }
+
+        #region 右键菜单命令
+
+        // 尝试打开编辑对象-生命线的窗口
+        public void EditObjLifeLine()
+        {
+            // 从主窗体打开编辑窗体,并在其DataContext中集成当前ObjLifeLine_VM里集成的ObjLifeLine对象,以能对其作修改
+            ObjLifeLine_EW_V objLifeLineEWV = new ObjLifeLine_EW_V()
+            {
+                DataContext = new ObjLifeLine_EW_VM()
+                {
+                    SeqObject = seqObject
+                }
+            };
+            objLifeLineEWV.ShowDialog(ResourceManager.mainWindowV);
+            ResourceManager.mainWindowVM.Tips = "打开了对象-生命线的编辑窗体";
+        }
+
+        #endregion
     }
 }

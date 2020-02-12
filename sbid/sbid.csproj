@@ -26,6 +26,8 @@
     <AvaloniaResource Remove="_V\SecurityProperty\SecurityProperty_V.xaml" />
     <AvaloniaResource Remove="_V\SequenceDiagram\AsyncMessage_Self_V.xaml" />
     <AvaloniaResource Remove="_V\SequenceDiagram\AsyncMessage_V.xaml" />
+    <AvaloniaResource Remove="_V\SequenceDiagram\Message_EW_V.xaml" />
+    <AvaloniaResource Remove="_V\SequenceDiagram\ObjLifeLine_EW_V.xaml" />
     <AvaloniaResource Remove="_V\SequenceDiagram\ObjLifeLine_V.xaml" />
     <AvaloniaResource Remove="_V\SequenceDiagram\ReturnMessage_V.xaml" />
     <AvaloniaResource Remove="_V\SequenceDiagram\SyncMessage_Self_V.xaml" />
@@ -58,6 +60,8 @@
     <None Remove="_V\SecurityProperty\SecurityProperty_V.xaml" />
     <None Remove="_V\SequenceDiagram\AsyncMessage_Self_V.xaml" />
     <None Remove="_V\SequenceDiagram\AsyncMessage_V.xaml" />
+    <None Remove="_V\SequenceDiagram\Message_EW_V.xaml" />
+    <None Remove="_V\SequenceDiagram\ObjLifeLine_EW_V.xaml" />
     <None Remove="_V\SequenceDiagram\ObjLifeLine_V.xaml" />
     <None Remove="_V\SequenceDiagram\ReturnMessage_V.xaml" />
     <None Remove="_V\SequenceDiagram\SyncMessage_Self_V.xaml" />
@@ -239,6 +243,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\SequenceDiagram\AsyncMessage_Self_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\SequenceDiagram\Message_EW_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\SequenceDiagram\ObjLifeLine_EW_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

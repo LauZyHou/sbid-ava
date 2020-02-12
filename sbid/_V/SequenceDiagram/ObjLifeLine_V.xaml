@@ -9,16 +9,28 @@
   <Design.DataContext>
     <vm:ObjLifeLine_VM/>
   </Design.DataContext>
-  
+
   <StackPanel>
     <Grid Width="140" Height="30" Background="Black">
-      <TextBlock Width="136" Height="26" Text="对象名:类名" HorizontalAlignment="Center" VerticalAlignment="Center"
-                 TextAlignment="Center" FontSize="17" Background="White"/>
+      <TextBlock Width="136" Height="26" HorizontalAlignment="Center" VerticalAlignment="Center"
+                 TextAlignment="Center" FontSize="17" Background="White">
+        <TextBlock.Text>
+          <MultiBinding StringFormat=" {0}:{1}">
+            <Binding Path="SeqObject.ObjName"/>
+            <Binding Path="SeqObject.ClassName"/>
+          </MultiBinding>
+        </TextBlock.Text>
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="编辑对象-生命线" Command="{Binding EditObjLifeLine}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
     </Grid>
     <Grid>
       <Line StartPoint="70,0" EndPoint="70,470" Stroke="Black" StrokeThickness="2" StrokeDashArray="1,1"/>
       <!--调整这里以保证锚点居中-->
-      <Grid ColumnDefinitions="60*,40*,60*" 
+      <Grid ColumnDefinitions="60*,40*,60*"
             IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}">
         <ItemsControl Grid.Column="1" Items="{Binding ConnectorVMs}" Background="Transparent" Height="440"
                  BorderBrush="Transparent">

@@ -1,0 +1,29 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="55" Width="200" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.ObjLifeLine_EW_V"
+        Title="编辑ObjLifeLine">
+  <Design.DataContext>
+    <vm:ObjLifeLine_VM/>
+  </Design.DataContext>
+
+  <Window.Styles>
+    <Style Selector="StackPanel > TextBlock">
+      <Setter Property="FontSize" Value="24"/>
+    </Style>
+    <Style Selector="StackPanel > TextBox">
+      <Setter Property="FontSize" Value="17"/>
+      <Setter Property="Width" Value="80"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+  </Window.Styles>
+
+  <StackPanel Orientation="Horizontal" Margin="10">
+    <TextBox Text="{Binding SeqObject.ObjName, Mode=TwoWay}"/>
+    <TextBlock Text=" : "/>
+    <TextBox Text="{Binding SeqObject.ClassName, Mode=TwoWay}"/>
+  </StackPanel>
+</Window>

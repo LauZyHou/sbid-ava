@@ -22,4 +22,7 @@ todo
 todo
 
 ### 顺序图
-todo
+用于面向对象的情景建模。
+
+![状态机图展示](https://raw.githubusercontent.com/LauZyHou/pic/master/sbid-ava/SequenceDiagram.png)
+

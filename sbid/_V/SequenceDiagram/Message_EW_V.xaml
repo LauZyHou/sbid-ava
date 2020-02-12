@@ -1,0 +1,17 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="80" Width="250" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.Message_EW_V"
+        Title="编辑Message">
+  <Design.DataContext>
+    <vm:Message_EW_VM/>
+  </Design.DataContext>
+
+  <StackPanel Margin="10">
+    <TextBlock Text="Message内容：" FontSize="17"/>
+    <TextBox Text="{Binding Message.Content, Mode=TwoWay}" FontSize="17"/>
+  </StackPanel>
+</Window>
