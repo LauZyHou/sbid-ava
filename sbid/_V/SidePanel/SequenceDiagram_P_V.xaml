@@ -48,7 +48,7 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
       <Button Command="{Binding CreateObjLifeLineVM}">创建对象-生命线</Button>
-      <ComboBox Name="seqMessage_ComboBox" Width="120" Background="WhiteSmoke" SelectedItem="{Binding SeqMessage, Mode=TwoWay}"/>
+      <ComboBox Name="seqMessage_ComboBox" Width="140" Background="WhiteSmoke" SelectedItem="{Binding SeqMessage, Mode=TwoWay}"/>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Items="{Binding UserControlVMs}" Height="700"/>

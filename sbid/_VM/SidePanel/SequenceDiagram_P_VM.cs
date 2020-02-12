@@ -47,8 +47,12 @@ namespace sbid._VM
                 messageVM = new SyncMessage_VM();
             else if (type == SeqMessage.AsyncMessage)
                 messageVM = new AsyncMessage_VM();
-            else
+            else if (type == SeqMessage.ReturnMessage)
                 messageVM = new ReturnMessage_VM();
+            else if (type == SeqMessage.SyncMessage_Self)
+                messageVM = new SyncMessage_Self_VM();
+            else
+                messageVM = new AsyncMessage_Self_VM();
 
             messageVM.Source = connectorVM1;
             messageVM.Dest = connectorVM2;
