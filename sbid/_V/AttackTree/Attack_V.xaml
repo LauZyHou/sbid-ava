@@ -11,11 +11,11 @@
   </Design.DataContext>
 
   <Grid Width="100" Height="50">
-    <Rectangle Stroke="{Binding BorderColor}" Fill="White" StrokeThickness="2"/>
+    <Rectangle Stroke="Black" Fill="{Binding NodeColor}" StrokeThickness="2"/>
     <!--右上角锁头图形-->
-    <v:Lock Name="lockShape" Stroke="Blue" Fill="White" StrokeThickness="2" Width="10" Height="10" Margin="75,0,0,30"/>
+    <v:Lock Name="lockShape" Stroke="Black" Fill="Transparent" StrokeThickness="2" Width="10" Height="10" Margin="75,0,0,30"/>
     <!--解锁时显示这部分以盖住一小块锁圈-->
-    <Rectangle Width="5" Height="3" Fill="White" Margin="68,0,0,35" IsVisible="{Binding !IsLocked}" IsHitTestVisible="False"/>
+    <Rectangle Width="5" Height="3" Fill="{Binding NodeColor}" Margin="68,0,0,35" IsVisible="{Binding !IsLocked}" IsHitTestVisible="False"/>
     <Grid Margin="-11,-7" ColumnDefinitions="1*,1*,1*,1*,1*" RowDefinitions="1*,1*,1*,1*">
       <TextBlock Text="{Binding Attack.Content}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" FontSize="16" TextAlignment="Center" VerticalAlignment="Center"/>
 

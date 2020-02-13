@@ -13,10 +13,12 @@
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Remove="_V\AttackTree\Attack_V.xaml" />
+    <AvaloniaResource Remove="_V\AttackTree\Relation_V.xaml" />
     <AvaloniaResource Remove="_V\Axiom\Axiom_EW_V.xaml" />
     <AvaloniaResource Remove="_V\Axiom\Axiom_V.xaml" />
     <AvaloniaResource Remove="_V\InitialKnowledge\InitialKnowledge_EW_V.xaml" />
     <AvaloniaResource Remove="_V\InitialKnowledge\InitialKnowledge_V.xaml" />
+    <AvaloniaResource Remove="_V\Network\Arrow_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Connection_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Connector_V.xaml" />
     <AvaloniaResource Remove="_V\Process\Process_EW_V.xaml" />
@@ -48,10 +50,12 @@
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
     <None Remove="_V\AttackTree\Attack_V.xaml" />
+    <None Remove="_V\AttackTree\Relation_V.xaml" />
     <None Remove="_V\Axiom\Axiom_EW_V.xaml" />
     <None Remove="_V\Axiom\Axiom_V.xaml" />
     <None Remove="_V\InitialKnowledge\InitialKnowledge_EW_V.xaml" />
     <None Remove="_V\InitialKnowledge\InitialKnowledge_V.xaml" />
+    <None Remove="_V\Network\Arrow_V.xaml" />
     <None Remove="_V\Network\Connection_V.xaml" />
     <None Remove="_V\Network\Connector_V.xaml" />
     <None Remove="_V\Process\Process_EW_V.xaml" />
@@ -260,6 +264,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\AttackTree\Attack_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\AttackTree\Relation_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\Network\Arrow_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

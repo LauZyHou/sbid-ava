@@ -97,17 +97,17 @@ namespace sbid._VM
             set
             {
                 this.RaiseAndSetIfChanged(ref beAttacked, value);
-                this.RaisePropertyChanged("BorderColor");
+                this.RaisePropertyChanged("NodeColor");
             }
         }
         // 指示结点取值是否被锁定
         public bool IsLocked { get => isLocked; set => this.RaiseAndSetIfChanged(ref isLocked, value); }
         // 边框颜色,受取值影响
-        public ISolidColorBrush BorderColor
+        public ISolidColorBrush NodeColor
         {
             get
             {
-                return beAttacked ? Brushes.Red : Brushes.Green;
+                return beAttacked ? Brushes.LightPink : Brushes.LightGreen;
             }
         }
 
