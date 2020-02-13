@@ -5,21 +5,57 @@
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sbid._V.AttackTree_P_V">
-  
   <Design.DataContext>
     <vm:AttackTree_P_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <!--ItemsControl的样式-->
+    <Style Selector="ItemsControl">
+      <!--使用Canvas作面板-->
+      <Setter Property="ItemsPanel">
+        <Setter.Value>
+          <ItemsPanelTemplate>
+            <!--这里需要为Canvas设置颜色才能在按下时相应鼠标事件-->
+            <Canvas Background="#EEEEEE" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <!--右键菜单行为-->
+              <Canvas.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="创建攻击结点" Command="{Binding CreateAttackVM}"/>
+                  <MenuItem Header="创建[或]关系" Command="{Binding CreateRelationVM_OR}"/>
+                  <MenuItem Header="创建[与]关系" Command="{Binding CreateRelationVM_AND}"/>
+                  <MenuItem Header="创建[非]关系" Command="{Binding CreateRelationVM_NEG}"/>
+                </ContextMenu>
+              </Canvas.ContextMenu>
+            </Canvas>
+          </ItemsPanelTemplate>
+        </Setter.Value>
+      </Setter>
+      <!--里面放控件,即xxx_VM-->
+      <Setter Property="ItemTemplate">
+        <Setter.Value>
+          <DataTemplate DataType="vm:ViewModelBase">
+            <ContentControl Content="{Binding .}"/>
+          </DataTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
+    <Style Selector="ItemsControl > ContentPresenter">
+      <Setter Property="Canvas.Left" Value="{Binding X}"/>
+      <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+    </Style>
+  </UserControl.Styles>
+
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
-      <Button>创建攻击结点</Button>
-      <Button>创建"或"关系</Button>
-      <Button>创建"与"关系</Button>
-      <Button>创建"非"关系</Button>
+      <Button Command="{Binding CreateAttackVM}">创建攻击结点</Button>
+      <Button Command="{Binding CreateRelationVM_OR}">创建[或]关系</Button>
+      <Button Command="{Binding CreateRelationVM_AND}">创建[与]关系</Button>
+      <Button Command="{Binding CreateRelationVM_NEG}">创建[非]关系</Button>
     </StackPanel>
-    <Canvas DockPanel.Dock="Bottom">
-
-    </Canvas>
+    <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <ItemsControl Items="{Binding UserControlVMs}" Height="700"/>
+    </ScrollViewer>
   </DockPanel>
-  
 </UserControl>
