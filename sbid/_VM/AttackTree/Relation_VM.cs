@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ReactiveUI;
+using sbid._M;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -7,9 +9,19 @@ namespace sbid._VM
 {
     public class Relation_VM : NetworkItem_VM
     {
+        private Relation relation;
+
+        #region 构造和初始化
 
         public Relation_VM()
         {
+            init();
+        }
+
+        public Relation_VM(double x, double y)
+        {
+            X = x;
+            Y = y;
             init();
         }
 
@@ -44,5 +56,31 @@ namespace sbid._VM
             ConnectorVMs.Add(new Connector_VM(baseX + d,
                                               baseY + 2 * r - d));
         }
+
+        #endregion
+
+        public Relation Relation { get => relation; set => this.RaiseAndSetIfChanged(ref relation, value); }
+
+        #region 右键菜单命令
+
+        // 设为AND
+        public void SetRelation_AND()
+        {
+            Relation = Relation.AND;
+        }
+
+        // 设为OR
+        public void SetRelation_OR()
+        {
+            Relation = Relation.OR;
+        }
+
+        // 设为NEG
+        public void SetRelation_NEG()
+        {
+            Relation = Relation.NEG;
+        }
+
+        #endregion
     }
 }

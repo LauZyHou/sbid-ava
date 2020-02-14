@@ -13,11 +13,12 @@
   <Grid Width="100" Height="50">
     <Rectangle Stroke="Black" Fill="{Binding NodeColor}" StrokeThickness="2"/>
     <!--右上角锁头图形-->
-    <v:Lock Name="lockShape" Stroke="Black" Fill="Transparent" StrokeThickness="2" Width="10" Height="10" Margin="75,0,0,30"/>
+    <v:Lock Name="lockShape" Stroke="Black" Fill="Transparent" StrokeThickness="2" Width="10" Height="10" Margin="78,0,0,32"/>
     <!--解锁时显示这部分以盖住一小块锁圈-->
-    <Rectangle Width="5" Height="3" Fill="{Binding NodeColor}" Margin="68,0,0,35" IsVisible="{Binding !IsLocked}" IsHitTestVisible="False"/>
+    <Rectangle Width="5" Height="3" Fill="{Binding NodeColor}" Margin="71,0,0,37" IsVisible="{Binding !IsLocked}" IsHitTestVisible="False"/>
     <Grid Margin="-11,-7" ColumnDefinitions="1*,1*,1*,1*,1*" RowDefinitions="1*,1*,1*,1*">
-      <TextBlock Text="{Binding Attack.Content}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" FontSize="16" TextAlignment="Center" VerticalAlignment="Center"/>
+      <TextBlock Text="{Binding Attack.Content}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2"
+                 FontSize="12" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="0"/>
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="0" Grid.Column="1"/>
@@ -39,7 +40,7 @@
     </Grid>
     <Grid.ContextMenu>
       <ContextMenu>
-        <MenuItem Header="编辑"/>
+        <MenuItem Header="编辑" Command="{Binding EditAttackVM}"/>
         <MenuItem Header="反转结点取值" Command="{Binding ReverseBeAttacked}"/>
         <MenuItem Header="删除"/>
       </ContextMenu>

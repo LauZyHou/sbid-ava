@@ -29,24 +29,36 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "创建了新的攻击结点：" + attackVM.Attack.Content;
         }
 
-        // 创建[或]关系
-        public void CreateRelationVM_OR()
-        {
-            Relation_VM relationVM = new Relation_VM();
-            UserControlVMs.Add(relationVM);
-            ResourceManager.mainWindowVM.Tips = "创建了新的[或]关系结点：";
-        }
-
         // 创建[与]关系
         public void CreateRelationVM_AND()
         {
+            Relation_VM relationVM = new Relation_VM() { Relation = _M.Relation.AND };
+            UserControlVMs.Add(relationVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的[与]关系结点(and)";
+        }
 
+        // 创建[或]关系
+        public void CreateRelationVM_OR()
+        {
+            Relation_VM relationVM = new Relation_VM() { Relation = _M.Relation.OR };
+            UserControlVMs.Add(relationVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的[或]关系结点(or)";
         }
 
         // 创建[非]关系
         public void CreateRelationVM_NEG()
         {
+            Relation_VM relationVM = new Relation_VM() { Relation = _M.Relation.NEG };
+            UserControlVMs.Add(relationVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的[非]关系结点(negation)";
+        }
 
+        // 创建[顺序与]关系
+        public void CreateRelationVM_SAND()
+        {
+            Relation_VM relationVM = new Relation_VM() { Relation = _M.Relation.SAND };
+            UserControlVMs.Add(relationVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的[顺序与]关系结点(sequence and)";
         }
 
         #endregion

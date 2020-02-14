@@ -3,14 +3,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
              Height="65" Width="65"
              x:Class="sbid._V.Relation_V">
+  <Design.DataContext>
+    <vm:Relation_VM/>
+  </Design.DataContext>
+  
   <Grid Width="56" Height="56">
     <Ellipse Fill="LightBlue" Stroke="Black" StrokeThickness="2"/>
     <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1" 
           ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1">
-      <TextBlock Text="OR" Grid.Row="1" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-      <!--顺时针排列-->
+      <TextBlock Text="{Binding Relation}" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      <!--锚点顺时针排列-->
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="4" Grid.Column="0"/>
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="2" Grid.Column="2"/>
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[2]}" Grid.Row="0" Grid.Column="4"/>
@@ -19,6 +24,15 @@
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="6" Grid.Column="6"/>
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="8" Grid.Column="4"/>
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="6" Grid.Column="2"/>
+      <Grid.ContextMenu>
+        <ContextMenu>
+          <!--禁止修改-->
+          <!--<MenuItem Header="设为AND" Command="{Binding SetRelation_AND}"/>
+          <MenuItem Header="设为OR" Command="{Binding SetRelation_OR}"/>
+          <MenuItem Header="设为NEG" Command="{Binding SetRelation_NEG}"/>-->
+          <MenuItem Header="删除"/>
+        </ContextMenu>
+      </Grid.ContextMenu>
     </Grid>
   </Grid>
 </UserControl>

@@ -16,7 +16,10 @@
 todo
 
 ### 攻击树
-todo
+用于威胁建模。
+
+![攻击树展示](https://raw.githubusercontent.com/LauZyHou/pic/master/sbid-ava/AttackTree.png)
+
 
 ### CTL语法树
 todo
@@ -24,5 +27,5 @@ todo
 ### 顺序图
 用于面向对象的情景建模。
 
-![状态机图展示](https://raw.githubusercontent.com/LauZyHou/pic/master/sbid-ava/SequenceDiagram.png)
+![顺序图展示](https://raw.githubusercontent.com/LauZyHou/pic/master/sbid-ava/SequenceDiagram.png)
 

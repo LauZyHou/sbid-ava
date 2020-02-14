@@ -1,6 +1,7 @@
 ﻿using Avalonia.Media;
 using ReactiveUI;
 using sbid._M;
+using sbid._V;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -113,11 +114,26 @@ namespace sbid._VM
 
         #region 按钮和右键菜单命令
 
+        // 尝试打开编辑当前攻击结点的窗体
+        public void EditAttackVM()
+        {
+            // 从主窗体打开编辑窗体,并在其DataContext中集成当前Attack_VM里集成的Attack对象,以能对其作修改
+            Attack_EW_V attackEWV = new Attack_EW_V()
+            {
+                DataContext = new Attack_EW_VM()
+                {
+                    Attack = attack
+                }
+            };
+            attackEWV.ShowDialog(ResourceManager.mainWindowV);
+            ResourceManager.mainWindowVM.Tips = "打开了攻击结点：" + attack.Content + "的编辑窗体";
+        }
+
         // 反转结点取值
         public void ReverseBeAttacked()
         {
             BeAttacked = !beAttacked;
-            ResourceManager.mainWindowVM.Tips = beAttacked ? "修改结点为受攻击" : "修改结点为安全";
+            ResourceManager.mainWindowVM.Tips = beAttacked ? "修改结点为受攻击(True)" : "修改结点为安全(False)";
         }
 
         #endregion
