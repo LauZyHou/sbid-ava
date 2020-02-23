@@ -15,7 +15,7 @@ namespace sbid._VM
         private Attack attack;
         private bool beAttacked = false;
         private bool isLocked = false;
-        
+
 
         public Attack_VM()
         {
@@ -134,6 +134,18 @@ namespace sbid._VM
         {
             BeAttacked = !beAttacked;
             ResourceManager.mainWindowVM.Tips = beAttacked ? "修改结点为受攻击(True)" : "修改结点为安全(False)";
+        }
+
+        // 从孩子结点计算BeAttacked的值
+        public void CalculateBeAttacked()
+        {
+            /*
+             todo:通过孩子结点计算并设置当前结点BeAttacked的值是true(可攻击)还是false(安全)
+             其中SAND关系就直接当作AND关系处理
+             需要注意,递归到锁定(IsLocked=true)的结点就要退栈了,那样的结点直接使用其BeAttacked的值,而不继续向下到叶子
+             */
+
+            ResourceManager.mainWindowVM.Tips = "计算完成，该结点是" + (beAttacked ? "可攻击" : "安全") + "的";
         }
 
         #endregion

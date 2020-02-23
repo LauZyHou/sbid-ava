@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="sbid._V.MainWindow_V"
-        Title="🔮SBID-AVA 跨平台内生安全建模工具" WindowState="Maximized">
+        Title="🔮SBID-AVA 跨平台内生安全建模工具" WindowState="Normal">
 
   <!--用于在开发设计时正确绑定VM中的命令能在xaml中看到按钮不是灰色,实际设置DataContext是在App.xaml.cs中-->
   <Design.DataContext>
