@@ -11,10 +11,10 @@ namespace sbid._VM
         public ClassDiagram_P_VM()
         {
             Name = "类图";
-            init_data();
         }
 
-        private void init_data()
+        // 这里改成给外部主动调用
+        public void init_data()
         {
             NetworkItemVMs.Add(
                 new UserType_VM(sbid._M.Type.TYPE_INT)

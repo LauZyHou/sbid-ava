@@ -9,14 +9,12 @@ namespace sbid._VM
 {
     public class UserType_VM : NetworkItem_VM
     {
-        private static int _id = 1;
         private sbid._M.Type type;
 
         // 无参构造时,构造的总是UserType
         public UserType_VM()
         {
-            type = new UserType("未命名" + _id);
-            _id++;
+            this.type = new UserType();
         }
 
         // 传入Type参数的构造,当为内置的int和bool创建UserType_VM时使用此构造
@@ -62,10 +60,10 @@ namespace sbid._VM
             // 将所有的Type也传入,作为可添加的Attribute的可选类型
             foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs)
             {
-                if (item is UserType_VM && item != this) 
+                if (item is UserType_VM && item != this)
                 {
                     ((UserType_EW_VM)userTypeEWV.DataContext).Types.Add(((UserType_VM)item).Type);
-                } 
+                }
             }
 
             userTypeEWV.ShowDialog(ResourceManager.mainWindowV);

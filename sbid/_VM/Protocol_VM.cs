@@ -9,15 +9,15 @@ namespace sbid._VM
 {
     public class Protocol_VM : ViewModelBase
     {
-        private static int _id = 1;
+        public static int _id = 0;
         private Protocol protocol;
         private ObservableCollection<Panel_VM> panelVMs = new ObservableCollection<Panel_VM>();
         private Panel_VM selectedItem;
 
         public Protocol_VM()
         {
-            protocol = new Protocol("协议" + _id);
             _id++;
+            protocol = new Protocol("协议" + _id);
 
             Panel_VM classDiagramPVM = new Panel_VM("概览");
             //classDiagramPVM.SidePanelVMs.Add(new UserType_P_VM());

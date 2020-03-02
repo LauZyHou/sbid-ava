@@ -10,9 +10,9 @@ namespace sbid._M
     {
         private ObservableCollection<Attribute> attributes = new ObservableCollection<Attribute>();
 
-        public UserType(string name) : base(name)
+        public UserType() : base()
         {
-            test_data();
+            //test_data();
         }
 
         public ObservableCollection<Attribute> Attributes { get => attributes; set => attributes = value; }
