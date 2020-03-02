@@ -10,7 +10,7 @@ namespace sbid._VM
     // 普通状态VM
     public class State_VM : NetworkItem_VM
     {
-        private State state = new State("未命名");
+        private State state = new State();
 
         // 构造时添加6个锚点
         public State_VM(double x, double y)

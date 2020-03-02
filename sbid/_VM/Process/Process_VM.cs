@@ -8,14 +8,12 @@ namespace sbid._VM
 {
     public class Process_VM : NetworkItem_VM
     {
-        private static int _id = 1;
         private Process process;
         private StateMachine_P_VM stateMachine_P_VM;
 
         public Process_VM()
         {
-            process = new Process("未命名" + _id);
-            _id++;
+            process = new Process();
         }
 
         public Process Process { get => process; set => process = value; }

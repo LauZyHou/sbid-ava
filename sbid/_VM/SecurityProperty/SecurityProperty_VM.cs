@@ -9,13 +9,11 @@ namespace sbid._VM
 {
     public class SecurityProperty_VM : NetworkItem_VM
     {
-        private static int _id = 1;
         private SecurityProperty securityProperty;
 
         public SecurityProperty_VM()
         {
-            securityProperty = new SecurityProperty("未命名" + _id);
-            _id++;
+            securityProperty = new SecurityProperty();
         }
 
         public SecurityProperty SecurityProperty { get => securityProperty; set => securityProperty = value; }

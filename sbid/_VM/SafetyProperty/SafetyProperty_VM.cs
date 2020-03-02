@@ -8,13 +8,11 @@ namespace sbid._VM
 {
     public class SafetyProperty_VM : NetworkItem_VM
     {
-        public static int _id = 1;
         private SafetyProperty safetyProperty;
 
         public SafetyProperty_VM()
         {
-            safetyProperty = new SafetyProperty("未命名" + _id);
-            _id++;
+            safetyProperty = new SafetyProperty();
         }
 
         public SafetyProperty SafetyProperty { get => safetyProperty; set => safetyProperty = value; }

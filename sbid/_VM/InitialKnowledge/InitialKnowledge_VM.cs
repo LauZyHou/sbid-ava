@@ -8,13 +8,11 @@ namespace sbid._VM
 {
     public class InitialKnowledge_VM : NetworkItem_VM
     {
-        private static int _id = 1;
         private InitialKnowledge initialKnowledge;
 
         public InitialKnowledge_VM()
         {
-            initialKnowledge = new InitialKnowledge("未命名" + _id);
-            _id++;
+            initialKnowledge = new InitialKnowledge();
         }
 
         public InitialKnowledge InitialKnowledge { get => initialKnowledge; set => initialKnowledge = value; }

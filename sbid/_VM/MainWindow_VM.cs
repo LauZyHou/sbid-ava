@@ -261,6 +261,7 @@ namespace sbid._VM
                                 xmlWriter.WriteStartElement("Attribute");
                                 xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
                                 xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
                                 xmlWriter.WriteEndElement();
                             }
                         }
@@ -268,7 +269,153 @@ namespace sbid._VM
                     }
                     else if (item is Process_VM)
                     {
-                        // todo
+                        Process_VM vm = (Process_VM)item;
+                        xmlWriter.WriteStartElement("Process_VM");
+                        xmlWriter.WriteAttributeString("x", vm.X.ToString());
+                        xmlWriter.WriteAttributeString("y", vm.Y.ToString());
+                        xmlWriter.WriteAttributeString("name", vm.Process.Name);
+                        xmlWriter.WriteAttributeString("id", vm.Process.Id.ToString());
+                        foreach (Attribute attr in vm.Process.Attributes)
+                        {
+                            xmlWriter.WriteStartElement("Attribute");
+                            xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
+                            xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+                            xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Method method in vm.Process.Methods)
+                        {
+                            xmlWriter.WriteStartElement("Method");
+                            xmlWriter.WriteAttributeString("returnType_ref", method.ReturnType.Id.ToString());
+                            xmlWriter.WriteAttributeString("name", method.Name);
+                            xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                            foreach (Attribute attr in method.Parameters)
+                            {
+                                xmlWriter.WriteStartElement("Parameter");
+                                xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
+                                xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (CommMethod commMethod in vm.Process.CommMethods)
+                        {
+                            xmlWriter.WriteStartElement("CommMethod");
+                            xmlWriter.WriteAttributeString("name", commMethod.Name);
+                            xmlWriter.WriteAttributeString("inOutSuffix", commMethod.InOutSuffix.ToString());
+                            foreach (Attribute attr in commMethod.Parameters)
+                            {
+                                xmlWriter.WriteStartElement("Parameter");
+                                xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
+                                xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is Axiom_VM)
+                    {
+                        Axiom_VM vm = (Axiom_VM)item;
+                        xmlWriter.WriteStartElement("Axiom_VM");
+                        xmlWriter.WriteAttributeString("x", vm.X.ToString());
+                        xmlWriter.WriteAttributeString("y", vm.Y.ToString());
+                        xmlWriter.WriteAttributeString("name", vm.Axiom.Name);
+                        xmlWriter.WriteAttributeString("id", vm.Axiom.Id.ToString());
+                        foreach (Method method in vm.Axiom.Methods)
+                        {
+                            xmlWriter.WriteStartElement("Method");
+                            xmlWriter.WriteAttributeString("returnType_ref", method.ReturnType.Id.ToString());
+                            xmlWriter.WriteAttributeString("name", method.Name);
+                            xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                            foreach (Attribute attr in method.Parameters)
+                            {
+                                xmlWriter.WriteStartElement("Parameter");
+                                xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
+                                xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Formula formula in vm.Axiom.Formulas)
+                        {
+                            xmlWriter.WriteStartElement("Formula");
+                            xmlWriter.WriteAttributeString("content", formula.Content);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is InitialKnowledge_VM)
+                    {
+                        InitialKnowledge_VM vm = (InitialKnowledge_VM)item;
+                        xmlWriter.WriteStartElement("InitialKnowledge_VM");
+                        xmlWriter.WriteAttributeString("x", vm.X.ToString());
+                        xmlWriter.WriteAttributeString("y", vm.Y.ToString());
+                        xmlWriter.WriteAttributeString("name", vm.InitialKnowledge.Name);
+                        xmlWriter.WriteAttributeString("id", vm.InitialKnowledge.Id.ToString());
+                        foreach (KnowledgePair knowledgePair in vm.InitialKnowledge.KnowledgePairs)
+                        {
+                            xmlWriter.WriteStartElement("KnowledgePair");
+                            xmlWriter.WriteAttributeString("process_ref", knowledgePair.Process.Id.ToString());
+                            // 为了这里需要，特地为Attribute也添加了Id，读取xml的时候才能知道选的是Process的哪个Attribute
+                            // 下面类似的地方标注了"注意"字样
+                            xmlWriter.WriteAttributeString("attribute_ref", knowledgePair.Attribute.Id.ToString());
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is SafetyProperty_VM)
+                    {
+                        SafetyProperty_VM vm = (SafetyProperty_VM)item;
+                        xmlWriter.WriteStartElement("SafetyProperty_VM");
+                        xmlWriter.WriteAttributeString("x", vm.X.ToString());
+                        xmlWriter.WriteAttributeString("y", vm.Y.ToString());
+                        xmlWriter.WriteAttributeString("name", vm.SafetyProperty.Name);
+                        xmlWriter.WriteAttributeString("id", vm.SafetyProperty.Id.ToString());
+                        foreach (Formula formula in vm.SafetyProperty.CTLs)
+                        {
+                            xmlWriter.WriteStartElement("CTL");
+                            xmlWriter.WriteAttributeString("content", formula.Content);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Formula formula in vm.SafetyProperty.Invariants)
+                        {
+                            xmlWriter.WriteStartElement("Invariant");
+                            xmlWriter.WriteAttributeString("content", formula.Content);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is SecurityProperty_VM)
+                    {
+                        SecurityProperty_VM vm = (SecurityProperty_VM)item;
+                        xmlWriter.WriteStartElement("SecurityProperty_VM");
+                        xmlWriter.WriteAttributeString("x", vm.X.ToString());
+                        xmlWriter.WriteAttributeString("y", vm.Y.ToString());
+                        xmlWriter.WriteAttributeString("name", vm.SecurityProperty.Name);
+                        xmlWriter.WriteAttributeString("id", vm.SecurityProperty.Id.ToString());
+                        foreach (Confidential confidential in vm.SecurityProperty.Confidentials)
+                        {
+                            xmlWriter.WriteStartElement("Confidential");
+                            xmlWriter.WriteAttributeString("process_ref", confidential.Process.Id.ToString());
+                            xmlWriter.WriteAttributeString("attribute_ref", confidential.Attribute.Id.ToString()); // 注意
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Authenticity authenticity in vm.SecurityProperty.Authenticities)
+                        {
+                            xmlWriter.WriteStartElement("Authenticity");
+                            xmlWriter.WriteAttributeString("processA_ref", authenticity.ProcessA.Id.ToString());
+                            xmlWriter.WriteAttributeString("stateA_ref", authenticity.StateA.Id.ToString());
+                            xmlWriter.WriteAttributeString("attributeA_ref", authenticity.AttributeA.Id.ToString()); // 注意
+                            xmlWriter.WriteAttributeString("processB_ref", authenticity.ProcessB.Id.ToString());
+                            xmlWriter.WriteAttributeString("stateB_ref", authenticity.StateB.Id.ToString());
+                            xmlWriter.WriteAttributeString("attributeB_ref", authenticity.AttributeB.Id.ToString()); // 注意
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
                     }
                 }
                 xmlWriter.WriteEndElement();
@@ -299,9 +446,10 @@ namespace sbid._VM
             // 项目文件去除后缀名".sbid"部分
             string cleanName = fileName.Substring(0, fileName.Length - 5);
 
-            // 重置协议数据
+            // 重置项目中的各项元数据，如id计数器等
             protocolVMs.Clear();
-            Protocol_VM._id = Type._id = 0;
+            Protocol_VM._id = Type._id = Process._id = Axiom._id = InitialKnowledge._id
+                = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id = 0;
             selectedItem = null;
 
             // 读取".sbid"文件，以创建相应的协议面板
@@ -331,8 +479,8 @@ namespace sbid._VM
                 /*
                  因为可能出现先创建的类图引用了后创建的类图的情况
                  所以这里扫描两遍类图
-                 第一遍扫描把所有的类图VM创建出来(里面的V自动跟着创建)，注意还要把id写好
-                 第二遍扫描再去管里面的内容(根据id找引用了谁)
+                 第一遍扫描把所有的类图VM创建出来(里面的M自动跟着创建)，注意还要把id盖掉
+                 第二遍扫描再去管里面的内容(根据xxx_ref所指定的id找引用了谁)
                  */
                 // 第一遍扫描
                 ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
@@ -366,6 +514,30 @@ namespace sbid._VM
                             }
                             break;
                         case "Process_VM":
+                            networkItem_VM = new Process_VM();
+                            ((Process_VM)networkItem_VM).Process.Id = int.Parse(element.GetAttribute("id"));
+                            ((Process_VM)networkItem_VM).Process.Name = element.GetAttribute("name");
+                            // todo 对应的状态机面板
+                            break;
+                        case "Axiom_VM":
+                            networkItem_VM = new Axiom_VM();
+                            ((Axiom_VM)networkItem_VM).Axiom.Id = int.Parse(element.GetAttribute("id"));
+                            ((Axiom_VM)networkItem_VM).Axiom.Name = element.GetAttribute("name");
+                            break;
+                        case "InitialKnowledge_VM":
+                            networkItem_VM = new InitialKnowledge_VM();
+                            ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Id = int.Parse(element.GetAttribute("id"));
+                            ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Name = element.GetAttribute("name");
+                            break;
+                        case "SafetyProperty_VM":
+                            networkItem_VM = new SafetyProperty_VM();
+                            ((SafetyProperty_VM)networkItem_VM).SafetyProperty.Id = int.Parse(element.GetAttribute("id"));
+                            ((SafetyProperty_VM)networkItem_VM).SafetyProperty.Name = element.GetAttribute("name");
+                            break;
+                        case "SecurityProperty_VM":
+                            networkItem_VM = new SecurityProperty_VM();
+                            ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Id = int.Parse(element.GetAttribute("id"));
+                            ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Name = element.GetAttribute("name");
                             break;
                     }
                     // 写入位置信息

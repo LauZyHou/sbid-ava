@@ -9,24 +9,24 @@ namespace sbid._M
     // 公理
     public class Axiom : ReactiveObject
     {
+        public static int _id = 0;
         private string name;
         private ObservableCollection<Method> methods = new ObservableCollection<Method>();
         private ObservableCollection<Formula> formulas = new ObservableCollection<Formula>();
+        private int id;
 
         public Axiom()
         {
-            test_data();
-        }
-
-        public Axiom(string name)
-        {
-            this.name = name;
+            _id++;
+            this.id = _id;
+            this.name = "未命名" + this.id;
             test_data();
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
         public ObservableCollection<Formula> Formulas { get => formulas; set => formulas = value; }
+        public int Id { get => id; set => id = value; }
 
         private void test_data()
         {
