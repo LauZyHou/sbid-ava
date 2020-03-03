@@ -24,6 +24,15 @@ namespace sbid._M
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         public ObservableCollection<Formula> CTLs { get => cTLs; set => cTLs = value; }
         public ObservableCollection<Formula> Invariants { get => invariants; set => invariants = value; }
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
     }
 }

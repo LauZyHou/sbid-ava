@@ -24,6 +24,15 @@ namespace sbid._M
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         public ObservableCollection<Confidential> Confidentials { get => confidentials; set => confidentials = value; }
         public ObservableCollection<Authenticity> Authenticities { get => authenticities; set => authenticities = value; }
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
     }
 }

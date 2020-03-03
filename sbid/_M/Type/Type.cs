@@ -29,7 +29,18 @@ namespace sbid._M
         // 类型名
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         // 自增Id
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                // 在手动设置Id时(读取项目)要检查当前设置值是否比计数器还要大
+                // 如果比计数器大，那么要将计数器至少置为这个值，下次_id++才能比当前id大
+                if (value > _id)
+                    _id = value;
+            }
+        }
 
         // 系统内写死的两个内置类型,使用此唯一引用,且不允许修改
         public static readonly Type TYPE_INT = new Type("int");

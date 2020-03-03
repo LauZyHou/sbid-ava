@@ -86,6 +86,15 @@ namespace sbid._VM
             }
         }
 
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
     }
 }

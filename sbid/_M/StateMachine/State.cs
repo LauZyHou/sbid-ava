@@ -19,6 +19,15 @@ namespace sbid._M
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
     }
 }

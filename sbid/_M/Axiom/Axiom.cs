@@ -26,7 +26,16 @@ namespace sbid._M
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
         public ObservableCollection<Formula> Formulas { get => formulas; set => formulas = value; }
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
 
         private void test_data()
         {

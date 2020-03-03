@@ -556,6 +556,8 @@ namespace sbid._VM
                  第一遍扫描把所有的类图VM创建出来(里面的M自动跟着创建)，注意还要把id盖掉
                  第二遍扫描再去管里面的内容(根据xxx_ref所指定的id找引用了谁)
                  */
+                Dictionary<int, Type> typeDict = new Dictionary<int, Type>(); // id->类型
+                Dictionary<int, Process> processDict = new Dictionary<int, Process>(); // id->进程模板
                 // 第一遍扫描
                 ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
                 XmlNode xmlNode = doc.SelectSingleNode("Protocol_VM/ClassDiagram_P_VM");
@@ -564,6 +566,7 @@ namespace sbid._VM
                 {
                     XmlElement element = (XmlElement)node;
                     NetworkItem_VM networkItem_VM = null;
+                    int id = int.Parse(element.GetAttribute("id"));
                     switch (node.Name)
                     {
                         case "UserType_VM":
@@ -571,26 +574,30 @@ namespace sbid._VM
                             {
                                 if (element.GetAttribute("name") == "int")
                                 {
-                                    Type.TYPE_INT.Id = int.Parse(element.GetAttribute("id"));
+                                    Type.TYPE_INT.Id = id;
+                                    typeDict[id] = Type.TYPE_INT; // 写入字典
                                     networkItem_VM = new UserType_VM(Type.TYPE_INT);
                                 }
                                 else if (element.GetAttribute("name") == "bool")
                                 {
-                                    Type.TYPE_BOOL.Id = int.Parse(element.GetAttribute("id"));
+                                    Type.TYPE_BOOL.Id = id;
+                                    typeDict[id] = Type.TYPE_BOOL; // 写入字典
                                     networkItem_VM = new UserType_VM(Type.TYPE_BOOL);
                                 }
                             }
                             else // 用户自定义类型
                             {
                                 networkItem_VM = new UserType_VM();
-                                ((UserType_VM)networkItem_VM).Type.Id = int.Parse(element.GetAttribute("id"));
+                                ((UserType_VM)networkItem_VM).Type.Id = id;
+                                typeDict[id] = ((UserType_VM)networkItem_VM).Type; // 写入字典
                                 ((UserType_VM)networkItem_VM).Type.Name = element.GetAttribute("name");
                             }
                             break;
                         case "Process_VM":
                             networkItem_VM = new Process_VM();
                             Process_VM process_VM = (Process_VM)networkItem_VM;
-                            process_VM.Process.Id = int.Parse(element.GetAttribute("id"));
+                            process_VM.Process.Id = id;
+                            processDict[id] = process_VM.Process; // 写入字典
                             process_VM.Process.Name = element.GetAttribute("name");
                             // 创建对应的状态机面板，加到当前协议的状态机选项卡下面
                             StateMachine_P_VM pvm = new StateMachine_P_VM(process_VM.Process);
@@ -600,24 +607,28 @@ namespace sbid._VM
                             break;
                         case "Axiom_VM":
                             networkItem_VM = new Axiom_VM();
-                            ((Axiom_VM)networkItem_VM).Axiom.Id = int.Parse(element.GetAttribute("id"));
+                            ((Axiom_VM)networkItem_VM).Axiom.Id = id;
                             ((Axiom_VM)networkItem_VM).Axiom.Name = element.GetAttribute("name");
                             break;
                         case "InitialKnowledge_VM":
                             networkItem_VM = new InitialKnowledge_VM();
-                            ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Id = int.Parse(element.GetAttribute("id"));
+                            ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Id = id;
                             ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Name = element.GetAttribute("name");
                             break;
                         case "SafetyProperty_VM":
                             networkItem_VM = new SafetyProperty_VM();
-                            ((SafetyProperty_VM)networkItem_VM).SafetyProperty.Id = int.Parse(element.GetAttribute("id"));
+                            ((SafetyProperty_VM)networkItem_VM).SafetyProperty.Id = id;
                             ((SafetyProperty_VM)networkItem_VM).SafetyProperty.Name = element.GetAttribute("name");
                             break;
                         case "SecurityProperty_VM":
                             networkItem_VM = new SecurityProperty_VM();
-                            ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Id = int.Parse(element.GetAttribute("id"));
+                            ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Id = id;
                             ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Name = element.GetAttribute("name");
                             break;
+                        default:
+                            Tips = "[解析ClassDiagram_P_VM时出错]未知的子标签！";
+                            cleanProject();
+                            return false;
                     }
                     // 写入位置信息
                     if (networkItem_VM != null)
@@ -734,6 +745,8 @@ namespace sbid._VM
                                 if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
                                 {
                                     Tips = "[解析Transition_VM时出错]无法找到某端的锚点！";
+                                    cleanProject();
+                                    return false;
                                 }
                                 transition_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
                                 transition_VM.Dest = connectorDict[destRef];
@@ -751,53 +764,136 @@ namespace sbid._VM
                         }
                     }
                 }
-            }
 
-            /*
-            // 读取".sbid"文件，以创建这么多的协议面板
-            XmlTextReader xmlReader = new XmlTextReader(fileName);
-            xmlReader.WhitespaceHandling = WhitespaceHandling.None;
-            protocolVMs.Clear(); // 清除旧的协议
-            while (xmlReader.Read())
-            {
-                if(xmlReader.NodeType == XmlNodeType.Element && xmlReader.Name== "Protocol_VM")
+                // 概览>类图面板：第二遍扫描(将类图的内容写进来)
+                xmlNode = doc.SelectSingleNode("Protocol_VM/ClassDiagram_P_VM");
+                nodeList = xmlNode.ChildNodes;
+                for (int j = 0; j < nodeList.Count; j++)
                 {
-                    this.AddProtocol();
-                }
-            }
-            xmlReader.Close();
-
-            // 读取各个协议的".xml"文件，这里改用XmlDocument
-            for (int i = 0; i < protocolVMs.Count; i++)
-            {
-                // 当前协议
-                Protocol_VM protocolVM = protocolVMs[i];
-                // 每个协议文件名是"项目名_i.xml"
-                xmlReader = new XmlTextReader(cleanName + "_" + i.ToString() + ".xml");
-
-                while (xmlReader.Read())
-                {
-                    if (xmlReader.NodeType == XmlNodeType.Element)
+                    XmlNode node = nodeList[j];
+                    XmlElement element = (XmlElement)node;
+                    // 因为第一次扫描和这次顺序一样，所以这里直接取
+                    NetworkItem_VM networkItem_VM = classDiagram_P_VM.NetworkItemVMs[j];
+                    switch (node.Name)
                     {
-                        switch (xmlReader.Name)
-                        {
-                            case "ClassDiagram_P_VM":
-                                // todo
-                                break;
-                            case "StateMachine_P_VMs":
-                                break;
-                            case "AttackTree_P_VMs":
-                                break;
-                            case "SequenceDiagram_P_VMs":
-                                break;
-                        }
+                        case "UserType_VM":
+                            if (element.GetAttribute("basic") == "false") // 用户自定义类型
+                            {
+                                UserType_VM userType_VM = (UserType_VM)networkItem_VM;
+                                UserType userType = (UserType)userType_VM.Type; // [fixme]转不过去???
+                                // id和name在第一轮就处理过了，这里只要放其Attribute
+                                foreach (XmlNode attrNode in node.ChildNodes) // <Attribute type_ref="1" identifier="a" id="1" />
+                                {
+                                    XmlElement attrElement = (XmlElement)attrNode;
+                                    int typeRef = int.Parse(attrElement.GetAttribute("type_ref"));
+                                    int id = int.Parse(attrElement.GetAttribute("id"));
+                                    string identifier = attrElement.GetAttribute("identifier");
+                                    if (!typeDict.ContainsKey(typeRef))
+                                    {
+                                        Tips = "[解析UserType_VM时出错]无法找到Attribute的类型！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    Attribute attribute = new Attribute(typeDict[typeRef], identifier);
+                                    attribute.Id = id;
+                                    userType.Attributes.Add(attribute);
+                                }
+                            }
+                            break;
+                        case "Process_VM":
+                            Process_VM process_VM = (Process_VM)networkItem_VM;
+                            Process process = process_VM.Process;
+                            foreach (XmlNode processChildNode in node.ChildNodes) // Attribute/Method/CommMethod
+                            {
+                                XmlElement pcElement = (XmlElement)processChildNode;
+                                switch (processChildNode.Name)
+                                {
+                                    case "Attribute":
+                                        int typeRef = int.Parse(pcElement.GetAttribute("type_ref"));
+                                        int id = int.Parse(pcElement.GetAttribute("id"));
+                                        string identifier = pcElement.GetAttribute("identifier");
+                                        if (!typeDict.ContainsKey(typeRef))
+                                        {
+                                            Tips = "[解析Process_VM时出错]无法找到Attribute的类型！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        Attribute attribute = new Attribute(typeDict[typeRef], identifier);
+                                        attribute.Id = id;
+                                        process.Attributes.Add(attribute);
+                                        break;
+                                    case "Method":
+                                        int returnTypeRef = int.Parse(pcElement.GetAttribute("returnType_ref"));
+                                        if (!typeDict.ContainsKey(returnTypeRef))
+                                        {
+                                            Tips = "[解析Process_VM时出错]无法找到Method的返回类型！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        string name = pcElement.GetAttribute("name");
+                                        Crypto cryptoSuffix = (Crypto)System.Enum.Parse(typeof(Crypto), pcElement.GetAttribute("cryptoSuffix"));
+                                        ObservableCollection<Attribute> parameters = new ObservableCollection<Attribute>();
+                                        foreach (XmlNode paramNode in processChildNode.ChildNodes) // <Parameter type_ref="1" identifier="key" id="10" />
+                                        {
+                                            XmlElement paramElement = (XmlElement)paramNode;
+                                            typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
+                                            int paramId = int.Parse(paramElement.GetAttribute("id"));
+                                            identifier = paramElement.GetAttribute("identifier");
+                                            if (!typeDict.ContainsKey(typeRef))
+                                            {
+                                                Tips = "[解析Process_VM时出错]无法找到Method的参数类型！";
+                                                cleanProject();
+                                                return false;
+                                            }
+                                            Attribute param = new Attribute(typeDict[typeRef], identifier);
+                                            param.Id = paramId;
+                                            parameters.Add(param);
+                                        }
+                                        Method method = new Method(typeDict[returnTypeRef], name, parameters, cryptoSuffix);
+                                        process.Methods.Add(method);
+                                        break;
+                                    case "CommMethod":
+                                        name = pcElement.GetAttribute("name");
+                                        InOut inOutSuffix = (InOut)System.Enum.Parse(typeof(InOut), pcElement.GetAttribute("inOutSuffix"));
+                                        parameters = new ObservableCollection<Attribute>();
+                                        foreach (XmlNode paramNode in processChildNode.ChildNodes) // <Parameter type_ref="1" identifier="key" id="10" />
+                                        {
+                                            XmlElement paramElement = (XmlElement)paramNode;
+                                            typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
+                                            int paramId = int.Parse(paramElement.GetAttribute("id"));
+                                            identifier = paramElement.GetAttribute("identifier");
+                                            if (!typeDict.ContainsKey(typeRef))
+                                            {
+                                                Tips = "[解析Process_VM时出错]无法找到CommMethod的参数类型！";
+                                                cleanProject();
+                                                return false;
+                                            }
+                                            Attribute param = new Attribute(typeDict[typeRef], identifier);
+                                            param.Id = paramId;
+                                            parameters.Add(param);
+                                        }
+                                        CommMethod commMethod = new CommMethod(name, parameters, inOutSuffix);
+                                        process.CommMethods.Add(commMethod);
+                                        break;
+                                }
+                            }
+                            break;
+                        case "Axiom_VM":
+                            // todo
+                            break;
+                        case "InitialKnowledge_VM":
+
+                            break;
+                        case "SafetyProperty_VM":
+
+                            break;
+                        case "SecurityProperty_VM":
+
+                            break;
                     }
                 }
 
-                xmlReader.Close();
             }
-            */
-
             return true;
         }
 

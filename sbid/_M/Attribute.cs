@@ -23,7 +23,16 @@ namespace sbid._M
 
         public Type Type { get => type; set => this.RaiseAndSetIfChanged(ref type, value); }
         public string Identifier { get => identifier; set => this.RaiseAndSetIfChanged(ref identifier, value); }
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
 
         public override string ToString()
         {

@@ -23,7 +23,7 @@ namespace sbid._M
             _id++;
             this.id = _id;
             this.name = "未命名" + this.id;
-            test_data();
+            //test_data();
         }
 
         // 进程模板名
@@ -34,7 +34,16 @@ namespace sbid._M
         public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
         // 通信方法列表
         public ObservableCollection<CommMethod> CommMethods { get => commMethods; set => commMethods = value; }
-        public int Id { get => id; set => id = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
 
         // *对应的状态机上的所有状态(这是给SecurityProperty中编辑Authenticity时,选择Process里的状态用)
         // 这个字段不是实时计算的,仅在编辑SecurityProperty窗口打开前重新计算,并重新写入
