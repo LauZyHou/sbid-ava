@@ -182,7 +182,7 @@ namespace sbid._VM
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filters.Add(new FileDialogFilter() { Name = "项目文件", Extensions = { "sbid" } });
             string[] result = await dialog.ShowAsync(ResourceManager.mainWindowV);
-            return string.Join(" ", result);
+            return result == null ? "" : string.Join(" ", result); // Linux bugfix:直接关闭时不能返回null
         }
 
         // 预保存文件：返回文件路径
@@ -191,7 +191,10 @@ namespace sbid._VM
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filters.Add(new FileDialogFilter() { Name = "项目文件", Extensions = { "sbid" } });
             string result = await dialog.ShowAsync(ResourceManager.mainWindowV);
-            return result;
+            // Linux bugfix:某些平台输入文件名不会自动补全.sbid后缀名,这里判断一下手动补上
+            if (string.IsNullOrEmpty(result) || result.EndsWith(".sbid"))
+                return result;
+            return result + ".sbid";
         }
 
         // 执行保存项目，传入".sbid"文件名，返回是否保存成功
@@ -420,8 +423,80 @@ namespace sbid._VM
                 }
                 xmlWriter.WriteEndElement();
 
-                // 状态机面板todo
+                // 状态机面板
                 xmlWriter.WriteStartElement("StateMachine_P_VMs");
+                ObservableCollection<SidePanel_VM> stateMachine_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 所有的状态机
+                foreach (SidePanel_VM sidePanel_VM in stateMachine_P_VMs)
+                {
+                    StateMachine_P_VM stateMachine_P_VM = (StateMachine_P_VM)sidePanel_VM;
+                    xmlWriter.WriteStartElement("StateMachine_P_VM");
+                    xmlWriter.WriteAttributeString("process_ref", stateMachine_P_VM.Process.Id.ToString());
+                    foreach (ViewModelBase vm in stateMachine_P_VM.UserControlVMs) // 写入状态机的结点和连线等
+                    {
+                        if (vm is State_VM)
+                        {
+                            State_VM state_VM = (State_VM)vm;
+                            xmlWriter.WriteStartElement("State_VM");
+                            xmlWriter.WriteAttributeString("x", state_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", state_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("name", state_VM.State.Name);
+                            xmlWriter.WriteAttributeString("id", state_VM.State.Id.ToString());
+                            foreach (Connector_VM connector_VM in state_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is Transition_VM)
+                        {
+                            Transition_VM transition_VM = (Transition_VM)vm;
+                            xmlWriter.WriteStartElement("Transition_VM");
+                            xmlWriter.WriteAttributeString("source_ref", transition_VM.Source.Id.ToString()); // 源锚点
+                            xmlWriter.WriteAttributeString("dest_ref", transition_VM.Dest.Id.ToString()); // 目标锚点
+                            xmlWriter.WriteAttributeString("guard", transition_VM.Transition.Guard); // Guard条件
+                            foreach (Formula formula in transition_VM.Transition.Actions) // Actions列表
+                            {
+                                xmlWriter.WriteStartElement("Action");
+                                xmlWriter.WriteAttributeString("content", formula.Content);
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is InitState_VM)
+                        {
+                            InitState_VM initState_VM = (InitState_VM)vm;
+                            xmlWriter.WriteStartElement("InitState_VM");
+                            xmlWriter.WriteAttributeString("x", initState_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", initState_VM.Y.ToString());
+                            // *需不需要给InitState_VM本身设置id？目前的想法是不需要id
+                            foreach (Connector_VM connector_VM in initState_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is FinalState_VM)
+                        {
+                            FinalState_VM finalState_VM = (FinalState_VM)vm;
+                            xmlWriter.WriteStartElement("FinalState_VM");
+                            xmlWriter.WriteAttributeString("x", finalState_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", finalState_VM.Y.ToString());
+                            // *需不需要给FinalState_VM本身设置id？目前的想法是不需要id
+                            foreach (Connector_VM connector_VM in finalState_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                    }
+                    xmlWriter.WriteEndElement();
+                }
                 xmlWriter.WriteEndElement();
 
                 // 攻击树面板todo
@@ -449,7 +524,8 @@ namespace sbid._VM
             // 重置项目中的各项元数据，如id计数器等
             protocolVMs.Clear();
             Protocol_VM._id = Type._id = Process._id = Axiom._id = InitialKnowledge._id
-                = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id = 0;
+                = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id
+                = Connector_VM._id = 0;
             selectedItem = null;
 
             // 读取".sbid"文件，以创建相应的协议面板

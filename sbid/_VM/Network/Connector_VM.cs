@@ -10,17 +10,25 @@ namespace sbid._VM
     // 锚点VM
     public class Connector_VM : ViewModelBase
     {
+        public static int _id = 0;
         private Point pos;
         private Point oldPos;
         private Connection_VM connectionVM = null;
         private bool isActive = false;
+        private int id;
 
         // 无参构造用于xaml里Design
-        public Connector_VM() { }
+        public Connector_VM()
+        {
+            _id++;
+            this.id = _id;
+        }
 
         // 带位置的构造
         public Connector_VM(double x, double y)
         {
+            _id++;
+            this.id = _id;
             Pos = new Point(x, y);
         }
 
@@ -77,5 +85,7 @@ namespace sbid._VM
                 this.RaisePropertyChanged("Color"); // 通知颜色要重新计算了
             }
         }
+
+        public int Id { get => id; set => id = value; }
     }
 }
