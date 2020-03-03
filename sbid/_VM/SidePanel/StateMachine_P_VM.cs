@@ -13,7 +13,6 @@ namespace sbid._VM
         // 无参构造只是给xaml中的Design用
         public StateMachine_P_VM()
         {
-            init_data();
         }
 
         public StateMachine_P_VM(Process process)
@@ -21,11 +20,9 @@ namespace sbid._VM
             this.process = process;
             // todo数据绑定
             this.Name = process.Name;
-
-            init_data();
         }
 
-        private void init_data()
+        public void init_data()
         {
             InitState_VM initStateVM = new InitState_VM(70, 20); // 初始状态
             State_VM stateVM = new State_VM(35, 240); // 白给状态
