@@ -25,9 +25,9 @@
     <Menu Name="menu" Grid.Row="0" MinHeight="23" Background="LightGray">
       <MenuItem Header="文件">
         <MenuItem Header="新协议" Command="{Binding AddProtocol}"/>
-        <MenuItem Header="打开.."/>
-        <MenuItem Header="保存"/>
-        <MenuItem Header="另存为"/>
+        <MenuItem Header="保存" Command="{Binding SaveAllVM}"/>
+        <MenuItem Header="载入" Command="{Binding ReloadAllVM}"/>
+        <!--<MenuItem Header="另存为"/>-->
       </MenuItem>
       <MenuItem Header="模型">
         <!--<MenuItem Header="新类图(Class Diagram)" Command="{Binding AddClassDiagram}"/>-->
@@ -37,8 +37,8 @@
         <MenuItem Header="新顺序图(Sequence Diagram)" Command="{Binding AddSequenceDiagram}"/>
       </MenuItem>
       <MenuItem Header="帮助">
-        <MenuItem Header="使用手册"/>
-        <MenuItem Header="关于.."/>
+        <MenuItem Header="使用手册" IsEnabled="False"/>
+        <MenuItem Header="关于SBID-AVA" IsEnabled="False"/>
       </MenuItem>
     </Menu>
 
@@ -47,7 +47,7 @@
       <Button Command="{Binding AddProtocol}">新协议</Button>
       <Button Command="{Binding SaveAllVM}">保存</Button>
       <Button Command="{Binding ReloadAllVM}">载入</Button>
-      <Button>生成XML</Button>
+      <Button IsEnabled="False">生成XML</Button>
       <!--<Button Command="{Binding AddClassDiagram}">新类图</Button>-->
       <Button Command="{Binding AddTopoGraph}">新拓扑图</Button>
       <Button Command="{Binding AddAttackTree}">新攻击树</Button>

@@ -33,9 +33,9 @@ namespace sbid._VM
             panelVMs.Add(topoGraphPVM);
 
             Panel_VM attackTreePVM = new Panel_VM("攻击树");
-            attackTreePVM.SidePanelVMs.Add(new AttackTree_P_VM());
-            attackTreePVM.SidePanelVMs.Add(new AttackTree_P_VM());
-            attackTreePVM.SelectedItem = attackTreePVM.SidePanelVMs[0];
+            //attackTreePVM.SidePanelVMs.Add(new AttackTree_P_VM());
+            //attackTreePVM.SidePanelVMs.Add(new AttackTree_P_VM());
+            //attackTreePVM.SelectedItem = attackTreePVM.SidePanelVMs[0];
             panelVMs.Add(attackTreePVM);
 
             Panel_VM ctlTreePVM = new Panel_VM("CTL语法树");

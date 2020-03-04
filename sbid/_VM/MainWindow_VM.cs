@@ -14,7 +14,7 @@ namespace sbid._VM
     {
         #region 字段
 
-        private string tips = "123";
+        private string tips = "在此处获取操作提示";
         private ObservableCollection<Protocol_VM> protocolVMs = new ObservableCollection<Protocol_VM>();
         private Protocol_VM selectedItem;
 
@@ -238,7 +238,8 @@ namespace sbid._VM
                 xmlWriter.WriteStartElement("Protocol_VM");
                 xmlWriter.WriteAttributeString("name", protocolVM.Protocol.Name);
 
-                // 概览>类图面板。这个比较特殊，因为就这一个，而且一定有这一个，用户既不能创建也不能销毁
+                #region 概览>类图面板
+                // 这个比较特殊，因为就这一个，而且一定有这一个，用户既不能创建也不能销毁
                 xmlWriter.WriteStartElement("ClassDiagram_P_VM");
                 ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
                 foreach (NetworkItem_VM item in classDiagram_P_VM.NetworkItemVMs)
@@ -424,8 +425,9 @@ namespace sbid._VM
                     }
                 }
                 xmlWriter.WriteEndElement();
+                #endregion
 
-                // 状态机面板
+                #region 状态机面板
                 xmlWriter.WriteStartElement("StateMachine_P_VMs");
                 ObservableCollection<SidePanel_VM> stateMachine_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 所有的状态机
                 foreach (SidePanel_VM sidePanel_VM in stateMachine_P_VMs)
@@ -500,14 +502,68 @@ namespace sbid._VM
                     xmlWriter.WriteEndElement();
                 }
                 xmlWriter.WriteEndElement();
+                #endregion
 
-                // 攻击树面板todo
+                #region 攻击树面板
                 xmlWriter.WriteStartElement("AttackTree_P_VMs");
+                ObservableCollection<SidePanel_VM> attackTree_P_VMs = protocolVM.PanelVMs[3].SidePanelVMs; // 所有的攻击树
+                foreach (SidePanel_VM sidePanel_VM in attackTree_P_VMs)
+                {
+                    AttackTree_P_VM attackTree_P_VM = (AttackTree_P_VM)sidePanel_VM;
+                    xmlWriter.WriteStartElement("AttackTree_P_VM");
+                    xmlWriter.WriteAttributeString("name", attackTree_P_VM.Name);
+                    foreach (ViewModelBase vm in attackTree_P_VM.UserControlVMs) // 写入结点和连线等
+                    {
+                        if (vm is Attack_VM)
+                        {
+                            Attack_VM attack_VM = (Attack_VM)vm;
+                            xmlWriter.WriteStartElement("Attack_VM");
+                            xmlWriter.WriteAttributeString("x", attack_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", attack_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("beAttacked", attack_VM.BeAttacked.ToString());
+                            xmlWriter.WriteAttributeString("isLocked", attack_VM.IsLocked.ToString());
+                            xmlWriter.WriteAttributeString("content", attack_VM.Attack.Content);
+                            foreach (Connector_VM connector_VM in attack_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is Relation_VM)
+                        {
+                            Relation_VM relation_VM = (Relation_VM)vm;
+                            xmlWriter.WriteStartElement("Relation_VM");
+                            xmlWriter.WriteAttributeString("x", relation_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", relation_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("relation", relation_VM.Relation.ToString());
+                            foreach (Connector_VM connector_VM in relation_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is Arrow_VM)
+                        {
+                            Arrow_VM arrow_VM = (Arrow_VM)vm;
+                            xmlWriter.WriteStartElement("Arrow_VM");
+                            xmlWriter.WriteAttributeString("source_ref", arrow_VM.Source.Id.ToString()); // 源锚点
+                            xmlWriter.WriteAttributeString("dest_ref", arrow_VM.Dest.Id.ToString()); // 目标锚点
+                            xmlWriter.WriteEndElement();
+                        }
+                    }
+                    xmlWriter.WriteEndElement();
+                }
                 xmlWriter.WriteEndElement();
+                #endregion
 
-                // 序列图面板todo
+                #region todo 序列图面板
                 xmlWriter.WriteStartElement("SequenceDiagram_P_VMs");
                 xmlWriter.WriteEndElement();
+                #endregion
 
                 // 协议尾
                 xmlWriter.WriteEndElement();
@@ -549,7 +605,7 @@ namespace sbid._VM
                 reader = XmlReader.Create(cleanName + "_" + i.ToString() + ".xml");
                 doc.Load(reader);
 
-                // 概览>类图面板（第一遍扫描）
+                #region 概览>类图面板（第一遍扫描）
                 /*
                  因为可能出现先创建的类图引用了后创建的类图的情况
                  所以这里扫描两遍类图
@@ -637,8 +693,9 @@ namespace sbid._VM
                         classDiagram_P_VM.NetworkItemVMs.Add(networkItem_VM);
                     }
                 }
+                #endregion
 
-                // 状态机面板
+                #region 状态机面板
                 ObservableCollection<SidePanel_VM> stateMachine_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 这里是创建进程模板时创建的
                 xmlNode = doc.SelectSingleNode("Protocol_VM/StateMachine_P_VMs");
                 nodeList = xmlNode.ChildNodes;
@@ -764,12 +821,14 @@ namespace sbid._VM
                     }
                 }
 
-                // 概览>类图面板（第二遍扫描）
+                #endregion
+
+                #region 概览>类图面板（第二遍扫描）
                 /*
                  第二遍扫描不包括引用了Process的Attribute或State的InitialKnowledge_VM和SecurityProperty_VM
                  因为Process_VM可能创建在他们的后面，然后再向他们中间引用后面的Process_VM
                  所以这两个东西交给第三遍扫描去做
-                */ 
+                */
                 xmlNode = doc.SelectSingleNode("Protocol_VM/ClassDiagram_P_VM");
                 nodeList = xmlNode.ChildNodes;
                 for (int j = 0; j < nodeList.Count; j++)
@@ -947,10 +1006,10 @@ namespace sbid._VM
                             }
                             break;
                     }
-                }// end of 第二遍扫描
+                }
+                #endregion
 
-
-                // 概览>类图面板（第三遍扫描）
+                #region 概览>类图面板（第三遍扫描）
                 /*
                  处理InitialKnowledge_VM和SecurityProperty_VM
                 */
@@ -1108,7 +1167,90 @@ namespace sbid._VM
                             }
                             break;
                     }
-                }// end of 第三遍扫描
+                }
+                #endregion
+
+                #region 攻击树面板
+                xmlNode = doc.SelectSingleNode("Protocol_VM/AttackTree_P_VMs");
+                nodeList = xmlNode.ChildNodes;
+                ObservableCollection<SidePanel_VM> attackTree_P_VMs = protocolVM.PanelVMs[3].SidePanelVMs;
+                foreach (XmlNode node in nodeList) // <AttackTree_P_VM name="攻击树1">
+                {
+                    XmlElement element = (XmlElement)node;
+                    AttackTree_P_VM attackTree_P_VM = new AttackTree_P_VM();
+                    attackTree_P_VM.Name = element.GetAttribute("name");
+                    Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
+                    foreach (XmlNode attackChildNode in node.ChildNodes) // Attack_VM/Relation_VM/Arrow_VM
+                    {
+                        XmlElement acElement = (XmlElement)attackChildNode;
+                        switch (attackChildNode.Name)
+                        {
+                            case "Attack_VM":
+                                double x = double.Parse(acElement.GetAttribute("x"));
+                                double y = double.Parse(acElement.GetAttribute("y"));
+                                Attack_VM attack_VM = new Attack_VM(x, y);
+                                attack_VM.Attack.Content = acElement.GetAttribute("content");
+                                attack_VM.BeAttacked = acElement.GetAttribute("beAttacked") == "True";
+                                attack_VM.IsLocked = acElement.GetAttribute("isLocked") == "True";
+                                if (attack_VM.ConnectorVMs.Count != acElement.ChildNodes.Count)
+                                {
+                                    Tips = "[解析Attack_VM时出错]锚点数量和系统要求不一致！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                for (int j = 0; j < attack_VM.ConnectorVMs.Count; j++)
+                                {
+                                    XmlNode connectorNode = acElement.ChildNodes[j];
+                                    XmlElement connectorElement = (XmlElement)connectorNode;
+                                    int id = int.Parse(connectorElement.GetAttribute("id"));
+                                    attack_VM.ConnectorVMs[j].Id = id;
+                                    connectorDict.Add(id, attack_VM.ConnectorVMs[j]); // 记录到字典里
+                                }
+                                attackTree_P_VM.UserControlVMs.Add(attack_VM);
+                                break;
+                            case "Relation_VM":
+                                x = double.Parse(acElement.GetAttribute("x"));
+                                y = double.Parse(acElement.GetAttribute("y"));
+                                Relation_VM relation_VM = new Relation_VM(x, y);
+                                relation_VM.Relation = (Relation)System.Enum.Parse(typeof(Relation), acElement.GetAttribute("relation"));
+                                if (relation_VM.ConnectorVMs.Count != acElement.ChildNodes.Count)
+                                {
+                                    Tips = "[解析Relation_VM时出错]锚点数量和系统要求不一致！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                for (int j = 0; j < relation_VM.ConnectorVMs.Count; j++)
+                                {
+                                    XmlNode connectorNode = acElement.ChildNodes[j];
+                                    XmlElement connectorElement = (XmlElement)connectorNode;
+                                    int id = int.Parse(connectorElement.GetAttribute("id"));
+                                    relation_VM.ConnectorVMs[j].Id = id;
+                                    connectorDict.Add(id, relation_VM.ConnectorVMs[j]); // 记录到字典里
+                                }
+                                attackTree_P_VM.UserControlVMs.Add(relation_VM);
+                                break;
+                            case "Arrow_VM":
+                                Arrow_VM arrow_VM = new Arrow_VM();
+                                int sourceRef = int.Parse(acElement.GetAttribute("source_ref"));
+                                int destRef = int.Parse(acElement.GetAttribute("dest_ref"));
+                                if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
+                                {
+                                    Tips = "[解析Arrow_VM时出错]无法找到某端的锚点！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                arrow_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
+                                arrow_VM.Dest = connectorDict[destRef];
+                                connectorDict[sourceRef].ConnectionVM = arrow_VM; // 从锚点反引连线
+                                connectorDict[destRef].ConnectionVM = arrow_VM;
+                                attackTree_P_VM.UserControlVMs.Add(arrow_VM);
+                                break;
+                        }
+                    }
+                    attackTree_P_VMs.Add(attackTree_P_VM);
+                    protocolVM.PanelVMs[3].SelectedItem = attackTree_P_VM; // fixme 改成记录SelectedItem
+                }
+                #endregion
 
             }
             return true;
