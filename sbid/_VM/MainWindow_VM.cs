@@ -549,7 +549,7 @@ namespace sbid._VM
                 reader = XmlReader.Create(cleanName + "_" + i.ToString() + ".xml");
                 doc.Load(reader);
 
-                // 概览>类图面板
+                // 概览>类图面板（第一遍扫描）
                 /*
                  因为可能出现先创建的类图引用了后创建的类图的情况
                  所以这里扫描两遍类图
@@ -557,8 +557,7 @@ namespace sbid._VM
                  第二遍扫描再去管里面的内容(根据xxx_ref所指定的id找引用了谁)
                  */
                 Dictionary<int, Type> typeDict = new Dictionary<int, Type>(); // id->类型
-                Dictionary<int, Process> processDict = new Dictionary<int, Process>(); // id->进程模板
-                // 第一遍扫描
+                Dictionary<int, Process_VM> processVMDict = new Dictionary<int, Process_VM>(); // id->进程模板VM(VM里才能找到状态机)
                 ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
                 XmlNode xmlNode = doc.SelectSingleNode("Protocol_VM/ClassDiagram_P_VM");
                 XmlNodeList nodeList = xmlNode.ChildNodes;
@@ -597,7 +596,7 @@ namespace sbid._VM
                             networkItem_VM = new Process_VM();
                             Process_VM process_VM = (Process_VM)networkItem_VM;
                             process_VM.Process.Id = id;
-                            processDict[id] = process_VM.Process; // 写入字典
+                            processVMDict[id] = process_VM; // 写入字典
                             process_VM.Process.Name = element.GetAttribute("name");
                             // 创建对应的状态机面板，加到当前协议的状态机选项卡下面
                             StateMachine_P_VM pvm = new StateMachine_P_VM(process_VM.Process);
@@ -765,7 +764,12 @@ namespace sbid._VM
                     }
                 }
 
-                // 概览>类图面板：第二遍扫描(将类图的内容写进来)
+                // 概览>类图面板（第二遍扫描）
+                /*
+                 第二遍扫描不包括引用了Process的Attribute或State的InitialKnowledge_VM和SecurityProperty_VM
+                 因为Process_VM可能创建在他们的后面，然后再向他们中间引用后面的Process_VM
+                 所以这两个东西交给第三遍扫描去做
+                */ 
                 xmlNode = doc.SelectSingleNode("Protocol_VM/ClassDiagram_P_VM");
                 nodeList = xmlNode.ChildNodes;
                 for (int j = 0; j < nodeList.Count; j++)
@@ -879,19 +883,232 @@ namespace sbid._VM
                             }
                             break;
                         case "Axiom_VM":
-                            // todo
-                            break;
-                        case "InitialKnowledge_VM":
-
+                            Axiom_VM axiom_VM = (Axiom_VM)networkItem_VM;
+                            Axiom axiom = axiom_VM.Axiom;
+                            foreach (XmlNode axiomChildNode in node.ChildNodes) // Method/Formula
+                            {
+                                XmlElement acElement = (XmlElement)axiomChildNode;
+                                switch (axiomChildNode.Name)
+                                {
+                                    case "Method":
+                                        int returnTypeRef = int.Parse(acElement.GetAttribute("returnType_ref"));
+                                        if (!typeDict.ContainsKey(returnTypeRef))
+                                        {
+                                            Tips = "[解析Axiom_VM时出错]无法找到Method的返回类型！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        string name = acElement.GetAttribute("name");
+                                        Crypto cryptoSuffix = (Crypto)System.Enum.Parse(typeof(Crypto), acElement.GetAttribute("cryptoSuffix"));
+                                        ObservableCollection<Attribute> parameters = new ObservableCollection<Attribute>();
+                                        foreach (XmlNode paramNode in axiomChildNode.ChildNodes) // <Parameter type_ref="1" identifier="key" id="10" />
+                                        {
+                                            XmlElement paramElement = (XmlElement)paramNode;
+                                            int typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
+                                            int paramId = int.Parse(paramElement.GetAttribute("id"));
+                                            string identifier = paramElement.GetAttribute("identifier");
+                                            if (!typeDict.ContainsKey(typeRef))
+                                            {
+                                                Tips = "[解析Axiom_VM时出错]无法找到Method的参数类型！";
+                                                cleanProject();
+                                                return false;
+                                            }
+                                            Attribute param = new Attribute(typeDict[typeRef], identifier);
+                                            param.Id = paramId;
+                                            parameters.Add(param);
+                                        }
+                                        Method method = new Method(typeDict[returnTypeRef], name, parameters, cryptoSuffix);
+                                        axiom.Methods.Add(method);
+                                        break;
+                                    case "Formula":
+                                        Formula formula = new Formula(acElement.GetAttribute("content"));
+                                        axiom.Formulas.Add(formula);
+                                        break;
+                                }
+                            }
                             break;
                         case "SafetyProperty_VM":
-
-                            break;
-                        case "SecurityProperty_VM":
-
+                            SafetyProperty_VM safetyProperty_VM = (SafetyProperty_VM)networkItem_VM;
+                            SafetyProperty safetyProperty = safetyProperty_VM.SafetyProperty;
+                            foreach (XmlNode safetyChildNode in node.ChildNodes) // <CTL content="" /> 或 <Invariant content = "" />
+                            {
+                                XmlElement safetyElement = (XmlElement)safetyChildNode;
+                                switch (safetyChildNode.Name)
+                                {
+                                    case "CTL":
+                                        string ctl = safetyElement.GetAttribute("content");
+                                        safetyProperty.CTLs.Add(new Formula(ctl));
+                                        break;
+                                    case "Invariant":
+                                        string invariant = safetyElement.GetAttribute("content");
+                                        safetyProperty.Invariants.Add(new Formula(invariant));
+                                        break;
+                                }
+                            }
                             break;
                     }
-                }
+                }// end of 第二遍扫描
+
+
+                // 概览>类图面板（第三遍扫描）
+                /*
+                 处理InitialKnowledge_VM和SecurityProperty_VM
+                */
+                for (int j = 0; j < nodeList.Count; j++)
+                {
+                    XmlNode node = nodeList[j];
+                    XmlElement element = (XmlElement)node;
+                    // 因为第一次扫描和这次顺序一样，所以这里直接取
+                    NetworkItem_VM networkItem_VM = classDiagram_P_VM.NetworkItemVMs[j];
+                    switch (node.Name)
+                    {
+                        case "InitialKnowledge_VM":
+                            InitialKnowledge_VM initialKnowledge_VM = (InitialKnowledge_VM)networkItem_VM;
+                            InitialKnowledge initialKnowledge = initialKnowledge_VM.InitialKnowledge;
+                            foreach (XmlNode ikpChildNode in node.ChildNodes) // <KnowledgePair process_ref="1" attribute_ref="8" />
+                            {
+                                XmlElement ikpElement = (XmlElement)ikpChildNode;
+                                int processRef = int.Parse(ikpElement.GetAttribute("process_ref"));
+                                if (!processVMDict.ContainsKey(processRef))
+                                {
+                                    Tips = "[解析InitialKnowledge_VM时出错]无法找到KnowledgePair引用的进程模板！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                int attributeRef = int.Parse(ikpElement.GetAttribute("attribute_ref"));
+                                Attribute findAttr = null;
+                                foreach (Attribute attribute in processVMDict[processRef].Process.Attributes)
+                                {
+                                    if (attribute.Id == attributeRef)
+                                    {
+                                        findAttr = attribute;
+                                        break;
+                                    }
+                                }
+                                if (findAttr == null)
+                                {
+                                    Tips = "[解析InitialKnowledge_VM时出错]无法找到KnowledgePair引用的进程模板下的Attribute！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                KnowledgePair knowledgePair = new KnowledgePair(processVMDict[processRef].Process, findAttr);
+                                initialKnowledge.KnowledgePairs.Add(knowledgePair);
+                            }
+                            break;
+                        case "SecurityProperty_VM":
+                            SecurityProperty_VM securityProperty_VM = (SecurityProperty_VM)networkItem_VM;
+                            SecurityProperty securityProperty = securityProperty_VM.SecurityProperty;
+                            foreach (XmlNode securityChildNode in node.ChildNodes) // Confidential(2引) 或 Authenticity(6引)
+                            {
+                                XmlElement securityElement = (XmlElement)securityChildNode;
+                                switch (securityChildNode.Name)
+                                {
+                                    case "Confidential":
+                                        int processRef = int.Parse(securityElement.GetAttribute("process_ref"));
+                                        if (!processVMDict.ContainsKey(processRef))
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Confidential引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int attributeRef = int.Parse(securityElement.GetAttribute("attribute_ref"));
+                                        Attribute findAttr = null;
+                                        foreach (Attribute attribute in processVMDict[processRef].Process.Attributes)
+                                        {
+                                            if (attribute.Id == attributeRef)
+                                            {
+                                                findAttr = attribute;
+                                                break;
+                                            }
+                                        }
+                                        if (findAttr == null)
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Confidential引用的进程模板下的Attribute！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        Confidential confidential = new Confidential(processVMDict[processRef].Process, findAttr);
+                                        securityProperty.Confidentials.Add(confidential);
+                                        break;
+                                    case "Authenticity":
+                                        int processARef = int.Parse(securityElement.GetAttribute("processA_ref"));
+                                        int processBRef = int.Parse(securityElement.GetAttribute("processB_ref"));
+                                        if (!(processVMDict.ContainsKey(processARef) && processVMDict.ContainsKey(processBRef)))
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Authenticity引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int stateARef = int.Parse(securityElement.GetAttribute("stateA_ref"));
+                                        int stateBRef = int.Parse(securityElement.GetAttribute("stateB_ref"));
+                                        State stateA = null;
+                                        State stateB = null;
+                                        foreach (ViewModelBase vmb in processVMDict[processARef].StateMachine_P_VM.UserControlVMs)
+                                        {
+                                            if (vmb is State_VM)
+                                            {
+                                                State_VM state_VM = (State_VM)vmb;
+                                                if (state_VM.State.Id == stateARef)
+                                                {
+                                                    stateA = state_VM.State;
+                                                }
+                                            }
+                                        }
+                                        foreach (ViewModelBase vmb in processVMDict[processBRef].StateMachine_P_VM.UserControlVMs)
+                                        {
+                                            if (vmb is State_VM)
+                                            {
+                                                State_VM state_VM = (State_VM)vmb;
+                                                if (state_VM.State.Id == stateBRef)
+                                                {
+                                                    stateB = state_VM.State;
+                                                }
+                                            }
+                                        }
+                                        if (stateA == null || stateB == null)
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Authenticity引用的状态机下的State！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int attributeARef = int.Parse(securityElement.GetAttribute("attributeA_ref"));
+                                        int attributeBRef = int.Parse(securityElement.GetAttribute("attributeB_ref"));
+                                        Attribute attributeA = null;
+                                        Attribute attributeB = null;
+                                        foreach (Attribute attribute in processVMDict[processARef].Process.Attributes)
+                                        {
+                                            if (attribute.Id == attributeARef)
+                                            {
+                                                attributeA = attribute;
+                                                break;
+                                            }
+                                        }
+                                        foreach (Attribute attribute in processVMDict[processBRef].Process.Attributes)
+                                        {
+                                            if (attribute.Id == attributeBRef)
+                                            {
+                                                attributeB = attribute;
+                                                break;
+                                            }
+                                        }
+                                        if (attributeA == null || attributeB == null)
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Authenticity引用的进程模板下的Attribute！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        Authenticity authenticity = new Authenticity(
+                                            processVMDict[processARef].Process,
+                                            stateA, attributeA,
+                                            processVMDict[processBRef].Process,
+                                            stateB, attributeB);
+                                        securityProperty.Authenticities.Add(authenticity);
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                }// end of 第三遍扫描
 
             }
             return true;
