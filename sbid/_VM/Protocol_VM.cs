@@ -44,8 +44,8 @@ namespace sbid._VM
             panelVMs.Add(ctlTreePVM);
 
             Panel_VM sequenceDiagramPVM = new Panel_VM("顺序图");
-            sequenceDiagramPVM.SidePanelVMs.Add(new SequenceDiagram_P_VM());
-            sequenceDiagramPVM.SelectedItem = sequenceDiagramPVM.SidePanelVMs[0];
+            //sequenceDiagramPVM.SidePanelVMs.Add(new SequenceDiagram_P_VM());
+            //sequenceDiagramPVM.SelectedItem = sequenceDiagramPVM.SidePanelVMs[0];
             panelVMs.Add(sequenceDiagramPVM);
 
             // 设置本协议的默认选中项为第一项"概览"

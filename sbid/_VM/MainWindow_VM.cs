@@ -560,8 +560,67 @@ namespace sbid._VM
                 xmlWriter.WriteEndElement();
                 #endregion
 
-                #region todo 序列图面板
+                #region 序列图面板
                 xmlWriter.WriteStartElement("SequenceDiagram_P_VMs");
+                ObservableCollection<SidePanel_VM> sequenceDiagram_P_VMs = protocolVM.PanelVMs[5].SidePanelVMs; // 所有的序列图
+                foreach (SidePanel_VM sidePanel_VM in sequenceDiagram_P_VMs)
+                {
+                    SequenceDiagram_P_VM sequenceDiagram_P_VM = (SequenceDiagram_P_VM)sidePanel_VM;
+                    xmlWriter.WriteStartElement("SequenceDiagram_P_VM");
+                    xmlWriter.WriteAttributeString("name", sequenceDiagram_P_VM.Name);
+                    foreach (ViewModelBase vm in sequenceDiagram_P_VM.UserControlVMs) // 对象-生命线 或 消息
+                    {
+                        if (vm is ObjLifeLine_VM)
+                        {
+                            ObjLifeLine_VM objLifeLine_VM = (ObjLifeLine_VM)vm;
+                            xmlWriter.WriteStartElement("ObjLifeLine_VM");
+                            xmlWriter.WriteAttributeString("x", objLifeLine_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", objLifeLine_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("objName", objLifeLine_VM.SeqObject.ObjName);
+                            xmlWriter.WriteAttributeString("className", objLifeLine_VM.SeqObject.ClassName);
+                            foreach (Connector_VM connector_VM in objLifeLine_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is Message_VM) // 这是消息的基类,具体要创建的标签取决于具体消息类型
+                        {
+                            Message_VM message_VM = (Message_VM)vm;
+                            if (vm is SyncMessage_VM)
+                            {
+                                xmlWriter.WriteStartElement("SyncMessage_VM");
+                            }
+                            else if (vm is AsyncMessage_VM)
+                            {
+                                xmlWriter.WriteStartElement("AsyncMessage_VM");
+                            }
+                            else if (vm is ReturnMessage_VM)
+                            {
+                                xmlWriter.WriteStartElement("ReturnMessage_VM");
+                            }
+                            else if (vm is SyncMessage_Self_VM)
+                            {
+                                xmlWriter.WriteStartElement("SyncMessage_Self_VM");
+                            }
+                            else if (vm is AsyncMessage_Self_VM)
+                            {
+                                xmlWriter.WriteStartElement("AsyncMessage_Self_VM");
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                            xmlWriter.WriteAttributeString("content", message_VM.Message.Content);
+                            xmlWriter.WriteAttributeString("source_ref", message_VM.Source.Id.ToString()); // 源锚点
+                            xmlWriter.WriteAttributeString("dest_ref", message_VM.Dest.Id.ToString()); // 目标锚点
+                            xmlWriter.WriteEndElement();
+                        }
+                    }
+                    xmlWriter.WriteEndElement();
+                }
                 xmlWriter.WriteEndElement();
                 #endregion
 
@@ -1252,6 +1311,86 @@ namespace sbid._VM
                 }
                 #endregion
 
+                #region 序列图面板
+                xmlNode = doc.SelectSingleNode("Protocol_VM/SequenceDiagram_P_VMs");
+                nodeList = xmlNode.ChildNodes;
+                ObservableCollection<SidePanel_VM> sequenceDiagram_P_VMs = protocolVM.PanelVMs[5].SidePanelVMs;
+                foreach (XmlNode node in nodeList) // <SequenceDiagram_P_VM name="顺序图1">
+                {
+                    XmlElement element = (XmlElement)node;
+                    SequenceDiagram_P_VM sequenceDiagram_P_VM = new SequenceDiagram_P_VM();
+                    sequenceDiagram_P_VM.Name = element.GetAttribute("name");
+                    Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
+                    foreach (XmlNode sequenceChildNode in node.ChildNodes) // ObjLifeLine_VM/各类Message_VM
+                    {
+                        XmlElement scElement = (XmlElement)sequenceChildNode;
+                        if (sequenceChildNode.Name == "ObjLifeLine_VM")
+                        {
+                            double x = double.Parse(scElement.GetAttribute("x"));
+                            double y = double.Parse(scElement.GetAttribute("y"));
+                            ObjLifeLine_VM objLifeLine_VM = new ObjLifeLine_VM(x, y);
+                            objLifeLine_VM.SeqObject.ObjName = scElement.GetAttribute("objName");
+                            objLifeLine_VM.SeqObject.ClassName = scElement.GetAttribute("className");
+                            if (objLifeLine_VM.ConnectorVMs.Count != scElement.ChildNodes.Count)
+                            {
+                                Tips = "[解析ObjLifeLine_VM时出错]锚点数量和系统要求不一致！";
+                                cleanProject();
+                                return false;
+                            }
+                            for (int j = 0; j < objLifeLine_VM.ConnectorVMs.Count; j++)
+                            {
+                                XmlNode connectorNode = scElement.ChildNodes[j];
+                                XmlElement connectorElement = (XmlElement)connectorNode;
+                                int id = int.Parse(connectorElement.GetAttribute("id"));
+                                objLifeLine_VM.ConnectorVMs[j].Id = id;
+                                connectorDict.Add(id, objLifeLine_VM.ConnectorVMs[j]); // 记录到字典里
+                            }
+                            sequenceDiagram_P_VM.UserControlVMs.Add(objLifeLine_VM);
+                        }
+                        else
+                        {
+                            Message_VM message_VM = null;
+                            switch (sequenceChildNode.Name)
+                            {
+                                case "SyncMessage_VM":
+                                    message_VM = new SyncMessage_VM();
+                                    break;
+                                case "AsyncMessage_VM":
+                                    message_VM = new AsyncMessage_VM();
+                                    break;
+                                case "ReturnMessage_VM":
+                                    message_VM = new ReturnMessage_VM();
+                                    break;
+                                case "SyncMessage_Self_VM":
+                                    message_VM = new SyncMessage_Self_VM();
+                                    break;
+                                case "AsyncMessage_Self_VM":
+                                    message_VM = new AsyncMessage_Self_VM();
+                                    break;
+                            }
+                            if (message_VM!=null)
+                            {
+                                message_VM.Message.Content = scElement.GetAttribute("content");
+                                int sourceRef = int.Parse(scElement.GetAttribute("source_ref"));
+                                int destRef = int.Parse(scElement.GetAttribute("dest_ref"));
+                                if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
+                                {
+                                    Tips = "[解析Message_VM时出错]无法找到某端的锚点！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                message_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
+                                message_VM.Dest = connectorDict[destRef];
+                                connectorDict[sourceRef].ConnectionVM = message_VM; // 从锚点反引连线
+                                connectorDict[destRef].ConnectionVM = message_VM;
+                                sequenceDiagram_P_VM.UserControlVMs.Add(message_VM);
+                            }
+                        }
+                    }
+                    sequenceDiagram_P_VMs.Add(sequenceDiagram_P_VM);
+                    protocolVM.PanelVMs[5].SelectedItem = sequenceDiagram_P_VM; // fixme 改成记录SelectedItem
+                }
+                #endregion
             }
             return true;
         }

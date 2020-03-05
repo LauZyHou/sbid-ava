@@ -9,11 +9,12 @@ namespace sbid._VM
 {
     public class ObjLifeLine_VM : NetworkItem_VM
     {
-        private static int _id = 1;
+        private static int _id = 0;
         private SeqObject seqObject;
 
         public ObjLifeLine_VM()
         {
+            _id++;
             double baseX = X + 70;
             double baseY = Y + 54;
             double deltaY = 18;
@@ -25,11 +26,11 @@ namespace sbid._VM
             }
 
             seqObject = new SeqObject("对象名" + _id, "类名" + _id);
-            _id++;
         }
 
         public ObjLifeLine_VM(double x, double y)
         {
+            _id++;
             X = x;
             Y = y;
 
@@ -44,7 +45,6 @@ namespace sbid._VM
             }
 
             seqObject = new SeqObject("对象名" + _id, "类名" + _id);
-            _id++;
         }
 
         // 序列图对象
