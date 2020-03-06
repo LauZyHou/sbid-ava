@@ -42,9 +42,10 @@ namespace sbid._M
             }
         }
 
-        // 系统内写死的两个内置类型,使用此唯一引用,且不允许修改
+        // 系统内写死的内置类型,使用此唯一引用,且不允许修改
         public static readonly Type TYPE_INT = new Type("int");
         public static readonly Type TYPE_BOOL = new Type("bool");
+        public static readonly Type TYPE_NUM = new Type("number");
 
     }
 }

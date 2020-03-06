@@ -1,4 +1,4 @@
-﻿using System;
+﻿using sbid._M;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -17,16 +17,32 @@ namespace sbid._VM
         public void init_data()
         {
             NetworkItemVMs.Add(
-                new UserType_VM(sbid._M.Type.TYPE_INT)
+                new UserType_VM(Type.TYPE_INT)
                 {
                     X = 1000,
                     Y = 20
                 });
             NetworkItemVMs.Add(
-                new UserType_VM(sbid._M.Type.TYPE_BOOL)
+                new UserType_VM(Type.TYPE_BOOL)
                 {
                     X = 970,
                     Y = 50
+                });
+            NetworkItemVMs.Add(
+                new UserType_VM(Type.TYPE_NUM)
+                {
+                    X = 940,
+                    Y = 80
+                });
+            // 这里额外添加一个Timer类，但它不是内置类型
+            UserType timer = new UserType() { Name = "Timer" };
+            timer.Attributes.Add(new Attribute(Type.TYPE_NUM, "timestamp"));
+            NetworkItemVMs.Add(
+                new UserType_VM()
+                {
+                    Type = timer,
+                    X = 910,
+                    Y = 110
                 });
         }
 
@@ -59,7 +75,7 @@ namespace sbid._VM
             NetworkItemVMs.Add(axiomVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的公理：" + axiomVM.Axiom.Name;
         }
-        
+
         // 创建初始知识
         public void CreateInitialKnowledgeVM()
         {

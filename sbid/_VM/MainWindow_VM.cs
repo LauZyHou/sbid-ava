@@ -253,7 +253,7 @@ namespace sbid._VM
                         xmlWriter.WriteAttributeString("y", vm.Y.ToString());
                         xmlWriter.WriteAttributeString("name", vm.Type.Name);
                         xmlWriter.WriteAttributeString("id", vm.Type.Id.ToString());
-                        if (!(vm.Type is UserType)) // 基本类型(int,bool)
+                        if (!(vm.Type is UserType)) // 基本类型
                         {
                             xmlWriter.WriteAttributeString("basic", "true");
                             // 注意，基本类型在创建类图时就创建了，所以要
@@ -686,17 +686,23 @@ namespace sbid._VM
                         case "UserType_VM":
                             if (element.GetAttribute("basic") == "true") // 内置类型
                             {
-                                if (element.GetAttribute("name") == "int")
+                                switch (element.GetAttribute("name"))
                                 {
-                                    Type.TYPE_INT.Id = id;
-                                    typeDict[id] = Type.TYPE_INT; // 写入字典
-                                    networkItem_VM = new UserType_VM(Type.TYPE_INT);
-                                }
-                                else if (element.GetAttribute("name") == "bool")
-                                {
-                                    Type.TYPE_BOOL.Id = id;
-                                    typeDict[id] = Type.TYPE_BOOL; // 写入字典
-                                    networkItem_VM = new UserType_VM(Type.TYPE_BOOL);
+                                    case "int":
+                                        Type.TYPE_INT.Id = id;
+                                        typeDict[id] = Type.TYPE_INT; // 写入字典
+                                        networkItem_VM = new UserType_VM(Type.TYPE_INT);
+                                        break;
+                                    case "bool":
+                                        Type.TYPE_BOOL.Id = id;
+                                        typeDict[id] = Type.TYPE_BOOL; // 写入字典
+                                        networkItem_VM = new UserType_VM(Type.TYPE_BOOL);
+                                        break;
+                                    case "number":
+                                        Type.TYPE_NUM.Id = id;
+                                        typeDict[id] = Type.TYPE_NUM; // 写入字典
+                                        networkItem_VM = new UserType_VM(Type.TYPE_NUM);
+                                        break;
                                 }
                             }
                             else // 用户自定义类型
@@ -1368,7 +1374,7 @@ namespace sbid._VM
                                     message_VM = new AsyncMessage_Self_VM();
                                     break;
                             }
-                            if (message_VM!=null)
+                            if (message_VM != null)
                             {
                                 message_VM.Message.Content = scElement.GetAttribute("content");
                                 int sourceRef = int.Parse(scElement.GetAttribute("source_ref"));
