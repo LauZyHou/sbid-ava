@@ -28,6 +28,7 @@
                   <MenuItem Header="创建Initial Knowledge" Command="{Binding CreateInitialKnowledgeVM}"/>
                   <MenuItem Header="创建SafetyProperty" Command="{Binding CreateSafetyPropertyVM}"/>
                   <MenuItem Header="创建SecurityProperty" Command="{Binding CreateSecurityPropertyVM}"/>
+                  <MenuItem Header="创建CommChannel" Command="{Binding CreateCommChannelVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -58,6 +59,7 @@
       <Button Command="{Binding CreateInitialKnowledgeVM}">创建Initial Knowledge</Button>
       <Button Command="{Binding CreateSafetyPropertyVM}">创建Safety Property</Button>
       <Button Command="{Binding CreateSecurityPropertyVM}">创建Security Property</Button>
+      <Button Command="{Binding CreateCommChannelVM}">创建CommChannel</Button>
     </StackPanel>
     <!--面板-->
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

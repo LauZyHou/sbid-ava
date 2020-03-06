@@ -1,0 +1,57 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="100"
+             x:Class="sbid._V.CommChannel_V" BorderBrush="Black" BorderThickness="2">
+  <Design.DataContext>
+    <vm:CommChannel_VM/>
+  </Design.DataContext>
+
+  <UserControl.Resources>
+    <SolidColorBrush x:Key="MyColor" Color="#99BBFF" />
+  </UserControl.Resources>
+
+  <Grid RowDefinitions="20,1,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="100">
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <TextBlock Text=" CommChannel " FontWeight="Bold"/>
+      <TextBlock Text="{Binding CommChannel.Name}"/>
+    </StackPanel>
+    <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
+    <ListBox Grid.Row="2" Items="{Binding CommChannel.CommDomains}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <!--<ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Name}"/>
+            <ListBox Items="{Binding CommMethodPairs}">
+              <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+              </ListBox.ItemsPanel>
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock Text=" "/>
+                    <TextBlock Text="{Binding Process.Name}"/>
+                    <TextBlock Text="."/>
+                    <TextBlock Text="{Binding CommMethod.Name}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>-->
+    </ListBox>
+    <!--右键菜单-->
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑" Command="{Binding EditCommChannelVM}"/>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
+  </Grid>
+</UserControl>

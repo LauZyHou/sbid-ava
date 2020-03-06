@@ -1,5 +1,4 @@
-﻿using System;
-using sbid._M;
+﻿using sbid._M;
 using System.Collections.Generic;
 using System.Text;
 using ReactiveUI;
@@ -9,7 +8,7 @@ namespace sbid._VM
 {
     public class UserType_VM : NetworkItem_VM
     {
-        private sbid._M.Type type;
+        private Type type;
 
         // 无参构造时,构造的总是UserType
         public UserType_VM()
@@ -18,13 +17,13 @@ namespace sbid._VM
         }
 
         // 传入Type参数的构造,当为内置的int和bool创建UserType_VM时使用此构造
-        public UserType_VM(sbid._M.Type type)
+        public UserType_VM(Type type)
         {
             this.type = type;
         }
 
         // 因为UserType_VM也可能维护底层的int和bool,所以这里用Type而不是UserType
-        public sbid._M.Type Type { get => type; set => type = value; }
+        public Type Type { get => type; set => type = value; }
 
         #region 右键菜单命令
 

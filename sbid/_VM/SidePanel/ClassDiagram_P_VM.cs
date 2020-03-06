@@ -36,7 +36,7 @@ namespace sbid._VM
                 });
             // 这里额外添加一个Timer类，但它不是内置类型
             UserType timer = new UserType() { Name = "Timer" };
-            timer.Attributes.Add(new Attribute(Type.TYPE_NUM, "timestamp"));
+            timer.Attributes.Add(new Attribute(Type.TYPE_NUM, "time"));
             NetworkItemVMs.Add(
                 new UserType_VM()
                 {
@@ -98,6 +98,14 @@ namespace sbid._VM
             SecurityProperty_VM securityPropertyVM = new SecurityProperty_VM();
             NetworkItemVMs.Add(securityPropertyVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的SecurityProperty：" + securityPropertyVM.SecurityProperty.Name;
+        }
+
+        // 创建通信信道
+        public void CreateCommChannelVM()
+        {
+            CommChannel_VM commChannelVM = new CommChannel_VM();
+            NetworkItemVMs.Add(commChannelVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的CommChannel：" + commChannelVM.CommChannel.Name;
         }
 
         #endregion
