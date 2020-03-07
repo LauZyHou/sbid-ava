@@ -17,7 +17,7 @@ namespace sbid._M
         {
             _id++;
             this.id = _id;
-            this.name = "未命名" + this.id;
+            this.name = "IK" + this.id;
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }

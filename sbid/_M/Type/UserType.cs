@@ -15,6 +15,12 @@ namespace sbid._M
             //test_data();
         }
 
+        // 仅传入一个Attribute的构造，目前只是给Timer用的构造
+        public UserType(Type type,string identifier) : base()
+        {
+            attributes.Add(new Attribute(type, identifier));
+        }
+
         public ObservableCollection<Attribute> Attributes { get => attributes; set => attributes = value; }
 
         private void test_data()

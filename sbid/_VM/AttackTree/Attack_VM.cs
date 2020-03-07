@@ -19,7 +19,7 @@ namespace sbid._VM
 
         public Attack_VM()
         {
-            attack = new Attack("无内容" + _id);
+            attack = new Attack("Attack" + _id);
             _id++;
 
             X = 0;
@@ -55,7 +55,7 @@ namespace sbid._VM
 
         public Attack_VM(double x, double y)
         {
-            attack = new Attack("无内容" + _id);
+            attack = new Attack("Attack" + _id);
             _id++;
 
             X = x;

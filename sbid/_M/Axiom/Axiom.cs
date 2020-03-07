@@ -19,7 +19,7 @@ namespace sbid._M
         {
             _id++;
             this.id = _id;
-            this.name = "未命名" + this.id;
+            this.name = "Ax" + this.id;
             //test_data();
         }
 

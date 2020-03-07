@@ -25,23 +25,20 @@ namespace sbid._VM
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_BOOL)
                 {
-                    X = 970,
+                    X = 990,
                     Y = 50
                 });
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_NUM)
                 {
-                    X = 940,
+                    X = 980,
                     Y = 80
                 });
             // 这里额外添加一个Timer类，但它不是内置类型
-            UserType timer = new UserType() { Name = "Timer" };
-            timer.Attributes.Add(new Attribute(Type.TYPE_NUM, "time"));
             NetworkItemVMs.Add(
-                new UserType_VM()
+                new UserType_VM(Type.TYPE_TIMER)
                 {
-                    Type = timer,
-                    X = 910,
+                    X = 970,
                     Y = 110
                 });
         }

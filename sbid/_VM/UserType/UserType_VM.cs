@@ -16,7 +16,7 @@ namespace sbid._VM
             this.type = new UserType();
         }
 
-        // 传入Type参数的构造,当为内置的int和bool创建UserType_VM时使用此构造
+        // 传入Type参数的构造,当为内置的Type创建UserType_VM时使用此构造
         public UserType_VM(Type type)
         {
             this.type = type;
@@ -30,7 +30,7 @@ namespace sbid._VM
         // 尝试删除当前UserType_VM
         public void DeleteUserTypeVM()
         {
-            if (!(type is UserType))
+            if (!(type is UserType) || type == Type.TYPE_TIMER)
             {
                 ResourceManager.mainWindowVM.Tips = "无效的操作，禁止删除内置类型！";
                 return;
@@ -42,7 +42,7 @@ namespace sbid._VM
         // 尝试打开当前UserType_VM的编辑窗体
         public void EditUserTypeVM()
         {
-            if (!(type is UserType))
+            if (!(type is UserType) || type == Type.TYPE_TIMER)
             {
                 ResourceManager.mainWindowVM.Tips = "无效的操作，禁止编辑内置类型！";
                 return;

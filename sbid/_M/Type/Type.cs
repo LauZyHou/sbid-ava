@@ -23,7 +23,7 @@ namespace sbid._M
         {
             _id++;
             this.id = _id;
-            this.name = "未命名" + this.id;
+            this.name = "T" + this.id;
         }
 
         // 类型名
@@ -46,6 +46,7 @@ namespace sbid._M
         public static readonly Type TYPE_INT = new Type("int");
         public static readonly Type TYPE_BOOL = new Type("bool");
         public static readonly Type TYPE_NUM = new Type("number");
-
+        // 非基本类型，但也是写死的
+        public static readonly Type TYPE_TIMER = new UserType(TYPE_NUM, "time") { Name="Timer" };
     }
 }

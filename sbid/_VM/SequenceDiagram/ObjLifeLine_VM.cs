@@ -25,7 +25,7 @@ namespace sbid._VM
                 ConnectorVMs.Add(new Connector_VM(baseX, baseY + i * deltaY));
             }
 
-            seqObject = new SeqObject("对象名" + _id, "类名" + _id);
+            seqObject = new SeqObject("Obj" + _id, "C" + _id);
         }
 
         public ObjLifeLine_VM(double x, double y)
@@ -44,7 +44,7 @@ namespace sbid._VM
                 ConnectorVMs.Add(new Connector_VM(baseX, baseY + i * deltaY));
             }
 
-            seqObject = new SeqObject("对象名" + _id, "类名" + _id);
+            seqObject = new SeqObject("Obj" + _id, "C" + _id);
         }
 
         // 序列图对象
