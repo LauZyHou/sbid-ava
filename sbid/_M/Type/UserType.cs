@@ -9,19 +9,23 @@ namespace sbid._M
     public class UserType : Type
     {
         private ObservableCollection<Attribute> attributes = new ObservableCollection<Attribute>();
+        private ObservableCollection<Method> methods = new ObservableCollection<Method>();
 
         public UserType() : base()
         {
             //test_data();
+            this.Basic = false;
         }
 
         // 仅传入一个Attribute的构造，目前只是给Timer用的构造
-        public UserType(Type type,string identifier) : base()
+        public UserType(Type type, string identifier) : base()
         {
+            this.Basic = false;
             attributes.Add(new Attribute(type, identifier));
         }
 
         public ObservableCollection<Attribute> Attributes { get => attributes; set => attributes = value; }
+        public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
 
         private void test_data()
         {

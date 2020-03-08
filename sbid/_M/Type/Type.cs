@@ -11,6 +11,7 @@ namespace sbid._M
         public static int _id = 0;
         private string name;
         private int id;
+        private bool basic = true;
 
         public Type(string name)
         {
@@ -41,12 +42,14 @@ namespace sbid._M
                     _id = value;
             }
         }
+        // 是否是基本类型
+        public bool Basic { get => basic; set => this.RaiseAndSetIfChanged(ref basic, value); }
 
         // 系统内写死的内置类型,使用此唯一引用,且不允许修改
         public static readonly Type TYPE_INT = new Type("int");
         public static readonly Type TYPE_BOOL = new Type("bool");
         public static readonly Type TYPE_NUM = new Type("number");
         // 非基本类型，但也是写死的
-        public static readonly Type TYPE_TIMER = new UserType(TYPE_NUM, "time") { Name="Timer" };
+        public static readonly Type TYPE_TIMER = new UserType(TYPE_NUM, "time") { Name = "Timer" };
     }
 }

@@ -17,11 +17,26 @@
       <Setter Property="Height" Value="30"/>
       <Setter Property="Margin" Value="7,5"/>
     </Style>
+    <Style Selector="TabItem > StackPanel">
+      <Setter Property="Margin" Value="7"/>
+    </Style>
+    <Style Selector="TabItem > Grid">
+      <Setter Property="Margin" Value="7"/>
+    </Style>
+    <Style Selector="StackPanel.SmallButtonGroup > Button">
+      <Setter Property="Width" Value="30"/>
+      <Setter Property="Height" Value="20"/>
+      <Setter Property="Margin" Value="3"/>
+      <Setter Property="FontSize" Value="9"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Height" Value="23"/>
+    </Style>
   </Window.Styles>
 
   <TabControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
     <TabItem Header="元信息">
-      <StackPanel Margin="7">
+      <StackPanel>
         <StackPanel Orientation="Horizontal">
           <TextBlock Text="自定义类型名：" FontSize="18"/>
           <TextBox Text="{Binding UserType.Name, Mode=TwoWay}"/>
@@ -29,7 +44,7 @@
       </StackPanel>
     </TabItem>
     <TabItem Header="Attribute">
-      <Grid ColumnDefinitions="50*,50*" Margin="7">
+      <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="变量类型：" FontSize="17"/>
           <ListBox Name="type_ListBox" Height="142" Items="{Binding Types}"
@@ -63,6 +78,66 @@
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
+      </Grid>
+    </TabItem>
+    <TabItem Header="Method">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="返回类型：" FontSize="17"/>
+          <ComboBox Name="returnType_ComboBox" Items="{Binding Types}"
+                    SelectedItem="{Binding #method_ListBox.SelectedItem.ReturnType, Mode=OneWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <TextBlock Text="方法名称：" FontSize="17"/>
+          <TextBox Name="methodName_TextBox" Text="{Binding #method_ListBox.SelectedItem.Name, Mode=OneWay}"/>
+          <Grid ColumnDefinitions="25*,25*">
+            <StackPanel Grid.Column="0" Margin="0,0,5,0">
+              <TextBlock Text="参数类型：" FontSize="17"/>
+              <ComboBox Name="paramType_ComboBox" Items="{Binding Types}" SelectedItem="{Binding #param_ListBox.SelectedItem.Type, Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+              <TextBlock Text="参数名称：" FontSize="17"/>
+              <TextBox Name="paramName_TextBox" Text="{Binding #param_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
+              <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Command="{Binding $parent[Window].Add_Param}">添加</Button>
+                <Button Command="{Binding $parent[Window].Update_Param}">修改</Button>
+                <Button Command="{Binding $parent[Window].Delete_Param}">删除</Button>
+              </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+              <TextBlock Text="参数列表：" FontSize="17"/>
+              <!--这里绑定一个UserType_EW_VM中额外增加的列表,当右侧选项变化时再拷贝各个Attribute到其中-->
+              <ListBox Name="param_ListBox" Items="{Binding Params}" Height="90">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock>
+                      <TextBlock.Text>
+                        <MultiBinding StringFormat=" {0} {1}">
+                          <Binding Path="Type.Name"/>
+                          <Binding Path="Identifier"/>
+                        </MultiBinding>
+                      </TextBlock.Text>
+                    </TextBlock>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </StackPanel>
+          </Grid>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Command="{Binding $parent[Window].Add_Method}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_Method}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_Method}">删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0" Name="method_ListBox" Items="{Binding UserType.Methods}"/>
       </Grid>
     </TabItem>
   </TabControl>

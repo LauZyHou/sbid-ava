@@ -95,10 +95,14 @@ namespace sbid._M
             string paramString = "";
             foreach (Attribute attribute in parameters)
             {
-                paramString += attribute + ", ";
+                paramString += attribute + ", ";            
             }
-            //todo 去除末尾", "
-            return returnType.Name + " " + name + "(" + paramString + ")[" + cryptoSuffix + "]";
+            // 去除末尾", "
+            paramString = paramString.TrimEnd(", ".ToCharArray());
+            string retString = returnType.Name + " " + name + "(" + paramString + ");";
+            if (cryptoSuffix != Crypto.None) // None不显示
+                retString += "[" + cryptoSuffix + "]";
+            return retString;
         }
 
         #region 静态成员和静态构造

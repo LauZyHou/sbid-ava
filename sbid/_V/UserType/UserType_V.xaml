@@ -13,13 +13,16 @@
     <SolidColorBrush x:Key="MyColor" Color="#AADDFF" />
   </UserControl.Resources>
 
-  <Grid RowDefinitions="20,1,*" Background="{StaticResource MyColor}" MinWidth="110" MinHeight="120">
+  <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="110" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text=" Type " FontWeight="Bold"/>
+      <!--这里用Type.Basic的真值实现Type和UserType的不同样式-->
+      <TextBlock Text=" Type " FontWeight="Bold" IsVisible="{Binding Type.Basic}"/>
+      <TextBlock Text=" UserType " FontWeight="Bold" IsVisible="{Binding !Type.Basic}"/>
       <TextBlock Text="{Binding Type.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
-    <ListBox Grid.Row="2" Items="{Binding Type.Attributes}" IsEnabled="False" 
+    <TextBlock Grid.Row="2" Text=" Attribute:" IsVisible="{Binding !Type.Basic}"/>
+    <ListBox Grid.Row="3" Items="{Binding Type.Attributes}" IsEnabled="False" IsVisible="{Binding !Type.Basic}"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -35,11 +38,16 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
+    <TextBlock Grid.Row="4" Background="Black" IsVisible="{Binding !Type.Basic}"/>
+    <TextBlock Grid.Row="5" Text=" Method:" IsVisible="{Binding !Type.Basic}"/>
+    <ListBox Grid.Row="6" Items="{Binding Type.Methods}" IsEnabled="False" IsVisible="{Binding !Type.Basic}"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+    </ListBox>
     <!--右键菜单-->
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditUserTypeVM}"/>
-        <MenuItem Header="删除" Command="{Binding DeleteUserTypeVM}"/>
+        <MenuItem Header="删除" Command="{Binding DeleteUserTypeVM}" IsEnabled="False"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>
