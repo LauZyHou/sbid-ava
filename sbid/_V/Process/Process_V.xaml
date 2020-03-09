@@ -40,13 +40,38 @@
     <TextBlock Grid.Row="5" Text=" Method:"/>
     <ListBox Grid.Row="6" Items="{Binding Process.Methods}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
-      <!--这里直接给Method定义ToString()了所以不用数据模板了-->
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0} {1}({2});[{3}]">
+                <Binding Path="ReturnType.Name"/>
+                <Binding Path="Name"/>
+                <Binding Path="ParamString"/>
+                <Binding Path="CryptoSuffix"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
     </ListBox>
     <TextBlock Grid.Row="7" Background="Black"/>
     <TextBlock Grid.Row="8" Text=" CommMethod:"/>
     <ListBox Grid.Row="9" Items="{Binding Process.CommMethods}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
-      <!--这里直接给CommMethod定义ToString()了所以不用数据模板了-->
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0}({1});[{2}]">
+                <Binding Path="Name"/>
+                <Binding Path="ParamString"/>
+                <Binding Path="InOutSuffix"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
     </ListBox>
     <!--右键菜单-->
     <Grid.ContextMenu>

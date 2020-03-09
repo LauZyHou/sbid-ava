@@ -162,31 +162,13 @@ namespace sbid._V
             {
                 paramerters.Add(new Attribute(attribute.Type, attribute.Identifier));
             }
-            //Method method = (Method)method_NZ_ListBox.SelectedItem;
-            //method.ReturnType = method_template.ReturnType;
-            //method.Name = method_template.Name;
-            //method.Parameters = paramerters;
-            //method.CryptoSuffix = (Crypto)crypto_ComboBox.SelectedItem;
-            Method method = new Method(
-                method_template.ReturnType,
-                method_template.Name,
-                paramerters,
-                (Crypto)crypto_ComboBox.SelectedItem
-            );
-            ((Process_EW_VM)DataContext).Process.Methods[method_NZ_ListBox.SelectedIndex] = method;
+
+            Method method = (Method)method_NZ_ListBox.SelectedItem;
+            method.ReturnType = method_template.ReturnType;
+            method.Name = method_template.Name;
+            method.Parameters = paramerters;
+            method.CryptoSuffix = (Crypto)crypto_ComboBox.SelectedItem;
             ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]更新了成员方法：" + method;
-            /*
-             注：
-             如果用上面注释掉的方式对Method直接进行修改
-             Method本身能获取各个属性修改的通知
-             但是Process没法获取到Methods列表修改的通知
-             除非在数据模板里不用ToString()
-             而是用StackPanel里装Method的每个字段,或者用多源绑定
-             但这样写起来比较麻烦(现在觉得就应该用多源绑定)
-             这里创建一个新的Method,然后在列表里把那一项改掉
-             实际上是利用了ObervableCollection能在成员修改时发出通知
-             使得Process获取到了这个通知
-             */
         }
 
         public void Delete_NZMethod()
@@ -334,13 +316,11 @@ namespace sbid._V
                 return;
             }
 
-            Method method = new Method(
-                (Type)returnType_ComboBox.SelectedItem,
-                methodName_TextBox.Text,
-                parameters,
-                Crypto.None
-            );
-            ((Process_EW_VM)DataContext).Process.Methods[method_ZD_ListBox.SelectedIndex] = method;
+            Method method = (Method)method_ZD_ListBox.SelectedItem;
+            method.ReturnType = (Type)returnType_ComboBox.SelectedItem;
+            method.Name = methodName_TextBox.Text;
+            method.Parameters = parameters;
+            method.CryptoSuffix = Crypto.None;
             ResourceManager.mainWindowVM.Tips = "更新了自定Method：" + method;
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method
@@ -491,13 +471,10 @@ namespace sbid._V
                 return;
             }
 
-            CommMethod commMethod = new CommMethod(
-                commMethodName_TextBox.Text,
-                parameters,
-                (InOut)inout_ComboBox.SelectedItem
-            );
-
-            ((Process_EW_VM)DataContext).Process.CommMethods[commMethod_ListBox.SelectedIndex] = commMethod;
+            CommMethod commMethod = (CommMethod)commMethod_ListBox.SelectedItem;
+            commMethod.Name = commMethodName_TextBox.Text;
+            commMethod.Parameters = parameters;
+            commMethod.InOutSuffix = (InOut)inout_ComboBox.SelectedItem;
             ResourceManager.mainWindowVM.Tips = "更新了CommMethod：" + commMethod;
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的CommMethod

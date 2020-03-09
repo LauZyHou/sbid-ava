@@ -28,27 +28,13 @@ namespace sbid._M
             this.cryptoSuffix = cryptoSuffix;
         }
 
+        #region 属性
+
         // 返回值
-        public Type ReturnType
-        {
-            get => returnType;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref returnType, value);
-                this.RaisePropertyChanged("ShowString");
-            }
-        }
+        public Type ReturnType { get => returnType; set => this.RaiseAndSetIfChanged(ref returnType, value); }
 
         // 方法名
-        public string Name
-        {
-            get => name;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref name, value);
-                this.RaisePropertyChanged("ShowString");
-            }
-        }
+        public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
 
         // 参数列表
         public ObservableCollection<Attribute> Parameters
@@ -57,36 +43,28 @@ namespace sbid._M
             set
             {
                 this.RaiseAndSetIfChanged(ref parameters, value);
-                this.RaisePropertyChanged("ShowString");
+                this.RaisePropertyChanged("ParamString");
             }
         }
 
         // 加解密方式(可选)
-        public Crypto CryptoSuffix
-        {
-            get => cryptoSuffix;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref cryptoSuffix, value);
-                this.RaisePropertyChanged("ShowString");
-            }
-        }
+        public Crypto CryptoSuffix { get => cryptoSuffix; set => this.RaiseAndSetIfChanged(ref cryptoSuffix, value); }
 
-        // 展示串(不带Crypto)
-        public string ShowString
+        #endregion
+
+        #region 展示串
+
+        // 展示Parameters
+        public string ParamString
         {
             get
             {
                 string paramString = "";
-                if (parameters != null && parameters.Count > 0)
+                foreach (Attribute attribute in parameters)
                 {
-                    paramString = parameters[0].ToString();
-                    for (int i = 1; i < parameters.Count; i++)
-                    {
-                        paramString += ", " + parameters[i].ToString();
-                    }
+                    paramString += attribute + ", ";
                 }
-                return returnType.Name + " " + name + "(" + paramString + ")";
+                return paramString.TrimEnd(", ".ToCharArray());
             }
         }
 
@@ -95,15 +73,15 @@ namespace sbid._M
             string paramString = "";
             foreach (Attribute attribute in parameters)
             {
-                paramString += attribute + ", ";            
+                paramString += attribute + ", ";
             }
-            // 去除末尾", "
-            paramString = paramString.TrimEnd(", ".ToCharArray());
-            string retString = returnType.Name + " " + name + "(" + paramString + ");";
+            string retString = returnType.Name + " " + name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ");";
             if (cryptoSuffix != Crypto.None) // None不显示
                 retString += "[" + cryptoSuffix + "]";
             return retString;
         }
+
+        #endregion
 
         #region 静态成员和静态构造
 

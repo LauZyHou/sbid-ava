@@ -24,7 +24,15 @@
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <TextBlock Text="{Binding ShowString}"/>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0} {1}({2});">
+                <Binding Path="ReturnType.Name"/>
+                <Binding Path="Name"/>
+                <Binding Path="ParamString"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>

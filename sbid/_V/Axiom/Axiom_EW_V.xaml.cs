@@ -120,7 +120,7 @@ namespace sbid._V
             );
 
             ((Axiom_EW_VM)DataContext).Axiom.Methods.Add(method);
-            ResourceManager.mainWindowVM.Tips = "添加了Method：" + method.ShowString;
+            ResourceManager.mainWindowVM.Tips = "添加了Method：" + method.ToString();
 
             // 添加完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method
             ((Axiom_EW_VM)DataContext).Params = new ObservableCollection<Attribute>();
@@ -156,13 +156,12 @@ namespace sbid._V
                 return;
             }
 
-            Method method = new Method(
-                (Type)returnType_ComboBox.SelectedItem,
-                methodName_TextBox.Text,
-                parameters
-            );
-            ((Axiom_EW_VM)DataContext).Axiom.Methods[method_ListBox.SelectedIndex] = method;
-            ResourceManager.mainWindowVM.Tips = "更新了Method：" + method.ShowString;
+            Method method = (Method)method_ListBox.SelectedItem;
+            method.ReturnType = (Type)returnType_ComboBox.SelectedItem;
+            method.Name = methodName_TextBox.Text;
+            method.Parameters = parameters;
+
+            ResourceManager.mainWindowVM.Tips = "更新了Method：" + method.ToString();
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method
             ((Axiom_EW_VM)DataContext).Params = new ObservableCollection<Attribute>();
@@ -179,7 +178,7 @@ namespace sbid._V
 
             Method method = (Method)method_ListBox.SelectedItem;
             ((Axiom_EW_VM)DataContext).Axiom.Methods.Remove(method);
-            ResourceManager.mainWindowVM.Tips = "删除了Method：" + method.ShowString;
+            ResourceManager.mainWindowVM.Tips = "删除了Method：" + method.ToString();
         }
 
         public void Add_Formula()

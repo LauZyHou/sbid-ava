@@ -95,6 +95,20 @@
           </StackPanel>
         </StackPanel>
         <ListBox Grid.Column="1" Margin="10,0" Name="method_NZ_ListBox" Items="{Binding Process.Methods}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0} {1}({2});[{3}]">
+                    <Binding Path="ReturnType.Name"/>
+                    <Binding Path="Name"/>
+                    <Binding Path="ParamString"/>
+                    <Binding Path="CryptoSuffix"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
         </ListBox>
       </Grid>
     </TabItem>
@@ -155,17 +169,27 @@
             <Button Command="{Binding $parent[Window].Delete_ZDMethod}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0" Name="method_ZD_ListBox" Items="{Binding Process.Methods}"/>
+        <ListBox Grid.Column="1" Margin="10,0" Name="method_ZD_ListBox" Items="{Binding Process.Methods}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0} {1}({2});">
+                    <Binding Path="ReturnType.Name"/>
+                    <Binding Path="Name"/>
+                    <Binding Path="ParamString"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
       </Grid>
     </TabItem>
     <TabItem Header="CommMethod">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="输入/输出：" FontSize="17"/>
-          <!--<StackPanel Orientation="Horizontal" Height="23">
-            <RadioButton GroupName="io" IsChecked="True" Margin="0,0,10,0">IN</RadioButton>
-            <RadioButton GroupName="io" Margin="10,0,0,0">OUT</RadioButton>
-          </StackPanel>-->
           <ComboBox Name="inout_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.InOutSuffix, Mode=OneWay}"/>
           <TextBlock Text="方法名称：" FontSize="17"/>
           <TextBox Name="commMethodName_TextBox" Text="{Binding #commMethod_ListBox.SelectedItem.Name, Mode=OneWay}"/>
@@ -212,7 +236,21 @@
             <Button Command="{Binding $parent[Window].Delete_CommMethod}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0" Name="commMethod_ListBox" Items="{Binding Process.CommMethods}"/>
+        <ListBox Grid.Column="1" Margin="10,0" Name="commMethod_ListBox" Items="{Binding Process.CommMethods}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0}({1});[{2}]">
+                    <Binding Path="Name"/>
+                    <Binding Path="ParamString"/>
+                    <Binding Path="InOutSuffix"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
       </Grid>
     </TabItem>
   </TabControl>

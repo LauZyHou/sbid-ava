@@ -103,7 +103,15 @@
         <ListBox Grid.Column="1" Margin="10,0" Name="method_ListBox" Items="{Binding Axiom.Methods}">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding ShowString}"/>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0} {1}({2});">
+                    <Binding Path="ReturnType.Name"/>
+                    <Binding Path="Name"/>
+                    <Binding Path="ParamString"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>

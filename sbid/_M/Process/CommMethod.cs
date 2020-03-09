@@ -29,9 +29,33 @@ namespace sbid._M
         // 函数名
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         // 参数列表
-        public ObservableCollection<Attribute> Parameters { get => parameters; set => parameters = value; }
+        public ObservableCollection<Attribute> Parameters
+        {
+            get => parameters;
+            set
+            {
+                parameters = value;
+                this.RaisePropertyChanged("ParamString");
+            }
+        }
         // 输入输出(必选)
         public InOut InOutSuffix { get => inOutSuffix; set => this.RaiseAndSetIfChanged(ref inOutSuffix, value); }
+
+        #region 展示串
+
+        // 展示Parameters
+        public string ParamString
+        {
+            get
+            {
+                string paramString = "";
+                foreach (Attribute attribute in parameters)
+                {
+                    paramString += attribute + ", ";
+                }
+                return paramString.TrimEnd(", ".ToCharArray());
+            }
+        }
 
         public override string ToString()
         {
@@ -40,8 +64,9 @@ namespace sbid._M
             {
                 paramString += attribute + ", ";
             }
-            //todo 去除末尾", "
-            return name + "(" + paramString + ")[" + InOutSuffix + "]";
+            return name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ");[" + InOutSuffix + "]";
         }
+
+        #endregion
     }
 }

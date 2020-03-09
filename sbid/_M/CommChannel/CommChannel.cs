@@ -11,8 +11,8 @@ namespace sbid._M
     {
         public static int _id = 0;
         private string name;
-        private ObservableCollection<CommDomain> commDomains = new ObservableCollection<CommDomain>();
         private int id;
+        private ObservableCollection<CommMethodPair> commMethodPairs = new ObservableCollection<CommMethodPair>();
 
         public CommChannel()
         {
@@ -22,7 +22,7 @@ namespace sbid._M
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
-        public ObservableCollection<CommDomain> CommDomains { get => commDomains; set => commDomains = value; }
+        public ObservableCollection<CommMethodPair> CommMethodPairs { get => commMethodPairs; set => commMethodPairs = value; }
         public int Id
         {
             get => id;

@@ -23,14 +23,8 @@
     <Style Selector="TabItem > Grid">
       <Setter Property="Margin" Value="7"/>
     </Style>
-    <Style Selector="StackPanel.SmallButtonGroup > Button">
-      <Setter Property="Width" Value="30"/>
-      <Setter Property="Height" Value="20"/>
-      <Setter Property="Margin" Value="3"/>
-      <Setter Property="FontSize" Value="9"/>
-    </Style>
-    <Style Selector="ComboBox">
-      <Setter Property="Height" Value="23"/>
+    <Style Selector="StackPanel > ListBox">
+      <Setter Property="Height" Value="84"/>
     </Style>
   </Window.Styles>
 
@@ -43,88 +37,47 @@
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="CommDomain">
+    <TabItem Header="CommMethodPair">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
-          <TextBlock Text="域名/信道名：" FontSize="17"/>
-          <TextBox Name="commDomainName_TextBox" Text="{Binding #commDomain_ListBox.SelectedItem.Name}"/>
-          <Grid ColumnDefinitions="25*,25*" Margin="0,18,0,10">
-            <StackPanel Grid.Column="0" Margin="0,0,5,0">
-              <TextBlock Text="进程模板：" FontSize="17"/>
-              <ComboBox Name="process_ComboBox" Items="{Binding Processes}" Margin="0,0,0,10"
-                   SelectedItem="{Binding #commMethodPair_ListBox.SelectedItem.Process, Mode=OneWay}">
-                <ComboBox.ItemTemplate>
-                  <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
-                  </DataTemplate>
-                </ComboBox.ItemTemplate>
-              </ComboBox>
-              <TextBlock Text="通信方法：" FontSize="17"/>
-              <ComboBox Name="commMethod_ComboBox" Items="{Binding #process_ComboBox.SelectedItem.CommMethods}" Margin="0,0,0,10"
-                   SelectedItem="{Binding #commMethodPair_ListBox.SelectedItem.CommMethod, Mode=OneWay}">
-                <ComboBox.ItemTemplate>
-                  <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
-                  </DataTemplate>
-                </ComboBox.ItemTemplate>
-              </ComboBox>
-              <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Command="{Binding $parent[Window].Add_CommMethodPair}">添加</Button>
-                <Button Command="{Binding $parent[Window].Update_CommMethodPair}">修改</Button>
-                <Button Command="{Binding $parent[Window].Delete_CommMethodPair}">删除</Button>
-              </StackPanel>
-            </StackPanel>
-            <StackPanel Grid.Column="1" Margin="5,0,0,0">
-              <TextBlock Text="域内成员：" FontSize="17"/>
-              <!--这里绑定一个CommChannel_EW_VM中额外增加的列表,当右侧选项变化时再拷贝各个CommMethodPair到其中-->
-              <ListBox Name="commMethodPair_ListBox" Items="{Binding CommMethodPairs}" Height="110">
-                <ListBox.ItemTemplate>
-                  <DataTemplate>
-                    <TextBlock>
-                      <TextBlock.Text>
-                        <MultiBinding StringFormat=" {0}.{1}">
-                          <Binding Path="Process.Name"/>
-                          <Binding Path="CommMethod.Name"/>
-                        </MultiBinding>
-                      </TextBlock.Text>
-                    </TextBlock>
-                  </DataTemplate>
-                </ListBox.ItemTemplate>
-              </ListBox>
-            </StackPanel>
-          </Grid>
+          <TextBlock Text="进程模板：" FontSize="17"/>
+          <ListBox Name="process_ListBox" Items="{Binding Processes}"
+               SelectedItem="{Binding #commMethodPair_ListBox.SelectedItem.Process, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock Text="通信方法：" FontSize="17"/>
+          <ListBox Name="commMethod_ListBox" Items="{Binding #process_ListBox.SelectedItem.CommMethods}"
+               SelectedItem="{Binding #commMethodPair_ListBox.SelectedItem.CommMethod, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Command="{Binding $parent[Window].Add_CommDomain}">添加</Button>
-            <Button Command="{Binding $parent[Window].Update_CommDomain}">修改</Button>
-            <Button Command="{Binding $parent[Window].Delete_CommDomain}">删除</Button>
+            <Button Command="{Binding $parent[Window].Add_CommMethodPair}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_CommMethodPair}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_CommMethodPair}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0" Name="commDomain_ListBox"
-                 Items="{Binding CommChannel.CommDomains}">
-          <!--<ListBox.ItemTemplate>
+        <ListBox Grid.Column="1" Margin="10,0" Name="commMethodPair_ListBox"
+                 Items="{Binding CommChannel.CommMethodPairs}">
+          <ListBox.ItemTemplate>
             <DataTemplate>
-              <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Name}"/>
-                <ListBox Items="{Binding CommMethodPairs}">
-                  <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                      <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                  </ListBox.ItemsPanel>
-                  <ListBox.ItemTemplate>
-                    <DataTemplate>
-                      <StackPanel Orientation="Horizontal">
-                        <TextBlock Text=" "/>
-                        <TextBlock Text="{Binding Process.Name}"/>
-                        <TextBlock Text="."/>
-                        <TextBlock Text="{Binding CommMethod.Name}"/>
-                      </StackPanel>
-                    </DataTemplate>
-                  </ListBox.ItemTemplate>
-                </ListBox>
-              </StackPanel>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0}.{1}()">
+                    <Binding Path="Process.Name"/>
+                    <Binding Path="CommMethod.Name"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
             </DataTemplate>
-          </ListBox.ItemTemplate>-->
+          </ListBox.ItemTemplate>
         </ListBox>
       </Grid>
     </TabItem>
