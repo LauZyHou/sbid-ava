@@ -41,7 +41,7 @@ namespace sbid._V
         {
             base.OnPointerReleased(e);
 
-            ResourceManager.mainWindowVM.Tips = "鼠标释放了";
+            //ResourceManager.mainWindowVM.Tips = "鼠标释放了";
             isPressed = false;
 
             e.Handled = true;

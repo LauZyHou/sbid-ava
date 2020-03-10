@@ -310,6 +310,7 @@ namespace sbid._VM
                             xmlWriter.WriteStartElement("CommMethod");
                             xmlWriter.WriteAttributeString("name", commMethod.Name);
                             xmlWriter.WriteAttributeString("inOutSuffix", commMethod.InOutSuffix.ToString());
+                            xmlWriter.WriteAttributeString("id", commMethod.Id.ToString());
                             foreach (Attribute attr in commMethod.Parameters)
                             {
                                 xmlWriter.WriteStartElement("Parameter");
@@ -419,6 +420,23 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("processB_ref", authenticity.ProcessB.Id.ToString());
                             xmlWriter.WriteAttributeString("stateB_ref", authenticity.StateB.Id.ToString());
                             xmlWriter.WriteAttributeString("attributeB_ref", authenticity.AttributeB.Id.ToString()); // 注意
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is CommChannel_VM)
+                    {
+                        CommChannel_VM vm = (CommChannel_VM)item;
+                        xmlWriter.WriteStartElement("CommChannel_VM");
+                        xmlWriter.WriteAttributeString("x", vm.X.ToString());
+                        xmlWriter.WriteAttributeString("y", vm.Y.ToString());
+                        xmlWriter.WriteAttributeString("name", vm.CommChannel.Name);
+                        xmlWriter.WriteAttributeString("id", vm.CommChannel.Id.ToString());
+                        foreach (CommMethodPair commMethodPair in vm.CommChannel.CommMethodPairs)
+                        {
+                            xmlWriter.WriteStartElement("CommMethodPair");
+                            xmlWriter.WriteAttributeString("process_ref", commMethodPair.Process.Id.ToString());
+                            xmlWriter.WriteAttributeString("commMethod_ref", commMethodPair.CommMethod.Id.ToString()); // 这里用了CommMethod的Id
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();
@@ -745,6 +763,11 @@ namespace sbid._VM
                             ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Id = id;
                             ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Name = element.GetAttribute("name");
                             break;
+                        case "CommChannel_VM":
+                            networkItem_VM = new CommChannel_VM();
+                            ((CommChannel_VM)networkItem_VM).CommChannel.Id = id;
+                            ((CommChannel_VM)networkItem_VM).CommChannel.Name = element.GetAttribute("name");
+                            break;
                         default:
                             Tips = "[解析ClassDiagram_P_VM时出错]未知的子标签！";
                             cleanProject();
@@ -890,9 +913,9 @@ namespace sbid._VM
 
                 #region 概览>类图面板（第二遍扫描）
                 /*
-                 第二遍扫描不包括引用了Process的Attribute或State的InitialKnowledge_VM和SecurityProperty_VM
+                 第二遍扫描不包括引用了Process的Attribute或State或CommMethod的类图
                  因为Process_VM可能创建在他们的后面，然后再向他们中间引用后面的Process_VM
-                 所以这两个东西交给第三遍扫描去做
+                 所以这几个东西交给第三遍扫描去做
                 */
                 xmlNode = doc.SelectSingleNode("Protocol_VM/ClassDiagram_P_VM");
                 nodeList = xmlNode.ChildNodes;
@@ -908,7 +931,7 @@ namespace sbid._VM
                             if (element.GetAttribute("basic") == "false") // 用户自定义类型
                             {
                                 UserType_VM userType_VM = (UserType_VM)networkItem_VM;
-                                UserType userType = (UserType)userType_VM.Type; // [fixme]转不过去???
+                                UserType userType = (UserType)userType_VM.Type;
                                 // id和name在第一轮就处理过了，这里只要放其Attribute
                                 foreach (XmlNode attrNode in node.ChildNodes) // <Attribute type_ref="1" identifier="a" id="1" />
                                 {
@@ -1231,6 +1254,45 @@ namespace sbid._VM
                                 }
                             }
                             break;
+                        case "CommChannel_VM":
+                            CommChannel_VM commChannel_VM = (CommChannel_VM)networkItem_VM;
+                            CommChannel commChannel = commChannel_VM.CommChannel;
+                            foreach (XmlNode cmpChildNode in node.ChildNodes) // <CommMethodPair process_ref="1" commMethod_ref="1" />
+                            {
+                                XmlElement cmpElement = (XmlElement)cmpChildNode;
+                                if (cmpElement.Name != "CommMethodPair")
+                                {
+                                    Tips = "[解析CommChannel_VM时出错]子结点必须是CommMethodPair！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                int processRef = int.Parse(cmpElement.GetAttribute("process_ref"));
+                                if (!processVMDict.ContainsKey(processRef))
+                                {
+                                    Tips = "[解析CommChannel_VM时出错]无法找到CommMethodPair引用的进程模板！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                int commMethodRef = int.Parse(cmpElement.GetAttribute("commMethod_ref"));
+                                CommMethod findCommMethod = null;
+                                foreach (CommMethod commMethod in processVMDict[processRef].Process.CommMethods)
+                                {
+                                    if (commMethod.Id == commMethodRef)
+                                    {
+                                        findCommMethod = commMethod;
+                                        break;
+                                    }
+                                }
+                                if (findCommMethod == null)
+                                {
+                                    Tips = "[解析CommChannel_VM时出错]无法找到CommMethodPair引用的进程模板下的CommMethod！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                CommMethodPair commMethodPair = new CommMethodPair(processVMDict[processRef].Process, findCommMethod);
+                                commChannel.CommMethodPairs.Add(commMethodPair);
+                            }
+                            break;
                     }
                 }
                 #endregion
@@ -1407,7 +1469,7 @@ namespace sbid._VM
             protocolVMs.Clear();
             Protocol_VM._id = Type._id = Process._id = Axiom._id = InitialKnowledge._id
                 = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id
-                = Connector_VM._id = 0;
+                = Connector_VM._id = CommMethod._id = CommChannel._id = 0;
             selectedItem = null;
         }
 

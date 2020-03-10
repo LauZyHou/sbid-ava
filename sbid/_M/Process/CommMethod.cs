@@ -15,12 +15,16 @@ namespace sbid._M
     // 进程模板中的通信方法
     public class CommMethod : ReactiveObject
     {
+        public static int _id = 0;
         private string name;
         private ObservableCollection<Attribute> parameters; // 这里不创建,在构造时传入
         private InOut inOutSuffix;
+        private int id;
 
         public CommMethod(string name, ObservableCollection<Attribute> parameters, InOut inOutSuffix)
         {
+            _id++;
+            this.id = _id;
             this.name = name;
             this.parameters = parameters;
             this.inOutSuffix = inOutSuffix;
@@ -40,6 +44,16 @@ namespace sbid._M
         }
         // 输入输出(必选)
         public InOut InOutSuffix { get => inOutSuffix; set => this.RaiseAndSetIfChanged(ref inOutSuffix, value); }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
 
         #region 展示串
 
