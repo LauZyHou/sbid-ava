@@ -55,7 +55,10 @@ namespace sbid._VM
                 });
         }
 
-        #region 按钮和右键菜单命令
+        #region 按钮命令
+
+        // 注意右键菜单命令因为要使用鼠标位置，所以放到ClassDiagram_P_V.xaml.cs里了
+        // 如果下面的内容有改动，那里也要修改
 
         // 创建自定义类型
         public void CreateUserTypeVM()
