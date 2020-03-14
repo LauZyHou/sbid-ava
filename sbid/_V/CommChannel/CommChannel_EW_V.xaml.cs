@@ -30,21 +30,49 @@ namespace sbid._V
 
         public void Add_CommMethodPair()
         {
-            ListBox process_ListBox = ControlExtensions.FindControl<ListBox>(this, "process_ListBox");
-            if (process_ListBox.SelectedItem == null)
+            ComboBox processA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "processA_ComboBox");
+            if (processA_ComboBox.SelectedItem == null)
             {
-                ResourceManager.mainWindowVM.Tips = "需要选定进程模板！";
+                ResourceManager.mainWindowVM.Tips = "需要选定发送方进程模板！";
+                return;
+            }
+            Process processA = (Process)processA_ComboBox.SelectedItem;
+
+            ComboBox processB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "processB_ComboBox");
+            if (processB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定接收方进程模板！";
+                return;
+            }
+            Process processB = (Process)processB_ComboBox.SelectedItem;
+
+            ComboBox commMethodA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commMethodA_ComboBox");
+            if (commMethodA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定发送方法！";
+                return;
+            }
+            CommMethod commMethodA = (CommMethod)commMethodA_ComboBox.SelectedItem;
+            if (commMethodA.InOutSuffix != InOut.Out)
+            {
+                ResourceManager.mainWindowVM.Tips = "发送方法必须是Out！";
                 return;
             }
 
-            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
-            if (commMethod_ListBox.SelectedItem == null)
+            ComboBox commMethodB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commMethodB_ComboBox");
+            if (commMethodB_ComboBox.SelectedItem == null)
             {
-                ResourceManager.mainWindowVM.Tips = "需要选定通信方法！";
+                ResourceManager.mainWindowVM.Tips = "需要选定接收方法！";
+                return;
+            }
+            CommMethod commMethodB = (CommMethod)commMethodB_ComboBox.SelectedItem;
+            if (commMethodB.InOutSuffix != InOut.In)
+            {
+                ResourceManager.mainWindowVM.Tips = "接收方法必须是In！";
                 return;
             }
 
-            CommMethodPair commMethodPair = new CommMethodPair((Process)process_ListBox.SelectedItem, (CommMethod)commMethod_ListBox.SelectedItem);
+            CommMethodPair commMethodPair = new CommMethodPair(processA, commMethodA, processB, commMethodB);
             ((CommChannel_EW_VM)DataContext).CommChannel.CommMethodPairs.Add(commMethodPair);
             ResourceManager.mainWindowVM.Tips = "已添加成员：" + commMethodPair;
         }
@@ -58,23 +86,53 @@ namespace sbid._V
                 return;
             }
 
-            ListBox process_ListBox = ControlExtensions.FindControl<ListBox>(this, "process_ListBox");
-            if (process_ListBox.SelectedItem == null)
+            ComboBox processA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "processA_ComboBox");
+            if (processA_ComboBox.SelectedItem == null)
             {
-                ResourceManager.mainWindowVM.Tips = "需要选定进程模板！";
+                ResourceManager.mainWindowVM.Tips = "需要选定发送方进程模板！";
+                return;
+            }
+            Process processA = (Process)processA_ComboBox.SelectedItem;
+
+            ComboBox processB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "processB_ComboBox");
+            if (processB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定接收方进程模板！";
+                return;
+            }
+            Process processB = (Process)processB_ComboBox.SelectedItem;
+
+            ComboBox commMethodA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commMethodA_ComboBox");
+            if (commMethodA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定发送方法！";
+                return;
+            }
+            CommMethod commMethodA = (CommMethod)commMethodA_ComboBox.SelectedItem;
+            if (commMethodA.InOutSuffix != InOut.Out)
+            {
+                ResourceManager.mainWindowVM.Tips = "发送方法必须是Out！";
                 return;
             }
 
-            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
-            if (commMethod_ListBox.SelectedItem == null)
+            ComboBox commMethodB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commMethodB_ComboBox");
+            if (commMethodB_ComboBox.SelectedItem == null)
             {
-                ResourceManager.mainWindowVM.Tips = "需要选定通信方法！";
+                ResourceManager.mainWindowVM.Tips = "需要选定接收方法！";
+                return;
+            }
+            CommMethod commMethodB = (CommMethod)commMethodB_ComboBox.SelectedItem;
+            if (commMethodB.InOutSuffix != InOut.In)
+            {
+                ResourceManager.mainWindowVM.Tips = "接收方法必须是In！";
                 return;
             }
 
             CommMethodPair commMethodPair = (CommMethodPair)commMethodPair_ListBox.SelectedItem;
-            commMethodPair.Process = (Process)process_ListBox.SelectedItem;
-            commMethodPair.CommMethod = (CommMethod)commMethod_ListBox.SelectedItem;
+            commMethodPair.ProcessA = processA;
+            commMethodPair.CommMethodA = commMethodA;
+            commMethodPair.ProcessB = processB;
+            commMethodPair.CommMethodB = commMethodB;
             ResourceManager.mainWindowVM.Tips = "已更新成员：" + commMethodPair;
         }
 

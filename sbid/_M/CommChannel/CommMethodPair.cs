@@ -8,21 +8,27 @@ namespace sbid._M
     // 表达选择的CommMethod，<进程模板,进程模板下的CommMethod>的序对
     public class CommMethodPair : ReactiveObject
     {
-        private Process process;
-        private CommMethod commMethod;
+        private Process processA;
+        private Process processB;
+        private CommMethod commMethodA;
+        private CommMethod commMethodB;
 
-        public CommMethodPair(Process process, CommMethod commMethod)
+        public CommMethodPair(Process processA, CommMethod commMethodA, Process processB, CommMethod commMethodB)
         {
-            this.process = process;
-            this.commMethod = commMethod;
+            this.processA = processA;
+            this.processB = processB;
+            this.commMethodA = commMethodA;
+            this.commMethodB = commMethodB;
         }
 
-        public Process Process { get => process; set => this.RaiseAndSetIfChanged(ref process, value); }
-        public CommMethod CommMethod { get => commMethod; set => this.RaiseAndSetIfChanged(ref commMethod, value); }
+        public Process ProcessA { get => processA; set => this.RaiseAndSetIfChanged(ref processA, value); }
+        public Process ProcessB { get => processB; set => this.RaiseAndSetIfChanged(ref processB, value); }
+        public CommMethod CommMethodA { get => commMethodA; set => this.RaiseAndSetIfChanged(ref commMethodA, value); }
+        public CommMethod CommMethodB { get => commMethodB; set => this.RaiseAndSetIfChanged(ref commMethodB, value); }
 
         public override string ToString()
         {
-            return process.Name + "." + commMethod.Name;
+            return "(" + processA.Name + "." + commMethodA.Name + ")->(" + processB.Name + "." + commMethodB.Name + ")";
         }
     }
 }

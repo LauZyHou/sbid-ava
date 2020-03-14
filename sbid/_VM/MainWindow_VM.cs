@@ -435,8 +435,10 @@ namespace sbid._VM
                         foreach (CommMethodPair commMethodPair in vm.CommChannel.CommMethodPairs)
                         {
                             xmlWriter.WriteStartElement("CommMethodPair");
-                            xmlWriter.WriteAttributeString("process_ref", commMethodPair.Process.Id.ToString());
-                            xmlWriter.WriteAttributeString("commMethod_ref", commMethodPair.CommMethod.Id.ToString()); // 这里用了CommMethod的Id
+                            xmlWriter.WriteAttributeString("processA_ref", commMethodPair.ProcessA.Id.ToString());
+                            xmlWriter.WriteAttributeString("commMethodA_ref", commMethodPair.CommMethodA.Id.ToString()); // 这里用了CommMethod的Id
+                            xmlWriter.WriteAttributeString("processB_ref", commMethodPair.ProcessB.Id.ToString());
+                            xmlWriter.WriteAttributeString("commMethodB_ref", commMethodPair.CommMethodB.Id.ToString()); // 这里用了CommMethod的Id
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();
@@ -1266,30 +1268,45 @@ namespace sbid._VM
                                     cleanProject();
                                     return false;
                                 }
-                                int processRef = int.Parse(cmpElement.GetAttribute("process_ref"));
-                                if (!processVMDict.ContainsKey(processRef))
+                                int processARef = int.Parse(cmpElement.GetAttribute("processA_ref"));
+                                int processBRef = int.Parse(cmpElement.GetAttribute("processB_ref"));
+                                if (!processVMDict.ContainsKey(processARef) || !processVMDict.ContainsKey(processBRef))
                                 {
                                     Tips = "[解析CommChannel_VM时出错]无法找到CommMethodPair引用的进程模板！";
                                     cleanProject();
                                     return false;
                                 }
-                                int commMethodRef = int.Parse(cmpElement.GetAttribute("commMethod_ref"));
-                                CommMethod findCommMethod = null;
-                                foreach (CommMethod commMethod in processVMDict[processRef].Process.CommMethods)
+                                int commMethodARef = int.Parse(cmpElement.GetAttribute("commMethodA_ref"));
+                                CommMethod findCommMethodA = null;
+                                foreach (CommMethod commMethod in processVMDict[processARef].Process.CommMethods)
                                 {
-                                    if (commMethod.Id == commMethodRef)
+                                    if (commMethod.Id == commMethodARef)
                                     {
-                                        findCommMethod = commMethod;
+                                        findCommMethodA = commMethod;
                                         break;
                                     }
                                 }
-                                if (findCommMethod == null)
+                                int commMethodBRef = int.Parse(cmpElement.GetAttribute("commMethodB_ref"));
+                                CommMethod findCommMethodB = null;
+                                foreach (CommMethod commMethod in processVMDict[processBRef].Process.CommMethods)
+                                {
+                                    if (commMethod.Id == commMethodBRef)
+                                    {
+                                        findCommMethodB = commMethod;
+                                        break;
+                                    }
+                                }
+                                if (findCommMethodA == null || findCommMethodB == null)
                                 {
                                     Tips = "[解析CommChannel_VM时出错]无法找到CommMethodPair引用的进程模板下的CommMethod！";
                                     cleanProject();
                                     return false;
                                 }
-                                CommMethodPair commMethodPair = new CommMethodPair(processVMDict[processRef].Process, findCommMethod);
+                                CommMethodPair commMethodPair = new CommMethodPair(
+                                    processVMDict[processARef].Process, 
+                                    findCommMethodA,
+                                    processVMDict[processBRef].Process,
+                                    findCommMethodB);
                                 commChannel.CommMethodPairs.Add(commMethodPair);
                             }
                             break;
