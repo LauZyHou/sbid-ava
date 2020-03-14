@@ -12,7 +12,8 @@
   </Design.DataContext>
 
   <!--必须为Canvas设置足够的宽高,否则这个容器没有宽高.也可以用自适应子元素宽高但是似乎没必要-->
-  <Canvas Width="1200" Height="1000">
+  <!--注：这里至少是状态机面板V里ItemsControl的宽高-->
+  <Canvas Width="2000" Height="1000">
     <v:Arrow Stroke="Black" StrokeThickness="2" StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
     <StackPanel Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White">
       <TextBlock TextAlignment="Center">

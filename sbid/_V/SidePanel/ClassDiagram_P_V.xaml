@@ -63,7 +63,7 @@
     </StackPanel>
     <!--面板-->
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ItemsControl DockPanel.Dock="Bottom" Items="{Binding NetworkItemVMs}" Height="700"/>
+      <ItemsControl DockPanel.Dock="Bottom" Items="{Binding NetworkItemVMs}" Height="1000" Width="2000"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>

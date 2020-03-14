@@ -49,6 +49,8 @@ namespace sbid._M
         public static readonly Type TYPE_INT = new Type("int");
         public static readonly Type TYPE_BOOL = new Type("bool");
         public static readonly Type TYPE_NUM = new Type("number");
+        public static readonly Type TYPE_BYTE = new Type("byte");
+        public static readonly Type TYPE_BYTE_VEC = new Type("byteVec");
         // 非基本类型，但也是写死的
         public static readonly Type TYPE_TIMER = new UserType(TYPE_NUM, "time") { Name = "Timer" };
     }

@@ -34,12 +34,24 @@ namespace sbid._VM
                     X = 980,
                     Y = 80
                 });
+            NetworkItemVMs.Add(
+                new UserType_VM(Type.TYPE_BYTE)
+                {
+                    X = 970,
+                    Y = 110
+                });
+            NetworkItemVMs.Add(
+                new UserType_VM(Type.TYPE_BYTE_VEC)
+                {
+                    X = 960,
+                    Y = 140
+                });
             // 这里额外添加一个Timer类，但它不是内置类型
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_TIMER)
                 {
-                    X = 970,
-                    Y = 110
+                    X = 950,
+                    Y = 170
                 });
         }
 

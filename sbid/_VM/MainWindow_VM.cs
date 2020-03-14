@@ -723,6 +723,16 @@ namespace sbid._VM
                                         typeDict[id] = Type.TYPE_NUM; // 写入字典
                                         networkItem_VM = new UserType_VM(Type.TYPE_NUM);
                                         break;
+                                    case "byte":
+                                        Type.TYPE_BYTE.Id = id;
+                                        typeDict[id] = Type.TYPE_BYTE; // 写入字典
+                                        networkItem_VM = new UserType_VM(Type.TYPE_BYTE);
+                                        break;
+                                    case "byteVec":
+                                        Type.TYPE_BYTE_VEC.Id = id;
+                                        typeDict[id] = Type.TYPE_BYTE_VEC; // 写入字典
+                                        networkItem_VM = new UserType_VM(Type.TYPE_BYTE_VEC);
+                                        break;
                                 }
                             }
                             else // 用户自定义类型

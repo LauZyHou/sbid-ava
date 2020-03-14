@@ -57,7 +57,7 @@
       <Button Command="{Binding CreateRelationVM_SAND}">创建[顺序与]关系</Button>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ItemsControl Items="{Binding UserControlVMs}" Height="700"/>
+      <ItemsControl Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>

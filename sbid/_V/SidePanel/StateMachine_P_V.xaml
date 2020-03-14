@@ -48,6 +48,6 @@
   </UserControl.Styles>
 
   <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-    <ItemsControl Items="{Binding UserControlVMs}" Height="700"/>
+    <ItemsControl Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
   </ScrollViewer>
 </UserControl>
