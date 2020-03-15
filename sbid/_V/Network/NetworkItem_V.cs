@@ -27,7 +27,9 @@ namespace sbid._V
         {
             base.OnPointerPressed(e);
 
-            if (e.MouseButton != MouseButton.Left)
+            //if (e.MouseButton != MouseButton.Left)
+            //    return;
+            if (e.GetCurrentPoint(this).Properties.PointerUpdateKind != PointerUpdateKind.LeftButtonPressed)
                 return;
 
             // 所在面板无法在构造函数里求得

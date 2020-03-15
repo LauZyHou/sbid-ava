@@ -22,13 +22,18 @@ namespace sbid._V
 
         private Point mousePos;
 
-        // 无法直接获取到鼠标位置，必须在这个事件回调方法里取得
-        protected override void OnPointerMoved(PointerEventArgs e)
+        // 无法直接获取到鼠标位置，必须在鼠标相关事件回调方法里取得
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
-            base.OnPointerMoved(e);
+            base.OnPointerPressed(e);
             // 特别注意，要取得的不是相对这个ClassDiagram_P_V的位置，而是相对于里面的内容控件
             ItemsControl panel = ControlExtensions.FindControl<ItemsControl>(this, "panel");
-            mousePos = e.GetPosition(panel);
+            // 右键在这个面板上按下时
+            if (e.GetCurrentPoint(panel).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed)
+            {
+                // 更新位置
+                mousePos = e.GetPosition(panel);
+            }
         }
 
         #endregion
