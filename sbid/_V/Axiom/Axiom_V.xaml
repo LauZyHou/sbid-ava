@@ -19,17 +19,17 @@
       <TextBlock Text="{Binding Axiom.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
-    <TextBlock Grid.Row="2" Text=" Method:"/>
-    <ListBox Grid.Row="3" Items="{Binding Axiom.Methods}" IsEnabled="False"
+    <TextBlock Grid.Row="2" Text=" ProcessMethod:"/>
+    <ListBox Grid.Row="3" Items="{Binding Axiom.ProcessMethods}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <TextBlock>
             <TextBlock.Text>
-              <MultiBinding StringFormat=" {0} {1}({2});">
-                <Binding Path="ReturnType.Name"/>
-                <Binding Path="Name"/>
-                <Binding Path="ParamString"/>
+              <MultiBinding StringFormat=" {0}.{1}[{2}]">
+                <Binding Path="Process.Name"/>
+                <Binding Path="Method.Name"/>
+                <Binding Path="Method.CryptoSuffix"/>
               </MultiBinding>
             </TextBlock.Text>
           </TextBlock>

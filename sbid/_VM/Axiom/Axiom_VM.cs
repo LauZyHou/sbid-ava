@@ -30,12 +30,12 @@ namespace sbid._VM
                     Axiom = axiom
                 }
             };
-            // 将所有的Type也传入,作为Method的可用类型
+            // 将所有的Process也传入,作为ProcessMethod的可选进程
             foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs)
             {
-                if (item is UserType_VM)
+                if (item is Process_VM)
                 {
-                    ((Axiom_EW_VM)axiomEWV.DataContext).Types.Add(((UserType_VM)item).Type);
+                    ((Axiom_EW_VM)axiomEWV.DataContext).Processes.Add(((Process_VM)item).Process);
                 }
             }
 

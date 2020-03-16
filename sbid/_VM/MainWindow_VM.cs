@@ -295,6 +295,7 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("returnType_ref", method.ReturnType.Id.ToString());
                             xmlWriter.WriteAttributeString("name", method.Name);
                             xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                            xmlWriter.WriteAttributeString("id", method.Id.ToString());
                             foreach (Attribute attr in method.Parameters)
                             {
                                 xmlWriter.WriteStartElement("Parameter");
@@ -331,20 +332,11 @@ namespace sbid._VM
                         xmlWriter.WriteAttributeString("y", vm.Y.ToString());
                         xmlWriter.WriteAttributeString("name", vm.Axiom.Name);
                         xmlWriter.WriteAttributeString("id", vm.Axiom.Id.ToString());
-                        foreach (Method method in vm.Axiom.Methods)
+                        foreach (ProcessMethod processMethod in vm.Axiom.ProcessMethods)
                         {
-                            xmlWriter.WriteStartElement("Method");
-                            xmlWriter.WriteAttributeString("returnType_ref", method.ReturnType.Id.ToString());
-                            xmlWriter.WriteAttributeString("name", method.Name);
-                            xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
-                            foreach (Attribute attr in method.Parameters)
-                            {
-                                xmlWriter.WriteStartElement("Parameter");
-                                xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
-                                xmlWriter.WriteAttributeString("identifier", attr.Identifier);
-                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
-                                xmlWriter.WriteEndElement();
-                            }
+                            xmlWriter.WriteStartElement("ProcessMethod");
+                            xmlWriter.WriteAttributeString("process_ref", processMethod.Process.Id.ToString());
+                            xmlWriter.WriteAttributeString("method_ref", processMethod.Method.Id.ToString());
                             xmlWriter.WriteEndElement();
                         }
                         foreach (Formula formula in vm.Axiom.Formulas)
@@ -986,6 +978,7 @@ namespace sbid._VM
                                         process.Attributes.Add(attribute);
                                         break;
                                     case "Method":
+                                        id = int.Parse(pcElement.GetAttribute("id"));
                                         int returnTypeRef = int.Parse(pcElement.GetAttribute("returnType_ref"));
                                         if (!typeDict.ContainsKey(returnTypeRef))
                                         {
@@ -1013,6 +1006,7 @@ namespace sbid._VM
                                             parameters.Add(param);
                                         }
                                         Method method = new Method(typeDict[returnTypeRef], name, parameters, cryptoSuffix);
+                                        method.Id = id;
                                         process.Methods.Add(method);
                                         break;
                                     case "CommMethod":
@@ -1037,51 +1031,6 @@ namespace sbid._VM
                                         }
                                         CommMethod commMethod = new CommMethod(name, parameters, inOutSuffix);
                                         process.CommMethods.Add(commMethod);
-                                        break;
-                                }
-                            }
-                            break;
-                        case "Axiom_VM":
-                            Axiom_VM axiom_VM = (Axiom_VM)networkItem_VM;
-                            Axiom axiom = axiom_VM.Axiom;
-                            foreach (XmlNode axiomChildNode in node.ChildNodes) // Method/Formula
-                            {
-                                XmlElement acElement = (XmlElement)axiomChildNode;
-                                switch (axiomChildNode.Name)
-                                {
-                                    case "Method":
-                                        int returnTypeRef = int.Parse(acElement.GetAttribute("returnType_ref"));
-                                        if (!typeDict.ContainsKey(returnTypeRef))
-                                        {
-                                            Tips = "[解析Axiom_VM时出错]无法找到Method的返回类型！";
-                                            cleanProject();
-                                            return false;
-                                        }
-                                        string name = acElement.GetAttribute("name");
-                                        Crypto cryptoSuffix = (Crypto)System.Enum.Parse(typeof(Crypto), acElement.GetAttribute("cryptoSuffix"));
-                                        ObservableCollection<Attribute> parameters = new ObservableCollection<Attribute>();
-                                        foreach (XmlNode paramNode in axiomChildNode.ChildNodes) // <Parameter type_ref="1" identifier="key" id="10" />
-                                        {
-                                            XmlElement paramElement = (XmlElement)paramNode;
-                                            int typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
-                                            int paramId = int.Parse(paramElement.GetAttribute("id"));
-                                            string identifier = paramElement.GetAttribute("identifier");
-                                            if (!typeDict.ContainsKey(typeRef))
-                                            {
-                                                Tips = "[解析Axiom_VM时出错]无法找到Method的参数类型！";
-                                                cleanProject();
-                                                return false;
-                                            }
-                                            Attribute param = new Attribute(typeDict[typeRef], identifier);
-                                            param.Id = paramId;
-                                            parameters.Add(param);
-                                        }
-                                        Method method = new Method(typeDict[returnTypeRef], name, parameters, cryptoSuffix);
-                                        axiom.Methods.Add(method);
-                                        break;
-                                    case "Formula":
-                                        Formula formula = new Formula(acElement.GetAttribute("content"));
-                                        axiom.Formulas.Add(formula);
                                         break;
                                 }
                             }
@@ -1313,11 +1262,53 @@ namespace sbid._VM
                                     return false;
                                 }
                                 CommMethodPair commMethodPair = new CommMethodPair(
-                                    processVMDict[processARef].Process, 
+                                    processVMDict[processARef].Process,
                                     findCommMethodA,
                                     processVMDict[processBRef].Process,
                                     findCommMethodB);
                                 commChannel.CommMethodPairs.Add(commMethodPair);
+                            }
+                            break;
+                        case "Axiom_VM":
+                            Axiom_VM axiom_VM = (Axiom_VM)networkItem_VM;
+                            Axiom axiom = axiom_VM.Axiom;
+                            foreach (XmlNode axiomChildNode in node.ChildNodes) // ProcessMethod/Formula
+                            {
+                                XmlElement acElement = (XmlElement)axiomChildNode;
+                                switch (axiomChildNode.Name)
+                                {
+                                    case "ProcessMethod":
+                                        int processRef = int.Parse(acElement.GetAttribute("process_ref"));
+                                        if (!processVMDict.ContainsKey(processRef))
+                                        {
+                                            Tips = "[解析Axiom_VM时出错]无法找到ProcessMethod引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int methodRef = int.Parse(acElement.GetAttribute("method_ref"));
+                                        Method findMethod = null;
+                                        foreach (Method method in processVMDict[processRef].Process.Methods)
+                                        {
+                                            if (method.Id == methodRef)
+                                            {
+                                                findMethod = method;
+                                                break;
+                                            }
+                                        }
+                                        if (findMethod == null)
+                                        {
+                                            Tips = "[解析Axiom_VM时出错]无法找到ProcessMethod引用的进程模板下的Method！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        ProcessMethod processMethod = new ProcessMethod(processVMDict[processRef].Process, findMethod);
+                                        axiom.ProcessMethods.Add(processMethod);
+                                        break;
+                                    case "Formula":
+                                        Formula formula = new Formula(acElement.GetAttribute("content"));
+                                        axiom.Formulas.Add(formula);
+                                        break;
+                                }
                             }
                             break;
                     }
@@ -1496,7 +1487,7 @@ namespace sbid._VM
             protocolVMs.Clear();
             Protocol_VM._id = Type._id = Process._id = Axiom._id = InitialKnowledge._id
                 = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id
-                = Connector_VM._id = CommMethod._id = CommChannel._id = 0;
+                = Connector_VM._id = CommMethod._id = CommChannel._id = Method._id = 0;
             selectedItem = null;
         }
 

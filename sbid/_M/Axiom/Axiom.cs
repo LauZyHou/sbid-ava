@@ -11,9 +11,10 @@ namespace sbid._M
     {
         public static int _id = 0;
         private string name;
-        private ObservableCollection<Method> methods = new ObservableCollection<Method>();
+        private ObservableCollection<ProcessMethod> processMethods = new ObservableCollection<ProcessMethod>();
         private ObservableCollection<Formula> formulas = new ObservableCollection<Formula>();
         private int id;
+        
 
         public Axiom()
         {
@@ -24,7 +25,7 @@ namespace sbid._M
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
-        public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
+        public ObservableCollection<ProcessMethod> ProcessMethods { get => processMethods; set => processMethods = value; }
         public ObservableCollection<Formula> Formulas { get => formulas; set => formulas = value; }
         public int Id
         {
@@ -39,15 +40,6 @@ namespace sbid._M
 
         private void test_data()
         {
-            ObservableCollection<Attribute> parameters1 = new ObservableCollection<Attribute>();
-            parameters1.Add(new Attribute(Type.TYPE_INT, "msg"));
-            parameters1.Add(new Attribute(Type.TYPE_BOOL, "key"));
-            methods.Add(new Method(Type.TYPE_INT, "enc1", parameters1));
-
-            ObservableCollection<Attribute> parameters2 = new ObservableCollection<Attribute>();
-            parameters2.Add(new Attribute(Type.TYPE_INT, "msg"));
-            methods.Add(new Method(Type.TYPE_BOOL, "send1", parameters2));
-
             formulas.Add(new Formula("dec1(enc1(m,k),k)=m"));
         }
     }

@@ -15,13 +15,17 @@ namespace sbid._M
     // Process或Axiom中使用的方法
     public class Method : ReactiveObject
     {
+        public static int _id = 0;
         private Type returnType;
         private string name;
         private ObservableCollection<Attribute> parameters; // 这里不创建,在构造时传入
         private Crypto cryptoSuffix;
+        private int id;
 
         public Method(Type returnType, string name, ObservableCollection<Attribute> parameters, Crypto cryptoSuffix = Crypto.None)
         {
+            _id++;
+            this.id = _id;
             this.returnType = returnType;
             this.name = name;
             this.parameters = parameters;
@@ -49,6 +53,17 @@ namespace sbid._M
 
         // 加解密方式(可选)
         public Crypto CryptoSuffix { get => cryptoSuffix; set => this.RaiseAndSetIfChanged(ref cryptoSuffix, value); }
+
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
+            }
+        }
 
         #endregion
 
@@ -87,7 +102,7 @@ namespace sbid._M
 
         // 内置Method
         public static readonly List<Method> InnerMethods = new List<Method>();
-        // 静态构造
+        // 静态构造，实际使用时以它们为模板创建新的对象，里面内容深拷贝
         static Method()
         {
             // 添加内置Method
