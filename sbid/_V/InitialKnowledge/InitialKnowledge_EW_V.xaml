@@ -12,7 +12,7 @@
   </Design.DataContext>
   
   <Window.Styles>
-    <Style Selector="Button">
+    <Style Selector=".ButtonGroup > Button">
       <Setter Property="Width" Value="50"/>
       <Setter Property="Height" Value="30"/>
       <Setter Property="Margin" Value="7,5"/>
@@ -29,8 +29,17 @@
     <TabItem Header="元信息">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock Text="InitialKnowledge名称：" FontSize="18"/>
-          <TextBox Text="{Binding InitialKnowledge.Name, Mode=TwoWay}"/>
+          <TextBlock Text="关联的进程模板：" FontSize="18"/>
+          <ComboBox Name="process_ComboBox" Items="{Binding Processes}" MinWidth="60"
+                    SelectedItem="{Binding InitialKnowledge.Process, Mode=OneWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <Button Margin="10,0,0,0" Command="{Binding $parent[Window].Set_Process}">写入</Button>
+          <Button Margin="10,0,0,0" Command="{Binding SetGlobal}">设置为全局</Button>
         </StackPanel>
       </StackPanel>
     </TabItem>
@@ -62,10 +71,10 @@
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
-          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Command="{Binding $parent[Window].Add_InitialKnowledge}">添加</Button>
-            <Button Command="{Binding $parent[Window].Update_InitialKnowledge}">修改</Button>
-            <Button Command="{Binding $parent[Window].Delete_InitialKnowledge}">删除</Button>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Classes="ButtonGroup">
+            <Button Command="{Binding $parent[Window].Add_KnowledgePair}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_KnowledgePair}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_KnowledgePair}">删除</Button>
           </StackPanel>
         </StackPanel>
         <ListBox Grid.Column="1" Margin="10,0" Name="knowledgePair_ListBox" 

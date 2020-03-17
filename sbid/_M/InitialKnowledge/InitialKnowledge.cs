@@ -9,7 +9,7 @@ namespace sbid._M
     public class InitialKnowledge : ReactiveObject
     {
         public static int _id = 0;
-        private string name;
+        private Process process;
         private ObservableCollection<KnowledgePair> knowledgePairs = new ObservableCollection<KnowledgePair>();
         private int id;
 
@@ -17,10 +17,18 @@ namespace sbid._M
         {
             _id++;
             this.id = _id;
-            this.name = "IK" + this.id;
         }
 
-        public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
+        public bool IsGlobal { get => process == null; } // 是否是全局的，这里直接从Process是否为空计算而来
+        public Process Process
+        {
+            get => process;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref process, value);
+                this.RaisePropertyChanged("IsGlobal");
+            }
+        }
         public ObservableCollection<KnowledgePair> KnowledgePairs { get => knowledgePairs; set => knowledgePairs = value; }
         public int Id
         {

@@ -93,7 +93,7 @@ namespace sbid._VM
         {
             InitialKnowledge_VM initialKnowledgeVM = new InitialKnowledge_VM();
             NetworkItemVMs.Add(initialKnowledgeVM);
-            ResourceManager.mainWindowVM.Tips = "创建了新的InitialKnowledge：" + initialKnowledgeVM.InitialKnowledge.Name;
+            ResourceManager.mainWindowVM.Tips = "创建了新的InitialKnowledge";
         }
 
         // 创建功能安全性质

@@ -23,7 +23,21 @@ namespace sbid._V
 
         #region 按钮命令
 
-        public void Add_InitialKnowledge()
+        public void Set_Process()
+        {
+            ComboBox process_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "process_ComboBox");
+            if (process_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定Process！";
+                return;
+            }
+            Process process = (Process)process_ComboBox.SelectedItem;
+
+            ((InitialKnowledge_EW_VM)DataContext).InitialKnowledge.Process = process;
+            ResourceManager.mainWindowVM.Tips = "关联到Process：" + process.Name;
+        }
+
+        public void Add_KnowledgePair()
         {
             ListBox process_ListBox = ControlExtensions.FindControl<ListBox>(this, "process_ListBox");
             if (process_ListBox.SelectedItem == null)
@@ -44,7 +58,7 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "添加了KnowledgePair：" + knowledgePair;
         }
 
-        public void Update_InitialKnowledge()
+        public void Update_KnowledgePair()
         {
             ListBox knowledgePair_ListBox = ControlExtensions.FindControl<ListBox>(this, "knowledgePair_ListBox");
             if (knowledgePair_ListBox.SelectedItem == null)
@@ -73,7 +87,7 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "修改了KnowledgePair：" + knowledgePair;
         }
 
-        public void Delete_InitialKnowledge()
+        public void Delete_KnowledgePair()
         {
             ListBox knowledgePair_ListBox = ControlExtensions.FindControl<ListBox>(this, "knowledgePair_ListBox");
             if (knowledgePair_ListBox.SelectedItem == null)

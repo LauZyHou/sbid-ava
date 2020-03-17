@@ -353,7 +353,14 @@ namespace sbid._VM
                         xmlWriter.WriteStartElement("InitialKnowledge_VM");
                         xmlWriter.WriteAttributeString("x", vm.X.ToString());
                         xmlWriter.WriteAttributeString("y", vm.Y.ToString());
-                        xmlWriter.WriteAttributeString("name", vm.InitialKnowledge.Name);
+                        if (vm.InitialKnowledge.Process == null) // 全局，不关联Process
+                        {
+                            xmlWriter.WriteAttributeString("process_ref", "-1");
+                        }
+                        else
+                        {
+                            xmlWriter.WriteAttributeString("process_ref", vm.InitialKnowledge.Process.Id.ToString());
+                        }
                         xmlWriter.WriteAttributeString("id", vm.InitialKnowledge.Id.ToString());
                         foreach (KnowledgePair knowledgePair in vm.InitialKnowledge.KnowledgePairs)
                         {
@@ -755,7 +762,6 @@ namespace sbid._VM
                         case "InitialKnowledge_VM":
                             networkItem_VM = new InitialKnowledge_VM();
                             ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Id = id;
-                            ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Name = element.GetAttribute("name");
                             break;
                         case "SafetyProperty_VM":
                             networkItem_VM = new SafetyProperty_VM();
@@ -1071,12 +1077,23 @@ namespace sbid._VM
                     switch (node.Name)
                     {
                         case "InitialKnowledge_VM":
+                            int processRef = int.Parse(element.GetAttribute("process_ref"));
+                            if (processRef != -1 && !processVMDict.ContainsKey(processRef)) // -1表示全局，不引用
+                            {
+                                Tips = "[解析InitialKnowledge_VM时出错]无法找到引用的进程模板！";
+                                cleanProject();
+                                return false;
+                            }
                             InitialKnowledge_VM initialKnowledge_VM = (InitialKnowledge_VM)networkItem_VM;
                             InitialKnowledge initialKnowledge = initialKnowledge_VM.InitialKnowledge;
+                            if (processRef != -1)
+                            {
+                                initialKnowledge.Process = processVMDict[processRef].Process;
+                            }
                             foreach (XmlNode ikpChildNode in node.ChildNodes) // <KnowledgePair process_ref="1" attribute_ref="8" />
                             {
                                 XmlElement ikpElement = (XmlElement)ikpChildNode;
-                                int processRef = int.Parse(ikpElement.GetAttribute("process_ref"));
+                                processRef = int.Parse(ikpElement.GetAttribute("process_ref"));
                                 if (!processVMDict.ContainsKey(processRef))
                                 {
                                     Tips = "[解析InitialKnowledge_VM时出错]无法找到KnowledgePair引用的进程模板！";
@@ -1112,7 +1129,7 @@ namespace sbid._VM
                                 switch (securityChildNode.Name)
                                 {
                                     case "Confidential":
-                                        int processRef = int.Parse(securityElement.GetAttribute("process_ref"));
+                                        processRef = int.Parse(securityElement.GetAttribute("process_ref"));
                                         if (!processVMDict.ContainsKey(processRef))
                                         {
                                             Tips = "[解析SecurityProperty_VM时出错]无法找到Confidential引用的进程模板！";
@@ -1278,7 +1295,7 @@ namespace sbid._VM
                                 switch (axiomChildNode.Name)
                                 {
                                     case "ProcessMethod":
-                                        int processRef = int.Parse(acElement.GetAttribute("process_ref"));
+                                        processRef = int.Parse(acElement.GetAttribute("process_ref"));
                                         if (!processVMDict.ContainsKey(processRef))
                                         {
                                             Tips = "[解析Axiom_VM时出错]无法找到ProcessMethod引用的进程模板！";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Avalonia.Controls;
 using sbid._M;
 using sbid._V;
 
@@ -39,8 +40,12 @@ namespace sbid._VM
                 }
             }
 
+            // [bugfix]因为在xaml里绑定Process打开编辑窗口显示出不来，只好在这里手动设置一下
+            ComboBox process_ComboBox = ControlExtensions.FindControl<ComboBox>(initialKnowledgeEWV, "process_ComboBox");
+            process_ComboBox.SelectedItem = ((InitialKnowledge_EW_VM)initialKnowledgeEWV.DataContext).InitialKnowledge.Process;
+
             initialKnowledgeEWV.ShowDialog(ResourceManager.mainWindowV);
-            ResourceManager.mainWindowVM.Tips = "打开了InitialKnowledge：" + initialKnowledge.Name + "的编辑窗体";
+            ResourceManager.mainWindowVM.Tips = "打开了InitialKnowledge的编辑窗体";
         }
 
         #endregion

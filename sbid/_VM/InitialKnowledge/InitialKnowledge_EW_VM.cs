@@ -15,5 +15,22 @@ namespace sbid._VM
         public InitialKnowledge InitialKnowledge { get => initialKnowledge; set => initialKnowledge = value; }
         // 集成协议下的所有Process,以用于KnowledgePair的构建和修改
         public ObservableCollection<Process> Processes { get => processes; set => processes = value; }
+
+        #region 命令
+
+        // 设置为全局，即不设置进程模板
+        public void SetGlobal()
+        {
+            if (initialKnowledge.Process == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "已经是全局的了，无需重复操作";
+                return;
+            }
+            initialKnowledge.Process = null;
+            ResourceManager.mainWindowVM.Tips = "已取消关联进程模板，当前InitialKnowledge被视为全局的";
+        }
+
+        #endregion
+
     }
 }
