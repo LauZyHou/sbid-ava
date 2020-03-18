@@ -27,7 +27,7 @@ namespace sbid._VM
         // 锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
-        #region 按钮和右键菜单命令
+        #region 按钮命令
 
         // 创建对象-生命线
         public void CreateObjLifeLineVM()

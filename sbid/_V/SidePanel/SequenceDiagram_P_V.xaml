@@ -22,7 +22,7 @@
               <!--右键菜单行为-->
               <Canvas.ContextMenu>
                 <ContextMenu>
-                  <MenuItem Header="创建对象-生命线" Command="{Binding CreateObjLifeLineVM}"/>
+                  <MenuItem Header="创建对象-生命线" Command="{Binding $parent[UserControl].CreateObjLifeLineVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -54,7 +54,7 @@
       <ComboBox Name="connectorVisible_ComboBox" Width="60" Background="WhiteSmoke" SelectedItem="{Binding ConnectorVisible, Mode=TwoWay}"/>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ItemsControl Items="{Binding UserControlVMs}" Height="700"/>
+      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="700"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>

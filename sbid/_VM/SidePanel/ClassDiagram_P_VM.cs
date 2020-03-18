@@ -16,42 +16,47 @@ namespace sbid._VM
         // 这里改成给外部主动调用
         public void init_data()
         {
+            double baseX = 20;
+            double baseY = 20;
+            double deltaY = 30;
+            int count = 0;
+
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_INT)
                 {
-                    X = 1000,
-                    Y = 20
+                    X = baseX,
+                    Y = baseY + (count++) * deltaY
                 });
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_BOOL)
                 {
-                    X = 990,
-                    Y = 50
+                    X = baseX,
+                    Y = baseY + (count++) * deltaY
                 });
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_NUM)
                 {
-                    X = 980,
-                    Y = 80
+                    X = baseX,
+                    Y = baseY + (count++) * deltaY
                 });
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_BYTE)
                 {
-                    X = 970,
-                    Y = 110
+                    X = baseX,
+                    Y = baseY + (count++) * deltaY
                 });
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_BYTE_VEC)
                 {
-                    X = 960,
-                    Y = 140
+                    X = baseX,
+                    Y = baseY + (count++) * deltaY
                 });
             // 这里额外添加一个Timer类，但它不是内置类型
             NetworkItemVMs.Add(
                 new UserType_VM(Type.TYPE_TIMER)
                 {
-                    X = 950,
-                    Y = 170
+                    X = baseX + 160,
+                    Y = baseY
                 });
         }
 

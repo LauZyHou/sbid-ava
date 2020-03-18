@@ -19,7 +19,7 @@ namespace sbid._VM
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
 
-        #region 按钮和右键菜单命令
+        #region 按钮命令
 
         // 创建攻击结点
         public void CreateAttackVM()

@@ -78,7 +78,7 @@ namespace sbid._VM
 
         #endregion
 
-        #region 按钮和右键菜单命令
+        #region 按钮命令
 
         // 创建普通状态结点
         public void CreateStateVM()

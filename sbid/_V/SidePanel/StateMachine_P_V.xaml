@@ -23,8 +23,8 @@
               <!--右键菜单行为-->
               <Canvas.ContextMenu>
                 <ContextMenu>
-                  <MenuItem Header="创建普通状态结点" Command="{Binding CreateStateVM}"/>
-                  <MenuItem Header="创建终止状态结点" Command="{Binding CreateFinalStateVM}"/>
+                  <MenuItem Header="创建普通状态结点" Command="{Binding $parent[UserControl].CreateStateVM}"/>
+                  <MenuItem Header="创建终止状态结点" Command="{Binding $parent[UserControl].CreateFinalStateVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -48,6 +48,6 @@
   </UserControl.Styles>
 
   <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-    <ItemsControl Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+    <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
   </ScrollViewer>
 </UserControl>

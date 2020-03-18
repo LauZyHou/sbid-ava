@@ -2,9 +2,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Width="200" Height="110" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Attack_EW_V"
         Title="编辑Attack">
+
+  <Design.DataContext>
+    <vm:Attack_EW_VM/>
+  </Design.DataContext>
+  
   <StackPanel Margin="10">
     <TextBlock Text="攻击内容描述：" FontSize="17"/>
     <TextBox Text="{Binding Attack.Content, Mode=TwoWay}" Height="60" FontSize="17" TextWrapping="Wrap" AcceptsReturn="True"/>
