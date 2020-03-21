@@ -31,7 +31,7 @@ namespace sbid._VM
                 }
             };
             // 将所有的Process也传入,作为ProcessMethod的可选进程
-            foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs)
+            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.UserControlVMs)
             {
                 if (item is Process_VM)
                 {

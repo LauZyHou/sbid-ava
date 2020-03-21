@@ -38,7 +38,7 @@
       <!--里面放控件,即xxx_VM-->
       <Setter Property="ItemTemplate">
         <Setter.Value>
-          <DataTemplate DataType="vm:NetworkItem_VM">
+          <DataTemplate DataType="vm:ViewModelBase">
             <ContentControl Content="{Binding .}"/>
           </DataTemplate>
         </Setter.Value>
@@ -63,7 +63,7 @@
     </StackPanel>-->
     <!--面板-->
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ItemsControl Name="panel" DockPanel.Dock="Bottom" Items="{Binding NetworkItemVMs}" Height="1000" Width="2000"/>
+      <ItemsControl Name="panel" DockPanel.Dock="Bottom" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>

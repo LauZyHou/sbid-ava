@@ -242,7 +242,7 @@ namespace sbid._VM
                 // 这个比较特殊，因为就这一个，而且一定有这一个，用户既不能创建也不能销毁
                 xmlWriter.WriteStartElement("ClassDiagram_P_VM");
                 ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
-                foreach (NetworkItem_VM item in classDiagram_P_VM.NetworkItemVMs)
+                foreach (ViewModelBase item in classDiagram_P_VM.UserControlVMs)
                 {
                     // 按照每个类图的类型做不同的保存方法
                     if (item is UserType_VM)
@@ -698,7 +698,7 @@ namespace sbid._VM
                 foreach (XmlNode node in nodeList)
                 {
                     XmlElement element = (XmlElement)node;
-                    NetworkItem_VM networkItem_VM = null;
+                    ViewModelBase userControl_VM = null;
                     int id = int.Parse(element.GetAttribute("id"));
                     switch (node.Name)
                     {
@@ -710,41 +710,41 @@ namespace sbid._VM
                                     case "int":
                                         Type.TYPE_INT.Id = id;
                                         typeDict[id] = Type.TYPE_INT; // 写入字典
-                                        networkItem_VM = new UserType_VM(Type.TYPE_INT);
+                                        userControl_VM = new UserType_VM(Type.TYPE_INT);
                                         break;
                                     case "bool":
                                         Type.TYPE_BOOL.Id = id;
                                         typeDict[id] = Type.TYPE_BOOL; // 写入字典
-                                        networkItem_VM = new UserType_VM(Type.TYPE_BOOL);
+                                        userControl_VM = new UserType_VM(Type.TYPE_BOOL);
                                         break;
                                     case "number":
                                         Type.TYPE_NUM.Id = id;
                                         typeDict[id] = Type.TYPE_NUM; // 写入字典
-                                        networkItem_VM = new UserType_VM(Type.TYPE_NUM);
+                                        userControl_VM = new UserType_VM(Type.TYPE_NUM);
                                         break;
                                     case "byte":
                                         Type.TYPE_BYTE.Id = id;
                                         typeDict[id] = Type.TYPE_BYTE; // 写入字典
-                                        networkItem_VM = new UserType_VM(Type.TYPE_BYTE);
+                                        userControl_VM = new UserType_VM(Type.TYPE_BYTE);
                                         break;
                                     case "byteVec":
                                         Type.TYPE_BYTE_VEC.Id = id;
                                         typeDict[id] = Type.TYPE_BYTE_VEC; // 写入字典
-                                        networkItem_VM = new UserType_VM(Type.TYPE_BYTE_VEC);
+                                        userControl_VM = new UserType_VM(Type.TYPE_BYTE_VEC);
                                         break;
                                 }
                             }
                             else // 用户自定义类型
                             {
-                                networkItem_VM = new UserType_VM();
-                                ((UserType_VM)networkItem_VM).Type.Id = id;
-                                typeDict[id] = ((UserType_VM)networkItem_VM).Type; // 写入字典
-                                ((UserType_VM)networkItem_VM).Type.Name = element.GetAttribute("name");
+                                userControl_VM = new UserType_VM();
+                                ((UserType_VM)userControl_VM).Type.Id = id;
+                                typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
+                                ((UserType_VM)userControl_VM).Type.Name = element.GetAttribute("name");
                             }
                             break;
                         case "Process_VM":
-                            networkItem_VM = new Process_VM();
-                            Process_VM process_VM = (Process_VM)networkItem_VM;
+                            userControl_VM = new Process_VM();
+                            Process_VM process_VM = (Process_VM)userControl_VM;
                             process_VM.Process.Id = id;
                             processVMDict[id] = process_VM; // 写入字典
                             process_VM.Process.Name = element.GetAttribute("name");
@@ -755,40 +755,45 @@ namespace sbid._VM
                             process_VM.StateMachine_P_VM = pvm; // 从Process的反引
                             break;
                         case "Axiom_VM":
-                            networkItem_VM = new Axiom_VM();
-                            ((Axiom_VM)networkItem_VM).Axiom.Id = id;
-                            ((Axiom_VM)networkItem_VM).Axiom.Name = element.GetAttribute("name");
+                            userControl_VM = new Axiom_VM();
+                            ((Axiom_VM)userControl_VM).Axiom.Id = id;
+                            ((Axiom_VM)userControl_VM).Axiom.Name = element.GetAttribute("name");
                             break;
                         case "InitialKnowledge_VM":
-                            networkItem_VM = new InitialKnowledge_VM();
-                            ((InitialKnowledge_VM)networkItem_VM).InitialKnowledge.Id = id;
+                            userControl_VM = new InitialKnowledge_VM();
+                            ((InitialKnowledge_VM)userControl_VM).InitialKnowledge.Id = id;
                             break;
                         case "SafetyProperty_VM":
-                            networkItem_VM = new SafetyProperty_VM();
-                            ((SafetyProperty_VM)networkItem_VM).SafetyProperty.Id = id;
-                            ((SafetyProperty_VM)networkItem_VM).SafetyProperty.Name = element.GetAttribute("name");
+                            userControl_VM = new SafetyProperty_VM();
+                            ((SafetyProperty_VM)userControl_VM).SafetyProperty.Id = id;
+                            ((SafetyProperty_VM)userControl_VM).SafetyProperty.Name = element.GetAttribute("name");
                             break;
                         case "SecurityProperty_VM":
-                            networkItem_VM = new SecurityProperty_VM();
-                            ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Id = id;
-                            ((SecurityProperty_VM)networkItem_VM).SecurityProperty.Name = element.GetAttribute("name");
+                            userControl_VM = new SecurityProperty_VM();
+                            ((SecurityProperty_VM)userControl_VM).SecurityProperty.Id = id;
+                            ((SecurityProperty_VM)userControl_VM).SecurityProperty.Name = element.GetAttribute("name");
                             break;
                         case "CommChannel_VM":
-                            networkItem_VM = new CommChannel_VM();
-                            ((CommChannel_VM)networkItem_VM).CommChannel.Id = id;
-                            ((CommChannel_VM)networkItem_VM).CommChannel.Name = element.GetAttribute("name");
+                            userControl_VM = new CommChannel_VM();
+                            ((CommChannel_VM)userControl_VM).CommChannel.Id = id;
+                            ((CommChannel_VM)userControl_VM).CommChannel.Name = element.GetAttribute("name");
                             break;
                         default:
                             Tips = "[解析ClassDiagram_P_VM时出错]未知的子标签！";
                             cleanProject();
                             return false;
                     }
-                    // 写入位置信息
-                    if (networkItem_VM != null)
+                    // 创建的图形而不是连线
+                    if (userControl_VM is NetworkItem_VM)
                     {
-                        networkItem_VM.X = double.Parse(element.GetAttribute("x"));
-                        networkItem_VM.Y = double.Parse(element.GetAttribute("y"));
-                        classDiagram_P_VM.NetworkItemVMs.Add(networkItem_VM);
+                        ((NetworkItem_VM)userControl_VM).X = double.Parse(element.GetAttribute("x"));
+                        ((NetworkItem_VM)userControl_VM).Y = double.Parse(element.GetAttribute("y"));
+                        classDiagram_P_VM.UserControlVMs.Add(userControl_VM);
+                    }
+                    // 创建的是连线
+                    else if (userControl_VM != null)
+                    {
+                        classDiagram_P_VM.UserControlVMs.Add(userControl_VM);
                     }
                 }
                 #endregion
@@ -934,13 +939,13 @@ namespace sbid._VM
                     XmlNode node = nodeList[j];
                     XmlElement element = (XmlElement)node;
                     // 因为第一次扫描和这次顺序一样，所以这里直接取
-                    NetworkItem_VM networkItem_VM = classDiagram_P_VM.NetworkItemVMs[j];
+                    ViewModelBase userControl_VM = classDiagram_P_VM.UserControlVMs[j];
                     switch (node.Name)
                     {
                         case "UserType_VM":
                             if (element.GetAttribute("basic") == "false") // 用户自定义类型
                             {
-                                UserType_VM userType_VM = (UserType_VM)networkItem_VM;
+                                UserType_VM userType_VM = (UserType_VM)userControl_VM;
                                 UserType userType = (UserType)userType_VM.Type;
                                 // id和name在第一轮就处理过了，这里只要放其Attribute
                                 foreach (XmlNode attrNode in node.ChildNodes) // <Attribute type_ref="1" identifier="a" id="1" />
@@ -962,7 +967,7 @@ namespace sbid._VM
                             }
                             break;
                         case "Process_VM":
-                            Process_VM process_VM = (Process_VM)networkItem_VM;
+                            Process_VM process_VM = (Process_VM)userControl_VM;
                             Process process = process_VM.Process;
                             foreach (XmlNode processChildNode in node.ChildNodes) // Attribute/Method/CommMethod
                             {
@@ -1042,7 +1047,7 @@ namespace sbid._VM
                             }
                             break;
                         case "SafetyProperty_VM":
-                            SafetyProperty_VM safetyProperty_VM = (SafetyProperty_VM)networkItem_VM;
+                            SafetyProperty_VM safetyProperty_VM = (SafetyProperty_VM)userControl_VM;
                             SafetyProperty safetyProperty = safetyProperty_VM.SafetyProperty;
                             foreach (XmlNode safetyChildNode in node.ChildNodes) // <CTL content="" /> 或 <Invariant content = "" />
                             {
@@ -1073,7 +1078,7 @@ namespace sbid._VM
                     XmlNode node = nodeList[j];
                     XmlElement element = (XmlElement)node;
                     // 因为第一次扫描和这次顺序一样，所以这里直接取
-                    NetworkItem_VM networkItem_VM = classDiagram_P_VM.NetworkItemVMs[j];
+                    ViewModelBase userControl_VM = classDiagram_P_VM.UserControlVMs[j];
                     switch (node.Name)
                     {
                         case "InitialKnowledge_VM":
@@ -1084,7 +1089,7 @@ namespace sbid._VM
                                 cleanProject();
                                 return false;
                             }
-                            InitialKnowledge_VM initialKnowledge_VM = (InitialKnowledge_VM)networkItem_VM;
+                            InitialKnowledge_VM initialKnowledge_VM = (InitialKnowledge_VM)userControl_VM;
                             InitialKnowledge initialKnowledge = initialKnowledge_VM.InitialKnowledge;
                             if (processRef != -1)
                             {
@@ -1121,7 +1126,7 @@ namespace sbid._VM
                             }
                             break;
                         case "SecurityProperty_VM":
-                            SecurityProperty_VM securityProperty_VM = (SecurityProperty_VM)networkItem_VM;
+                            SecurityProperty_VM securityProperty_VM = (SecurityProperty_VM)userControl_VM;
                             SecurityProperty securityProperty = securityProperty_VM.SecurityProperty;
                             foreach (XmlNode securityChildNode in node.ChildNodes) // Confidential(2引) 或 Authenticity(6引)
                             {
@@ -1233,7 +1238,7 @@ namespace sbid._VM
                             }
                             break;
                         case "CommChannel_VM":
-                            CommChannel_VM commChannel_VM = (CommChannel_VM)networkItem_VM;
+                            CommChannel_VM commChannel_VM = (CommChannel_VM)userControl_VM;
                             CommChannel commChannel = commChannel_VM.CommChannel;
                             foreach (XmlNode cmpChildNode in node.ChildNodes) // <CommMethodPair process_ref="1" commMethod_ref="1" />
                             {
@@ -1287,7 +1292,7 @@ namespace sbid._VM
                             }
                             break;
                         case "Axiom_VM":
-                            Axiom_VM axiom_VM = (Axiom_VM)networkItem_VM;
+                            Axiom_VM axiom_VM = (Axiom_VM)userControl_VM;
                             Axiom axiom = axiom_VM.Axiom;
                             foreach (XmlNode axiomChildNode in node.ChildNodes) // ProcessMethod/Formula
                             {

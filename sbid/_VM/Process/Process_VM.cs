@@ -26,7 +26,7 @@ namespace sbid._VM
         public void DeleteProcessVM()
         {
             Protocol_VM nowProtocolPanel = ResourceManager.mainWindowVM.SelectedItem;
-            nowProtocolPanel.SelectedItem.SelectedItem.NetworkItemVMs.Remove(this);
+            nowProtocolPanel.SelectedItem.SelectedItem.UserControlVMs.Remove(this);
 
             // 将对应状态机面板也删除
             nowProtocolPanel.PanelVMs[1].SidePanelVMs.Remove(stateMachine_P_VM);
@@ -54,7 +54,7 @@ namespace sbid._VM
                 }
             };
             // 将所有的Type也传入,作为Attribute/Method/CommMethod的可用类型
-            foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs)
+            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.UserControlVMs)
             {
                 if (item is UserType_VM)
                 {

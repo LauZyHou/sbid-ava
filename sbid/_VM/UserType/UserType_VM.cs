@@ -35,7 +35,7 @@ namespace sbid._VM
                 ResourceManager.mainWindowVM.Tips = "无效的操作，禁止删除内置类型！";
                 return;
             }
-            ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs.Remove(this);
+            ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.UserControlVMs.Remove(this);
             ResourceManager.mainWindowVM.Tips = "删除了自定义类型：" + type.Name;
         }
 
@@ -57,7 +57,7 @@ namespace sbid._VM
                 }
             };
             // 将所有的Type也传入,作为可添加的Attribute的可选类型
-            foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.NetworkItemVMs)
+            foreach (NetworkItem_VM item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.UserControlVMs)
             {
                 if (item is UserType_VM && item != this)
                 {
