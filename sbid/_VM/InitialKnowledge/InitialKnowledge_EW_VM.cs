@@ -16,7 +16,7 @@ namespace sbid._VM
         // 集成协议下的所有Process,以用于KnowledgePair的构建和修改
         public ObservableCollection<Process> Processes { get => processes; set => processes = value; }
 
-        #region 命令
+        #region 按钮命令
 
         // 设置为全局，即不设置进程模板
         public void SetGlobal()

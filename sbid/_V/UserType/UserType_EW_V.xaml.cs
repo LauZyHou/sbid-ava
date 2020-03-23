@@ -26,6 +26,20 @@ namespace sbid._V
 
         #region 按钮命令
 
+        public void Set_Parent()
+        {
+            ComboBox userType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "userType_ComboBox");
+            if (userType_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定UserType！";
+                return;
+            }
+            UserType userType = (UserType)userType_ComboBox.SelectedItem;
+
+            ((UserType_EW_VM)DataContext).UserType.Parent = userType;
+            ResourceManager.mainWindowVM.Tips = "继承自UserType：" + userType.Name;
+        }
+
         public void Add_Attribute()
         {
             ListBox type_ListBox = ControlExtensions.FindControl<ListBox>(this, "type_ListBox");

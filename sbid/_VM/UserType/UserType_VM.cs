@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ReactiveUI;
 using sbid._V;
+using Avalonia.Controls;
 
 namespace sbid._VM
 {
@@ -62,8 +63,18 @@ namespace sbid._VM
                 if (item is UserType_VM && item != this)
                 {
                     ((UserType_EW_VM)userTypeEWV.DataContext).Types.Add(((UserType_VM)item).Type);
+                    // 如果是UserType的话要加到相应列表里
+                    if (((UserType_VM)item).Type is UserType)
+                    {
+                        UserType userType = (UserType)((UserType_VM)item).Type;
+                        ((UserType_EW_VM)userTypeEWV.DataContext).UserTypes.Add(userType);
+                    }
                 }
             }
+
+            // [bugfix]因为在xaml里绑定UserType打开编辑窗口显示出不来，只好在这里手动设置一下
+            ComboBox userType_ComboBox = ControlExtensions.FindControl<ComboBox>(userTypeEWV, "userType_ComboBox");
+            userType_ComboBox.SelectedItem = ((UserType_EW_VM)userTypeEWV.DataContext).UserType.Parent;
 
             userTypeEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了自定义类型：" + type.Name + "的编辑窗体";

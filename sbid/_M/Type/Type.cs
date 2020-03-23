@@ -11,7 +11,6 @@ namespace sbid._M
         public static int _id = 0;
         private string name;
         private int id;
-        private bool basic = true;
 
         public Type(string name)
         {
@@ -42,8 +41,16 @@ namespace sbid._M
                     _id = value;
             }
         }
+
+        #region 计算属性
+
         // 是否是基本类型
-        public bool Basic { get => basic; set => this.RaiseAndSetIfChanged(ref basic, value); }
+        public bool Basic { get => !(this is UserType); }
+
+        // 是否有继承关系
+        public bool Extend { get => this is UserType && ((UserType)this).Parent != null; }
+
+        #endregion
 
         // 系统内写死的内置类型,使用此唯一引用,且不允许修改
         public static readonly Type TYPE_INT = new Type("int");

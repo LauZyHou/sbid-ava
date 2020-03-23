@@ -19,6 +19,9 @@
       <TextBlock Text=" Type " FontWeight="Bold" IsVisible="{Binding Type.Basic}"/>
       <TextBlock Text=" UserType " FontWeight="Bold" IsVisible="{Binding !Type.Basic}"/>
       <TextBlock Text="{Binding Type.Name}"/>
+      <TextBlock Text=" : " FontWeight="Bold" IsVisible="{Binding Type.Extend}"/>
+      <TextBlock Text="{Binding Type.Parent.Name}" IsVisible="{Binding Type.Extend}"/>
+      <TextBlock Text=" "/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
     <TextBlock Grid.Row="2" Text=" Attribute:" IsVisible="{Binding !Type.Basic}"/>
