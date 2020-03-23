@@ -262,6 +262,10 @@ namespace sbid._VM
                         {
                             UserType userType = (UserType)vm.Type;
                             xmlWriter.WriteAttributeString("basic", "false");
+                            if (userType.Parent != null) // 有继承关系
+                                xmlWriter.WriteAttributeString("parent_ref", userType.Parent.Id.ToString());
+                            else // 无继承关系
+                                xmlWriter.WriteAttributeString("parent_ref", "-1");
                             foreach (Attribute attr in userType.Attributes)
                             {
                                 xmlWriter.WriteStartElement("Attribute");
@@ -740,6 +744,7 @@ namespace sbid._VM
                                 ((UserType_VM)userControl_VM).Type.Id = id;
                                 typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
                                 ((UserType_VM)userControl_VM).Type.Name = element.GetAttribute("name");
+                                // Parent引用放到第二次扫描中取出，因为在这里引用的UserType未必已经创建好了
                             }
                             break;
                         case "Process_VM":
@@ -947,6 +952,15 @@ namespace sbid._VM
                             {
                                 UserType_VM userType_VM = (UserType_VM)userControl_VM;
                                 UserType userType = (UserType)userType_VM.Type;
+                                int parentRef = int.Parse(element.GetAttribute("parent_ref"));
+                                if (parentRef != -1 && (!typeDict.ContainsKey(parentRef) || !(typeDict[parentRef] is UserType)))
+                                {
+                                    Tips = "[解析UserType_VM时出错]无法认定Parent的类型，必须是存在的UserType！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                if (parentRef != -1) // 仅当有继承关系时写入
+                                    userType.Parent = (UserType)typeDict[parentRef];
                                 // id和name在第一轮就处理过了，这里只要放其Attribute
                                 foreach (XmlNode attrNode in node.ChildNodes) // <Attribute type_ref="1" identifier="a" id="1" />
                                 {
