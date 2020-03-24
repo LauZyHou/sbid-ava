@@ -14,6 +14,7 @@ namespace sbid._VM
         private Point pos;
         private Point oldPos;
         private Connection_VM connectionVM = null;
+        private NetworkItem_VM networkItemVM = null;
         private bool isActive = false;
         private int id;
 
@@ -74,6 +75,9 @@ namespace sbid._VM
                 this.RaisePropertyChanged("Color"); // 通知颜色要重新计算了
             }
         }
+
+        // 反引所在的NetworkItemVM，只是为了方便查找(目前只在攻击树里实际使用了)
+        public NetworkItem_VM NetworkItemVM { get => networkItemVM; set => networkItemVM = value; }
 
         // 是否是活动锚点
         public bool IsActive

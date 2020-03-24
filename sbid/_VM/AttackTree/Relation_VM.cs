@@ -55,6 +55,12 @@ namespace sbid._VM
                                               baseY + 2 * r));
             ConnectorVMs.Add(new Connector_VM(baseX + d,
                                               baseY + 2 * r - d));
+
+            // 将这些锚点所在的NetworkItem_VM回引写入
+            foreach (Connector_VM connector_VM in ConnectorVMs)
+            {
+                connector_VM.NetworkItemVM = this;
+            }
         }
 
         #endregion

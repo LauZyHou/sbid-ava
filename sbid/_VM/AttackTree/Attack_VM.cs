@@ -5,6 +5,7 @@ using sbid._V;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 
 namespace sbid._VM
@@ -24,7 +25,6 @@ namespace sbid._VM
 
             X = 0;
             Y = 0;
-            ConnectorVMs = new ObservableCollection<Connector_VM>();
 
             // 左上角锚点中心位置
             double baseX = X + 6;
@@ -33,24 +33,7 @@ namespace sbid._VM
             double deltaX = 24.5;
             double deltaY = 16;
 
-            // 14个锚点,从左上角锚点中心位置进行位置推算
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 0 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 1 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 1 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 2 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 2 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 3 * deltaY));
+            init_connector(baseX, baseY, deltaX, deltaY);
         }
 
         public Attack_VM(double x, double y)
@@ -60,7 +43,6 @@ namespace sbid._VM
 
             X = x;
             Y = y;
-            ConnectorVMs = new ObservableCollection<Connector_VM>();
 
             // 左上角锚点中心位置
             double baseX = X + 6;
@@ -69,24 +51,7 @@ namespace sbid._VM
             double deltaX = 24.5;
             double deltaY = 16;
 
-            // 14个锚点,从左上角锚点中心位置进行位置推算
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 0 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 1 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 1 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 2 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 2 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 3 * deltaY));
+            init_connector(baseX, baseY, deltaX, deltaY);
         }
 
         // 攻击结点上的攻击
@@ -145,7 +110,145 @@ namespace sbid._VM
              需要注意,递归到锁定(IsLocked=true)的结点就要退栈了,那样的结点直接使用其BeAttacked的值,而不继续向下到叶子
              */
 
+            // 在sbid-ava中，一棵合法的攻击树满足下列条件
+            // 1. 是一个有向无环图
+            // 2. 每一个攻击结点的孩子只能是一个关系结点(常见)或一个攻击结点(不常见)
+            // 3. 关系结点的孩子只能是攻击结点，并且关系结点不能作为叶子
+            // 4. OR/AND/SAND至少有一个孩子，NEG必须有且只有一个孩子
+
+            // 实现上的细节
+            // 5. 关系结点理解成一种布尔值的聚合操作，所以只能在攻击结点上调用该函数求值
+            // 6. 递归求值时，出口是叶子攻击结点或锁定的攻击结点
+            // 7. 在求值退栈过程中要将沿途的结点设定出计算后的值
+
+            // todo 以此结点为root，检查是否是合法的攻击树
+
+            // 递归求值
+            recursive_eval(this);
+
             ResourceManager.mainWindowVM.Tips = "计算完成，该结点是" + (beAttacked ? "可攻击" : "安全") + "的";
+        }
+
+        #endregion
+
+        #region 私有方法
+
+        // 补充构造：初始化所有的锚点
+        private void init_connector(double baseX, double baseY, double deltaX, double deltaY)
+        {
+            ConnectorVMs = new ObservableCollection<Connector_VM>();
+
+            // 14个锚点,从左上角锚点中心位置进行位置推算
+            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 0 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 0 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 0 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 0 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 0 * deltaY));
+
+            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 1 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 1 * deltaY));
+
+            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 2 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 2 * deltaY));
+
+            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 3 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 3 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 3 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 3 * deltaY));
+            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 3 * deltaY));
+
+            // 将这些锚点所在的NetworkItem_VM回引写入
+            foreach (Connector_VM connector_VM in ConnectorVMs)
+            {
+                connector_VM.NetworkItemVM = this;
+            }
+        }
+
+        // 检查是否是叶子，即周围的锚点是否都没有流入的
+        private bool is_leaf()
+        {
+            foreach (Connector_VM connector_VM in this.ConnectorVMs)
+            {
+                if (connector_VM.ConnectionVM != null && connector_VM.ConnectionVM.Dest == connector_VM)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // 对攻击结点递归求值
+        private static bool recursive_eval(Attack_VM avm)
+        {
+            // 递归出口
+            if (avm.isLocked || avm.is_leaf())
+                return avm.beAttacked;
+            // 不是叶子，那么有且仅有一个锚点上连线的Dest是当前Attack_VM avm的这个锚点
+            // 通过这个锚点上的连线，来找到Source端的孩子结点
+            NetworkItem_VM child_VM = null; // 可能是Relation_VM或者Attack_VM
+            foreach (Connector_VM connector_VM in avm.ConnectorVMs)
+            {
+                // 流入的
+                if (connector_VM.ConnectionVM != null && connector_VM.ConnectionVM.Dest == connector_VM)
+                {
+                    child_VM = connector_VM.ConnectionVM.Source.NetworkItemVM;
+                    break;
+                }
+            }
+            // 肯定能找到一个的，因为已经在递归前检查过了
+            Debug.Assert(child_VM != null);
+
+            // 当前结点求值结果。它一定会在下面的if-else中被重新赋值，所以这里初始值不重要
+            bool val = false;
+
+            // 如果唯一孩子是攻击结点
+            if (child_VM is Attack_VM)
+            {
+                val = recursive_eval(child_VM as Attack_VM);
+            }
+
+            // 如果唯一孩子是关系结点
+            else if (child_VM is Relation_VM)
+            {
+                Relation_VM relation_VM = child_VM as Relation_VM;
+                // 记录流入这个Relation_VM的所有Attack_VM
+                List<Attack_VM> attackInList = new List<Attack_VM>();
+                foreach (Connector_VM connector_VM in relation_VM.ConnectorVMs)
+                {
+                    // 流入的
+                    if (connector_VM.ConnectionVM != null && connector_VM.ConnectionVM.Dest == connector_VM)
+                    {
+                        attackInList.Add((Attack_VM)connector_VM.ConnectionVM.Source.NetworkItemVM); // 递归前检查过了类型
+                    }
+                }
+                Debug.Assert(attackInList.Count >= 1); // Relation_VM不能作为叶子，所以一定有流入的Attack_VM
+                switch (relation_VM.Relation)
+                {
+                    case Relation.AND:
+                    case Relation.SAND:
+                        val = true; // 与关系的"单位元"
+                        foreach (Attack_VM attackIn in attackInList)
+                        {
+                            val &= recursive_eval(attackIn);
+                        }
+                        break;
+                    case Relation.OR:
+                        val = false; // 或关系的"单位元"
+                        foreach (Attack_VM attackIn in attackInList)
+                        {
+                            val |= recursive_eval(attackIn);
+                        }
+                        break;
+                    case Relation.NEG:
+                        val = !recursive_eval(attackInList[0]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            avm.BeAttacked = val;
+            return val;
         }
 
         #endregion
