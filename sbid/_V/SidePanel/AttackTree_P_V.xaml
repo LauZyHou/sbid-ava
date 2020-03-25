@@ -55,10 +55,12 @@
       <Button Command="{Binding CreateRelationVM_OR}">创建[或]关系</Button>
       <Button Command="{Binding CreateRelationVM_NEG}">创建[非]关系</Button>
       <Button Command="{Binding CreateRelationVM_SAND}">创建[顺序与]关系</Button>
+      <TextBlock Text="当前在处理：" Margin="4,4,0,4" Background="WhiteSmoke"/>
+      <TextBlock Text="{Binding HandleAttackVM.Attack.Content}" Margin="0,4" Background="WhiteSmoke"/>
     </StackPanel>
     <DockPanel DockPanel.Dock="Right" Width="200" Background="#EEEEEE">
       <TextBlock DockPanel.Dock="Top" Text="叶子攻击分析" FontSize="16" TextAlignment="Center"/>
-      <ListBox DockPanel.Dock="Top" Items="{Binding LeafAttackVMs}" Height="200" BorderBrush="Transparent">
+      <ListBox DockPanel.Dock="Top" Name="leafAttackVM_ListBox" Items="{Binding LeafAttackVMs}" Height="150" BorderBrush="Transparent">
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal">
@@ -73,7 +75,8 @@
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
-      <TextBlock DockPanel.Dock="Top" Text="策略数据库" FontSize="16" TextAlignment="Center"/>
+      <Button DockPanel.Dock="Top" Command="{Binding $parent[UserControl].ReverseLeafAttackVM}">应用并重新计算</Button>
+      <TextBlock DockPanel.Dock="Top" Text="安全策略数据库" FontSize="16" TextAlignment="Center"/>
       <ListBox DockPanel.Dock="Bottom" BorderBrush="Transparent"/>
     </DockPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

@@ -82,6 +82,28 @@ namespace sbid._V
 
         #endregion
 
+        #region 按钮命令
+
+        // 应用叶子分析的选中项(实际上全部都是翻转规则)
+        public void ReverseLeafAttackVM()
+        {
+            ListBox leafAttackVM_ListBox = ControlExtensions.FindControl<ListBox>(this, "leafAttackVM_ListBox");
+            if (leafAttackVM_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要应用的叶子处理规则！";
+                return;
+            }
+
+            // 翻转
+            Attack_VM attack_VM = (Attack_VM)leafAttackVM_ListBox.SelectedItem;
+            attack_VM.BeAttacked = !attack_VM.BeAttacked;
+
+            // 重新计算
+            AttackTreePVM.HandleAttackVM.CalculateBeAttacked();
+        }
+
+        #endregion
+
         // 对应的VM
         public AttackTree_P_VM AttackTreePVM { get => (AttackTree_P_VM)DataContext; }
     }

@@ -108,6 +108,9 @@ namespace sbid._VM
             // 当前的攻击树面板
             AttackTree_P_VM attackTree_P_VM = (AttackTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
 
+            // 记录当前计算的这个攻击结点
+            attackTree_P_VM.HandleAttackVM = this;
+
             /*
              todo:通过孩子结点计算并设置当前结点BeAttacked的值是true(可攻击)还是false(安全)
              其中SAND关系就直接当作AND关系处理
