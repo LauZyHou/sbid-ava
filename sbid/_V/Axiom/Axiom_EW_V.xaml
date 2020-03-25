@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        Height="300" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Axiom_EW_V"
         Title="编辑Axiom">
 
@@ -93,7 +93,15 @@
     <TabItem Header="Formula">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
-          <TextBlock Text="公理公式：" FontSize="17"/>
+          <TextBlock Text="内置公理(无需操作)：" FontSize="17"/>
+          <ListBox Name="innerFormula_ListBox" Height="120">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Content}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock Text="自定义公理：" FontSize="17"/>
           <TextBox Name="axiom_TextBox" Text="{Binding #axiom_ListBox.SelectedItem.Content, Mode=OneWay}"/>
           <StackPanel Orientation="Horizontal">
             <Button Command="{Binding $parent[Window].Add_Formula}">添加</Button>

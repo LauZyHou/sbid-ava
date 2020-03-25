@@ -19,7 +19,7 @@
       <TextBlock Text="{Binding Axiom.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
-    <TextBlock Grid.Row="2" Text=" ProcessMethod:"/>
+    <TextBlock Grid.Row="2" Text=" Method:"/>
     <ListBox Grid.Row="3" Items="{Binding Axiom.ProcessMethods}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>

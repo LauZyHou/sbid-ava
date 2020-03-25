@@ -21,7 +21,6 @@ namespace sbid._M
             _id++;
             this.id = _id;
             this.name = "Ax" + this.id;
-            //test_data();
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
@@ -38,9 +37,19 @@ namespace sbid._M
             }
         }
 
-        private void test_data()
+        #region 静态成员和静态构造
+
+        // 内置公理
+        public static readonly List<Formula> InnerFormulas = new List<Formula>();
+        // 静态构造
+        static Axiom()
         {
-            formulas.Add(new Formula("dec1(enc1(m,k),k)=m"));
+            // 对称加密->对称解密
+            InnerFormulas.Add(new Formula("SymDec(SymEnc(m,k),k)=m"));
+            // 公钥签名->私钥验证
+            InnerFormulas.Add(new Formula("Verify(Sign(m,sk),pk)=True"));
         }
+
+        #endregion
     }
 }

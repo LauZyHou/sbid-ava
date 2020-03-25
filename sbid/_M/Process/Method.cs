@@ -106,17 +106,30 @@ namespace sbid._M
         static Method()
         {
             // 添加内置Method
-            // enc
-            ObservableCollection<Attribute> encParams = new ObservableCollection<Attribute>();
-            encParams.Add(new Attribute(Type.TYPE_INT, "key"));
-            encParams.Add(new Attribute(Type.TYPE_INT, "msg"));
-            Method enc = new Method(Type.TYPE_INT, "enc", encParams, Crypto.None);
-            InnerMethods.Add(enc);
-            // dec
-            ObservableCollection<Attribute> decParams = new ObservableCollection<Attribute>();
-            decParams.Add(new Attribute(Type.TYPE_INT, "key"));
-            Method dec = new Method(Type.TYPE_INT, "dec", decParams, Crypto.None);
-            InnerMethods.Add(dec);
+            // 对称加密
+            ObservableCollection<Attribute> symEncParams = new ObservableCollection<Attribute>();
+            symEncParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
+            symEncParams.Add(new Attribute(Type.TYPE_INT, "key"));
+            Method symEnc = new Method(Type.TYPE_BYTE_VEC, "SymEnc", symEncParams, Crypto.None);
+            InnerMethods.Add(symEnc);
+            // 对称解密
+            ObservableCollection<Attribute> symDecParams = new ObservableCollection<Attribute>();
+            symDecParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
+            symDecParams.Add(new Attribute(Type.TYPE_INT, "key"));
+            Method symDec = new Method(Type.TYPE_BYTE_VEC, "SymDec", symDecParams, Crypto.None);
+            InnerMethods.Add(symDec);
+            // 私钥签名
+            ObservableCollection<Attribute> signParams = new ObservableCollection<Attribute>();
+            signParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
+            signParams.Add(new Attribute(Type.TYPE_INT, "skey"));
+            Method sign = new Method(Type.TYPE_BYTE_VEC, "Sign", signParams, Crypto.None);
+            InnerMethods.Add(sign);
+            // 公钥验证
+            ObservableCollection<Attribute> verifyParams = new ObservableCollection<Attribute>();
+            verifyParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
+            verifyParams.Add(new Attribute(Type.TYPE_INT, "pkey"));
+            Method verify = new Method(Type.TYPE_BOOL, "Verify", verifyParams, Crypto.None);
+            InnerMethods.Add(verify);
         }
 
         #endregion

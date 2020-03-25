@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        Height="300" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Process_EW_V"
         Title="编辑Process">
 

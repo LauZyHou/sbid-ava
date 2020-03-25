@@ -15,6 +15,8 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
+            // 初始化.cs文件中的数据绑定
+            init_binding();
         }
 
         private void InitializeComponent()
@@ -138,6 +140,17 @@ namespace sbid._V
             Formula formula = (Formula)axiom_ListBox.SelectedItem;
             ((Axiom_EW_VM)DataContext).Axiom.Formulas.Remove(formula);
             ResourceManager.mainWindowVM.Tips = "删除了公理公式：" + formula.Content;
+        }
+
+        #endregion
+
+        #region 初始化
+
+        private void init_binding()
+        {
+            // 绑定Axiom的内置公理公式
+            ListBox innerFormula_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerFormula_ListBox");
+            innerFormula_ListBox.Items = Axiom.InnerFormulas;
         }
 
         #endregion
