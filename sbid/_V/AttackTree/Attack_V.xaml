@@ -42,7 +42,7 @@
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditAttackVM}"/>
         <MenuItem Header="反转结点取值" Command="{Binding ReverseBeAttacked}"/>
-        <MenuItem Header="计算(todo)" Command="{Binding CalculateBeAttacked}"/>
+        <MenuItem Header="计算" Command="{Binding CalculateBeAttacked}"/>
         <MenuItem Header="删除"/>
       </ContextMenu>
     </Grid.ContextMenu>

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace sbid._VM
@@ -104,6 +105,9 @@ namespace sbid._VM
         // 从孩子结点计算BeAttacked的值
         public void CalculateBeAttacked()
         {
+            // 当前的攻击树面板
+            AttackTree_P_VM attackTree_P_VM = (AttackTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+
             /*
              todo:通过孩子结点计算并设置当前结点BeAttacked的值是true(可攻击)还是false(安全)
              其中SAND关系就直接当作AND关系处理
@@ -123,8 +127,22 @@ namespace sbid._VM
 
             // todo 以此结点为root，检查是否是合法的攻击树
 
+            // 移除[叶子攻击分析]结果列表
+            attackTree_P_VM.LeafAttackVMs.Clear();
+
             // 递归求值
             recursive_eval(this);
+
+            // 如果最终是可攻击的，要找到导致这些攻击的源头
+            if (beAttacked)
+            {
+                // 递归寻找可疑的叶子结点列表
+                List<Attack_VM> ret = find_leaf_attack(this);
+                foreach (Attack_VM attack_VM in ret)
+                {
+                    attackTree_P_VM.LeafAttackVMs.Add(attack_VM);
+                }
+            }
 
             ResourceManager.mainWindowVM.Tips = "计算完成，该结点是" + (beAttacked ? "可攻击" : "安全") + "的";
         }
@@ -249,6 +267,103 @@ namespace sbid._VM
 
             avm.BeAttacked = val;
             return val;
+        }
+
+        // 从当前结点寻找叶子(因为NEG的存在，当前结点不一定是BeAttacked=true的)
+        // 实际上目标就是找到可能使avm取值翻转的叶子结点
+        private static List<Attack_VM> find_leaf_attack(Attack_VM avm)
+        {
+            // 递归出口
+            if (avm.isLocked || avm.is_leaf())
+                return new List<Attack_VM> { avm };
+            // 不是叶子，那么有且仅有一个锚点上连线的Dest是当前Attack_VM avm的这个锚点
+            // 通过这个锚点上的连线，来找到Source端的孩子结点
+            NetworkItem_VM child_VM = null; // 可能是Relation_VM或者Attack_VM
+            foreach (Connector_VM connector_VM in avm.ConnectorVMs)
+            {
+                // 流入的
+                if (connector_VM.ConnectionVM != null && connector_VM.ConnectionVM.Dest == connector_VM)
+                {
+                    child_VM = connector_VM.ConnectionVM.Source.NetworkItemVM;
+                    break;
+                }
+            }
+
+            // 如果唯一孩子是攻击结点
+            if (child_VM is Attack_VM)
+            {
+                return find_leaf_attack(child_VM as Attack_VM);
+            }
+
+            // 如果唯一孩子是关系结点
+            else if (child_VM is Relation_VM)
+            {
+                Relation_VM relation_VM = child_VM as Relation_VM;
+                // 记录流入这个Relation_VM的所有Attack_VM
+                List<Attack_VM> attackInList = new List<Attack_VM>();
+                foreach (Connector_VM connector_VM in relation_VM.ConnectorVMs)
+                {
+                    // 流入的
+                    if (connector_VM.ConnectionVM != null && connector_VM.ConnectionVM.Dest == connector_VM)
+                    {
+                        attackInList.Add((Attack_VM)connector_VM.ConnectionVM.Source.NetworkItemVM); // 递归前检查过了类型
+                    }
+                }
+                // 考虑关系类型来在返回的结果List中添加成员
+                List<Attack_VM> ret = new List<Attack_VM>();
+                switch (relation_VM.Relation)
+                {
+                    case Relation.AND:
+                    case Relation.SAND:
+                        if (avm.beAttacked == true) // 如果使当前结点受攻击，那么所有孩子结点都有贡献
+                        {
+                            foreach (Attack_VM attackIn in attackInList)
+                            {
+                                ret = ret.Union(find_leaf_attack(attackIn)).ToList();
+                            }
+                        }
+                        else // 如果当前结点安全，那么安全的孩子结点有贡献
+                        {
+                            foreach (Attack_VM attackIn in attackInList)
+                            {
+                                if (attackIn.beAttacked == false)
+                                {
+                                    ret = ret.Union(find_leaf_attack(attackIn)).ToList();
+                                }
+                            }
+                        }
+                        break;
+                    case Relation.OR:
+                        if (avm.beAttacked == true) // 如果使当前结点受攻击，那么受攻击的孩子结点有贡献
+                        {
+                            foreach (Attack_VM attackIn in attackInList)
+                            {
+                                if (attackIn.beAttacked == true)
+                                {
+                                    ret = ret.Union(find_leaf_attack(attackIn)).ToList();
+                                }
+                            }
+                        }
+                        else // 如果当前结点安全，那么所有孩子结点都有贡献
+                        {
+                            foreach (Attack_VM attackIn in attackInList)
+                            {
+                                ret = ret.Union(find_leaf_attack(attackIn)).ToList();
+                            }
+                        }
+                        break;
+                    case Relation.NEG:
+                        // NEG反倒不用特判，因为一定是让这个唯一孩子反转
+                        ret = ret.Union(find_leaf_attack(attackInList[0])).ToList();
+                        break;
+                    default:
+                        break;
+                }
+                return ret;
+            }
+
+            // 不会执行到这里
+            return new List<Attack_VM>();
         }
 
         #endregion

@@ -56,6 +56,26 @@
       <Button Command="{Binding CreateRelationVM_NEG}">创建[非]关系</Button>
       <Button Command="{Binding CreateRelationVM_SAND}">创建[顺序与]关系</Button>
     </StackPanel>
+    <DockPanel DockPanel.Dock="Right" Width="200" Background="#EEEEEE">
+      <TextBlock DockPanel.Dock="Top" Text="叶子攻击分析" FontSize="16" TextAlignment="Center"/>
+      <ListBox DockPanel.Dock="Top" Items="{Binding LeafAttackVMs}" Height="200" BorderBrush="Transparent">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="翻转 {0}">
+                    <Binding Path="Attack.Content"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+      <TextBlock DockPanel.Dock="Top" Text="策略数据库" FontSize="16" TextAlignment="Center"/>
+      <ListBox DockPanel.Dock="Bottom" BorderBrush="Transparent"/>
+    </DockPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
     </ScrollViewer>

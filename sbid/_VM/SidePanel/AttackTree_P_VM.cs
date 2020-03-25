@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace sbid._VM
@@ -8,6 +10,7 @@ namespace sbid._VM
     {
         private static int _id = 1;
         private Connector_VM activeConnector;
+        private ObservableCollection<Attack_VM> leafAttackVMs = new ObservableCollection<Attack_VM>();
 
         // 默认构造时使用默认名称
         public AttackTree_P_VM()
@@ -18,6 +21,9 @@ namespace sbid._VM
 
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
+
+        // 用于[叶子攻击分析]的绑定列表
+        public ObservableCollection<Attack_VM> LeafAttackVMs { get => leafAttackVMs; }
 
         #region 按钮命令
 
