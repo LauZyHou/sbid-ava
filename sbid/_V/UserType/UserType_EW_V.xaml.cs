@@ -189,11 +189,11 @@ namespace sbid._V
             }
 
             ObservableCollection<Attribute> parameters = ((UserType_EW_VM)DataContext).Params;
-            if (parameters.Count == 0)
-            {
-                ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
-                return;
-            }
+            //if (parameters.Count == 0)
+            //{
+            //    ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
+            //    return;
+            //}
 
             Method method = new Method(
                 (Type)returnType_ComboBox.SelectedItem,

@@ -258,7 +258,11 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("basic", "true");
                             // 注意，基本类型在创建类图时就创建了，所以要
                         }
-                        else // 用户自定义类型
+                        else if (vm.Type == Type.TYPE_BYTE_VEC || vm.Type == Type.TYPE_TIMER) // 内置的复合类型
+                        {
+                            xmlWriter.WriteAttributeString("basic", "middle");
+                        }
+                        else // 用户自定义复合类型
                         {
                             UserType userType = (UserType)vm.Type;
                             xmlWriter.WriteAttributeString("basic", "false");
@@ -272,6 +276,23 @@ namespace sbid._VM
                                 xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
                                 xmlWriter.WriteAttributeString("identifier", attr.Identifier);
                                 xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            foreach (Method method in userType.Methods)
+                            {
+                                xmlWriter.WriteStartElement("Method");
+                                xmlWriter.WriteAttributeString("returnType_ref", method.ReturnType.Id.ToString());
+                                xmlWriter.WriteAttributeString("name", method.Name);
+                                xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                                xmlWriter.WriteAttributeString("id", method.Id.ToString());
+                                foreach (Attribute attr in method.Parameters)
+                                {
+                                    xmlWriter.WriteStartElement("Parameter");
+                                    xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
+                                    xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+                                    xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                    xmlWriter.WriteEndElement();
+                                }
                                 xmlWriter.WriteEndElement();
                             }
                         }
@@ -707,44 +728,56 @@ namespace sbid._VM
                     switch (node.Name)
                     {
                         case "UserType_VM":
-                            if (element.GetAttribute("basic") == "true") // 内置类型
+                            // true:基本类型, false:用户自定义复合类型, middle:内置的复合类型
+                            switch (element.GetAttribute("basic"))
                             {
-                                switch (element.GetAttribute("name"))
-                                {
-                                    case "int":
-                                        Type.TYPE_INT.Id = id;
-                                        typeDict[id] = Type.TYPE_INT; // 写入字典
-                                        userControl_VM = new UserType_VM(Type.TYPE_INT);
-                                        break;
-                                    case "bool":
-                                        Type.TYPE_BOOL.Id = id;
-                                        typeDict[id] = Type.TYPE_BOOL; // 写入字典
-                                        userControl_VM = new UserType_VM(Type.TYPE_BOOL);
-                                        break;
-                                    case "number":
-                                        Type.TYPE_NUM.Id = id;
-                                        typeDict[id] = Type.TYPE_NUM; // 写入字典
-                                        userControl_VM = new UserType_VM(Type.TYPE_NUM);
-                                        break;
-                                    case "byte":
-                                        Type.TYPE_BYTE.Id = id;
-                                        typeDict[id] = Type.TYPE_BYTE; // 写入字典
-                                        userControl_VM = new UserType_VM(Type.TYPE_BYTE);
-                                        break;
-                                    case "byteVec":
-                                        Type.TYPE_BYTE_VEC.Id = id;
-                                        typeDict[id] = Type.TYPE_BYTE_VEC; // 写入字典
-                                        userControl_VM = new UserType_VM(Type.TYPE_BYTE_VEC);
-                                        break;
-                                }
-                            }
-                            else // 用户自定义类型
-                            {
-                                userControl_VM = new UserType_VM();
-                                ((UserType_VM)userControl_VM).Type.Id = id;
-                                typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
-                                ((UserType_VM)userControl_VM).Type.Name = element.GetAttribute("name");
-                                // Parent引用放到第二次扫描中取出，因为在这里引用的UserType未必已经创建好了
+                                case "true": // 基本类型
+                                    switch (element.GetAttribute("name"))
+                                    {
+                                        case "int":
+                                            Type.TYPE_INT.Id = id;
+                                            typeDict[id] = Type.TYPE_INT; // 写入字典
+                                            userControl_VM = new UserType_VM(Type.TYPE_INT);
+                                            break;
+                                        case "bool":
+                                            Type.TYPE_BOOL.Id = id;
+                                            typeDict[id] = Type.TYPE_BOOL; // 写入字典
+                                            userControl_VM = new UserType_VM(Type.TYPE_BOOL);
+                                            break;
+                                        case "number":
+                                            Type.TYPE_NUM.Id = id;
+                                            typeDict[id] = Type.TYPE_NUM; // 写入字典
+                                            userControl_VM = new UserType_VM(Type.TYPE_NUM);
+                                            break;
+                                        case "byte":
+                                            Type.TYPE_BYTE.Id = id;
+                                            typeDict[id] = Type.TYPE_BYTE; // 写入字典
+                                            userControl_VM = new UserType_VM(Type.TYPE_BYTE);
+                                            break;
+                                    }
+                                    break;
+                                case "middle": // 内置的复合类型
+                                    switch (element.GetAttribute("name"))
+                                    {
+                                        case "ByteVec":
+                                            userControl_VM = new UserType_VM(Type.TYPE_BYTE_VEC);
+                                            ((UserType_VM)userControl_VM).Type.Id = id;
+                                            typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
+                                            break;
+                                        case "Timer":
+                                            userControl_VM = new UserType_VM(Type.TYPE_TIMER);
+                                            ((UserType_VM)userControl_VM).Type.Id = id;
+                                            typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
+                                            break;
+                                    }
+                                    break;
+                                case "false": // 用户自定义复合类型
+                                    userControl_VM = new UserType_VM();
+                                    ((UserType_VM)userControl_VM).Type.Id = id;
+                                    typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
+                                    ((UserType_VM)userControl_VM).Type.Name = element.GetAttribute("name");
+                                    // Parent引用放到第二次扫描中取出，因为在这里引用的UserType未必已经创建好了
+                                    break;
                             }
                             break;
                         case "Process_VM":
@@ -948,7 +981,7 @@ namespace sbid._VM
                     switch (node.Name)
                     {
                         case "UserType_VM":
-                            if (element.GetAttribute("basic") == "false") // 用户自定义类型
+                            if (element.GetAttribute("basic") == "false") // true和middle都不用再处理了
                             {
                                 UserType_VM userType_VM = (UserType_VM)userControl_VM;
                                 UserType userType = (UserType)userType_VM.Type;
@@ -961,22 +994,59 @@ namespace sbid._VM
                                 }
                                 if (parentRef != -1) // 仅当有继承关系时写入
                                     userType.Parent = (UserType)typeDict[parentRef];
-                                // id和name在第一轮就处理过了，这里只要放其Attribute
-                                foreach (XmlNode attrNode in node.ChildNodes) // <Attribute type_ref="1" identifier="a" id="1" />
+                                // id和name在第一轮就处理过了，这里只要处理Attribute和Method
+                                foreach (XmlNode attrNode in node.ChildNodes) // Attribute/Method
                                 {
                                     XmlElement attrElement = (XmlElement)attrNode;
-                                    int typeRef = int.Parse(attrElement.GetAttribute("type_ref"));
-                                    int id = int.Parse(attrElement.GetAttribute("id"));
-                                    string identifier = attrElement.GetAttribute("identifier");
-                                    if (!typeDict.ContainsKey(typeRef))
+                                    switch (attrNode.Name)
                                     {
-                                        Tips = "[解析UserType_VM时出错]无法找到Attribute的类型！";
-                                        cleanProject();
-                                        return false;
+                                        case "Attribute":
+                                            int typeRef = int.Parse(attrElement.GetAttribute("type_ref"));
+                                            int id = int.Parse(attrElement.GetAttribute("id"));
+                                            string identifier = attrElement.GetAttribute("identifier");
+                                            if (!typeDict.ContainsKey(typeRef))
+                                            {
+                                                Tips = "[解析UserType_VM时出错]无法找到Attribute的类型！";
+                                                cleanProject();
+                                                return false;
+                                            }
+                                            Attribute attribute = new Attribute(typeDict[typeRef], identifier);
+                                            attribute.Id = id;
+                                            userType.Attributes.Add(attribute);
+                                            break;
+                                        case "Method":
+                                            id = int.Parse(attrElement.GetAttribute("id"));
+                                            int returnTypeRef = int.Parse(attrElement.GetAttribute("returnType_ref"));
+                                            if (!typeDict.ContainsKey(returnTypeRef))
+                                            {
+                                                Tips = "[解析UserType_VM时出错]无法找到Method的返回类型！";
+                                                cleanProject();
+                                                return false;
+                                            }
+                                            string name = attrElement.GetAttribute("name");
+                                            Crypto cryptoSuffix = (Crypto)System.Enum.Parse(typeof(Crypto), attrElement.GetAttribute("cryptoSuffix"));
+                                            ObservableCollection<Attribute> parameters = new ObservableCollection<Attribute>();
+                                            foreach (XmlNode paramNode in attrNode.ChildNodes) // <Parameter type_ref="1" identifier="key" id="10" />
+                                            {
+                                                XmlElement paramElement = (XmlElement)paramNode;
+                                                typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
+                                                int paramId = int.Parse(paramElement.GetAttribute("id"));
+                                                identifier = paramElement.GetAttribute("identifier");
+                                                if (!typeDict.ContainsKey(typeRef))
+                                                {
+                                                    Tips = "[解析UserType_VM时出错]无法找到Method的参数类型！";
+                                                    cleanProject();
+                                                    return false;
+                                                }
+                                                Attribute param = new Attribute(typeDict[typeRef], identifier);
+                                                param.Id = paramId;
+                                                parameters.Add(param);
+                                            }
+                                            Method method = new Method(typeDict[returnTypeRef], name, parameters, cryptoSuffix);
+                                            method.Id = id;
+                                            userType.Methods.Add(method);
+                                            break;
                                     }
-                                    Attribute attribute = new Attribute(typeDict[typeRef], identifier);
-                                    attribute.Id = id;
-                                    userType.Attributes.Add(attribute);
                                 }
                             }
                             break;

@@ -31,7 +31,7 @@ namespace sbid._VM
         // 尝试删除当前UserType_VM
         public void DeleteUserTypeVM()
         {
-            if (!(type is UserType) || type == Type.TYPE_TIMER)
+            if (!(type is UserType) || type == Type.TYPE_TIMER || type == Type.TYPE_BYTE_VEC)
             {
                 ResourceManager.mainWindowVM.Tips = "无效的操作，禁止删除内置类型！";
                 return;
@@ -43,7 +43,7 @@ namespace sbid._VM
         // 尝试打开当前UserType_VM的编辑窗体
         public void EditUserTypeVM()
         {
-            if (!(type is UserType) || type == Type.TYPE_TIMER)
+            if (!(type is UserType) || type == Type.TYPE_TIMER || type == Type.TYPE_BYTE_VEC)
             {
                 ResourceManager.mainWindowVM.Tips = "无效的操作，禁止编辑内置类型！";
                 return;

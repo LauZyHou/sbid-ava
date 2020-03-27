@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-             mc:Ignorable="d" d:DesignWidth="110" d:DesignHeight="120"
+             mc:Ignorable="d" d:DesignWidth="120" d:DesignHeight="120"
              x:Class="sbid._V.UserType_V" BorderBrush="Black" BorderThickness="2">
   <Design.DataContext>
     <vm:UserType_VM/>
@@ -13,7 +13,7 @@
     <SolidColorBrush x:Key="MyColor" Color="#AADDFF" />
   </UserControl.Resources>
 
-  <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="110" MinHeight="120">
+  <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="120" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <!--这里用Type.Basic的真值实现Type和UserType的不同样式-->
       <TextBlock Text=" Type " FontWeight="Bold" IsVisible="{Binding Type.Basic}"/>

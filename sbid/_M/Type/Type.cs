@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace sbid._M
@@ -57,8 +58,16 @@ namespace sbid._M
         public static readonly Type TYPE_BOOL = new Type("bool");
         public static readonly Type TYPE_NUM = new Type("number");
         public static readonly Type TYPE_BYTE = new Type("byte");
-        public static readonly Type TYPE_BYTE_VEC = new Type("byteVec");
         // 非基本类型，但也是写死的
-        public static readonly Type TYPE_TIMER = new UserType(TYPE_NUM, "time") { Name = "Timer" };
+        public static readonly Type TYPE_BYTE_VEC = new UserType() { Name = "ByteVec" };
+        public static readonly Type TYPE_TIMER; // 在下面静态构造中传入对象
+
+        static Type() {
+            // 构造TYPE_TIMER只读对象
+            UserType ut = new UserType() { Name = "Timer" };
+            ut.Attributes.Add(new Attribute(TYPE_NUM, "time"));
+            ut.Methods.Add(new Method(TYPE_NUM, "reset", new ObservableCollection<Attribute>()));
+            TYPE_TIMER = ut;
+        }
     }
 }
