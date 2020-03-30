@@ -9,7 +9,14 @@ namespace sbid._M
     // 方法的加解密方式枚举
     public enum Crypto
     {
-        None, AES, SHA256
+        // 不使用
+        None, 
+        // 对称加密算法
+        AES, DES, 
+        // 非对称加密算法 
+        RSA, ECC, 
+        // 哈希签名算法
+        MD5, SHA1, SHA256
     }
 
     // Process或Axiom中使用的方法
@@ -131,6 +138,17 @@ namespace sbid._M
             Method verify = new Method(Type.TYPE_BOOL, "Verify", verifyParams, Crypto.None);
             InnerMethods.Add(verify);
         }
+        // 加密方式枚举的集合，用于判断对称加密/非对称加密/哈希签名
+        public static readonly List<Crypto> Sym = new List<Crypto>() { 
+            Crypto.AES, Crypto.DES
+        };
+        public static readonly List<Crypto> ASym = new List<Crypto>() {
+            Crypto.RSA, Crypto.ECC
+        };
+        public static readonly List<Crypto> Hash = new List<Crypto>() {
+            Crypto.MD5, Crypto.SHA1, Crypto.SHA256
+        };
+
 
         #endregion
     }

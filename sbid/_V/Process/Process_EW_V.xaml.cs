@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace sbid._V
 {
@@ -525,6 +527,39 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "选中了CommMethod：" + (CommMethod)commMethod_ListBox.SelectedItem + "，已拷贝其参数列表";
         }
 
+        // 内置Method列表选中项变化的处理
+        private void innerMethod_ListBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // 根据不同内置Method应允许不同的算法
+            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
+            ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "crypto_ComboBox");
+            if (innerMethod_ListBox.SelectedItem == null) // 变成没有选中时，恢复全列表
+            {
+                crypto_ComboBox.Items = System.Enum.GetValues(typeof(Crypto));
+                crypto_ComboBox.SelectedItem = Crypto.None;
+                return;
+            }
+            Method method = (Method)innerMethod_ListBox.SelectedItem;
+            switch (method.Name)
+            {
+                // 对称加解密
+                case "SymEnc":
+                case "SymDec":
+                    crypto_ComboBox.Items = Method.Sym;
+                    crypto_ComboBox.SelectedItem = Method.Sym[0];
+                    break;
+                // 签名和验证
+                case "Sign":
+                case "Verify":
+                    crypto_ComboBox.Items = Method.ASym.Union(Method.Hash).ToList();
+                    crypto_ComboBox.SelectedItem = Method.ASym[0];
+                    break;
+                // 如果添加了其他的内置方法，要在这里加逻辑
+                default:
+                    break;
+            }
+        }
+
         #endregion
 
         #region 初始化
@@ -557,6 +592,10 @@ namespace sbid._V
             // 绑定CommMethod右侧列表选中项变化的处理方法
             ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
             commMethod_ListBox.SelectionChanged += commMethod_ListBox_Changed;
+
+            // 绑定内置Method列表选中项变化的处理方法
+            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
+            innerMethod_ListBox.SelectionChanged += innerMethod_ListBox_Changed;
         }
 
         #endregion

@@ -84,7 +84,7 @@
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="内置方法：" FontSize="17"/>
           <ListBox Name="innerMethod_ListBox" Height="97"></ListBox>
-          <TextBlock Text="加密算法：" FontSize="17"/>
+          <TextBlock Text="加密或签名算法：" FontSize="17"/>
           <ComboBox Name="crypto_ComboBox" SelectedItem="{Binding #method_NZ_ListBox.SelectedItem.CryptoSuffix, Mode=OneWay}"/>
           <TextBlock Text="映射关系(todo)：" FontSize="17"/>
           <TextBox></TextBox>
