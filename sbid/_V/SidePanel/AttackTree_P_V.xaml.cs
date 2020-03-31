@@ -2,7 +2,13 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using sbid._M;
 using sbid._VM;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.Json;
+using System.Text.Unicode;
 
 namespace sbid._V
 {
@@ -11,6 +17,8 @@ namespace sbid._V
         public AttackTree_P_V()
         {
             this.InitializeComponent();
+            // 初始化.cs文件中的事件处理
+            init_event();
         }
 
         private void InitializeComponent()
@@ -106,5 +114,75 @@ namespace sbid._V
 
         // 对应的VM
         public AttackTree_P_VM AttackTreePVM { get => (AttackTree_P_VM)DataContext; }
+
+        #region 事件
+
+        // "叶子攻击分析"ListBox的选中项变化的处理
+        private void leafAttackVM_ListBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // todo 在"安全策略数据库"ListBox中显示内容
+            //using (StreamReader streamReader = new StreamReader("Assets/SecurityPolicy.json"))
+            //{
+            //    string jsonStr = streamReader.ReadToEnd();
+            //    ResourceManager.mainWindowVM.Tips = jsonStr;
+            //}
+            test_json_read();
+        }
+
+        #endregion
+
+        #region 初始化
+
+        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
+        private void init_event()
+        {
+            // 绑定"叶子攻击分析"ListBox的选中项变化的处理
+            ListBox leafAttackVM_ListBox = ControlExtensions.FindControl<ListBox>(this, "leafAttackVM_ListBox");
+            leafAttackVM_ListBox.SelectionChanged += leafAttackVM_ListBox_Changed;
+        }
+
+        #endregion
+
+        #region 测试
+
+        // Json序列化 + 写入文件
+        private void test_json_write()
+        {
+            // 形成Json字符串的设置
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                // 这个选项解决输出编码问题
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All)
+            };
+
+            // 构建要序列化的对象
+            List<SecurityPolicy> list = new List<SecurityPolicy>();
+            SecurityPolicy securityPolicy = new SecurityPolicy();
+            securityPolicy.Content = "测试内容a";
+            securityPolicy.Labels = new List<string> { "标签1", "标签2" };
+            list.Add(securityPolicy);
+            securityPolicy = new SecurityPolicy();
+            securityPolicy.Content = "测试内容b";
+            securityPolicy.Labels = new List<string> { "标签3", "标签4" };
+            list.Add(securityPolicy);
+
+            // 形成Json字符串
+            string jsonStr = JsonSerializer.Serialize(list, options);
+
+            // 写入文件(覆盖)
+            File.WriteAllText("Assets/SecurityPolicy.json", jsonStr, Encoding.UTF8);
+        }
+
+        // 读文件 + Json反序列化
+        private void test_json_read()
+        {
+            //test_json_write(); // 因为资源每次从源文件拷贝到编译后的目录，这里调用一次写将其盖掉
+            string jsonStr = File.ReadAllText("Assets/SecurityPolicy.json");
+            // 此处断点调试测试
+            List<SecurityPolicy> list = JsonSerializer.Deserialize<List<SecurityPolicy>>(jsonStr);
+        }
+
+        #endregion
     }
 }
