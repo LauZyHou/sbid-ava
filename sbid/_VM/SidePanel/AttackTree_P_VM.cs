@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using sbid._M;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,8 +11,9 @@ namespace sbid._VM
     {
         private static int _id = 1;
         private Connector_VM activeConnector;
-        private ObservableCollection<Attack_VM> leafAttackVMs = new ObservableCollection<Attack_VM>();
         private Attack_VM handleAttackVM;
+        private ObservableCollection<Attack_VM> leafAttackVMs = new ObservableCollection<Attack_VM>();
+        private ObservableCollection<SecurityPolicy> securityPolicies = new ObservableCollection<SecurityPolicy>();
 
 
         // 默认构造时使用默认名称
@@ -29,6 +31,9 @@ namespace sbid._VM
 
         // 用于[叶子攻击分析]的绑定列表
         public ObservableCollection<Attack_VM> LeafAttackVMs { get => leafAttackVMs; }
+
+        // 用于[安全策略数据库]的绑定列表，这里绑定的只是和LeafAttackVMs的选中项匹配的SecurityPolicy
+        public ObservableCollection<SecurityPolicy> SecurityPolicies { get => securityPolicies; }
 
         #region 按钮命令
 
