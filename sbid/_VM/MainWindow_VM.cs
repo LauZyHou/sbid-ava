@@ -1593,7 +1593,9 @@ namespace sbid._VM
             protocolVMs.Clear();
             Protocol_VM._id = Type._id = Process._id = Axiom._id = InitialKnowledge._id
                 = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id
-                = Connector_VM._id = CommMethod._id = CommChannel._id = Method._id = 0;
+                = Connector_VM._id = CommMethod._id = CommChannel._id = Method._id
+                = SequenceDiagram_P_VM._id = TopoGraph_P_VM._id = CTLTree_P_VM._id
+                = AttackTree_P_VM._id = 0;
             selectedItem = null;
         }
 

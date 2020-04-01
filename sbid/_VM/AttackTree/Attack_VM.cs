@@ -147,7 +147,7 @@ namespace sbid._VM
                 }
             }
 
-            ResourceManager.mainWindowVM.Tips = "计算完成，该结点是" + (beAttacked ? "可攻击" : "安全") + "的";
+            ResourceManager.mainWindowVM.Tips = "计算完成，结点[" + attack.Content + "]是" + (beAttacked ? "可攻击" : "安全") + "的";
         }
 
         #endregion

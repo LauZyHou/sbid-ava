@@ -77,13 +77,7 @@
       </ListBox>
       <Button DockPanel.Dock="Top" Command="{Binding $parent[UserControl].ReverseLeafAttackVM}">应用并重新计算</Button>
       <TextBlock DockPanel.Dock="Top" Text="安全策略数据库" FontSize="16" TextAlignment="Center"/>
-      <ListBox DockPanel.Dock="Bottom" Items="{Binding SecurityPolicies}" BorderBrush="Transparent">
-        <ListBox.ItemTemplate>
-          <DataTemplate>
-            <TextBlock Text="{Binding Content}"/>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
+      <ListBox DockPanel.Dock="Bottom" Items="{Binding SecurityPolicies}" BorderBrush="Transparent"/>
     </DockPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>

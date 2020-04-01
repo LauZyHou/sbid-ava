@@ -125,7 +125,7 @@ namespace sbid._V
 
             // 读取策略数据库文件，解析为策略List
             string jsonStr = File.ReadAllText("Assets/SecurityPolicy.json");
-            List<SecurityPolicy> securityPolicies = JsonSerializer.Deserialize<List<SecurityPolicy>>(jsonStr);
+            List<LabelsContentsPair> labelsContentsPairs = JsonSerializer.Deserialize<List<LabelsContentsPair>>(jsonStr);
 
             // 找出选中项(是一个Attack_VM)，并获得其中Attack的文字
             ListBox leafAttackVM_ListBox = ControlExtensions.FindControl<ListBox>(this, "leafAttackVM_ListBox");
@@ -136,14 +136,16 @@ namespace sbid._V
             Attack_VM attack_VM = (Attack_VM)leafAttackVM_ListBox.SelectedItem;
             string attackContent = attack_VM.Attack.Content;
 
-            // 这个集合用于快速判断一个标签是否能和选中项的Attack的文字匹配
-            // 这里记录那些无法匹配的标签
+            // 这里记录那些无法匹配的标签，用于快速判断一个标签是否能和选中项的Attack的文字匹配
             HashSet<string> failLabelHashSet = new HashSet<string>();
 
+            // 这里记录那些已经存在的安全策略，用于去重(不同标签可能对应相同的安全策略)
+            HashSet<string> succContentHashSet = new HashSet<string>();
+
             // 遍历策略数据库，检查是否匹配
-            foreach (SecurityPolicy securityPolicy in securityPolicies)
+            foreach (LabelsContentsPair labelsContentsPair in labelsContentsPairs)
             {
-                foreach (string label in securityPolicy.Labels) // 该策略的每个标签
+                foreach (string label in labelsContentsPair.Labels) // 对其中的每个标签
                 {
                     if (failLabelHashSet.Contains(label)) // 先检查是否已经检查过为"不匹配"
                     {
@@ -151,12 +153,30 @@ namespace sbid._V
                     }
                     if (!attackContent.Contains(label)) // 再进行字符串匹配的检查
                     {
-                        failLabelHashSet.Add(label);
+                        failLabelHashSet.Add(label); // 不匹配还要加入fail集合
                         continue;
                     }
-                    // 至此，匹配成功，将其添加到[安全策略数据库]的绑定列表中
-                    AttackTreePVM.SecurityPolicies.Add(securityPolicy);
+                    // 至此，匹配成功，要将其下的所有安全策略都加入，并break退出这个LabelsContentsPair
+                    // 因为即便这个LabelsContentsPair的其它Label也能匹配成功，也没有新的安全策略要加入了
+                    foreach (string content in labelsContentsPair.Contents)
+                    {
+                        // 注意要检查之前是否放过这个安全策略，因为其它LabelsContentsPair里也可能有
+                        if (!succContentHashSet.Contains(content))
+                        {
+                            AttackTreePVM.SecurityPolicies.Add(content);
+                        }
+                    }
+                    break;
                 }
+            }
+            // 提示
+            if (AttackTreePVM.SecurityPolicies.Count == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "没有找到合适的安全策略，请尝试带有关键字地描述攻击结点";
+            }
+            else
+            {
+                ResourceManager.mainWindowVM.Tips = "在[安全策略数据库]中找到并列出了一些可能可行的策略";
             }
         }
 
@@ -187,16 +207,16 @@ namespace sbid._V
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All)
             };
 
-            // 构建要序列化的对象
-            List<SecurityPolicy> list = new List<SecurityPolicy>();
-            SecurityPolicy securityPolicy = new SecurityPolicy();
-            securityPolicy.Content = "测试内容a";
-            securityPolicy.Labels = new List<string> { "标签1", "标签2" };
-            list.Add(securityPolicy);
-            securityPolicy = new SecurityPolicy();
-            securityPolicy.Content = "测试内容b";
-            securityPolicy.Labels = new List<string> { "标签3", "标签4" };
-            list.Add(securityPolicy);
+            // 构建要序列化的对象，这里是一个存LabelsContentsPair的列表
+            List<LabelsContentsPair> list = new List<LabelsContentsPair>();
+            LabelsContentsPair lcp1 = new LabelsContentsPair();
+            lcp1.Labels = new List<string> { "假冒", "身份", "伪装", "篡改" };
+            lcp1.Contents = new List<string> { "使用[Kerberos]进行身份认证", "使用[SSL/TLS]进行双向认证", "使用CA发布的[证书]进行身份认证", "使用[认证码]进行身份认证" };
+            list.Add(lcp1);
+            LabelsContentsPair lcp2 = new LabelsContentsPair();
+            lcp2.Labels = new List<string> { "抵赖" };
+            lcp2.Contents = new List<string> { "使用[安全审计和日志记录]", "使用[数字签名]", "使用[可信第三方]" };
+            list.Add(lcp2);
 
             // 形成Json字符串
             string jsonStr = JsonSerializer.Serialize(list, options);
@@ -211,7 +231,7 @@ namespace sbid._V
             //test_json_write(); // 因为资源每次从源文件拷贝到编译后的目录，这里调用一次写将其盖掉
             string jsonStr = File.ReadAllText("Assets/SecurityPolicy.json");
             // 此处断点调试测试
-            List<SecurityPolicy> list = JsonSerializer.Deserialize<List<SecurityPolicy>>(jsonStr);
+            List<LabelsContentsPair> list = JsonSerializer.Deserialize<List<LabelsContentsPair>>(jsonStr);
         }
 
         #endregion

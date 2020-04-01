@@ -9,18 +9,18 @@ namespace sbid._VM
 {
     public class AttackTree_P_VM : SidePanel_VM
     {
-        private static int _id = 1;
+        public static int _id = 0;
         private Connector_VM activeConnector;
         private Attack_VM handleAttackVM;
         private ObservableCollection<Attack_VM> leafAttackVMs = new ObservableCollection<Attack_VM>();
-        private ObservableCollection<SecurityPolicy> securityPolicies = new ObservableCollection<SecurityPolicy>();
+        private ObservableCollection<string> securityPolicies = new ObservableCollection<string>();
 
 
         // 默认构造时使用默认名称
         public AttackTree_P_VM()
         {
-            this.Name = "攻击树" + _id;
             _id++;
+            this.Name = "攻击树" + _id;
         }
 
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
@@ -32,8 +32,8 @@ namespace sbid._VM
         // 用于[叶子攻击分析]的绑定列表
         public ObservableCollection<Attack_VM> LeafAttackVMs { get => leafAttackVMs; }
 
-        // 用于[安全策略数据库]的绑定列表，这里绑定的只是和LeafAttackVMs的选中项匹配的SecurityPolicy
-        public ObservableCollection<SecurityPolicy> SecurityPolicies { get => securityPolicies; }
+        // 用于[安全策略数据库]的绑定列表，这里绑定的只是和LeafAttackVMs的选中项匹配的安全策略字符串
+        public ObservableCollection<string> SecurityPolicies { get => securityPolicies; }
 
         #region 按钮命令
 
