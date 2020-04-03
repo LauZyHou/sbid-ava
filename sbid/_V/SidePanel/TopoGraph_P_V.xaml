@@ -2,7 +2,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sbid._V.TopoGraph_P_V">
-    我是拓扑图
+  <Design.DataContext>
+    <vm:TopoGraph_P_VM/>
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <!--ItemsControl的样式-->
+    <Style Selector="ItemsControl">
+      <!--使用Canvas作面板-->
+      <Setter Property="ItemsPanel">
+        <Setter.Value>
+          <ItemsPanelTemplate>
+            <!--这里需要为Canvas设置颜色才能在按下时相应鼠标事件-->
+            <Canvas Background="#EEEEEE" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <!--右键菜单行为-->
+              <Canvas.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="创建拓扑结点" Command="{Binding $parent[UserControl].CreateTopoNodeVM}"/>
+                </ContextMenu>
+              </Canvas.ContextMenu>
+            </Canvas>
+          </ItemsPanelTemplate>
+        </Setter.Value>
+      </Setter>
+      <!--里面放控件,即xxx_VM-->
+      <Setter Property="ItemTemplate">
+        <Setter.Value>
+          <DataTemplate DataType="vm:ViewModelBase">
+            <ContentControl Content="{Binding .}"/>
+          </DataTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
+    <Style Selector="ItemsControl > ContentPresenter">
+      <Setter Property="Canvas.Left" Value="{Binding X}"/>
+      <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+    </Style>
+  </UserControl.Styles>
+
+  <DockPanel>
+    <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="700"/>
+    </ScrollViewer>
+  </DockPanel>
 </UserControl>

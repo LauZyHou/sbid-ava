@@ -28,8 +28,8 @@ namespace sbid._VM
             panelVMs.Add(new Panel_VM("状态机"));
 
             Panel_VM topoGraphPVM = new Panel_VM("拓扑图");
-            topoGraphPVM.SidePanelVMs.Add(new TopoGraph_P_VM());// 添加一个默认面板
-            topoGraphPVM.SelectedItem = topoGraphPVM.SidePanelVMs[0];// 设置默认选中项
+            //topoGraphPVM.SidePanelVMs.Add(new TopoGraph_P_VM());// 添加一个默认面板
+            //topoGraphPVM.SelectedItem = topoGraphPVM.SidePanelVMs[0];// 设置默认选中项
             panelVMs.Add(topoGraphPVM);
 
             Panel_VM attackTreePVM = new Panel_VM("攻击树");
@@ -39,8 +39,8 @@ namespace sbid._VM
             panelVMs.Add(attackTreePVM);
 
             Panel_VM ctlTreePVM = new Panel_VM("CTL语法树");
-            ctlTreePVM.SidePanelVMs.Add(new CTLTree_P_VM());
-            ctlTreePVM.SelectedItem = ctlTreePVM.SidePanelVMs[0];
+            //ctlTreePVM.SidePanelVMs.Add(new CTLTree_P_VM());
+            //ctlTreePVM.SelectedItem = ctlTreePVM.SidePanelVMs[0];
             panelVMs.Add(ctlTreePVM);
 
             Panel_VM sequenceDiagramPVM = new Panel_VM("顺序图");
