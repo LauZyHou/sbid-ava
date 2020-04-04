@@ -1,4 +1,5 @@
-﻿using sbid._M;
+﻿using Avalonia.Controls;
+using sbid._M;
 using sbid._V;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,19 @@ namespace sbid._VM
                     TopoNode = topoNode
                 }
             };
+            // 将所有的Process传入,作为KnowledgePair去选用的参数
+            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
+            {
+                if (item is Process_VM)
+                {
+                    ((TopoNode_EW_VM)topoNodeEWV.DataContext).Processes.Add(((Process_VM)item).Process);
+                }
+            }
+
+            // [bugfix]因为在xaml里绑定Process打开编辑窗口显示出不来，只好在这里手动设置一下
+            ComboBox process_ComboBox = ControlExtensions.FindControl<ComboBox>(topoNodeEWV, "process_ComboBox");
+            process_ComboBox.SelectedItem = ((TopoNode_EW_VM)topoNodeEWV.DataContext).TopoNode.Process;
+
             topoNodeEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了拓扑结点：" + topoNode.Name + "的编辑窗体";
         }

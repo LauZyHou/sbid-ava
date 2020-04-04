@@ -2,8 +2,63 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:m="clr-namespace:sbid._M;assembly=sbid"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="300" Width="400" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.TopoNode_EW_V"
-        Title="TopoNode_EW_V">
-    todo
+        Title="编辑TopoNode">
+
+  <Design.DataContext>
+    <vm:TopoNode_EW_VM/>
+  </Design.DataContext>
+
+  <Window.Styles>
+    <Style Selector="Grid > StackPanel">
+      <Setter Property="Margin" Value="5"/>
+    </Style>
+    <Style Selector="StackPanel > TextBlock">
+      <Setter Property="FontSize" Value="17"/>
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Width" Value="50"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Margin" Value="7,5"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Height" Value="25"/>
+    </Style>
+  </Window.Styles>
+
+  <Grid ColumnDefinitions="50*,50*" Margin="10">
+    <StackPanel Grid.Column="0">
+      <TextBlock Text="结点名："/>
+      <TextBox Text="{Binding TopoNode.Name}"/>
+
+    </StackPanel>
+    <StackPanel Grid.Column="1">
+      <TextBlock Text="进程模板："/>
+      <ComboBox Name="process_ComboBox" Items="{Binding Processes}" MinWidth="60"
+                    SelectedItem="{Binding TopoNode.Process, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Name}"/>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      <TreeView Items="{Binding TopoNode.Process.Attributes}">
+        <TreeView.DataTemplates>
+          <TreeDataTemplate DataType="m:Attribute" ItemsSource="{Binding Type.Attributes}">
+            <TextBlock>
+              <TextBlock.Text>
+                <MultiBinding StringFormat=" {0} {1}=">
+                  <Binding Path="Type.Name"/>
+                  <Binding Path="Identifier"/>
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+          </TreeDataTemplate>
+        </TreeView.DataTemplates>
+      </TreeView>
+    </StackPanel>
+  </Grid>
 </Window>
