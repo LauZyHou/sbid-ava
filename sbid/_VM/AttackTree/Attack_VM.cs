@@ -18,7 +18,6 @@ namespace sbid._VM
         private bool beAttacked = false;
         private bool isLocked = false;
 
-
         public Attack_VM()
         {
             attack = new Attack("Attack" + _id);
@@ -78,7 +77,7 @@ namespace sbid._VM
             }
         }
 
-        #region 按钮和右键菜单命令
+        #region 右键菜单命令
 
         // 尝试打开编辑当前攻击结点的窗体
         public void EditAttackVM()

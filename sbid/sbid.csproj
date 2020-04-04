@@ -50,6 +50,7 @@
     <AvaloniaResource Remove="_V\StateMachine\State_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\Transition_EW_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\Transition_V.xaml" />
+    <AvaloniaResource Remove="_V\Topology\TopoNode_EW_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TopoNode_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
@@ -92,6 +93,7 @@
     <None Remove="_V\StateMachine\State_V.xaml" />
     <None Remove="_V\StateMachine\Transition_EW_V.xaml" />
     <None Remove="_V\StateMachine\Transition_V.xaml" />
+    <None Remove="_V\Topology\TopoNode_EW_V.xaml" />
     <None Remove="_V\Topology\TopoNode_V.xaml" />
     <None Remove="_V\UserType\UserType_EW_V.xaml" />
     <None Remove="_V\UserType\UserType_V.xaml" />
@@ -307,10 +309,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="_M\Topology\" />
+    <EmbeddedResource Include="_V\Topology\TopoNode_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="_V\Topology\TopoNode_V.xaml">
+    <EmbeddedResource Include="_V\Topology\TopoNode_EW_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

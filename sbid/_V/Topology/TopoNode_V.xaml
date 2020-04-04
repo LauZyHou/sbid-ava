@@ -11,10 +11,12 @@
   </Design.DataContext>
 
   <Grid Width="56" Height="56">
-    <Ellipse Fill="WhiteSmoke" Stroke="Black" StrokeThickness="2"/>
+    <Ellipse Fill="Wheat" Stroke="Black" StrokeThickness="2"/>
     <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1"
           ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1">
-      <TextBlock Text="todo" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      <TextBlock Text="{Binding TopoNode.Name}" FontWeight="Bold" Grid.Row="1" Grid.Column="1" 
+                 Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" 
+                 VerticalAlignment="Center" HorizontalAlignment="Center"/>
       <!--锚点顺时针排列-->
       <v:TopoConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="4" Grid.Column="0"/>
       <v:TopoConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="2" Grid.Column="2"/>
@@ -24,13 +26,13 @@
       <v:TopoConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="6" Grid.Column="6"/>
       <v:TopoConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="8" Grid.Column="4"/>
       <v:TopoConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="6" Grid.Column="2"/>
-      <Grid.ContextMenu>
-        <ContextMenu>
-          <!--禁止修改-->
-          <MenuItem Header="编辑"/>
-          <MenuItem Header="删除"/>
-        </ContextMenu>
-      </Grid.ContextMenu>
     </Grid>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <!--禁止修改-->
+        <MenuItem Header="编辑" Command="{Binding EditTopoNodeVM}"/>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
   </Grid>
 </UserControl>

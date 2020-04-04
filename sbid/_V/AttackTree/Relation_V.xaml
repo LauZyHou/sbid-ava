@@ -24,15 +24,15 @@
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="6" Grid.Column="6"/>
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="8" Grid.Column="4"/>
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="6" Grid.Column="2"/>
-      <Grid.ContextMenu>
-        <ContextMenu>
-          <!--禁止修改-->
-          <!--<MenuItem Header="设为AND" Command="{Binding SetRelation_AND}"/>
+    </Grid>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <!--禁止修改-->
+        <!--<MenuItem Header="设为AND" Command="{Binding SetRelation_AND}"/>
           <MenuItem Header="设为OR" Command="{Binding SetRelation_OR}"/>
           <MenuItem Header="设为NEG" Command="{Binding SetRelation_NEG}"/>-->
-          <MenuItem Header="删除"/>
-        </ContextMenu>
-      </Grid.ContextMenu>
-    </Grid>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
   </Grid>
 </UserControl>

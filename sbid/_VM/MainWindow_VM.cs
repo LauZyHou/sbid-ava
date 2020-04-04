@@ -1595,7 +1595,7 @@ namespace sbid._VM
                 = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id
                 = Connector_VM._id = CommMethod._id = CommChannel._id = Method._id
                 = SequenceDiagram_P_VM._id = TopoGraph_P_VM._id = CTLTree_P_VM._id
-                = AttackTree_P_VM._id = 0;
+                = AttackTree_P_VM._id = TopoNode._id = 0;
             selectedItem = null;
         }
 
