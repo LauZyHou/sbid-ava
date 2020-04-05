@@ -8,7 +8,7 @@ namespace sbid._M
     // 值类型的实例
     public class ValueInstance : Instance
     {
-        private string _value;
+        private string _value = "a";
 
         public ValueInstance(Type type, string identifier) : base(type, identifier)
         {

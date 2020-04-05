@@ -46,10 +46,11 @@
     <StackPanel Grid.Column="0">
       <TextBlock Text="结点名："/>
       <TextBox Text="{Binding TopoNode.Name}"/>
-
+      <TextBlock Text="结点类型(todo)："/>
+      <ComboBox/>
     </StackPanel>
     <StackPanel Grid.Column="1">
-      <TextBlock Text="进程模板："/>
+      <TextBlock Text="进程模板例化："/>
       <ComboBox Name="process_ComboBox" Items="{Binding Processes}" MinWidth="60"
                     SelectedItem="{Binding TopoNode.Process, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
@@ -69,7 +70,7 @@
           <DataTemplate DataType="m:ValueInstance">
             <StackPanel Orientation="Horizontal">
               <TextBlock Text="{Binding .}"/>
-              <TextBox Text=""/>
+              <TextBox Text="{Binding Value}"/>
             </StackPanel>
           </DataTemplate>
         </TreeView.DataTemplates>

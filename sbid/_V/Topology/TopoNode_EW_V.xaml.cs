@@ -30,6 +30,11 @@ namespace sbid._V
         // 进程模板选中项变化的处理
         private void process_ComboBox_Changed(object sender, SelectionChangedEventArgs e)
         {
+            // 安全锁锁定时不做任何修改
+            if (TopoNodeEWVM.SafetyLock)
+            {
+                return;
+            }
             // 清空属性列表
             TopoNodeEWVM.TopoNode.Properties.Clear();
             // 获取选中的Process
@@ -53,6 +58,7 @@ namespace sbid._V
                     TopoNodeEWVM.TopoNode.Properties.Add(valueInstance);
                 }
             }
+            ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.Name +"]，例化对象已重新生成";
         }
 
         #endregion
