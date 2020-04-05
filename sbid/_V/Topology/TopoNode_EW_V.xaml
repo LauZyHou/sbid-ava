@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:m="clr-namespace:sbid._M;assembly=sbid"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="300" Width="400" WindowStartupLocation="CenterOwner"
+        Height="300" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.TopoNode_EW_V"
         Title="编辑TopoNode">
 
@@ -27,9 +27,22 @@
     <Style Selector="ComboBox">
       <Setter Property="Height" Value="25"/>
     </Style>
+    <!--树形控件样式-->
+    <Style Selector="TreeView TextBlock">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style Selector="TreeView TextBox">
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="MinWidth" Value="40"/>
+      <Setter Property="Foreground" Value="Blue"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
   </Window.Styles>
 
-  <Grid ColumnDefinitions="50*,50*" Margin="10">
+  <Grid ColumnDefinitions="30*,70*" Margin="10">
     <StackPanel Grid.Column="0">
       <TextBlock Text="结点名："/>
       <TextBox Text="{Binding TopoNode.Name}"/>
@@ -45,18 +58,20 @@
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
-      <TreeView Items="{Binding TopoNode.Process.Attributes}">
+      <!--进程模板例化后用树形控件展示-->
+      <TreeView Items="{Binding TopoNode.Properties}">
         <TreeView.DataTemplates>
-          <TreeDataTemplate DataType="m:Attribute" ItemsSource="{Binding Type.Attributes}">
-            <TextBlock>
-              <TextBlock.Text>
-                <MultiBinding StringFormat=" {0} {1}=">
-                  <Binding Path="Type.Name"/>
-                  <Binding Path="Identifier"/>
-                </MultiBinding>
-              </TextBlock.Text>
-            </TextBlock>
+          <!--引用类型可展开-->
+          <TreeDataTemplate DataType="m:ReferenceInstance" ItemsSource="{Binding Properties}">
+            <TextBlock Text="{Binding .}"/>
           </TreeDataTemplate>
+          <!--值类型为叶子-->
+          <DataTemplate DataType="m:ValueInstance">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding .}"/>
+              <TextBox Text=""/>
+            </StackPanel>
+          </DataTemplate>
         </TreeView.DataTemplates>
       </TreeView>
     </StackPanel>

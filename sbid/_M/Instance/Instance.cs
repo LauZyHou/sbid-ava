@@ -22,5 +22,10 @@ namespace sbid._M
         public Type Type { get => type; }
         // 实例的变量名
         public string Identifier { get => identifier; }
+
+        public override string ToString()
+        {
+            return type.Name + " " + identifier + " ";
+        }
     }
 }

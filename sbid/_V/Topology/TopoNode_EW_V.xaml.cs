@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using sbid._M;
+using sbid._VM;
 
 namespace sbid._V
 {
@@ -12,11 +14,68 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
+            // 初始化.cs文件中的数据绑定
+            init_binding();
+            // 初始化.cs文件中的事件处理
+            init_event();
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        #region 事件
+
+        // 进程模板选中项变化的处理
+        private void process_ComboBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // 清空属性列表
+            TopoNodeEWVM.TopoNode.Properties.Clear();
+            // 获取选中的Process
+            ComboBox process_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "process_ComboBox");
+            if (process_ComboBox.SelectedItem == null)
+            {
+                return;
+            }
+            Process process = (Process)process_ComboBox.SelectedItem;
+            // 构造这个属性列表
+            foreach (Attribute attribute in process.Attributes)
+            {
+                if (attribute.Type is UserType) // 复合类型
+                {
+                    ReferenceInstance referenceInstance = ReferenceInstance.build((UserType)attribute.Type, attribute.Identifier);
+                    TopoNodeEWVM.TopoNode.Properties.Add(referenceInstance);
+                }
+                else // 基本类型
+                {
+                    ValueInstance valueInstance = new ValueInstance(attribute.Type, attribute.Identifier);
+                    TopoNodeEWVM.TopoNode.Properties.Add(valueInstance);
+                }
+            }
+        }
+
+        #endregion
+
+        #region 初始化
+
+        // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
+        private void init_binding()
+        {
+            // todo 绑定枚举
+        }
+
+        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
+        private void init_event()
+        {
+            // 绑定进程模板ComboBox选中项变化的处理方法
+            ComboBox process_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "process_ComboBox");
+            process_ComboBox.SelectionChanged += process_ComboBox_Changed;
+        }
+
+        #endregion
+
+        // 对应的VM
+        public TopoNode_EW_VM TopoNodeEWVM { get => (TopoNode_EW_VM)DataContext; }
     }
 }

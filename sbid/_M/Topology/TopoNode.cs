@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace sbid._M
@@ -10,6 +11,7 @@ namespace sbid._M
         public static int _id = 0;
         private string name;
         private Process process;
+        private ObservableCollection<Instance> properties = new ObservableCollection<Instance>();
         private int id;
 
         public TopoNode()
@@ -21,6 +23,8 @@ namespace sbid._M
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         public Process Process { get => process; set => this.RaiseAndSetIfChanged(ref process, value); }
+        // 属性列表，用于例化Process的实例，参见ReferenceInstance
+        public ObservableCollection<Instance> Properties { get => properties; }
         public int Id
         {
             get => id;
