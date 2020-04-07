@@ -13,13 +13,7 @@
   <StackPanel>
     <Grid Width="140" Height="30" Background="Black">
       <TextBlock Width="136" Height="26" HorizontalAlignment="Center" VerticalAlignment="Center"
-                 TextAlignment="Center" FontSize="17" Background="White">
-        <TextBlock.Text>
-          <MultiBinding StringFormat=" {0}:{1}">
-            <Binding Path="SeqObject.ObjName"/>
-            <Binding Path="SeqObject.ClassName"/>
-          </MultiBinding>
-        </TextBlock.Text>
+                 Text="{Binding SeqObject.Process.Name}" TextAlignment="Center" FontSize="17" Background="White">
         <TextBlock.ContextMenu>
           <ContextMenu>
             <MenuItem Header="编辑对象-生命线" Command="{Binding EditObjLifeLine}"/>

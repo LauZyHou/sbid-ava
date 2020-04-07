@@ -620,8 +620,7 @@ namespace sbid._VM
                             xmlWriter.WriteStartElement("ObjLifeLine_VM");
                             xmlWriter.WriteAttributeString("x", objLifeLine_VM.X.ToString());
                             xmlWriter.WriteAttributeString("y", objLifeLine_VM.Y.ToString());
-                            xmlWriter.WriteAttributeString("objName", objLifeLine_VM.SeqObject.ObjName);
-                            xmlWriter.WriteAttributeString("className", objLifeLine_VM.SeqObject.ClassName);
+                            xmlWriter.WriteAttributeString("process_ref", objLifeLine_VM.SeqObject.Process.Id.ToString());
                             foreach (Connector_VM connector_VM in objLifeLine_VM.ConnectorVMs) // 身上所有锚点的id号
                             {
                                 xmlWriter.WriteStartElement("Connector_VM");
@@ -1521,8 +1520,16 @@ namespace sbid._VM
                             double x = double.Parse(scElement.GetAttribute("x"));
                             double y = double.Parse(scElement.GetAttribute("y"));
                             ObjLifeLine_VM objLifeLine_VM = new ObjLifeLine_VM(x, y);
-                            objLifeLine_VM.SeqObject.ObjName = scElement.GetAttribute("objName");
-                            objLifeLine_VM.SeqObject.ClassName = scElement.GetAttribute("className");
+                            // 处理引用的进程模板
+                            int processRef = int.Parse(scElement.GetAttribute("process_ref"));
+                            if (!processVMDict.ContainsKey(processRef))
+                            {
+                                Tips = "[解析ObjLifeLine_VM时出错]无法找到引用的进程模板！";
+                                cleanProject();
+                                return false;
+                            }
+                            objLifeLine_VM.SeqObject.Process = processVMDict[processRef].Process;
+                            // 处理锚点
                             if (objLifeLine_VM.ConnectorVMs.Count != scElement.ChildNodes.Count)
                             {
                                 Tips = "[解析ObjLifeLine_VM时出错]锚点数量和系统要求不一致！";

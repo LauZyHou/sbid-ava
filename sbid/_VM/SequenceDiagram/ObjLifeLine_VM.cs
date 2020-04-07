@@ -1,4 +1,5 @@
-﻿using sbid._M;
+﻿using Avalonia.Controls;
+using sbid._M;
 using sbid._V;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,25 @@ namespace sbid._VM
 {
     public class ObjLifeLine_VM : NetworkItem_VM
     {
-        private static int _id = 0;
         private SeqObject seqObject;
+
+        #region 构造和初始化
 
         public ObjLifeLine_VM()
         {
-            _id++;
+            init();
+        }
+
+        public ObjLifeLine_VM(double x, double y)
+        {
+            X = x;
+            Y = y;
+
+            init();
+        }
+
+        private void init()
+        {
             double baseX = X + 70;
             double baseY = Y + 54;
             double deltaY = 18;
@@ -25,30 +39,13 @@ namespace sbid._VM
                 ConnectorVMs.Add(new Connector_VM(baseX, baseY + i * deltaY));
             }
 
-            seqObject = new SeqObject("Obj" + _id, "C" + _id);
+            seqObject = new SeqObject(null);
         }
 
-        public ObjLifeLine_VM(double x, double y)
-        {
-            _id++;
-            X = x;
-            Y = y;
-
-            double baseX = x + 70;
-            double baseY = y + 54;
-            double deltaY = 18;
-
-            ConnectorVMs = new ObservableCollection<Connector_VM>();
-            for (int i = 0; i < 20; i++)
-            {
-                ConnectorVMs.Add(new Connector_VM(baseX, baseY + i * deltaY));
-            }
-
-            seqObject = new SeqObject("Obj" + _id, "C" + _id);
-        }
+        #endregion
 
         // 序列图对象
-        public SeqObject SeqObject { get => seqObject; set => seqObject = value; }
+        public SeqObject SeqObject { get => seqObject; }
 
         #region 右键菜单命令
 
@@ -63,6 +60,23 @@ namespace sbid._VM
                     SeqObject = seqObject
                 }
             };
+            // 将所有的Process传入,作为SeqObject去选用的参数
+            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
+            {
+                if (item is Process_VM)
+                {
+                    ((ObjLifeLine_EW_VM)objLifeLineEWV.DataContext).Processes.Add(((Process_VM)item).Process);
+                }
+            }
+
+            // [bugfix]这里加锁保护一下，防止触发process_ComboBox_Changed方法导致身上的消息连线被删除
+            ((ObjLifeLine_EW_VM)objLifeLineEWV.DataContext).SafetyLock = true;
+            // [bugfix]因为在xaml里绑定Process打开编辑窗口显示出不来，只好在这里手动设置一下
+            ComboBox process_ComboBox = ControlExtensions.FindControl<ComboBox>(objLifeLineEWV, "process_ComboBox");
+            process_ComboBox.SelectedItem = ((ObjLifeLine_EW_VM)objLifeLineEWV.DataContext).SeqObject.Process;
+            // 设置完后把锁解除
+            ((ObjLifeLine_EW_VM)objLifeLineEWV.DataContext).SafetyLock = false;
+
             objLifeLineEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了对象-生命线的编辑窗体";
         }

@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="55" Width="200" WindowStartupLocation="CenterOwner"
+        Height="70" Width="200" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.ObjLifeLine_EW_V"
         Title="编辑ObjLifeLine">
   <Design.DataContext>
@@ -12,18 +12,22 @@
 
   <Window.Styles>
     <Style Selector="StackPanel > TextBlock">
-      <Setter Property="FontSize" Value="24"/>
-    </Style>
-    <Style Selector="StackPanel > TextBox">
       <Setter Property="FontSize" Value="17"/>
-      <Setter Property="Width" Value="80"/>
-      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Height" Value="25"/>
     </Style>
   </Window.Styles>
 
-  <StackPanel Orientation="Horizontal" Margin="10">
-    <TextBox Text="{Binding SeqObject.ObjName, Mode=TwoWay}"/>
-    <TextBlock Text=" : "/>
-    <TextBox Text="{Binding SeqObject.ClassName, Mode=TwoWay}"/>
+  <StackPanel Margin="10,7">
+    <TextBlock Text="进程模板："/>
+    <ComboBox Name="process_ComboBox" Items="{Binding Processes}"
+                    SelectedItem="{Binding SeqObject.Process, Mode=TwoWay}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
   </StackPanel>
 </Window>
