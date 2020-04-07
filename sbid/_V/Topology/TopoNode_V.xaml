@@ -11,12 +11,13 @@
   </Design.DataContext>
 
   <Grid Width="56" Height="56">
-    <Ellipse Fill="Wheat" Stroke="Black" StrokeThickness="2"/>
+    <Ellipse Fill="Black" Stroke="Black" StrokeThickness="2"/>
     <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1"
           ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1">
-      <TextBlock Text="{Binding TopoNode.Name}" FontWeight="Bold" Grid.Row="1" Grid.Column="1" 
+      <TextBlock Text="{Binding TopoNode.Name}" Grid.Row="1" Grid.Column="1" 
                  Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" 
-                 VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                 Foreground="White" FontSize="12" TextWrapping="Wrap"/>
       <!--锚点顺时针排列-->
       <v:TopoConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="4" Grid.Column="0"/>
       <v:TopoConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="2" Grid.Column="2"/>

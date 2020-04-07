@@ -60,7 +60,7 @@
         </ComboBox.ItemTemplate>
       </ComboBox>
       <!--进程模板例化后用树形控件展示-->
-      <TreeView Items="{Binding TopoNode.Properties}">
+      <TreeView Items="{Binding TopoNode.Properties}" MaxHeight="220">
         <TreeView.DataTemplates>
           <!--引用类型可展开-->
           <TreeDataTemplate DataType="m:ReferenceInstance" ItemsSource="{Binding Properties}">
