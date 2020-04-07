@@ -6,6 +6,7 @@ using System.Text;
 
 namespace sbid._VM
 {
+    // 对象-生命线编辑的VM
     public class ObjLifeLine_EW_VM
     {
         private SeqObject seqObject;
@@ -15,7 +16,7 @@ namespace sbid._VM
         // 要编辑的顺序图对象
         public SeqObject SeqObject { get => seqObject; set => seqObject = value; }
         // 集成协议下的所有Process
-        public ObservableCollection<Process> Processes { get => processes; set => processes = value; }
+        public ObservableCollection<Process> Processes { get => processes; }
         // 安全锁，用于保护消息连线不在process_ComboBox选中项变化时被删除
         public bool SafetyLock { get => safetyLock; set => safetyLock = value; }
     }

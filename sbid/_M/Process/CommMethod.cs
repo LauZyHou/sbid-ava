@@ -71,6 +71,10 @@ namespace sbid._M
             }
         }
 
+        // 注意，这个部分只在顺序图连线里用到了，所以这里的格式随便改
+        // 如果其它地方也用到了，那就要保证不影响到需求了
+        // 更好的方式是把各个xxxMessage_V文件里的样式用一种更好的方式实现
+        // 所以这里标个fixme
         public override string ToString()
         {
             string paramString = "";
@@ -78,7 +82,8 @@ namespace sbid._M
             {
                 paramString += attribute + ", ";
             }
-            return name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ");[" + InOutSuffix + "]";
+            //return name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ");[" + InOutSuffix + "]";
+            return name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ")";
         }
 
         #endregion

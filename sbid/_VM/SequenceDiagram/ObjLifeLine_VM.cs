@@ -8,15 +8,16 @@ using System.Text;
 
 namespace sbid._VM
 {
+    // 对象-生命线的VM
     public class ObjLifeLine_VM : NetworkItem_VM
     {
-        private SeqObject seqObject;
+        private SeqObject seqObject = new SeqObject(null);
 
         #region 构造和初始化
 
         public ObjLifeLine_VM()
         {
-            init();
+            init_connector();
         }
 
         public ObjLifeLine_VM(double x, double y)
@@ -24,10 +25,10 @@ namespace sbid._VM
             X = x;
             Y = y;
 
-            init();
+            init_connector();
         }
 
-        private void init()
+        private void init_connector()
         {
             double baseX = X + 70;
             double baseY = Y + 54;
@@ -39,7 +40,11 @@ namespace sbid._VM
                 ConnectorVMs.Add(new Connector_VM(baseX, baseY + i * deltaY));
             }
 
-            seqObject = new SeqObject(null);
+            // 将这些锚点所在的NetworkItem_VM回引写入
+            foreach (Connector_VM connector_VM in ConnectorVMs)
+            {
+                connector_VM.NetworkItemVM = this;
+            }
         }
 
         #endregion

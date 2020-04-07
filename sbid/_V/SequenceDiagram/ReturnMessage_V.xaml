@@ -15,7 +15,12 @@
     <v:Arrow Stroke="Black" StrokeThickness="2" HeadWidth="15" HeadHeight="4" StrokeDashArray="1,1"
              StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
     <TextBlock Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}"
-               Text="{Binding Message.Content}" TextAlignment="Center" Background="White">
+               TextAlignment="Center" Background="White">
+      <TextBlock.Text>
+        <MultiBinding StringFormat="Ret:{0}">
+          <Binding Path="CommMessage.CommMethod"/>
+        </MultiBinding>
+      </TextBlock.Text>
       <TextBlock.ContextMenu>
         <ContextMenu>
           <MenuItem Header="编辑返回消息" Command="{Binding EditMessage}"/>

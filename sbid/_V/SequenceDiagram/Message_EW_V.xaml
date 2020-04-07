@@ -3,15 +3,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="80" Width="250" WindowStartupLocation="CenterOwner"
+        Height="70" Width="250" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Message_EW_V"
         Title="编辑Message">
   <Design.DataContext>
     <vm:Message_EW_VM/>
   </Design.DataContext>
 
-  <StackPanel Margin="10">
-    <TextBlock Text="Message内容：" FontSize="17"/>
-    <TextBox Text="{Binding Message.Content, Mode=TwoWay}" FontSize="17"/>
+  <Window.Styles>
+    <Style Selector="StackPanel > TextBlock">
+      <Setter Property="FontSize" Value="17"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Height" Value="25"/>
+    </Style>
+  </Window.Styles>
+
+  <StackPanel Margin="10,7">
+    <TextBlock Text="选择可用的CommMethod："/>
+    <ComboBox Name="commMethod_ComboBox" Items="{Binding CommMethods}"
+                    SelectedItem="{Binding CommMessage.CommMethod, Mode=TwoWay}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
   </StackPanel>
 </Window>

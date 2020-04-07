@@ -5,11 +5,11 @@ using System.Text;
 
 namespace sbid._VM
 {
+    // 返回消息
     public class ReturnMessage_VM : Message_VM
     {
         public ReturnMessage_VM()
         {
-            Message = new Formula("返回消息");
         }
     }
 }

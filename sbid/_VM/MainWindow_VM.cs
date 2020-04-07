@@ -620,7 +620,10 @@ namespace sbid._VM
                             xmlWriter.WriteStartElement("ObjLifeLine_VM");
                             xmlWriter.WriteAttributeString("x", objLifeLine_VM.X.ToString());
                             xmlWriter.WriteAttributeString("y", objLifeLine_VM.Y.ToString());
-                            xmlWriter.WriteAttributeString("process_ref", objLifeLine_VM.SeqObject.Process.Id.ToString());
+                            if (objLifeLine_VM.SeqObject.Process != null) // 设了Process
+                                xmlWriter.WriteAttributeString("process_ref", objLifeLine_VM.SeqObject.Process.Id.ToString());
+                            else // 还没设Process
+                                xmlWriter.WriteAttributeString("process_ref", "-1");
                             foreach (Connector_VM connector_VM in objLifeLine_VM.ConnectorVMs) // 身上所有锚点的id号
                             {
                                 xmlWriter.WriteStartElement("Connector_VM");
@@ -656,7 +659,10 @@ namespace sbid._VM
                             {
                                 continue;
                             }
-                            xmlWriter.WriteAttributeString("content", message_VM.Message.Content);
+                            if (message_VM.CommMessage.CommMethod != null) // 设了CommMethod
+                                xmlWriter.WriteAttributeString("commMethod_ref", message_VM.CommMessage.CommMethod.Id.ToString());
+                            else // 还没设CommMethod
+                                xmlWriter.WriteAttributeString("commMethod_ref", "-1");
                             xmlWriter.WriteAttributeString("source_ref", message_VM.Source.Id.ToString()); // 源锚点
                             xmlWriter.WriteAttributeString("dest_ref", message_VM.Dest.Id.ToString()); // 目标锚点
                             xmlWriter.WriteEndElement();
@@ -1512,6 +1518,7 @@ namespace sbid._VM
                     SequenceDiagram_P_VM sequenceDiagram_P_VM = new SequenceDiagram_P_VM();
                     sequenceDiagram_P_VM.Name = element.GetAttribute("name");
                     Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
+                    Dictionary<int, CommMethod> outCommMethodDict = new Dictionary<int, CommMethod>(); // 记录id->OUT型CommMethod的字典，用于连线上的CommMethod查找
                     foreach (XmlNode sequenceChildNode in node.ChildNodes) // ObjLifeLine_VM/各类Message_VM
                     {
                         XmlElement scElement = (XmlElement)sequenceChildNode;
@@ -1522,13 +1529,30 @@ namespace sbid._VM
                             ObjLifeLine_VM objLifeLine_VM = new ObjLifeLine_VM(x, y);
                             // 处理引用的进程模板
                             int processRef = int.Parse(scElement.GetAttribute("process_ref"));
-                            if (!processVMDict.ContainsKey(processRef))
+                            if (processRef == -1)
+                            {
+                                // nothing to do
+                            }
+                            else if (!processVMDict.ContainsKey(processRef))
                             {
                                 Tips = "[解析ObjLifeLine_VM时出错]无法找到引用的进程模板！";
                                 cleanProject();
                                 return false;
                             }
-                            objLifeLine_VM.SeqObject.Process = processVMDict[processRef].Process;
+                            else
+                            {
+                                objLifeLine_VM.SeqObject.Process = processVMDict[processRef].Process;
+                                // 将OUT型CommMethod记录到字典里
+                                // 因为ObjLifeLine_VM一定先于身上的Message_VM创建，所以一定能在后面查到
+                                foreach (CommMethod commMethod in objLifeLine_VM.SeqObject.Process.CommMethods)
+                                {
+                                    if (commMethod.InOutSuffix == InOut.Out &&
+                                        !outCommMethodDict.ContainsKey(commMethod.Id))
+                                    {// 因为可能有两个ObjLifeline组合了一样的Process，导致这里重复，所以判重
+                                        outCommMethodDict.Add(commMethod.Id, commMethod);
+                                    }
+                                }
+                            }
                             // 处理锚点
                             if (objLifeLine_VM.ConnectorVMs.Count != scElement.ChildNodes.Count)
                             {
@@ -1536,13 +1560,14 @@ namespace sbid._VM
                                 cleanProject();
                                 return false;
                             }
+                            // 锚点记录到字典里
                             for (int j = 0; j < objLifeLine_VM.ConnectorVMs.Count; j++)
                             {
                                 XmlNode connectorNode = scElement.ChildNodes[j];
                                 XmlElement connectorElement = (XmlElement)connectorNode;
                                 int id = int.Parse(connectorElement.GetAttribute("id"));
                                 objLifeLine_VM.ConnectorVMs[j].Id = id;
-                                connectorDict.Add(id, objLifeLine_VM.ConnectorVMs[j]); // 记录到字典里
+                                connectorDict.Add(id, objLifeLine_VM.ConnectorVMs[j]);
                             }
                             sequenceDiagram_P_VM.UserControlVMs.Add(objLifeLine_VM);
                         }
@@ -1569,7 +1594,22 @@ namespace sbid._VM
                             }
                             if (message_VM != null)
                             {
-                                message_VM.Message.Content = scElement.GetAttribute("content");
+                                // 获取引用的CommMethod
+                                int commMethodRef = int.Parse(scElement.GetAttribute("commMethod_ref"));
+                                if (commMethodRef == -1)
+                                {
+                                    //nothing to do
+                                }
+                                else if (!outCommMethodDict.ContainsKey(commMethodRef))
+                                {
+                                    Tips = "[解析" + sequenceChildNode.Name + "时出错]无法找到引用的CommMethod！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                else
+                                {
+                                    message_VM.CommMessage.CommMethod = outCommMethodDict[commMethodRef];
+                                }
                                 int sourceRef = int.Parse(scElement.GetAttribute("source_ref"));
                                 int destRef = int.Parse(scElement.GetAttribute("dest_ref"));
                                 if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))

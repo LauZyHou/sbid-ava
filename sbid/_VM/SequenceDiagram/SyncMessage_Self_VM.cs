@@ -11,7 +11,6 @@ namespace sbid._VM
     {
         public SyncMessage_Self_VM()
         {
-            Message = new Formula("同步消息(到自己)");
         }
 
         // 消息所在的位置点,位于两锚点中心附近,这里new关键字是有意隐藏父类的MidPos属性

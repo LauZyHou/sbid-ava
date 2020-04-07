@@ -15,7 +15,13 @@
     <v:TriangleArrow Stroke="Black" StrokeThickness="2" HeadWidth="15" HeadHeight="4"
                      StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
     <TextBlock Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}"
-               Text="{Binding Message.Content}" TextAlignment="Center" Background="White">
+               TextAlignment="Center" Background="White">
+      <!--[bugfix]使用多源绑定加上两端空格防止在绑定目标为空时看不到TextBlock-->
+      <TextBlock.Text>
+        <MultiBinding StringFormat="Sync:{0}">
+          <Binding Path="CommMessage.CommMethod"/>
+        </MultiBinding>
+      </TextBlock.Text>
       <TextBlock.ContextMenu>
         <ContextMenu>
           <MenuItem Header="编辑同步消息" Command="{Binding EditMessage}"/>

@@ -12,6 +12,7 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
+            // todo
         }
 
         private void InitializeComponent()

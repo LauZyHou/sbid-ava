@@ -43,7 +43,7 @@ namespace sbid._VM
             //ctlTreePVM.SelectedItem = ctlTreePVM.SidePanelVMs[0];
             panelVMs.Add(ctlTreePVM);
 
-            Panel_VM sequenceDiagramPVM = new Panel_VM("顺序图");
+            Panel_VM sequenceDiagramPVM = new Panel_VM("序列图");
             //sequenceDiagramPVM.SidePanelVMs.Add(new SequenceDiagram_P_VM());
             //sequenceDiagramPVM.SelectedItem = sequenceDiagramPVM.SidePanelVMs[0];
             panelVMs.Add(sequenceDiagramPVM);
