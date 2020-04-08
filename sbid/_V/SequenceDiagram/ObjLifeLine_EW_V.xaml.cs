@@ -40,8 +40,16 @@ namespace sbid._V
                 return;
             }
             Process process = (Process)process_ComboBox.SelectedItem;
-            // todo 1.寻找引用该SeqObj的ObjLifeLine_VM
-            // todo 2.删除身上的的CommMethod连线
+            // 清空从该ObjLifeLine_VM出发的消息连线上的CommMethod
+            foreach (Connector_VM connector_VM in ObjLifeLineEWVM.ObjLifeLine_VM.ConnectorVMs)
+            {
+                Message_VM message_VM = (Message_VM)connector_VM.ConnectionVM;
+                if (message_VM != null && message_VM.Source == connector_VM)
+                {
+                    message_VM.CommMessage.CommMethod = null;
+                }
+            }
+            // 提示
             ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.Name + "]，旧的消息通信已清除";
         }
 

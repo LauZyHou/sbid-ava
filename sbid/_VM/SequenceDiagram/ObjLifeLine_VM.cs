@@ -62,7 +62,8 @@ namespace sbid._VM
             {
                 DataContext = new ObjLifeLine_EW_VM()
                 {
-                    SeqObject = seqObject
+                    SeqObject = seqObject,
+                    ObjLifeLine_VM = this
                 }
             };
             // 将所有的Process传入,作为SeqObject去选用的参数
