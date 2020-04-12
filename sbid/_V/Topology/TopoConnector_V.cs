@@ -14,13 +14,13 @@ namespace sbid._V
         {
             base.OnPointerPressed(e);
 
-            // 获取当前攻击树面板
+            // 获取当前拓扑图面板
             TopoGraph_P_VM nowTGPVM = (TopoGraph_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
 
             // 如果有连线,那么要做的是删除连线
             if (ConnectorVM.ConnectionVM != null)
             {
-                nowTGPVM.BreakArrowVM(ConnectorVM);
+                nowTGPVM.BreakTopoLinkVM(ConnectorVM);
                 ResourceManager.mainWindowVM.Tips = "删除了图上连线";
             }
             // 如果已经是活动锚点,要清除活动状态
@@ -41,7 +41,7 @@ namespace sbid._V
             // 至此,说明已经有一个活动锚点了,且当前锚点是另一个空闲锚点,这时要从活动锚点连线到此锚点
             else
             {
-                nowTGPVM.CreateArrowVM(nowTGPVM.ActiveConnector, ConnectorVM);
+                nowTGPVM.CreateTopoLinkVM(nowTGPVM.ActiveConnector, ConnectorVM);
                 // 清除活动锚点
                 nowTGPVM.ActiveConnector.IsActive = false;
                 nowTGPVM.ActiveConnector = null;

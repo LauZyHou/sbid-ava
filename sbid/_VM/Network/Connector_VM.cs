@@ -46,6 +46,9 @@ namespace sbid._VM
                 // 顺序图也是一样
                 else if (connectionVM is Message_VM)
                     connectionVM.RaisePropertyChanged("MidPos");
+                // 还有拓扑图也要通知
+                else if (connectionVM is TopoLink_VM)
+                    connectionVM.RaisePropertyChanged("MidPos");
             }
         }
 

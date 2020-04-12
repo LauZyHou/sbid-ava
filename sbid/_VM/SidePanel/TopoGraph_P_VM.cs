@@ -22,22 +22,22 @@ namespace sbid._VM
         #region 拓扑图上的VM操作接口
 
         // 创建图上连线关系
-        public void CreateArrowVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
+        public void CreateTopoLinkVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
-            Arrow_VM arrow_VM = new Arrow_VM();
+            TopoLink_VM topoLink_VM = new TopoLink_VM();
 
-            arrow_VM.Source = connectorVM1;
-            arrow_VM.Dest = connectorVM2;
+            topoLink_VM.Source = connectorVM1;
+            topoLink_VM.Dest = connectorVM2;
 
             // 锚点反引连接关系
-            connectorVM1.ConnectionVM = arrow_VM;
-            connectorVM2.ConnectionVM = arrow_VM;
+            connectorVM1.ConnectionVM = topoLink_VM;
+            connectorVM2.ConnectionVM = topoLink_VM;
 
-            UserControlVMs.Add(arrow_VM);
+            UserControlVMs.Add(topoLink_VM);
         }
 
         // 删除图上连线关系
-        public void BreakArrowVM(Connector_VM connectorVM)
+        public void BreakTopoLinkVM(Connector_VM connectorVM)
         {
             // 要删除的转移关系
             Connection_VM connectionVM = connectorVM.ConnectionVM;

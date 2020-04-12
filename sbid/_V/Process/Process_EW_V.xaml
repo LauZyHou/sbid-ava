@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="300" Width="600" WindowStartupLocation="CenterOwner"
+        Height="350" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Process_EW_V"
         Title="编辑Process">
 
@@ -189,6 +189,8 @@
     <TabItem Header="CommMethod">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="通信方式(todo)：" FontSize="17"/>
+          <ComboBox Name="todo"/>
           <TextBlock Text="输入/输出：" FontSize="17"/>
           <ComboBox Name="inout_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.InOutSuffix, Mode=OneWay}"/>
           <TextBlock Text="方法名称：" FontSize="17"/>
