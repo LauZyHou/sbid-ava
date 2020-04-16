@@ -1,8 +1,15 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
+using Avalonia.VisualTree;
 using sbid._VM;
+using SharpDX.WIC;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace sbid._V
 {
@@ -98,6 +105,46 @@ namespace sbid._V
             CommChannel_VM commChannelVM = new CommChannel_VM() { X = mousePos.X, Y = mousePos.Y };
             ClassDiagramPVM.UserControlVMs.Add(commChannelVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的CommChannel：" + commChannelVM.CommChannel.Name;
+        }
+
+        // 导出图片
+        // todo 做成全局菜单栏里保存的方式
+        public async void ExportImage()
+        {
+            string path = await GetSaveFileName();
+
+            ItemsControl panel = ControlExtensions.FindControl<ItemsControl>(this, "panel");
+
+            // 构造渲染图片的容器
+            PixelSize pixelSize = new PixelSize((int)panel.Width, (int)panel.Height);
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(pixelSize);
+
+            // 在可视树上找到这个ItemsControl的的孩子ItemsPresenter
+            IEnumerator<IVisual> panelChildren = panel.GetVisualChildren().GetEnumerator();
+            panelChildren.MoveNext();
+            ItemsPresenter itemsPresenter = (ItemsPresenter)panelChildren.Current;
+
+            // 渲染并保存
+            renderTargetBitmap.Render(itemsPresenter);
+            renderTargetBitmap.Save(path);
+
+            ResourceManager.mainWindowVM.Tips = "导出图片至：" + path;
+        }
+
+        #endregion
+
+        #region 私有
+
+        // 预保存文件：返回文件路径
+        private async Task<string> GetSaveFileName()
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filters.Add(new FileDialogFilter() { Name = "图片文件", Extensions = { "png" } });
+            string result = await dialog.ShowAsync(ResourceManager.mainWindowV);
+            // Linux bugfix:某些平台输入文件名不会自动补全.sbid后缀名,这里判断一下手动补上
+            if (string.IsNullOrEmpty(result) || result.EndsWith(".png"))
+                return result;
+            return result + ".png";
         }
 
         #endregion
