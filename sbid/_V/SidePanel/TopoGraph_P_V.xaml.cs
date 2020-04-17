@@ -2,7 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using sbid._M;
 using sbid._VM;
+using System.Collections.Generic;
 
 namespace sbid._V
 {
@@ -11,12 +13,32 @@ namespace sbid._V
         public TopoGraph_P_V()
         {
             this.InitializeComponent();
+
+            init_binding();
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        #region 辅助构造
+
+        // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
+        private void init_binding()
+        {
+            // 绑定TopoLink类型枚举
+            ComboBox topoLinkType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "topoLinkType_ComboBox");
+            topoLinkType_ComboBox.Items = System.Enum.GetValues(typeof(TopoLinkType));
+            // 绑定ConnectorVisible
+            ComboBox connectorVisible_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "connectorVisible_ComboBox");
+            List<bool> boolList = new List<bool>();
+            boolList.Add(true);
+            boolList.Add(false);
+            connectorVisible_ComboBox.Items = boolList;
+        }
+
+        #endregion
 
         #region 监听鼠标位置用
 

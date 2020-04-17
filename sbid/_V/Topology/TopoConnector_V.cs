@@ -45,7 +45,7 @@ namespace sbid._V
                 // 清除活动锚点
                 nowTGPVM.ActiveConnector.IsActive = false;
                 nowTGPVM.ActiveConnector = null;
-                ResourceManager.mainWindowVM.Tips = "创建了新的图上连线";
+                ResourceManager.mainWindowVM.Tips = "创建了新的" + nowTGPVM.TopoLinkType + "连接关系";
             }
 
             e.Handled = true;

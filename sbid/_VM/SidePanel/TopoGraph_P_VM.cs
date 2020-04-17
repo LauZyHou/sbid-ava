@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ReactiveUI;
+using sbid._M;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +10,9 @@ namespace sbid._VM
     {
         public static int _id = 0;
         private Connector_VM activeConnector;
+        private TopoLinkType topoLinkType = TopoLinkType.OneWay;
+        private bool connectorVisible = true;
+
 
         // 默认构造时使用默认名称
         public TopoGraph_P_VM()
@@ -18,13 +23,30 @@ namespace sbid._VM
 
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
+        // 当前选中的TopoLinkType枚举
+        public TopoLinkType TopoLinkType { get => topoLinkType; set => this.RaiseAndSetIfChanged(ref topoLinkType, value); }
+        // 锚点是否可见
+        public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
         #region 拓扑图上的VM操作接口
 
-        // 创建图上连线关系
+        // 创建拓扑图TopoLink连线关系（此函数在"_V"下的"TopoConnector_V"中调用）
         public void CreateTopoLinkVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
-            TopoLink_VM topoLink_VM = new TopoLink_VM();
+            // 根据TopoLinkType枚举的类型不同来创建不同的TopoLink
+            TopoLink_VM topoLink_VM;
+            switch (topoLinkType)
+            {
+                case TopoLinkType.OneWay:
+                    topoLink_VM = new OneWayTopoLink_VM();
+                    break;
+                case TopoLinkType.TwoWay:
+                    topoLink_VM = new TwoWayTopoLink_VM();
+                    break;
+                default:
+                    ResourceManager.mainWindowVM.Tips = "[ERROR]发生在TopoGraph_P_VM.cs";
+                    return;
+            }
 
             topoLink_VM.Source = connectorVM1;
             topoLink_VM.Dest = connectorVM2;

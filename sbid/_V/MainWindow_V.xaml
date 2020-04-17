@@ -34,7 +34,7 @@
         <MenuItem Header="新拓扑图(Topo Graph)" Command="{Binding AddTopoGraph}"/>
         <MenuItem Header="新攻击树(AttackTree)" Command="{Binding AddAttackTree}"/>
         <MenuItem Header="新CTL语法树(CTL AST)" Command="{Binding AddCTLTree}"/>
-        <MenuItem Header="新顺序图(Sequence Diagram)" Command="{Binding AddSequenceDiagram}"/>
+        <MenuItem Header="新序列图(Sequence Diagram)" Command="{Binding AddSequenceDiagram}"/>
       </MenuItem>
       <MenuItem Header="帮助">
         <MenuItem Header="使用手册" IsEnabled="False"/>
@@ -52,7 +52,7 @@
       <Button Command="{Binding AddTopoGraph}">新拓扑图</Button>
       <Button Command="{Binding AddAttackTree}">新攻击树</Button>
       <Button Command="{Binding AddCTLTree}">新CTL语法树</Button>
-      <Button Command="{Binding AddSequenceDiagram}">新顺序图</Button>
+      <Button Command="{Binding AddSequenceDiagram}">新序列图</Button>
     </StackPanel>
 
     <!--协议选项卡-->

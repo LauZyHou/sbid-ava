@@ -41,8 +41,7 @@ namespace sbid._V
             // 至此,说明已经有一个活动锚点了,且当前锚点是另一个空闲锚点,这时要从活动锚点连线到此锚点
             else
             {
-                // 创建时要传入SeqMessage类型
-                nowSDPVM.CreateSeqMessageVM(nowSDPVM.ActiveConnector, ConnectorVM, nowSDPVM.SeqMessage);
+                nowSDPVM.CreateSeqMessageVM(nowSDPVM.ActiveConnector, ConnectorVM);
                 // 清除活动锚点
                 nowSDPVM.ActiveConnector.IsActive = false;
                 nowSDPVM.ActiveConnector = null;

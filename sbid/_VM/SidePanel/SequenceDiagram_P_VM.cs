@@ -41,21 +41,32 @@ namespace sbid._VM
 
         #region 顺序图上的VM操作接口
 
-        // 创建Message传递关系
-        public void CreateSeqMessageVM(Connector_VM connectorVM1, Connector_VM connectorVM2, SeqMessage type)
+        // 创建Message传递关系（此函数在"_V"下的"MessageConnector_V"中调用）
+        public void CreateSeqMessageVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
-            // 根据传入的信息类型来创建不同类型的Message_VM
+            // 根据SeqMessage枚举的不同来创建不同的Message_VM实例
             Message_VM messageVM;
-            if (type == SeqMessage.SyncMessage)
-                messageVM = new SyncMessage_VM();
-            else if (type == SeqMessage.AsyncMessage)
-                messageVM = new AsyncMessage_VM();
-            else if (type == SeqMessage.ReturnMessage)
-                messageVM = new ReturnMessage_VM();
-            else if (type == SeqMessage.SyncMessage_Self)
-                messageVM = new SyncMessage_Self_VM();
-            else
-                messageVM = new AsyncMessage_Self_VM();
+            switch (seqMessage)
+            {
+                case SeqMessage.SyncMessage:
+                    messageVM = new SyncMessage_VM();
+                    break;
+                case SeqMessage.AsyncMessage:
+                    messageVM = new AsyncMessage_VM();
+                    break;
+                case SeqMessage.ReturnMessage:
+                    messageVM = new ReturnMessage_VM();
+                    break;
+                case SeqMessage.SyncMessage_Self:
+                    messageVM = new SyncMessage_Self_VM();
+                    break;
+                case SeqMessage.AsyncMessage_Self:
+                    messageVM = new AsyncMessage_Self_VM();
+                    break;
+                default:
+                    ResourceManager.mainWindowVM.Tips = "[ERROR]发生在SequenceDiagram_P_VM.cs";
+                    return;
+            }
 
             messageVM.Source = connectorVM1;
             messageVM.Dest = connectorVM2;

@@ -21,7 +21,7 @@ namespace sbid._VM
             {
                 double x = (Source.Pos.X + Dest.Pos.X) / 2;
                 double y = (Source.Pos.Y + Dest.Pos.Y) / 2;
-                return new Point(x - 40, y - 30);
+                return new Point(x - 40, y - 10);
             }
         }
 

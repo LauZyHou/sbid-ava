@@ -27,7 +27,7 @@ namespace sbid._V
         // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
         private void init_binding()
         {
-            // 绑定SeqMessage的InOut枚举
+            // 绑定SeqMessage的类型枚举
             ComboBox seqMessage_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "seqMessage_ComboBox");
             seqMessage_ComboBox.Items = System.Enum.GetValues(typeof(SeqMessage));
             // 绑定ConnectorVisible
