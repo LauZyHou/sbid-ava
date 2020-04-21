@@ -336,6 +336,7 @@ namespace sbid._VM
                             xmlWriter.WriteStartElement("CommMethod");
                             xmlWriter.WriteAttributeString("name", commMethod.Name);
                             xmlWriter.WriteAttributeString("inOutSuffix", commMethod.InOutSuffix.ToString());
+                            xmlWriter.WriteAttributeString("commWay", commMethod.CommWay.ToString());
                             xmlWriter.WriteAttributeString("id", commMethod.Id.ToString());
                             foreach (Attribute attr in commMethod.Parameters)
                             {
@@ -1112,6 +1113,7 @@ namespace sbid._VM
                                     case "CommMethod":
                                         name = pcElement.GetAttribute("name");
                                         InOut inOutSuffix = (InOut)System.Enum.Parse(typeof(InOut), pcElement.GetAttribute("inOutSuffix"));
+                                        CommWay commWay = (CommWay)System.Enum.Parse(typeof(CommWay), pcElement.GetAttribute("commWay"));
                                         parameters = new ObservableCollection<Attribute>();
                                         foreach (XmlNode paramNode in processChildNode.ChildNodes) // <Parameter type_ref="1" identifier="key" id="10" />
                                         {
@@ -1129,7 +1131,7 @@ namespace sbid._VM
                                             param.Id = paramId;
                                             parameters.Add(param);
                                         }
-                                        CommMethod commMethod = new CommMethod(name, parameters, inOutSuffix);
+                                        CommMethod commMethod = new CommMethod(name, parameters, inOutSuffix, commWay);
                                         process.CommMethods.Add(commMethod);
                                         break;
                                 }

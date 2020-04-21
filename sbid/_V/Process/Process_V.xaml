@@ -63,10 +63,11 @@
         <DataTemplate>
           <TextBlock>
             <TextBlock.Text>
-              <MultiBinding StringFormat=" {0}({1});[{2}]">
+              <MultiBinding StringFormat=" {0}({1});[{2}][{3}]">
                 <Binding Path="Name"/>
                 <Binding Path="ParamString"/>
                 <Binding Path="InOutSuffix"/>
+                <Binding Path="CommWay"/>
               </MultiBinding>
             </TextBlock.Text>
           </TextBlock>

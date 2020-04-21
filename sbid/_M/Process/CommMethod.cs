@@ -12,6 +12,12 @@ namespace sbid._M
         In, Out
     }
 
+    // 通信方法中的通信方式枚举
+    public enum CommWay
+    {
+        NativeEthernetFrame, UDP
+    }
+
     // 进程模板中的通信方法
     public class CommMethod : ReactiveObject
     {
@@ -19,15 +25,18 @@ namespace sbid._M
         private string name;
         private ObservableCollection<Attribute> parameters; // 这里不创建,在构造时传入
         private InOut inOutSuffix;
+        private CommWay commWay;
         private int id;
 
-        public CommMethod(string name, ObservableCollection<Attribute> parameters, InOut inOutSuffix)
+        public CommMethod(string name, ObservableCollection<Attribute> parameters,
+                          InOut inOutSuffix, CommWay commWay)
         {
             _id++;
             this.id = _id;
             this.name = name;
             this.parameters = parameters;
             this.inOutSuffix = inOutSuffix;
+            this.commWay = commWay;
         }
 
         // 函数名
@@ -44,6 +53,8 @@ namespace sbid._M
         }
         // 输入输出(必选)
         public InOut InOutSuffix { get => inOutSuffix; set => this.RaiseAndSetIfChanged(ref inOutSuffix, value); }
+        // 通信方式(必选)
+        public CommWay CommWay { get => commWay; set => this.RaiseAndSetIfChanged(ref commWay, value); }
         public int Id
         {
             get => id;
@@ -84,6 +95,15 @@ namespace sbid._M
             }
             //return name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ");[" + InOutSuffix + "]";
             return name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ")";
+        }
+
+        // 完整展示串
+        public string ShowString
+        {
+            get
+            {
+                return ToString() + "[" + InOutSuffix + "][" + CommWay + "]";
+            }
         }
 
         #endregion

@@ -61,7 +61,7 @@ namespace sbid._M
 
             ObservableCollection<Attribute> parameters2 = new ObservableCollection<Attribute>();
             parameters2.Add(new Attribute(Type.TYPE_INT, "msg"));
-            commMethods.Add(new CommMethod("send", parameters2, InOut.Out));
+            commMethods.Add(new CommMethod("send", parameters2, InOut.Out, CommWay.UDP));
         }
     }
 }

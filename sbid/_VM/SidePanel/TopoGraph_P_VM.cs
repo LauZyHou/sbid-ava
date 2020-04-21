@@ -36,7 +36,7 @@ namespace sbid._VM
             // 根据TopoLinkType枚举的类型不同来创建不同的TopoLink
             TopoLink_VM topoLink_VM;
             switch (topoLinkType)
-            {
+            { 
                 case TopoLinkType.OneWay:
                     topoLink_VM = new OneWayTopoLink_VM();
                     break;

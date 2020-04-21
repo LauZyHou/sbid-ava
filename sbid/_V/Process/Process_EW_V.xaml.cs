@@ -409,6 +409,13 @@ namespace sbid._V
 
         public void Add_CommMethod()
         {
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
+            if (commWay_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定CommMethod的通信方式！";
+                return;
+            }
+
             ComboBox inout_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "inout_ComboBox");
             if (inout_ComboBox.SelectedItem == null)
             {
@@ -433,11 +440,12 @@ namespace sbid._V
             CommMethod commMethod = new CommMethod(
                 commMethodName_TextBox.Text,
                 parameters,
-                (InOut)inout_ComboBox.SelectedItem
+                (InOut)inout_ComboBox.SelectedItem,
+                (CommWay)commWay_ComboBox.SelectedItem
             );
 
             ((Process_EW_VM)DataContext).Process.CommMethods.Add(commMethod);
-            ResourceManager.mainWindowVM.Tips = "添加了CommMethod：" + commMethod;
+            ResourceManager.mainWindowVM.Tips = "添加了CommMethod：" + commMethod.ShowString;
 
             // 添加完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的CommMethod
             ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
@@ -449,6 +457,13 @@ namespace sbid._V
             if (commMethod_ListBox.SelectedItem == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定要更新的CommMethod！";
+                return;
+            }
+
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
+            if (commWay_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定CommMethod的通信方式！";
                 return;
             }
 
@@ -477,7 +492,8 @@ namespace sbid._V
             commMethod.Name = commMethodName_TextBox.Text;
             commMethod.Parameters = parameters;
             commMethod.InOutSuffix = (InOut)inout_ComboBox.SelectedItem;
-            ResourceManager.mainWindowVM.Tips = "更新了CommMethod：" + commMethod;
+            commMethod.CommWay = (CommWay)commWay_ComboBox.SelectedItem;
+            ResourceManager.mainWindowVM.Tips = "更新了CommMethod：" + commMethod.ShowString;
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的CommMethod
             ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
@@ -494,7 +510,7 @@ namespace sbid._V
 
             CommMethod commMethod = (CommMethod)commMethod_ListBox.SelectedItem;
             ((Process_EW_VM)DataContext).Process.CommMethods.Remove(commMethod);
-            ResourceManager.mainWindowVM.Tips = "已删除CommMethod：" + commMethod;
+            ResourceManager.mainWindowVM.Tips = "已删除CommMethod：" + commMethod.ShowString;
         }
 
         #endregion
@@ -524,7 +540,7 @@ namespace sbid._V
             {
                 ((Process_EW_VM)DataContext).CommParams.Add(new Attribute(attribute.Type, attribute.Identifier));
             }
-            ResourceManager.mainWindowVM.Tips = "选中了CommMethod：" + (CommMethod)commMethod_ListBox.SelectedItem + "，已拷贝其参数列表";
+            ResourceManager.mainWindowVM.Tips = "选中了CommMethod：" + ((CommMethod)commMethod_ListBox.SelectedItem).ShowString + "，已拷贝其参数列表";
         }
 
         // 内置Method列表选中项变化的处理
@@ -580,6 +596,11 @@ namespace sbid._V
             ComboBox inout_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "inout_ComboBox");
             inout_ComboBox.Items = System.Enum.GetValues(typeof(InOut));
             inout_ComboBox.SelectedItem = InOut.In;
+
+            // 绑定CommMethod的CommWay枚举
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
+            commWay_ComboBox.Items = System.Enum.GetValues(typeof(CommWay));
+            commWay_ComboBox.SelectedItem = CommWay.NativeEthernetFrame;
         }
 
         // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定

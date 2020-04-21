@@ -189,8 +189,8 @@
     <TabItem Header="CommMethod">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
-          <TextBlock Text="通信方式(todo)：" FontSize="17"/>
-          <ComboBox Name="todo"/>
+          <TextBlock Text="通信方式：" FontSize="17"/>
+          <ComboBox Name="commWay_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.CommWay, Mode=OneWay}"/>
           <TextBlock Text="输入/输出：" FontSize="17"/>
           <ComboBox Name="inout_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.InOutSuffix, Mode=OneWay}"/>
           <TextBlock Text="方法名称：" FontSize="17"/>
@@ -243,10 +243,11 @@
             <DataTemplate>
               <TextBlock>
                 <TextBlock.Text>
-                  <MultiBinding StringFormat=" {0}({1});[{2}]">
+                  <MultiBinding StringFormat=" {0}({1});[{2}][{3}]">
                     <Binding Path="Name"/>
                     <Binding Path="ParamString"/>
                     <Binding Path="InOutSuffix"/>
+                    <Binding Path="CommWay"/>
                   </MultiBinding>
                 </TextBlock.Text>
               </TextBlock>
