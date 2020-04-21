@@ -442,9 +442,22 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("processA_ref", authenticity.ProcessA.Id.ToString());
                             xmlWriter.WriteAttributeString("stateA_ref", authenticity.StateA.Id.ToString());
                             xmlWriter.WriteAttributeString("attributeA_ref", authenticity.AttributeA.Id.ToString()); // 注意
+                            xmlWriter.WriteAttributeString("attributeA_Attr_ref", authenticity.AttributeA_Attr.Id.ToString()); // 注意
                             xmlWriter.WriteAttributeString("processB_ref", authenticity.ProcessB.Id.ToString());
                             xmlWriter.WriteAttributeString("stateB_ref", authenticity.StateB.Id.ToString());
                             xmlWriter.WriteAttributeString("attributeB_ref", authenticity.AttributeB.Id.ToString()); // 注意
+                            xmlWriter.WriteAttributeString("attributeB_Attr_ref", authenticity.AttributeB_Attr.Id.ToString()); // 注意
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Integrity integrity in vm.SecurityProperty.Integrities)
+                        {
+                            xmlWriter.WriteStartElement("Integrity");
+                            xmlWriter.WriteAttributeString("processA_ref", integrity.ProcessA.Id.ToString());
+                            xmlWriter.WriteAttributeString("stateA_ref", integrity.StateA.Id.ToString());
+                            xmlWriter.WriteAttributeString("attributeA_ref", integrity.AttributeA.Id.ToString()); // 注意
+                            xmlWriter.WriteAttributeString("processB_ref", integrity.ProcessB.Id.ToString());
+                            xmlWriter.WriteAttributeString("stateB_ref", integrity.StateB.Id.ToString());
+                            xmlWriter.WriteAttributeString("attributeB_ref", integrity.AttributeB.Id.ToString()); // 注意
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();
@@ -1219,7 +1232,7 @@ namespace sbid._VM
                         case "SecurityProperty_VM":
                             SecurityProperty_VM securityProperty_VM = (SecurityProperty_VM)userControl_VM;
                             SecurityProperty securityProperty = securityProperty_VM.SecurityProperty;
-                            foreach (XmlNode securityChildNode in node.ChildNodes) // Confidential(2引) 或 Authenticity(6引)
+                            foreach (XmlNode securityChildNode in node.ChildNodes) // Confidential(2引) 或 Authenticity(8引) 或 Integrity(6引)
                             {
                                 XmlElement securityElement = (XmlElement)securityChildNode;
                                 switch (securityChildNode.Name)
@@ -1252,35 +1265,35 @@ namespace sbid._VM
                                         securityProperty.Confidentials.Add(confidential);
                                         break;
                                     case "Authenticity":
-                                        int processARef = int.Parse(securityElement.GetAttribute("processA_ref"));
-                                        int processBRef = int.Parse(securityElement.GetAttribute("processB_ref"));
-                                        if (!(processVMDict.ContainsKey(processARef) && processVMDict.ContainsKey(processBRef)))
+                                        int processA_ref = int.Parse(securityElement.GetAttribute("processA_ref"));
+                                        int processB_ref = int.Parse(securityElement.GetAttribute("processB_ref"));
+                                        if (!(processVMDict.ContainsKey(processA_ref) && processVMDict.ContainsKey(processB_ref)))
                                         {
                                             Tips = "[解析SecurityProperty_VM时出错]无法找到Authenticity引用的进程模板！";
                                             cleanProject();
                                             return false;
                                         }
-                                        int stateARef = int.Parse(securityElement.GetAttribute("stateA_ref"));
-                                        int stateBRef = int.Parse(securityElement.GetAttribute("stateB_ref"));
+                                        int stateA_ref = int.Parse(securityElement.GetAttribute("stateA_ref"));
+                                        int stateB_ref = int.Parse(securityElement.GetAttribute("stateB_ref"));
                                         State stateA = null;
                                         State stateB = null;
-                                        foreach (ViewModelBase vmb in processVMDict[processARef].StateMachine_P_VM.UserControlVMs)
+                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].StateMachine_P_VM.UserControlVMs)
                                         {
                                             if (vmb is State_VM)
                                             {
                                                 State_VM state_VM = (State_VM)vmb;
-                                                if (state_VM.State.Id == stateARef)
+                                                if (state_VM.State.Id == stateA_ref)
                                                 {
                                                     stateA = state_VM.State;
                                                 }
                                             }
                                         }
-                                        foreach (ViewModelBase vmb in processVMDict[processBRef].StateMachine_P_VM.UserControlVMs)
+                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].StateMachine_P_VM.UserControlVMs)
                                         {
                                             if (vmb is State_VM)
                                             {
                                                 State_VM state_VM = (State_VM)vmb;
-                                                if (state_VM.State.Id == stateBRef)
+                                                if (state_VM.State.Id == stateB_ref)
                                                 {
                                                     stateB = state_VM.State;
                                                 }
@@ -1292,21 +1305,21 @@ namespace sbid._VM
                                             cleanProject();
                                             return false;
                                         }
-                                        int attributeARef = int.Parse(securityElement.GetAttribute("attributeA_ref"));
-                                        int attributeBRef = int.Parse(securityElement.GetAttribute("attributeB_ref"));
+                                        int attributeA_ref = int.Parse(securityElement.GetAttribute("attributeA_ref"));
+                                        int attributeB_ref = int.Parse(securityElement.GetAttribute("attributeB_ref"));
                                         Attribute attributeA = null;
                                         Attribute attributeB = null;
-                                        foreach (Attribute attribute in processVMDict[processARef].Process.Attributes)
+                                        foreach (Attribute attribute in processVMDict[processA_ref].Process.Attributes)
                                         {
-                                            if (attribute.Id == attributeARef)
+                                            if (attribute.Id == attributeA_ref)
                                             {
                                                 attributeA = attribute;
                                                 break;
                                             }
                                         }
-                                        foreach (Attribute attribute in processVMDict[processBRef].Process.Attributes)
+                                        foreach (Attribute attribute in processVMDict[processB_ref].Process.Attributes)
                                         {
-                                            if (attribute.Id == attributeBRef)
+                                            if (attribute.Id == attributeB_ref)
                                             {
                                                 attributeB = attribute;
                                                 break;
@@ -1318,12 +1331,118 @@ namespace sbid._VM
                                             cleanProject();
                                             return false;
                                         }
+                                        if (!(attributeA.Type is UserType) || !(attributeB.Type is UserType))
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]Authenticity引用的进程模板下的Attribute不是UserType型！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int attributeA_Attr_ref = int.Parse(securityElement.GetAttribute("attributeA_Attr_ref"));
+                                        int attributeB_Attr_ref = int.Parse(securityElement.GetAttribute("attributeB_Attr_ref"));
+                                        Attribute attributeA_Attr = null;
+                                        Attribute attributeB_Attr = null;
+                                        foreach (Attribute attribute in ((UserType)attributeA.Type).Attributes)
+                                        {
+                                            if (attribute.Id == attributeA_Attr_ref)
+                                            {
+                                                attributeA_Attr = attribute;
+                                                break;
+                                            }
+                                        }
+                                        foreach (Attribute attribute in ((UserType)attributeB.Type).Attributes)
+                                        {
+                                            if (attribute.Id == attributeB_Attr_ref)
+                                            {
+                                                attributeB_Attr = attribute;
+                                                break;
+                                            }
+                                        }
+                                        if (attributeA_Attr == null || attributeB_Attr == null)
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Authenticity引用的进程模板下的二级属性！";
+                                            cleanProject();
+                                            return false;
+                                        }
                                         Authenticity authenticity = new Authenticity(
-                                            processVMDict[processARef].Process,
-                                            stateA, attributeA,
-                                            processVMDict[processBRef].Process,
-                                            stateB, attributeB);
+                                            processVMDict[processA_ref].Process,
+                                            stateA, attributeA, attributeA_Attr,
+                                            processVMDict[processB_ref].Process,
+                                            stateB, attributeB, attributeB_Attr);
                                         securityProperty.Authenticities.Add(authenticity);
+                                        break;
+                                    case "Integrity":
+                                        processA_ref = int.Parse(securityElement.GetAttribute("processA_ref"));
+                                        processB_ref = int.Parse(securityElement.GetAttribute("processB_ref"));
+                                        if (!(processVMDict.ContainsKey(processA_ref) && processVMDict.ContainsKey(processB_ref)))
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Integrity引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        stateA_ref = int.Parse(securityElement.GetAttribute("stateA_ref"));
+                                        stateB_ref = int.Parse(securityElement.GetAttribute("stateB_ref"));
+                                        stateA = null;
+                                        stateB = null;
+                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].StateMachine_P_VM.UserControlVMs)
+                                        {
+                                            if (vmb is State_VM)
+                                            {
+                                                State_VM state_VM = (State_VM)vmb;
+                                                if (state_VM.State.Id == stateA_ref)
+                                                {
+                                                    stateA = state_VM.State;
+                                                }
+                                            }
+                                        }
+                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].StateMachine_P_VM.UserControlVMs)
+                                        {
+                                            if (vmb is State_VM)
+                                            {
+                                                State_VM state_VM = (State_VM)vmb;
+                                                if (state_VM.State.Id == stateB_ref)
+                                                {
+                                                    stateB = state_VM.State;
+                                                }
+                                            }
+                                        }
+                                        if (stateA == null || stateB == null)
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Integrity引用的状态机下的State！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        attributeA_ref = int.Parse(securityElement.GetAttribute("attributeA_ref"));
+                                        attributeB_ref = int.Parse(securityElement.GetAttribute("attributeB_ref"));
+                                        attributeA = null;
+                                        attributeB = null;
+                                        foreach (Attribute attribute in processVMDict[processA_ref].Process.Attributes)
+                                        {
+                                            if (attribute.Id == attributeA_ref)
+                                            {
+                                                attributeA = attribute;
+                                                break;
+                                            }
+                                        }
+                                        foreach (Attribute attribute in processVMDict[processB_ref].Process.Attributes)
+                                        {
+                                            if (attribute.Id == attributeB_ref)
+                                            {
+                                                attributeB = attribute;
+                                                break;
+                                            }
+                                        }
+                                        if (attributeA == null || attributeB == null)
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Integrity引用的进程模板下的Attribute！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        Integrity integrity = new Integrity(
+                                            processVMDict[processA_ref].Process,
+                                            stateA, attributeA,
+                                            processVMDict[processB_ref].Process,
+                                            stateB, attributeB);
+                                        securityProperty.Integrities.Add(integrity);
                                         break;
                                 }
                             }

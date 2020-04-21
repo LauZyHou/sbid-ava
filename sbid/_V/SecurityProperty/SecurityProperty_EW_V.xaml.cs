@@ -107,6 +107,12 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定AttributeA！";
                 return;
             }
+            ComboBox attributeA_Attr_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attributeA_Attr_ComboBox");
+            if (attributeA_Attr_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定AttributeA下的二级属性！";
+                return;
+            }
             ComboBox processB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "processB_ComboBox");
             if (processB_ComboBox.SelectedItem == null)
             {
@@ -125,14 +131,22 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定AttributeB！";
                 return;
             }
+            ComboBox attributeB_Attr_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attributeB_Attr_ComboBox");
+            if (attributeB_Attr_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定AttributeB下的二级属性！";
+                return;
+            }
 
             Authenticity authenticity = new Authenticity(
                 (Process)processA_ComboBox.SelectedItem,
                 (State)stateA_ComboBox.SelectedItem,
                 (Attribute)attributeA_ComboBox.SelectedItem,
+                (Attribute)attributeA_Attr_ComboBox.SelectedItem,
                 (Process)processB_ComboBox.SelectedItem,
                 (State)stateB_ComboBox.SelectedItem,
-                (Attribute)attributeB_ComboBox.SelectedItem
+                (Attribute)attributeB_ComboBox.SelectedItem,
+                (Attribute)attributeB_Attr_ComboBox.SelectedItem
             );
             ((SecurityProperty_EW_VM)DataContext).SecurityProperty.Authenticities.Add(authenticity);
             ResourceManager.mainWindowVM.Tips = "添加了Authenticity：" + authenticity;
@@ -206,6 +220,127 @@ namespace sbid._V
             Authenticity authenticity = (Authenticity)authenticity_ListBox.SelectedItem;
             ((SecurityProperty_EW_VM)DataContext).SecurityProperty.Authenticities.Remove(authenticity);
             ResourceManager.mainWindowVM.Tips = "删除了Authenticity：" + authenticity;
+        }
+
+        public void Add_Integrity()
+        {
+            ComboBox it_ProcessA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_ProcessA_ComboBox");
+            if (it_ProcessA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定ProcessA！";
+                return;
+            }
+            ComboBox it_StateA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_StateA_ComboBox");
+            if (it_StateA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定StateA！";
+                return;
+            }
+            ComboBox it_AttributeA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_AttributeA_ComboBox");
+            if (it_AttributeA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定AttributeA！";
+                return;
+            }
+            ComboBox it_ProcessB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_ProcessB_ComboBox");
+            if (it_ProcessB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定ProcessB！";
+                return;
+            }
+            ComboBox it_StateB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_StateB_ComboBox");
+            if (it_StateB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定StateB！";
+                return;
+            }
+            ComboBox it_AttributeB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_AttributeB_ComboBox");
+            if (it_AttributeB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定AttributeB！";
+                return;
+            }
+
+            Integrity integrity = new Integrity(
+                (Process)it_ProcessA_ComboBox.SelectedItem,
+                (State)it_StateA_ComboBox.SelectedItem,
+                (Attribute)it_AttributeA_ComboBox.SelectedItem,
+                (Process)it_ProcessB_ComboBox.SelectedItem,
+                (State)it_StateB_ComboBox.SelectedItem,
+                (Attribute)it_AttributeB_ComboBox.SelectedItem
+            );
+            ((SecurityProperty_EW_VM)DataContext).SecurityProperty.Integrities.Add(integrity);
+            ResourceManager.mainWindowVM.Tips = "添加了Integrity：" + integrity;
+        }
+
+        public void Update_Integrity()
+        {
+            ListBox integrity_ListBox = ControlExtensions.FindControl<ListBox>(this, "integrity_ListBox");
+            if (integrity_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要修改的Integrity！";
+                return;
+            }
+
+            ComboBox it_ProcessA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_ProcessA_ComboBox");
+            if (it_ProcessA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定ProcessA！";
+                return;
+            }
+            ComboBox it_StateA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_StateA_ComboBox");
+            if (it_StateA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定StateA！";
+                return;
+            }
+            ComboBox it_AttributeA_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_AttributeA_ComboBox");
+            if (it_AttributeA_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定AttributeA！";
+                return;
+            }
+            ComboBox it_ProcessB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_ProcessB_ComboBox");
+            if (it_ProcessB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定ProcessB！";
+                return;
+            }
+            ComboBox it_StateB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_StateB_ComboBox");
+            if (it_StateB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定StateB！";
+                return;
+            }
+            ComboBox it_AttributeB_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "it_AttributeB_ComboBox");
+            if (it_AttributeB_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定AttributeB！";
+                return;
+            }
+
+            Integrity integrity = (Integrity)integrity_ListBox.SelectedItem;
+            integrity.ProcessA = (Process)it_ProcessA_ComboBox.SelectedItem;
+            integrity.StateA = (State)it_StateA_ComboBox.SelectedItem;
+            integrity.AttributeA = (Attribute)it_AttributeA_ComboBox.SelectedItem;
+            integrity.ProcessB = (Process)it_ProcessB_ComboBox.SelectedItem;
+            integrity.StateB = (State)it_StateB_ComboBox.SelectedItem;
+            integrity.AttributeB = (Attribute)it_AttributeB_ComboBox.SelectedItem;
+            ResourceManager.mainWindowVM.Tips = "修改了Integrity：" + integrity;
+        }
+
+        public void Delete_Integrity()
+        {
+            ListBox integrity_ListBox = ControlExtensions.FindControl<ListBox>(this, "integrity_ListBox");
+            if (integrity_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要删除的Integrity！";
+                return;
+            }
+
+            Integrity integrity = (Integrity)integrity_ListBox.SelectedItem;
+            ((SecurityProperty_EW_VM)DataContext).SecurityProperty.Integrities.Remove(integrity);
+            ResourceManager.mainWindowVM.Tips = "删除了Integrity：" + integrity;
         }
 
         #endregion

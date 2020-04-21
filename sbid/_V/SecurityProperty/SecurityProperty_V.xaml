@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-             mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="120"
+             mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="170"
              x:Class="sbid._V.SecurityProperty_V" BorderBrush="Black" BorderThickness="2">
   <Design.DataContext>
     <vm:SecurityProperty_VM/>
@@ -13,7 +13,7 @@
     <SolidColorBrush x:Key="MyColor" Color="#80E0E6" />
   </UserControl.Resources>
 
-  <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
+  <Grid RowDefinitions="20,1,15,*,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <TextBlock Text=" SecurityProperty " FontWeight="Bold"/>
       <TextBlock Text="{Binding SecurityProperty.Name}"/>
@@ -38,6 +38,29 @@
     <TextBlock Grid.Row="4" Background="Black"/>
     <TextBlock Grid.Row="5" Text=" Authenticity:"/>
     <ListBox Grid.Row="6" Items="{Binding SecurityProperty.Authenticities}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0}.{1}.{2}.{3} | {4}.{5}.{6}.{7}">
+                <Binding Path="ProcessA.Name"/>
+                <Binding Path="StateA.Name"/>
+                <Binding Path="AttributeA.Identifier"/>
+                <Binding Path="AttributeA_Attr.Identifier"/>
+                <Binding Path="ProcessB.Name"/>
+                <Binding Path="StateB.Name"/>
+                <Binding Path="AttributeB.Identifier"/>
+                <Binding Path="AttributeB_Attr.Identifier"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBlock Grid.Row="7" Background="Black"/>
+    <TextBlock Grid.Row="8" Text=" Integrity:"/>
+    <ListBox Grid.Row="9" Items="{Binding SecurityProperty.Integrities}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

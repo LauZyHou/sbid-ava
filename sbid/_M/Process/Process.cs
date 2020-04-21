@@ -34,6 +34,10 @@ namespace sbid._M
         public ObservableCollection<Method> Methods { get => methods; set => methods = value; }
         // 通信方法列表
         public ObservableCollection<CommMethod> CommMethods { get => commMethods; set => commMethods = value; }
+
+        // *对应的状态机上的所有状态(这是给SecurityProperty中编辑Authenticity时,选择Process里的状态用)
+        // 这个字段不是实时计算的,仅在编辑SecurityProperty窗口打开前重新计算,并重新写入
+        public ObservableCollection<State> States { get => states; set => states = value; }
         public int Id
         {
             get => id;
@@ -45,9 +49,23 @@ namespace sbid._M
             }
         }
 
-        // *对应的状态机上的所有状态(这是给SecurityProperty中编辑Authenticity时,选择Process里的状态用)
-        // 这个字段不是实时计算的,仅在编辑SecurityProperty窗口打开前重新计算,并重新写入
-        public ObservableCollection<State> States { get => states; set => states = value; }
+        // Process的所有UserType型Attribute的列表，给认证性质使用
+        // 因为只有UserType型Attribute才有二级属性可言
+        public List<Attribute> UserTypeAttributes
+        {
+            get
+            {
+                List<Attribute> list = new List<Attribute>();
+                foreach(Attribute attribute in attributes)
+                {
+                    if (attribute.Type is UserType)
+                    {
+                        list.Add(attribute);
+                    }
+                }
+                return list;
+            }
+        }
 
         private void test_data()
         {

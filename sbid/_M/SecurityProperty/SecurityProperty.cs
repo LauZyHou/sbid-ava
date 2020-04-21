@@ -12,6 +12,7 @@ namespace sbid._M
         private string name;
         private ObservableCollection<Confidential> confidentials = new ObservableCollection<Confidential>();
         private ObservableCollection<Authenticity> authenticities = new ObservableCollection<Authenticity>();
+        private ObservableCollection<Integrity> integrities = new ObservableCollection<Integrity>();
         private int id;
 
         public SecurityProperty()
@@ -24,6 +25,7 @@ namespace sbid._M
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         public ObservableCollection<Confidential> Confidentials { get => confidentials; set => confidentials = value; }
         public ObservableCollection<Authenticity> Authenticities { get => authenticities; set => authenticities = value; }
+        public ObservableCollection<Integrity> Integrities { get => integrities; set => integrities = value; }
         public int Id
         {
             get => id;
