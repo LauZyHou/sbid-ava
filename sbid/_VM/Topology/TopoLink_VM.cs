@@ -10,7 +10,7 @@ namespace sbid._VM
     // 拓扑图连线的VM
     public class TopoLink_VM : Arrow_VM
     {
-        private TopoLink topoLink;
+        private TopoLink topoLink = new TopoLink();
 
         public TopoLink TopoLink { get => topoLink; set => this.RaiseAndSetIfChanged(ref topoLink, value); }
 
@@ -21,13 +21,16 @@ namespace sbid._VM
             {
                 double x = (Source.Pos.X + Dest.Pos.X) / 2;
                 double y = (Source.Pos.Y + Dest.Pos.Y) / 2;
-                return new Point(x - 40, y - 10);
+                return new Point(x - 20, y - 10);
             }
         }
 
         #region 右键菜单命令
 
-        // todo
+        // 打开编辑拓扑连线的窗口(暂时作废)
+        public void EditTopoLink()
+        {
+        }
 
         #endregion
     }

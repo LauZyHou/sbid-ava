@@ -14,6 +14,20 @@
   <!--注：这里至少是拓扑图面板V里ItemsControl的宽高-->
   <Canvas Width="2000" Height="1000">
     <v:Arrow Stroke="Blue" StrokeThickness="2" StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
-    <TextBlock Text="todo拓扑连线" Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White"/>
+    <!--<TextBlock Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White">
+      <TextBlock.Text>
+        <MultiBinding StringFormat=" {0} ">
+          <Binding Path="TopoLink.Content"/>
+        </MultiBinding>
+      </TextBlock.Text>
+      <TextBlock.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="编辑拓扑连线" Command="{Binding EditTopoLink}"/>
+        </ContextMenu>
+      </TextBlock.ContextMenu>
+    </TextBlock>-->
+    <TextBox Text="{Binding TopoLink.Content,Mode=TwoWay}" 
+             Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" 
+             Background="White" BorderBrush="Black" MinWidth="20"/>
   </Canvas>
 </UserControl>
