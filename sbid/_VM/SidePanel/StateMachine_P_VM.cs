@@ -1,4 +1,5 @@
-﻿using sbid._M;
+﻿using ReactiveUI;
+using sbid._M;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace sbid._VM
     {
         private Process process;
         private Connector_VM activeConnector;
+        private bool connectorVisible = true;
 
         // 无参构造只是给xaml中的Design用
         public StateMachine_P_VM()
@@ -21,6 +23,15 @@ namespace sbid._VM
             // todo数据绑定
             this.Name = process.Name;
         }
+
+        // 集成所在Process,以反向查询(以用其Name)
+        public Process Process { get => process; set => process = value; }
+        // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
+        public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
+        // 锚点是否可见
+        public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
+
+        #region 对外的初始化调用
 
         public void init_data()
         {
@@ -35,11 +46,7 @@ namespace sbid._VM
             CreateTransitionVM(initStateVM.ConnectorVMs[0], stateVM.ConnectorVMs[2]);
         }
 
-        // 集成所在Process,以反向查询(以用其Name)
-        public Process Process { get => process; set => process = value; }
-
-        // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
-        public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
+        #endregion
 
         #region 状态机上的VM操作接口
 

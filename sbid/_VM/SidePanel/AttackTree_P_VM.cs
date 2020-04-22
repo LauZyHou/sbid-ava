@@ -14,7 +14,7 @@ namespace sbid._VM
         private Attack_VM handleAttackVM;
         private ObservableCollection<Attack_VM> leafAttackVMs = new ObservableCollection<Attack_VM>();
         private ObservableCollection<string> securityPolicies = new ObservableCollection<string>();
-
+        private bool connectorVisible = true;
 
         // 默认构造时使用默认名称
         public AttackTree_P_VM()
@@ -34,6 +34,9 @@ namespace sbid._VM
 
         // 用于[安全策略数据库]的绑定列表，这里绑定的只是和LeafAttackVMs的选中项匹配的安全策略字符串
         public ObservableCollection<string> SecurityPolicies { get => securityPolicies; }
+
+        // 锚点是否可见
+        public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
         #region 按钮命令
 

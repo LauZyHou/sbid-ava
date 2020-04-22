@@ -56,8 +56,10 @@
       <Button Command="{Binding CreateRelationVM_NEG}">创建[非]关系</Button>
       <Button Command="{Binding CreateRelationVM_SAND}">创建[顺序与]关系</Button>-->
       <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
-      <TextBlock Text="当前在处理：" Margin="4,4,0,4" Background="WhiteSmoke"/>
-      <TextBlock Text="{Binding HandleAttackVM.Attack.Content}" Margin="0,4" Background="WhiteSmoke"/>
+      <TextBlock Text=" 锚点可见：" FontSize="17"/>
+      <ComboBox Name="connectorVisible_ComboBox" Width="60" Background="WhiteSmoke" SelectedItem="{Binding ConnectorVisible, Mode=TwoWay}"/>
+      <TextBlock Text=" 当前在处理：" FontSize="17"/>
+      <TextBlock Text="{Binding HandleAttackVM.Attack.Content}" FontSize="17" Background="WhiteSmoke"/>
     </StackPanel>
     <DockPanel DockPanel.Dock="Right" Width="200" Background="#EEEEEE">
       <TextBlock DockPanel.Dock="Top" Text="叶子攻击分析" FontSize="16" TextAlignment="Center"/>
