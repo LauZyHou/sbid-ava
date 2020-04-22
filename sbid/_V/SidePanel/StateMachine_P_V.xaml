@@ -47,7 +47,12 @@
     </Style>
   </UserControl.Styles>
 
-  <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-    <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
-  </ScrollViewer>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+      <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
+    </StackPanel>
+    <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+    </ScrollViewer>
+  </DockPanel>
 </UserControl>

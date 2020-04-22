@@ -50,11 +50,12 @@
 
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
-      <Button Command="{Binding CreateAttackVM}">创建攻击结点</Button>
+      <!--<Button Command="{Binding CreateAttackVM}">创建攻击结点</Button>
       <Button Command="{Binding CreateRelationVM_AND}">创建[与]关系</Button>
       <Button Command="{Binding CreateRelationVM_OR}">创建[或]关系</Button>
       <Button Command="{Binding CreateRelationVM_NEG}">创建[非]关系</Button>
-      <Button Command="{Binding CreateRelationVM_SAND}">创建[顺序与]关系</Button>
+      <Button Command="{Binding CreateRelationVM_SAND}">创建[顺序与]关系</Button>-->
+      <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
       <TextBlock Text="当前在处理：" Margin="4,4,0,4" Background="WhiteSmoke"/>
       <TextBlock Text="{Binding HandleAttackVM.Attack.Content}" Margin="0,4" Background="WhiteSmoke"/>
     </StackPanel>

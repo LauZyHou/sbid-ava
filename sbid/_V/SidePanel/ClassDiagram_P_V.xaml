@@ -29,7 +29,6 @@
                   <MenuItem Header="创建SafetyProperty" Command="{Binding $parent[UserControl].CreateSafetyPropertyVM}"/>
                   <MenuItem Header="创建SecurityProperty" Command="{Binding $parent[UserControl].CreateSecurityPropertyVM}"/>
                   <MenuItem Header="创建CommChannel" Command="{Binding $parent[UserControl].CreateCommChannelVM}"/>
-                  <MenuItem Header="导出图片" Command="{Binding $parent[UserControl].ExportImage}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -62,6 +61,9 @@
       <Button Command="{Binding CreateSecurityPropertyVM}">创建Security Property</Button>
       <Button Command="{Binding CreateCommChannelVM}">创建CommChannel</Button>
     </StackPanel>-->
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+      <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
+    </StackPanel>
     <!--面板-->
     <ScrollViewer Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Name="panel" DockPanel.Dock="Bottom" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>

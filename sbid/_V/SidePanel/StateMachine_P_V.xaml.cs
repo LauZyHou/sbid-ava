@@ -58,6 +58,18 @@ namespace sbid._V
 
         #endregion
 
+        #region 按钮命令
+
+        // 导出图片
+        public async void ExportImage()
+        {
+            string path = await ResourceManager.GetSaveFileName("png");
+            ItemsControl panel = ControlExtensions.FindControl<ItemsControl>(this, "panel");
+            ResourceManager.RenderImage(path, panel);
+        }
+
+        #endregion
+
         // 对应的VM
         public StateMachine_P_VM StateMachinePVM { get => (StateMachine_P_VM)DataContext; }
     }
