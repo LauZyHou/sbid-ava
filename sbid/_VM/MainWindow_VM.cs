@@ -273,9 +273,7 @@ namespace sbid._VM
                             foreach (Attribute attr in userType.Attributes)
                             {
                                 xmlWriter.WriteStartElement("Attribute");
-                                xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
-                                xmlWriter.WriteAttributeString("identifier", attr.Identifier);
-                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                ResourceManager.writeAttribute(xmlWriter, attr);
                                 xmlWriter.WriteEndElement();
                             }
                             foreach (Method method in userType.Methods)
@@ -287,10 +285,8 @@ namespace sbid._VM
                                 xmlWriter.WriteAttributeString("id", method.Id.ToString());
                                 foreach (Attribute attr in method.Parameters)
                                 {
-                                    xmlWriter.WriteStartElement("Parameter");
-                                    xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
-                                    xmlWriter.WriteAttributeString("identifier", attr.Identifier);
-                                    xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                    xmlWriter.WriteStartElement("Parameter"); // 注意这里叫Parameter了
+                                    ResourceManager.writeAttribute(xmlWriter, attr);
                                     xmlWriter.WriteEndElement();
                                 }
                                 xmlWriter.WriteEndElement();
@@ -309,9 +305,7 @@ namespace sbid._VM
                         foreach (Attribute attr in vm.Process.Attributes)
                         {
                             xmlWriter.WriteStartElement("Attribute");
-                            xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
-                            xmlWriter.WriteAttributeString("identifier", attr.Identifier);
-                            xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                            ResourceManager.writeAttribute(xmlWriter, attr);
                             xmlWriter.WriteEndElement();
                         }
                         foreach (Method method in vm.Process.Methods)
@@ -324,9 +318,7 @@ namespace sbid._VM
                             foreach (Attribute attr in method.Parameters)
                             {
                                 xmlWriter.WriteStartElement("Parameter");
-                                xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
-                                xmlWriter.WriteAttributeString("identifier", attr.Identifier);
-                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                ResourceManager.writeAttribute(xmlWriter, attr);
                                 xmlWriter.WriteEndElement();
                             }
                             xmlWriter.WriteEndElement();
@@ -341,9 +333,7 @@ namespace sbid._VM
                             foreach (Attribute attr in commMethod.Parameters)
                             {
                                 xmlWriter.WriteStartElement("Parameter");
-                                xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
-                                xmlWriter.WriteAttributeString("identifier", attr.Identifier);
-                                xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+                                ResourceManager.writeAttribute(xmlWriter, attr);
                                 xmlWriter.WriteEndElement();
                             }
                             xmlWriter.WriteEndElement();
@@ -1023,13 +1013,14 @@ namespace sbid._VM
                                             int typeRef = int.Parse(attrElement.GetAttribute("type_ref"));
                                             int id = int.Parse(attrElement.GetAttribute("id"));
                                             string identifier = attrElement.GetAttribute("identifier");
+                                            bool isArray = bool.Parse(attrElement.GetAttribute("isArray"));
                                             if (!typeDict.ContainsKey(typeRef))
                                             {
                                                 Tips = "[解析UserType_VM时出错]无法找到Attribute的类型！";
                                                 cleanProject();
                                                 return false;
                                             }
-                                            Attribute attribute = new Attribute(typeDict[typeRef], identifier);
+                                            Attribute attribute = new Attribute(typeDict[typeRef], identifier, isArray);
                                             attribute.Id = id;
                                             userType.Attributes.Add(attribute);
                                             break;
@@ -1045,19 +1036,20 @@ namespace sbid._VM
                                             string name = attrElement.GetAttribute("name");
                                             Crypto cryptoSuffix = (Crypto)System.Enum.Parse(typeof(Crypto), attrElement.GetAttribute("cryptoSuffix"));
                                             ObservableCollection<Attribute> parameters = new ObservableCollection<Attribute>();
-                                            foreach (XmlNode paramNode in attrNode.ChildNodes) // <Parameter type_ref="1" identifier="key" id="10" />
+                                            foreach (XmlNode paramNode in attrNode.ChildNodes) // <Parameter type_ref="1" identifier="key" isArray="False" id="10" />
                                             {
                                                 XmlElement paramElement = (XmlElement)paramNode;
                                                 typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
                                                 int paramId = int.Parse(paramElement.GetAttribute("id"));
                                                 identifier = paramElement.GetAttribute("identifier");
+                                                isArray = bool.Parse(paramElement.GetAttribute("isArray"));
                                                 if (!typeDict.ContainsKey(typeRef))
                                                 {
                                                     Tips = "[解析UserType_VM时出错]无法找到Method的参数类型！";
                                                     cleanProject();
                                                     return false;
                                                 }
-                                                Attribute param = new Attribute(typeDict[typeRef], identifier);
+                                                Attribute param = new Attribute(typeDict[typeRef], identifier, isArray);
                                                 param.Id = paramId;
                                                 parameters.Add(param);
                                             }
@@ -1081,13 +1073,14 @@ namespace sbid._VM
                                         int typeRef = int.Parse(pcElement.GetAttribute("type_ref"));
                                         int id = int.Parse(pcElement.GetAttribute("id"));
                                         string identifier = pcElement.GetAttribute("identifier");
+                                        bool isArray = bool.Parse(pcElement.GetAttribute("isArray"));
                                         if (!typeDict.ContainsKey(typeRef))
                                         {
                                             Tips = "[解析Process_VM时出错]无法找到Attribute的类型！";
                                             cleanProject();
                                             return false;
                                         }
-                                        Attribute attribute = new Attribute(typeDict[typeRef], identifier);
+                                        Attribute attribute = new Attribute(typeDict[typeRef], identifier, isArray);
                                         attribute.Id = id;
                                         process.Attributes.Add(attribute);
                                         break;
@@ -1109,13 +1102,14 @@ namespace sbid._VM
                                             typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
                                             int paramId = int.Parse(paramElement.GetAttribute("id"));
                                             identifier = paramElement.GetAttribute("identifier");
+                                            isArray = bool.Parse(paramElement.GetAttribute("isArray"));
                                             if (!typeDict.ContainsKey(typeRef))
                                             {
                                                 Tips = "[解析Process_VM时出错]无法找到Method的参数类型！";
                                                 cleanProject();
                                                 return false;
                                             }
-                                            Attribute param = new Attribute(typeDict[typeRef], identifier);
+                                            Attribute param = new Attribute(typeDict[typeRef], identifier, isArray);
                                             param.Id = paramId;
                                             parameters.Add(param);
                                         }
@@ -1134,13 +1128,14 @@ namespace sbid._VM
                                             typeRef = int.Parse(paramElement.GetAttribute("type_ref"));
                                             int paramId = int.Parse(paramElement.GetAttribute("id"));
                                             identifier = paramElement.GetAttribute("identifier");
+                                            isArray = bool.Parse(paramElement.GetAttribute("isArray"));
                                             if (!typeDict.ContainsKey(typeRef))
                                             {
                                                 Tips = "[解析Process_VM时出错]无法找到CommMethod的参数类型！";
                                                 cleanProject();
                                                 return false;
                                             }
-                                            Attribute param = new Attribute(typeDict[typeRef], identifier);
+                                            Attribute param = new Attribute(typeDict[typeRef], identifier, isArray);
                                             param.Id = paramId;
                                             parameters.Add(param);
                                         }

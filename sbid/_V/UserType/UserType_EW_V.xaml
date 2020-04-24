@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        Height="352" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.UserType_EW_V"
         Title="编辑UserType">
 
@@ -70,6 +70,8 @@
           </ListBox>
           <TextBlock Text="变量名称：" FontSize="17"/>
           <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
+          <TextBlock Text="是否是数组：" FontSize="17"/>
+          <ComboBox Name="attr_isArray_ComboBox" SelectedItem="{Binding #attr_ListBox.SelectedItem.IsArray, Mode=OneWay}"/>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Classes="ButtonGroup">
             <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
             <Button Command="{Binding $parent[Window].Update_Attribute}">修改</Button>
@@ -79,7 +81,7 @@
         <ListBox Grid.Column="1" Margin="10,0" Name="attr_ListBox" Items="{Binding UserType.Attributes}">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <!--使用多源绑定-->
+              <!--使用多源绑定--><!--
               <TextBlock>
                 <TextBlock.Text>
                   <MultiBinding StringFormat=" {0} {1};">
@@ -87,7 +89,13 @@
                     <Binding Path="Identifier"/>
                   </MultiBinding>
                 </TextBlock.Text>
-              </TextBlock>
+              </TextBlock>-->
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Type.Name}"/>
+                <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
+                <TextBlock Text=" "/>
+                <TextBlock Text="{Binding Identifier}"/>
+              </StackPanel>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
@@ -119,6 +127,8 @@
               </ComboBox>
               <TextBlock Text="参数名称：" FontSize="17"/>
               <TextBox Name="paramName_TextBox" Text="{Binding #param_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
+              <TextBlock Text="是否是数组：" FontSize="17"/>
+              <ComboBox Name="method_param_isArray_ComboBox" SelectedItem="{Binding #param_ListBox.SelectedItem.IsArray, Mode=OneWay}"/>
               <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Command="{Binding $parent[Window].Add_Param}">添加</Button>
                 <Button Command="{Binding $parent[Window].Update_Param}">修改</Button>
@@ -128,17 +138,23 @@
             <StackPanel Grid.Column="1" Margin="5,0,0,0">
               <TextBlock Text="参数列表：" FontSize="17"/>
               <!--这里绑定一个UserType_EW_VM中额外增加的列表,当右侧选项变化时再拷贝各个Attribute到其中-->
-              <ListBox Name="param_ListBox" Items="{Binding Params}" Height="90">
+              <ListBox Name="param_ListBox" Items="{Binding Params}" Height="142">
                 <ListBox.ItemTemplate>
                   <DataTemplate>
-                    <TextBlock>
+                    <!--<TextBlock>
                       <TextBlock.Text>
                         <MultiBinding StringFormat=" {0} {1}">
                           <Binding Path="Type.Name"/>
                           <Binding Path="Identifier"/>
                         </MultiBinding>
                       </TextBlock.Text>
-                    </TextBlock>
+                    </TextBlock>-->
+                    <StackPanel Orientation="Horizontal">
+                      <TextBlock Text="{Binding Type.Name}"/>
+                      <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
+                      <TextBlock Text=" "/>
+                      <TextBlock Text="{Binding Identifier}"/>
+                    </StackPanel>
                   </DataTemplate>
                 </ListBox.ItemTemplate>
               </ListBox>

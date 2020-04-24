@@ -54,7 +54,7 @@ namespace sbid._V
                 }
                 else // 基本类型
                 {
-                    ValueInstance valueInstance = new ValueInstance(attribute.Type, attribute.Identifier);
+                    ValueInstance valueInstance = new ValueInstance(attribute);
                     TopoNodeEWVM.TopoNode.Properties.Add(valueInstance);
                 }
             }

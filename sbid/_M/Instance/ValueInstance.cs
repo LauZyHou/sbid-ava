@@ -10,7 +10,13 @@ namespace sbid._M
     {
         private string _value;
 
-        public ValueInstance(Type type, string identifier) : base(type, identifier)
+        public ValueInstance(Attribute attribute)
+            : base(attribute)
+        {
+        }
+
+        public ValueInstance(Type type, string identifier, bool isArray)
+            : base(type, identifier, isArray)
         {
         }
 

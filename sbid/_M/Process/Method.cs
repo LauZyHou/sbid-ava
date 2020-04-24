@@ -92,12 +92,7 @@ namespace sbid._M
 
         public override string ToString()
         {
-            string paramString = "";
-            foreach (Attribute attribute in parameters)
-            {
-                paramString += attribute + ", ";
-            }
-            string retString = returnType.Name + " " + name + "(" + paramString.TrimEnd(", ".ToCharArray()) + ");";
+            string retString = returnType.Name + " " + name + "(" + ParamString + ")";
             if (cryptoSuffix != Crypto.None) // None不显示
                 retString += "[" + cryptoSuffix + "]";
             return retString;

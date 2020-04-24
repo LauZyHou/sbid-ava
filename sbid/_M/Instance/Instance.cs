@@ -11,17 +11,28 @@ namespace sbid._M
     {
         private Type type;
         private string identifier;
+        private bool isArray;
 
-        protected Instance(Type type, string identifier)
+        protected Instance(Type type, string identifier, bool isArray)
         {
             this.type = type;
             this.identifier = identifier;
+            this.isArray = isArray;
+        }
+
+        protected Instance(Attribute attribute)
+        {
+            this.type = attribute.Type;
+            this.identifier = attribute.Identifier;
+            this.isArray = attribute.IsArray;
         }
 
         // 实例的类型，注意对ReferenceInstance只能传UserType
         public Type Type { get => type; }
         // 实例的变量名
         public string Identifier { get => identifier; }
+        // 是否是数组
+        public bool IsArray { get => isArray; }
 
         public override string ToString()
         {

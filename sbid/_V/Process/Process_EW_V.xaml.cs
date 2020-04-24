@@ -11,8 +11,6 @@ namespace sbid._V
 {
     public class Process_EW_V : Window
     {
-        #region 构造
-
         public Process_EW_V()
         {
             this.InitializeComponent();
@@ -28,6 +26,57 @@ namespace sbid._V
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        #region 辅助构造
+
+        // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
+        private void init_binding()
+        {
+            // 绑定Method的内置方法
+            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
+            innerMethod_ListBox.Items = Method.InnerMethods;
+
+            // 绑定Method的加密算法枚举
+            ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "crypto_ComboBox");
+            crypto_ComboBox.Items = System.Enum.GetValues(typeof(Crypto));
+            crypto_ComboBox.SelectedItem = Crypto.None;
+
+            // 绑定CommMethod的InOut枚举
+            ComboBox inout_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "inout_ComboBox");
+            inout_ComboBox.Items = System.Enum.GetValues(typeof(InOut));
+            inout_ComboBox.SelectedItem = InOut.In;
+
+            // 绑定CommMethod的CommWay枚举
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
+            commWay_ComboBox.Items = System.Enum.GetValues(typeof(CommWay));
+            commWay_ComboBox.SelectedItem = CommWay.NativeEthernetFrame;
+
+            // 绑定是否是数组的True/False
+            List<bool> boolList = new List<bool>();
+            boolList.Add(true);
+            boolList.Add(false);
+            ComboBox attr_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_IsArray_ComboBox");
+            ComboBox param_ZD_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_ZD_IsArray_ComboBox");
+            ComboBox param_Comm_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_Comm_IsArray_ComboBox");
+            attr_IsArray_ComboBox.Items = param_ZD_IsArray_ComboBox.Items = param_Comm_IsArray_ComboBox.Items = boolList;
+            attr_IsArray_ComboBox.SelectedItem = param_ZD_IsArray_ComboBox.SelectedItem = param_Comm_IsArray_ComboBox.SelectedItem = false;
+        }
+
+        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
+        private void init_event()
+        {
+            // 绑定自定Method右侧列表选中项变化的处理方法
+            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
+            method_ZD_ListBox.SelectionChanged += method_ZD_ListBox_Changed;
+
+            // 绑定CommMethod右侧列表选中项变化的处理方法
+            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
+            commMethod_ListBox.SelectionChanged += commMethod_ListBox_Changed;
+
+            // 绑定内置Method列表选中项变化的处理方法
+            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
+            innerMethod_ListBox.SelectionChanged += innerMethod_ListBox_Changed;
         }
 
         #endregion
@@ -50,9 +99,20 @@ namespace sbid._V
                 return;
             }
 
+            ComboBox attr_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_IsArray_ComboBox");
+            if (attr_IsArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
             // todo 变量名判重
 
-            Attribute attribute = new Attribute((sbid._M.Type)type_ListBox.SelectedItem, attrId_TextBox.Text);
+            Attribute attribute = new Attribute(
+                (sbid._M.Type)type_ListBox.SelectedItem, 
+                attrId_TextBox.Text,
+                (bool)attr_IsArray_ComboBox.SelectedItem
+            );
             ((Process_EW_VM)DataContext).Process.Attributes.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]添加了成员变量：" + attribute;
         }
@@ -80,11 +140,19 @@ namespace sbid._V
                 return;
             }
 
+            ComboBox attr_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_IsArray_ComboBox");
+            if (attr_IsArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
             // todo 变量名判重
 
             Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
             attribute.Type = (sbid._M.Type)type_ListBox.SelectedItem;
             attribute.Identifier = attrId_TextBox.Text;
+            attribute.IsArray = (bool)attr_IsArray_ComboBox.SelectedItem;
             ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]更新了成员变量：" + attribute;
         }
 
@@ -203,7 +271,18 @@ namespace sbid._V
                 return;
             }
 
-            Attribute attribute = new Attribute((Type)paramType_ZD_ComboBox.SelectedItem, paramName_ZD_TextBox.Text);
+            ComboBox param_ZD_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_ZD_IsArray_ComboBox");
+            if (param_ZD_IsArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
+            Attribute attribute = new Attribute(
+                (Type)paramType_ZD_ComboBox.SelectedItem, 
+                paramName_ZD_TextBox.Text,
+                (bool)param_ZD_IsArray_ComboBox.SelectedItem
+            );
             ((Process_EW_VM)DataContext).ZDParams.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中添加参数：" + attribute;
         }
@@ -231,9 +310,17 @@ namespace sbid._V
                 return;
             }
 
+            ComboBox param_ZD_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_ZD_IsArray_ComboBox");
+            if (param_ZD_IsArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
             Attribute attribute = (Attribute)param_ZD_ListBox.SelectedItem;
             attribute.Type = (Type)paramType_ZD_ComboBox.SelectedItem;
             attribute.Identifier = paramName_ZD_TextBox.Text;
+            attribute.IsArray = (bool)param_ZD_IsArray_ComboBox.SelectedItem;
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中更新参数：" + attribute;
         }
 
@@ -359,7 +446,18 @@ namespace sbid._V
                 return;
             }
 
-            Attribute attribute = new Attribute((Type)paramType_Comm_ComboBox.SelectedItem, paramName_Comm_TextBox.Text);
+            ComboBox param_Comm_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_Comm_IsArray_ComboBox");
+            if (param_Comm_IsArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
+            Attribute attribute = new Attribute(
+                (Type)paramType_Comm_ComboBox.SelectedItem, 
+                paramName_Comm_TextBox.Text,
+                (bool)param_Comm_IsArray_ComboBox.SelectedItem
+            );
             ((Process_EW_VM)DataContext).CommParams.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中添加参数：" + attribute;
         }
@@ -387,9 +485,17 @@ namespace sbid._V
                 return;
             }
 
+            ComboBox param_Comm_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_Comm_IsArray_ComboBox");
+            if (param_Comm_IsArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
             Attribute attribute = (Attribute)param_Comm_ListBox.SelectedItem;
             attribute.Type = (Type)paramType_Comm_ComboBox.SelectedItem;
             attribute.Identifier = paramName_Comm_TextBox.Text;
+            attribute.IsArray = (bool)param_Comm_IsArray_ComboBox.SelectedItem;
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中更新参数：" + attribute;
         }
 
@@ -525,7 +631,7 @@ namespace sbid._V
             ((Process_EW_VM)DataContext).ZDParams = new ObservableCollection<Attribute>();
             foreach (Attribute attribute in ((Method)method_ZD_ListBox.SelectedItem).Parameters)
             {
-                ((Process_EW_VM)DataContext).ZDParams.Add(new Attribute(attribute.Type, attribute.Identifier));
+                ((Process_EW_VM)DataContext).ZDParams.Add(new Attribute(attribute));
             }
             ResourceManager.mainWindowVM.Tips = "选中了Method：" + (Method)method_ZD_ListBox.SelectedItem + "，已拷贝其参数列表";
         }
@@ -538,7 +644,7 @@ namespace sbid._V
             ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
             foreach (Attribute attribute in ((CommMethod)commMethod_ListBox.SelectedItem).Parameters)
             {
-                ((Process_EW_VM)DataContext).CommParams.Add(new Attribute(attribute.Type, attribute.Identifier));
+                ((Process_EW_VM)DataContext).CommParams.Add(new Attribute(attribute));
             }
             ResourceManager.mainWindowVM.Tips = "选中了CommMethod：" + ((CommMethod)commMethod_ListBox.SelectedItem).ShowString + "，已拷贝其参数列表";
         }
@@ -574,49 +680,6 @@ namespace sbid._V
                 default:
                     break;
             }
-        }
-
-        #endregion
-
-        #region 初始化
-
-        // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
-        private void init_binding()
-        {
-            // 绑定Method的内置方法
-            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
-            innerMethod_ListBox.Items = Method.InnerMethods;
-
-            // 绑定Method的加密算法枚举
-            ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "crypto_ComboBox");
-            crypto_ComboBox.Items = System.Enum.GetValues(typeof(Crypto));
-            crypto_ComboBox.SelectedItem = Crypto.None;
-
-            // 绑定CommMethod的InOut枚举
-            ComboBox inout_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "inout_ComboBox");
-            inout_ComboBox.Items = System.Enum.GetValues(typeof(InOut));
-            inout_ComboBox.SelectedItem = InOut.In;
-
-            // 绑定CommMethod的CommWay枚举
-            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
-            commWay_ComboBox.Items = System.Enum.GetValues(typeof(CommWay));
-            commWay_ComboBox.SelectedItem = CommWay.NativeEthernetFrame;
-        }
-
-        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
-        private void init_event()
-        {
-            // 绑定自定Method右侧列表选中项变化的处理方法
-            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
-            method_ZD_ListBox.SelectionChanged += method_ZD_ListBox_Changed;
-
-            // 绑定CommMethod右侧列表选中项变化的处理方法
-            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
-            commMethod_ListBox.SelectionChanged += commMethod_ListBox_Changed;
-
-            // 绑定内置Method列表选中项变化的处理方法
-            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
-            innerMethod_ListBox.SelectionChanged += innerMethod_ListBox_Changed;
         }
 
         #endregion

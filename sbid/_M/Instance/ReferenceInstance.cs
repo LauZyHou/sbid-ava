@@ -10,7 +10,13 @@ namespace sbid._M
     {
         private List<Instance> properties = new List<Instance>();
 
-        public ReferenceInstance(Type type, string identifier) : base(type, identifier)
+        public ReferenceInstance(Attribute attribute)
+            : base(attribute)
+        {
+        }
+
+        public ReferenceInstance(UserType userType, string identifier, bool isArray)
+            : base(userType, identifier, isArray)
         {
         }
 
@@ -19,10 +25,10 @@ namespace sbid._M
 
         #region 静态
 
-        // 从Attribute=<UserType,string>递归构造ReferenceInstance
+        // 从Attribute=<UserType,string,bool>递归构造ReferenceInstance
         public static ReferenceInstance build(UserType userType, string identifier)
         {
-            ReferenceInstance referenceInstance = new ReferenceInstance(userType, identifier);
+            ReferenceInstance referenceInstance = new ReferenceInstance(userType, identifier, false);
             foreach (Attribute attribute in userType.Attributes)
             {
                 Instance instance = null;
@@ -32,7 +38,7 @@ namespace sbid._M
                 }
                 else
                 {
-                    instance = new ValueInstance(attribute.Type, attribute.Identifier);
+                    instance = new ValueInstance(attribute.Type, attribute.Identifier, false);
                 }
                 referenceInstance.properties.Add(instance);
             }

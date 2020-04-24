@@ -3,10 +3,12 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
+using sbid._M;
 using sbid._V;
 using sbid._VM;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace sbid
 {
@@ -50,6 +52,22 @@ namespace sbid
 
             mainWindowVM.Tips = "导出图片至：" + path;
         }
+
+        #endregion
+
+        #region 写XML的一些接口(项目保存)
+
+        public static void writeAttribute(XmlTextWriter xmlWriter, Attribute attr)
+        {
+            xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
+            xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+            xmlWriter.WriteAttributeString("isArray", attr.IsArray.ToString());
+            xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+        }
+
+        #endregion
+
+        #region 读XML的一些接口(项目读取)
 
         #endregion
     }

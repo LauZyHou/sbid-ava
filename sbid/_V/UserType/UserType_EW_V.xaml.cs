@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace sbid._V
@@ -16,13 +17,39 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
-            this.init_event();
+            init_binding();
+            init_event();
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        #region 辅助构造
+
+        // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
+        private void init_binding()
+        {
+            // 绑定是否是数组True/False
+            List<bool> boolList = new List<bool>();
+            boolList.Add(true);
+            boolList.Add(false);
+            ComboBox attr_isArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_isArray_ComboBox");
+            ComboBox method_param_isArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "method_param_isArray_ComboBox");
+            attr_isArray_ComboBox.Items = method_param_isArray_ComboBox.Items = boolList;
+            attr_isArray_ComboBox.SelectedItem = method_param_isArray_ComboBox.SelectedItem = false;
+        }
+
+        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
+        private void init_event()
+        {
+            // 绑定Method右侧列表选中项变化的处理方法
+            ListBox method_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ListBox");
+            method_ListBox.SelectionChanged += method_ListBox_Changed;
+        }
+
+        #endregion
 
         #region 按钮命令
 
@@ -56,9 +83,20 @@ namespace sbid._V
                 return;
             }
 
+            ComboBox attr_isArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_isArray_ComboBox");
+            if (attr_isArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
             // todo 变量名判重
 
-            Attribute attribute = new Attribute((sbid._M.Type)type_ListBox.SelectedItem, attrId_TextBox.Text);
+            Attribute attribute = new Attribute(
+                (sbid._M.Type)type_ListBox.SelectedItem,
+                attrId_TextBox.Text,
+                (bool)attr_isArray_ComboBox.SelectedItem
+            );
             ((UserType_EW_VM)DataContext).UserType.Attributes.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "为自定义类型[" + ((UserType_EW_VM)DataContext).UserType.Name + "]添加了成员变量：" + attribute;
         }
@@ -79,6 +117,13 @@ namespace sbid._V
                 return;
             }
 
+            ComboBox attr_isArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_isArray_ComboBox");
+            if (attr_isArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
             TextBox attrId_TextBox = ControlExtensions.FindControl<TextBox>(this, "attrId_TextBox");
             if (attrId_TextBox.Text == null || attrId_TextBox.Text.Length == 0)
             {
@@ -91,6 +136,7 @@ namespace sbid._V
             Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
             attribute.Type = (sbid._M.Type)type_ListBox.SelectedItem;
             attribute.Identifier = attrId_TextBox.Text;
+            attribute.IsArray = (bool)attr_isArray_ComboBox.SelectedItem;
             ResourceManager.mainWindowVM.Tips = "为自定义类型[" + ((UserType_EW_VM)DataContext).UserType.Name + "]更新了成员变量：" + attribute;
         }
 
@@ -124,7 +170,18 @@ namespace sbid._V
                 return;
             }
 
-            Attribute attribute = new Attribute((Type)paramType_ComboBox.SelectedItem, paramName_TextBox.Text);
+            ComboBox method_param_isArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "method_param_isArray_ComboBox");
+            if (method_param_isArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
+            Attribute attribute = new Attribute(
+                (Type)paramType_ComboBox.SelectedItem, 
+                paramName_TextBox.Text,
+                (bool)method_param_isArray_ComboBox.SelectedItem
+            );
             ((UserType_EW_VM)DataContext).Params.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中添加参数：" + attribute;
         }
@@ -145,6 +202,13 @@ namespace sbid._V
                 return;
             }
 
+            ComboBox method_param_isArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "method_param_isArray_ComboBox");
+            if (method_param_isArray_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
+                return;
+            }
+
             TextBox paramName_TextBox = ControlExtensions.FindControl<TextBox>(this, "paramName_TextBox");
             if (paramName_TextBox.Text == null || paramName_TextBox.Text.Length == 0)
             {
@@ -155,6 +219,7 @@ namespace sbid._V
             Attribute attribute = (Attribute)param_ListBox.SelectedItem;
             attribute.Type = (Type)paramType_ComboBox.SelectedItem;
             attribute.Identifier = paramName_TextBox.Text;
+            attribute.IsArray = (bool)method_param_isArray_ComboBox.SelectedItem;
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中更新参数：" + attribute;
         }
 
@@ -278,21 +343,9 @@ namespace sbid._V
             ((UserType_EW_VM)DataContext).Params = new ObservableCollection<Attribute>();
             foreach (Attribute attribute in ((Method)method_ListBox.SelectedItem).Parameters)
             {
-                ((UserType_EW_VM)DataContext).Params.Add(new Attribute(attribute.Type, attribute.Identifier));
+                ((UserType_EW_VM)DataContext).Params.Add(new Attribute(attribute));
             }
             ResourceManager.mainWindowVM.Tips = "选中了Method：" + (Method)method_ListBox.SelectedItem + "，已拷贝其参数列表";
-        }
-
-        #endregion
-
-        #region 初始化
-
-        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
-        private void init_event()
-        {
-            // 绑定Method右侧列表选中项变化的处理方法
-            ListBox method_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ListBox");
-            method_ListBox.SelectionChanged += method_ListBox_Changed;
         }
 
         #endregion
