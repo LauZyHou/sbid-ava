@@ -13,13 +13,6 @@ namespace sbid._M
         private string identifier;
         private bool isArray;
 
-        protected Instance(Type type, string identifier, bool isArray)
-        {
-            this.type = type;
-            this.identifier = identifier;
-            this.isArray = isArray;
-        }
-
         protected Instance(Attribute attribute)
         {
             this.type = attribute.Type;
@@ -36,7 +29,7 @@ namespace sbid._M
 
         public override string ToString()
         {
-            return type.Name + " " + identifier + " ";
+            return type.Name + (isArray ? "[]" : "") + " " + identifier + " ";
         }
     }
 }

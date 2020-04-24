@@ -15,30 +15,25 @@ namespace sbid._M
         {
         }
 
-        public ReferenceInstance(UserType userType, string identifier, bool isArray)
-            : base(userType, identifier, isArray)
-        {
-        }
-
         // 因为是引用类型，所以会有属性列表
         public List<Instance> Properties { get => properties; }
 
         #region 静态
 
         // 从Attribute=<UserType,string,bool>递归构造ReferenceInstance
-        public static ReferenceInstance build(UserType userType, string identifier)
+        public static ReferenceInstance build(Attribute attribute)
         {
-            ReferenceInstance referenceInstance = new ReferenceInstance(userType, identifier, false);
-            foreach (Attribute attribute in userType.Attributes)
+            ReferenceInstance referenceInstance = new ReferenceInstance(attribute);
+            foreach (Attribute attr in ((UserType)attribute.Type).Attributes)
             {
                 Instance instance = null;
-                if (attribute.Type is UserType)
+                if (attr.Type is UserType)
                 {
-                    instance = ReferenceInstance.build((UserType)attribute.Type, attribute.Identifier);
+                    instance = ReferenceInstance.build(attr);
                 }
                 else
                 {
-                    instance = new ValueInstance(attribute.Type, attribute.Identifier, false);
+                    instance = new ValueInstance(attr);
                 }
                 referenceInstance.properties.Add(instance);
             }

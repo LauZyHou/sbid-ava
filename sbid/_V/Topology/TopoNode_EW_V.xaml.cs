@@ -49,7 +49,7 @@ namespace sbid._V
             {
                 if (attribute.Type is UserType) // 复合类型
                 {
-                    ReferenceInstance referenceInstance = ReferenceInstance.build((UserType)attribute.Type, attribute.Identifier);
+                    ReferenceInstance referenceInstance = ReferenceInstance.build(attribute);
                     TopoNodeEWVM.TopoNode.Properties.Add(referenceInstance);
                 }
                 else // 基本类型

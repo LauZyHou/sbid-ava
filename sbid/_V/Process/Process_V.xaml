@@ -25,14 +25,20 @@
       <ListBox.ItemTemplate>
         <DataTemplate>
           <!--使用多源绑定-->
-          <TextBlock>
+          <!--<TextBlock>
             <TextBlock.Text>
               <MultiBinding StringFormat=" {0} {1};">
                 <Binding Path="Type.Name"/>
                 <Binding Path="Identifier"/>
               </MultiBinding>
             </TextBlock.Text>
-          </TextBlock>
+          </TextBlock>-->
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Type.Name}"/>
+            <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
+            <TextBlock Text=" "/>
+            <TextBlock Text="{Binding Identifier}"/>
+          </StackPanel>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
@@ -44,7 +50,7 @@
         <DataTemplate>
           <TextBlock>
             <TextBlock.Text>
-              <MultiBinding StringFormat=" {0} {1}({2});[{3}]">
+              <MultiBinding StringFormat=" {0} {1}({2})[{3}]">
                 <Binding Path="ReturnType.Name"/>
                 <Binding Path="Name"/>
                 <Binding Path="ParamString"/>
@@ -63,7 +69,7 @@
         <DataTemplate>
           <TextBlock>
             <TextBlock.Text>
-              <MultiBinding StringFormat=" {0}({1});[{2}][{3}]">
+              <MultiBinding StringFormat=" {0}({1})[{2}][{3}]">
                 <Binding Path="Name"/>
                 <Binding Path="ParamString"/>
                 <Binding Path="InOutSuffix"/>

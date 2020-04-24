@@ -15,11 +15,6 @@ namespace sbid._M
         {
         }
 
-        public ValueInstance(Type type, string identifier, bool isArray)
-            : base(type, identifier, isArray)
-        {
-        }
-
         // 因为是基本类型，所以有一个值，这里用字符串模拟
         public string Value { get => _value; set => this.RaiseAndSetIfChanged(ref _value, value); }
     }
