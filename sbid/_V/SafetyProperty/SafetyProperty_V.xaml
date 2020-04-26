@@ -15,7 +15,7 @@
 
   <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text=" SafetyProperty " FontWeight="Bold"/>
+      <TextBlock Text=" 功能安全性质 " FontWeight="Bold"/>
       <TextBlock Text="{Binding SafetyProperty.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
@@ -29,7 +29,7 @@
       </ListBox.ItemTemplate>
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
-    <TextBlock Grid.Row="5" Text=" Invariant:"/>
+    <TextBlock Grid.Row="5" Text=" 不变性:"/>
     <ListBox Grid.Row="6" Items="{Binding SafetyProperty.Invariants}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>

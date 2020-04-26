@@ -15,7 +15,7 @@
 
   <Grid RowDefinitions="20,1,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="100">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text=" InitialKnowledge " FontWeight="Bold"/>
+      <TextBlock Text=" 初始知识 " FontWeight="Bold"/>
       <TextBlock Text="(全局)" IsVisible="{Binding InitialKnowledge.IsGlobal}"/>
       <!--当不是全局的时候，这里要显示关联的Process的名称-->
       <TextBlock Text="{Binding InitialKnowledge.Process.Name}" IsVisible="{Binding !InitialKnowledge.IsGlobal}"/>

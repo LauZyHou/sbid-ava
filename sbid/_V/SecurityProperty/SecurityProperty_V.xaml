@@ -15,11 +15,11 @@
 
   <Grid RowDefinitions="20,1,15,*,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text=" SecurityProperty " FontWeight="Bold"/>
+      <TextBlock Text=" 信息安全性质 " FontWeight="Bold"/>
       <TextBlock Text="{Binding SecurityProperty.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
-    <TextBlock Grid.Row="2" Text=" Confidential:"/>
+    <TextBlock Grid.Row="2" Text=" 机密性:"/>
     <ListBox Grid.Row="3" Items="{Binding SecurityProperty.Confidentials}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
@@ -36,7 +36,7 @@
       </ListBox.ItemTemplate>
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
-    <TextBlock Grid.Row="5" Text=" Authenticity:"/>
+    <TextBlock Grid.Row="5" Text=" 认证性:"/>
     <ListBox Grid.Row="6" Items="{Binding SecurityProperty.Authenticities}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
@@ -59,7 +59,7 @@
       </ListBox.ItemTemplate>
     </ListBox>
     <TextBlock Grid.Row="7" Background="Black"/>
-    <TextBlock Grid.Row="8" Text=" Integrity:"/>
+    <TextBlock Grid.Row="8" Text=" 完整性:"/>
     <ListBox Grid.Row="9" Items="{Binding SecurityProperty.Integrities}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>

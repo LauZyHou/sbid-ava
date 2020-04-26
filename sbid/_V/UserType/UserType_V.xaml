@@ -16,15 +16,15 @@
   <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="120" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <!--这里用Type.Basic的真值实现Type和UserType的不同样式-->
-      <TextBlock Text=" Type " FontWeight="Bold" IsVisible="{Binding Type.Basic}"/>
-      <TextBlock Text=" UserType " FontWeight="Bold" IsVisible="{Binding !Type.Basic}"/>
+      <TextBlock Text=" 基本类型 " FontWeight="Bold" IsVisible="{Binding Type.Basic}"/>
+      <TextBlock Text=" 复合类型 " FontWeight="Bold" IsVisible="{Binding !Type.Basic}"/>
       <TextBlock Text="{Binding Type.Name}"/>
-      <TextBlock Text=" : " FontWeight="Bold" IsVisible="{Binding Type.Extend}"/>
+      <TextBlock Text=" 继承 " FontWeight="Bold" IsVisible="{Binding Type.Extend}"/>
       <TextBlock Text="{Binding Type.Parent.Name}" IsVisible="{Binding Type.Extend}"/>
       <TextBlock Text=" "/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
-    <TextBlock Grid.Row="2" Text=" Attribute:" IsVisible="{Binding !Type.Basic}"/>
+    <TextBlock Grid.Row="2" Text=" 属性:" IsVisible="{Binding !Type.Basic}"/>
     <ListBox Grid.Row="3" Items="{Binding Type.Attributes}" IsEnabled="False" IsVisible="{Binding !Type.Basic}"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
@@ -48,7 +48,7 @@
       </ListBox.ItemTemplate>
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black" IsVisible="{Binding !Type.Basic}"/>
-    <TextBlock Grid.Row="5" Text=" Method:" IsVisible="{Binding !Type.Basic}"/>
+    <TextBlock Grid.Row="5" Text=" 方法:" IsVisible="{Binding !Type.Basic}"/>
     <ListBox Grid.Row="6" Items="{Binding Type.Methods}" IsEnabled="False" IsVisible="{Binding !Type.Basic}"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
     </ListBox>

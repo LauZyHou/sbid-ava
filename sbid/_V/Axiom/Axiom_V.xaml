@@ -15,11 +15,11 @@
 
   <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="110" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text=" Axiom " FontWeight="Bold"/>
+      <TextBlock Text=" 公理 " FontWeight="Bold"/>
       <TextBlock Text="{Binding Axiom.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
-    <TextBlock Grid.Row="2" Text=" Method:"/>
+    <TextBlock Grid.Row="2" Text=" 方法:"/>
     <ListBox Grid.Row="3" Items="{Binding Axiom.ProcessMethods}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
@@ -37,7 +37,7 @@
       </ListBox.ItemTemplate>
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
-    <TextBlock Grid.Row="5" Text=" Formula:"/>
+    <TextBlock Grid.Row="5" Text=" 公式:"/>
     <ListBox Grid.Row="6" Items="{Binding Axiom.Formulas}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
