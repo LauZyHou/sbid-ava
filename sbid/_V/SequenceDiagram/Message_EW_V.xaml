@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="70" Width="250" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Message_EW_V"
-        Title="编辑Message">
+        Title="编辑消息">
   <Design.DataContext>
     <vm:Message_EW_VM/>
   </Design.DataContext>
@@ -20,7 +20,7 @@
   </Window.Styles>
 
   <StackPanel Margin="10,7">
-    <TextBlock Text="选择可用的CommMethod："/>
+    <TextBlock Text="选择可用的通信方法："/>
     <ComboBox Name="commMethod_ComboBox" Items="{Binding CommMethods}"
                     SelectedItem="{Binding CommMessage.CommMethod, Mode=TwoWay}">
       <ComboBox.ItemTemplate>

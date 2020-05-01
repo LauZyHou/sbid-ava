@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="300" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.SafetyProperty_EW_V"
-        Title="编辑SafetyProperty">
+        Title="编辑功能安全性质">
 
   <Design.DataContext>
     <vm:SafetyProperty_EW_VM/>
@@ -29,7 +29,7 @@
     <TabItem Header="元信息">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock Text="SafetyProperty名称：" FontSize="18"/>
+          <TextBlock Text="类图名称：" FontSize="18"/>
           <TextBox Text="{Binding SafetyProperty.Name, Mode=TwoWay}"/>
         </StackPanel>
       </StackPanel>
@@ -54,7 +54,7 @@
         </ListBox>
       </Grid>
     </TabItem>
-    <TabItem Header="Invariant">
+    <TabItem Header="不变性">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="不变性条件：" FontSize="17"/>

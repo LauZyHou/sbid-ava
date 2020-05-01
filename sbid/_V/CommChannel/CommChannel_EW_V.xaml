@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="300" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.CommChannel_EW_V"
-        Title="编辑CommChannel">
+        Title="编辑信道">
 
   <Design.DataContext>
     <vm:CommChannel_EW_VM/>
@@ -35,12 +35,12 @@
     <TabItem Header="元信息">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock Text="CommChannel名称：" FontSize="18"/>
+          <TextBlock Text="信道名称：" FontSize="18"/>
           <TextBox Text="{Binding CommChannel.Name, Mode=TwoWay}"/>
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="CommMethodPair">
+    <TabItem Header="通信方法序对">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="发送方进程模板：" FontSize="17"/>

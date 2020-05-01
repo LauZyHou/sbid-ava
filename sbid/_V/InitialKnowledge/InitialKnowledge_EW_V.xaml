@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="300" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.InitialKnowledge_EW_V"
-        Title="编辑InitialKnowledge">
+        Title="编辑初始知识">
 
   <Design.DataContext>
     <vm:InitialKnowledge_EW_VM/>
@@ -43,7 +43,7 @@
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="KnowledgePair">
+    <TabItem Header="知识序偶">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="进程模板：" FontSize="17"/>
@@ -55,7 +55,7 @@
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
-          <TextBlock Text="进程模板下的Attribute：" FontSize="17"/>
+          <TextBlock Text="进程模板下的属性：" FontSize="17"/>
           <ListBox Name="attribute_ListBox" Height="82" Items="{Binding #process_ListBox.SelectedItem.Attributes}"
                    SelectedItem="{Binding #knowledgePair_ListBox.SelectedItem.Attribute, Mode=OneWay}">
             <ListBox.ItemTemplate>

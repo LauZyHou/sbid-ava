@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="300" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Axiom_EW_V"
-        Title="编辑Axiom">
+        Title="编辑公理">
 
   <Design.DataContext>
     <vm:Axiom_EW_VM/>
@@ -32,12 +32,12 @@
     <TabItem Header="元信息">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock Text="公理名：" FontSize="18"/>
+          <TextBlock Text="类图名称：" FontSize="18"/>
           <TextBox Text="{Binding Axiom.Name, Mode=TwoWay}"/>
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="Method">
+    <TabItem Header="方法">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="进程模板：" FontSize="17"/>
@@ -49,7 +49,7 @@
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
-          <TextBlock Text="方法：" FontSize="17"/>
+          <TextBlock Text="引自方法：" FontSize="17"/>
           <ListBox Name="method_ListBox" Items="{Binding #process_ListBox.SelectedItem.Methods, Mode=OneWay}" Height="80"
                    SelectedItem="{Binding #processMethod_ListBox.SelectedItem.Method, Mode=OneWay}">
             <ListBox.ItemTemplate>
@@ -90,7 +90,7 @@
         </ListBox>
       </Grid>
     </TabItem>
-    <TabItem Header="Formula">
+    <TabItem Header="公式">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="内置公理(无需操作)：" FontSize="17"/>

@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="300" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.TopoNode_EW_V"
-        Title="编辑TopoNode">
+        Title="编辑拓扑节点">
 
   <Design.DataContext>
     <vm:TopoNode_EW_VM/>

@@ -5,9 +5,9 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="70" Width="200" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.ObjLifeLine_EW_V"
-        Title="编辑ObjLifeLine">
+        Title="编辑对象-生命线">
   <Design.DataContext>
-    <vm:ObjLifeLine_VM/>
+    <vm:ObjLifeLine_EW_VM/>
   </Design.DataContext>
 
   <Window.Styles>

@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="360" Width="560" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.SecurityProperty_EW_V"
-        Title="编辑SecurityProperty">
+        Title="编辑信息安全性质">
   <Design.DataContext>
     <vm:SecurityProperty_EW_VM/>
   </Design.DataContext>
@@ -36,13 +36,13 @@
     <TabItem Header="元信息">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock Text="SecurityProperty名称：" FontSize="18"/>
+          <TextBlock Text="类图名称：" FontSize="18"/>
           <TextBox Text="{Binding SecurityProperty.Name, Mode=TwoWay}" MinWidth="60"/>
         </StackPanel>
       </StackPanel>
     </TabItem>
     <!--保密性-->
-    <TabItem Header="Confidential">
+    <TabItem Header="机密性">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="进程模板：" FontSize="17"/>
@@ -94,7 +94,7 @@
       </Grid>
     </TabItem>
     <!--认证性-->
-    <TabItem Header="Authenticity">
+    <TabItem Header="认证性">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <StackPanel Classes="HoriStack">
@@ -215,7 +215,7 @@
       </Grid>
     </TabItem>
     <!--完整性-->
-    <TabItem Header="Integrity">
+    <TabItem Header="完整性">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <StackPanel Classes="HoriStack">

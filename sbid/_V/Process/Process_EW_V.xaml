@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="402" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Process_EW_V"
-        Title="编辑Process">
+        Title="编辑进程模板">
 
   <Design.DataContext>
     <vm:Process_EW_VM/>
@@ -38,12 +38,12 @@
     <TabItem Header="元信息">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock Text="自定义类型名：" FontSize="18"/>
+          <TextBlock Text="进程模板名：" FontSize="18"/>
           <TextBox Text="{Binding Process.Name, Mode=TwoWay}"/>
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="Attribute">
+    <TabItem Header="属性">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="变量类型：" FontSize="17"/>
@@ -87,7 +87,7 @@
         </ListBox>
       </Grid>
     </TabItem>
-    <TabItem Header="内置Method">
+    <TabItem Header="内置方法">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="内置方法：" FontSize="17"/>
@@ -120,7 +120,7 @@
         </ListBox>
       </Grid>
     </TabItem>
-    <TabItem Header="自定Method">
+    <TabItem Header="自定方法">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="返回类型：" FontSize="17"/>
@@ -202,7 +202,7 @@
         </ListBox>
       </Grid>
     </TabItem>
-    <TabItem Header="CommMethod">
+    <TabItem Header="通信方法">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="通信方式：" FontSize="17"/>

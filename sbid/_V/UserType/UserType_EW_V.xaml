@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="352" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.UserType_EW_V"
-        Title="编辑UserType">
+        Title="编辑自定义类型">
 
   <Design.DataContext>
     <vm:UserType_EW_VM/>
@@ -56,7 +56,7 @@
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="Attribute">
+    <TabItem Header="属性">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="变量类型：" FontSize="17"/>
@@ -101,7 +101,7 @@
         </ListBox>
       </Grid>
     </TabItem>
-    <TabItem Header="Method">
+    <TabItem Header="方法">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="返回类型：" FontSize="17"/>
