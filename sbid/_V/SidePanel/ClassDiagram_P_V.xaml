@@ -22,13 +22,13 @@
               <!--右键菜单行为，这里是要传入鼠标位置的-->
               <Canvas.ContextMenu>
                 <ContextMenu>
-                  <MenuItem Header="创建UserType" Command="{Binding $parent[UserControl].CreateUserTypeVM}"/>
-                  <MenuItem Header="创建Process" Command="{Binding $parent[UserControl].CreateProcessVM}"/>
-                  <MenuItem Header="创建Axiom" Command="{Binding $parent[UserControl].CreateAxiomVM}"/>
-                  <MenuItem Header="创建Initial Knowledge" Command="{Binding $parent[UserControl].CreateInitialKnowledgeVM}"/>
-                  <MenuItem Header="创建SafetyProperty" Command="{Binding $parent[UserControl].CreateSafetyPropertyVM}"/>
-                  <MenuItem Header="创建SecurityProperty" Command="{Binding $parent[UserControl].CreateSecurityPropertyVM}"/>
-                  <MenuItem Header="创建CommChannel" Command="{Binding $parent[UserControl].CreateCommChannelVM}"/>
+                  <MenuItem Header="创建自定义复合类型" Command="{Binding $parent[UserControl].CreateUserTypeVM}"/>
+                  <MenuItem Header="创建进程模板" Command="{Binding $parent[UserControl].CreateProcessVM}"/>
+                  <MenuItem Header="创建公理" Command="{Binding $parent[UserControl].CreateAxiomVM}"/>
+                  <MenuItem Header="创建初始知识" Command="{Binding $parent[UserControl].CreateInitialKnowledgeVM}"/>
+                  <MenuItem Header="创建功能安全性质" Command="{Binding $parent[UserControl].CreateSafetyPropertyVM}"/>
+                  <MenuItem Header="创建信息安全性质" Command="{Binding $parent[UserControl].CreateSecurityPropertyVM}"/>
+                  <MenuItem Header="创建信道" Command="{Binding $parent[UserControl].CreateCommChannelVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>

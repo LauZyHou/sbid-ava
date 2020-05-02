@@ -636,7 +636,7 @@ namespace sbid._VM
                             }
                             xmlWriter.WriteEndElement();
                         }
-                        else if (vm is Message_VM) // 这是消息的基类,具体要创建的标签取决于具体消息类型
+                        else if (vm is Message_VM) // 这是消息的基类，具体要创建的标签取决于具体消息类型
                         {
                             Message_VM message_VM = (Message_VM)vm;
                             if (vm is SyncMessage_VM)
@@ -669,6 +669,62 @@ namespace sbid._VM
                                 xmlWriter.WriteAttributeString("commMethod_ref", "-1");
                             xmlWriter.WriteAttributeString("source_ref", message_VM.Source.Id.ToString()); // 源锚点
                             xmlWriter.WriteAttributeString("dest_ref", message_VM.Dest.Id.ToString()); // 目标锚点
+                            xmlWriter.WriteEndElement();
+                        }
+                    }
+                    xmlWriter.WriteEndElement();
+                }
+                xmlWriter.WriteEndElement();
+                #endregion
+
+                #region 拓扑图面板
+                xmlWriter.WriteStartElement("TopoGraph_P_VMs");
+                ObservableCollection<SidePanel_VM> topoGrapgh_P_VMs = protocolVM.PanelVMs[2].SidePanelVMs; // 所有的拓扑图
+                foreach (SidePanel_VM sidePanel_VM in topoGrapgh_P_VMs)
+                {
+                    TopoGraph_P_VM topoGraph_P_VM = (TopoGraph_P_VM)sidePanel_VM;
+                    xmlWriter.WriteStartElement("TopoGraph_P_VM");
+                    xmlWriter.WriteAttributeString("name", topoGraph_P_VM.Name);
+                    foreach (ViewModelBase vm in topoGraph_P_VM.UserControlVMs) // 拓扑结点 或 拓扑连线
+                    {
+                        if (vm is TopoNode_VM) // 拓扑结点
+                        {
+                            TopoNode_VM topoNode_VM = (TopoNode_VM)vm;
+                            xmlWriter.WriteStartElement("TopoNode_VM");
+                            xmlWriter.WriteAttributeString("x", topoNode_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", topoNode_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("name", topoNode_VM.TopoNode.Name);
+                            if (topoNode_VM.TopoNode.Process != null) // 设了Process
+                                xmlWriter.WriteAttributeString("process_ref", topoNode_VM.TopoNode.Process.Id.ToString());
+                            else // 还没设Process
+                                xmlWriter.WriteAttributeString("process_ref", "-1");
+                            foreach (Connector_VM connector_VM in topoNode_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            // todo Instance的保存
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is TopoLink_VM) // 这是拓扑连线的基类,具体要创建的标签取决于具体连线类型
+                        {
+                            TopoLink_VM topoLink_VM = (TopoLink_VM)vm;
+                            if (topoLink_VM is OneWayTopoLink_VM)
+                            {
+                                xmlWriter.WriteStartElement("OneWayTopoLink_VM");
+                            }
+                            else if (topoLink_VM is TwoWayTopoLink_VM)
+                            {
+                                xmlWriter.WriteStartElement("TwoWayTopoLink_VM");
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                            xmlWriter.WriteAttributeString("content", topoLink_VM.TopoLink.Content); // 线上内容，即TopoLink对象唯一字段
+                            xmlWriter.WriteAttributeString("source_ref", topoLink_VM.Source.Id.ToString()); // 源锚点
+                            xmlWriter.WriteAttributeString("dest_ref", topoLink_VM.Dest.Id.ToString()); // 目标锚点
                             xmlWriter.WriteEndElement();
                         }
                     }
@@ -1744,6 +1800,95 @@ namespace sbid._VM
                     }
                     sequenceDiagram_P_VMs.Add(sequenceDiagram_P_VM);
                     protocolVM.PanelVMs[5].SelectedItem = sequenceDiagram_P_VM; // fixme 改成记录SelectedItem
+                }
+                #endregion
+
+                #region 拓扑图面板
+                xmlNode = doc.SelectSingleNode("Protocol_VM/TopoGraph_P_VMs");
+                nodeList = xmlNode.ChildNodes;
+                ObservableCollection<SidePanel_VM> topoGraph_P_VMs = protocolVM.PanelVMs[2].SidePanelVMs;
+                foreach (XmlNode node in nodeList) // <TopoGraph_P_VM name="拓扑图1">
+                {
+                    XmlElement element = (XmlElement)node;
+                    TopoGraph_P_VM topoGraph_P_VM = new TopoGraph_P_VM();
+                    topoGraph_P_VM.Name = element.GetAttribute("name");
+                    Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
+                    foreach (XmlNode topoChildNode in node.ChildNodes) // TopoNode_VM 和 各类TopoLink_VM
+                    {
+                        XmlElement tcElement = (XmlElement)topoChildNode;
+                        if (topoChildNode.Name == "TopoNode_VM")
+                        {
+                            double x = double.Parse(tcElement.GetAttribute("x"));
+                            double y = double.Parse(tcElement.GetAttribute("y"));
+                            TopoNode_VM topoNode_VM = new TopoNode_VM(x, y);
+                            topoNode_VM.TopoNode.Name = tcElement.GetAttribute("name");
+                            // 处理引用的进程模板
+                            int processRef = int.Parse(tcElement.GetAttribute("process_ref"));
+                            if (processRef == -1)
+                            {
+                                // nothing to do
+                            }
+                            else if (!processVMDict.ContainsKey(processRef))
+                            {
+                                Tips = "[解析TopoNode_VM时出错]无法找到引用的进程模板！";
+                                cleanProject();
+                                return false;
+                            }
+                            else
+                            {
+                                topoNode_VM.TopoNode.Process = processVMDict[processRef].Process;
+                            }
+                            // 处理锚点
+                            if (topoNode_VM.ConnectorVMs.Count != tcElement.ChildNodes.Count)
+                            {
+                                Tips = "[解析TopoNode_VM时出错]锚点数量和系统要求不一致！";
+                                cleanProject();
+                                return false;
+                            }
+                            // 锚点记录到字典里
+                            for (int j = 0; j < topoNode_VM.ConnectorVMs.Count; j++)
+                            {
+                                XmlNode connectorNode = tcElement.ChildNodes[j];
+                                XmlElement connectorElement = (XmlElement)connectorNode;
+                                int id = int.Parse(connectorElement.GetAttribute("id"));
+                                topoNode_VM.ConnectorVMs[j].Id = id;
+                                connectorDict.Add(id, topoNode_VM.ConnectorVMs[j]);
+                            }
+                            topoGraph_P_VM.UserControlVMs.Add(topoNode_VM);
+                        }
+                        else
+                        {
+                            TopoLink_VM topoLink_VM = null;
+                            switch (topoChildNode.Name)
+                            {
+                                case "OneWayTopoLink_VM":
+                                    topoLink_VM = new OneWayTopoLink_VM();
+                                    break;
+                                case "TwoWayTopoLink_VM":
+                                    topoLink_VM = new TwoWayTopoLink_VM();
+                                    break;
+                            }
+                            if (topoLink_VM != null)
+                            {
+                                topoLink_VM.TopoLink.Content = tcElement.GetAttribute("content");
+                                int sourceRef = int.Parse(tcElement.GetAttribute("source_ref"));
+                                int destRef = int.Parse(tcElement.GetAttribute("dest_ref"));
+                                if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
+                                {
+                                    Tips = "[解析TopoLink_VM时出错]无法找到某端的锚点！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                topoLink_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
+                                topoLink_VM.Dest = connectorDict[destRef];
+                                connectorDict[sourceRef].ConnectionVM = topoLink_VM; // 从锚点反引连线
+                                connectorDict[destRef].ConnectionVM = topoLink_VM;
+                                topoGraph_P_VM.UserControlVMs.Add(topoLink_VM);
+                            }
+                        }
+                    }
+                    topoGraph_P_VMs.Add(topoGraph_P_VM);
+                    protocolVM.PanelVMs[2].SelectedItem = topoGraph_P_VM; // fixme 改成记录SelectedItem
                 }
                 #endregion
             }
