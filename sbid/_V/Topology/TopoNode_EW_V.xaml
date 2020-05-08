@@ -40,6 +40,13 @@
       <Setter Property="Foreground" Value="Blue"/>
       <Setter Property="TextAlignment" Value="Center"/>
     </Style>
+    <Style Selector="TreeView Button">
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Width" Value="15"/>
+      <Setter Property="Height" Value="15"/>
+    </Style>
   </Window.Styles>
 
   <Grid ColumnDefinitions="30*,70*" Margin="10">
@@ -66,7 +73,15 @@
           <TreeDataTemplate DataType="m:ReferenceInstance" ItemsSource="{Binding Properties}">
             <TextBlock Text="{Binding .}"/>
           </TreeDataTemplate>
-          <!--值类型为叶子-->
+          <!--引用数组类型可添加数组项-->
+          <TreeDataTemplate DataType="m:ReferenceArrayInstance" ItemsSource="{Binding ArrayItems}">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding .}"/>
+              <Button Command="{Binding AddItem}">+</Button>
+              <Button Command="{Binding RemoveItem}">-</Button>
+            </StackPanel>
+          </TreeDataTemplate>
+          <!--值类型或值类型数组为叶子-->
           <DataTemplate DataType="m:ValueInstance">
             <StackPanel Orientation="Horizontal">
               <TextBlock Text="{Binding .}"/>
