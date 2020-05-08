@@ -24,7 +24,13 @@ namespace sbid._M
         // 添加数组项
         public void AddItem()
         {
-            Attribute attribute = new Attribute(this.Type, this.Identifier + "[" + index++ + "]");
+            // 注意这里创建的是临时Attribute
+            Attribute attribute = new Attribute(
+                this.Type,
+                this.Identifier + "[" + index++ + "]",
+                false,
+                true
+            );
             ReferenceInstance referenceInstance = ReferenceInstance.build(attribute);
             this.arrayItems.Add(referenceInstance);
         }

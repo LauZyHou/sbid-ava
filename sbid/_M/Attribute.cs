@@ -14,13 +14,19 @@ namespace sbid._M
         private bool isArray;
         private int id;
 
-        public Attribute(Type type, string identifier, bool isArray = false)
+        public Attribute(Type type, string identifier, bool isArray = false, bool isTemp = false)
         {
             this.type = type;
             this.identifier = identifier;
             this.isArray = isArray;
-            _id++;
-            this.id = _id;
+            // 一般在创建时都不是临时的Attribute
+            // 但有的时候只是需要创建一个临时的，而不可能保存他
+            // 临时的Attribute不会占用新的_id号
+            if (!isTemp)
+            {
+                _id++;
+                this.id = _id;
+            }
         }
         
         public Attribute(Attribute attribute)
