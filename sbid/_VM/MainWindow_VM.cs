@@ -7,6 +7,7 @@ using sbid._M;
 using Avalonia.Controls;
 using System.Threading.Tasks;
 using System.Xml;
+using Avalonia.Media;
 
 namespace sbid._VM
 {
@@ -694,6 +695,7 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("x", topoNode_VM.X.ToString());
                             xmlWriter.WriteAttributeString("y", topoNode_VM.Y.ToString());
                             xmlWriter.WriteAttributeString("name", topoNode_VM.TopoNode.Name);
+                            xmlWriter.WriteAttributeString("color", topoNode_VM.TopoNode.Color.ToString());
                             if (topoNode_VM.TopoNode.Process != null) // 设了Process
                                 xmlWriter.WriteAttributeString("process_ref", topoNode_VM.TopoNode.Process.Id.ToString());
                             else // 还没设Process
@@ -1822,6 +1824,24 @@ namespace sbid._VM
                             double y = double.Parse(tcElement.GetAttribute("y"));
                             TopoNode_VM topoNode_VM = new TopoNode_VM(x, y);
                             topoNode_VM.TopoNode.Name = tcElement.GetAttribute("name");
+                            switch (tcElement.GetAttribute("color"))
+                            {
+                                case "LightPink":
+                                    topoNode_VM.TopoNode.Color = Brushes.LightPink;
+                                    break;
+                                case "LightBlue":
+                                    topoNode_VM.TopoNode.Color = Brushes.LightBlue;
+                                    break;
+                                case "LightGreen":
+                                    topoNode_VM.TopoNode.Color = Brushes.LightGreen;
+                                    break;
+                                case "LightYellow":
+                                    topoNode_VM.TopoNode.Color = Brushes.LightYellow;
+                                    break;
+                                case "LightCyan":
+                                    topoNode_VM.TopoNode.Color = Brushes.LightCyan;
+                                    break;
+                            }
                             // 处理引用的进程模板
                             int processRef = int.Parse(tcElement.GetAttribute("process_ref"));
                             if (processRef == -1)

@@ -19,11 +19,6 @@
     <Style Selector="StackPanel > TextBlock">
       <Setter Property="FontSize" Value="17"/>
     </Style>
-    <Style Selector="Button">
-      <Setter Property="Width" Value="50"/>
-      <Setter Property="Height" Value="30"/>
-      <Setter Property="Margin" Value="7,5"/>
-    </Style>
     <Style Selector="ComboBox">
       <Setter Property="Height" Value="25"/>
     </Style>
@@ -53,8 +48,8 @@
     <StackPanel Grid.Column="0">
       <TextBlock Text="结点名："/>
       <TextBox Text="{Binding TopoNode.Name}"/>
-      <TextBlock Text="结点类型(todo)："/>
-      <ComboBox/>
+      <TextBlock Text="结点颜色："/>
+      <ComboBox Name="color_ComboBox" SelectedItem="{Binding TopoNode.Color}"/>
     </StackPanel>
     <StackPanel Grid.Column="1">
       <TextBlock Text="进程模板例化："/>

@@ -73,7 +73,9 @@ namespace sbid._V
         // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
         private void init_binding()
         {
-            // todo 绑定枚举
+            // 绑定结点颜色枚举
+            ComboBox color_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "color_ComboBox");
+            color_ComboBox.Items = TopoNode.NodeColors;
         }
 
         // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
