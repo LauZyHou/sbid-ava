@@ -26,16 +26,16 @@ namespace sbid._M
             ReferenceInstance referenceInstance = new ReferenceInstance(attribute);
             foreach (Attribute attr in ((UserType)attribute.Type).Attributes)
             {
-                Instance instance = null;
-                if (attr.Type is UserType && attr.IsArray) // 引用类型数组
+                Instance instance;
+                if (attr.IsArray) // 数组
                 {
-                    instance = new ReferenceArrayInstance(attr);
+                    instance = new ArrayInstance(attr);
                 }
-                else if (attr.Type is UserType) // 引用类型对象
+                else if (attr.Type is UserType) // 引用类型
                 {
                     instance = ReferenceInstance.build(attr);
                 }
-                else // 值类型 或 值类型数组
+                else // 值类型
                 {
                     instance = new ValueInstance(attr);
                 }

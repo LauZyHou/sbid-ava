@@ -47,21 +47,20 @@ namespace sbid._V
             // 构造这个属性列表
             foreach (Attribute attribute in process.Attributes)
             {
-                if (attribute.Type is UserType && attribute.IsArray) // 引用类型数组
+                Instance instance;
+                if (attribute.IsArray) // 数组
                 {
-                    ReferenceArrayInstance referenceArrayInstance = new ReferenceArrayInstance(attribute);
-                    TopoNodeEWVM.TopoNode.Properties.Add(referenceArrayInstance);
+                    instance = new ArrayInstance(attribute);
                 }
                 else if (attribute.Type is UserType) // 引用类型
                 {
-                    ReferenceInstance referenceInstance = ReferenceInstance.build(attribute);
-                    TopoNodeEWVM.TopoNode.Properties.Add(referenceInstance);
+                    instance = ReferenceInstance.build(attribute);
                 }
-                else // 基本类型
+                else // 值类型
                 {
-                    ValueInstance valueInstance = new ValueInstance(attribute);
-                    TopoNodeEWVM.TopoNode.Properties.Add(valueInstance);
+                    instance = new ValueInstance(attribute);
                 }
+                TopoNodeEWVM.TopoNode.Properties.Add(instance);
             }
             ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.Name + "]，例化对象已重新生成";
         }
