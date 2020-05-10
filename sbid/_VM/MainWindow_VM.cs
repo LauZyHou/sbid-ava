@@ -1824,24 +1824,7 @@ namespace sbid._VM
                             double y = double.Parse(tcElement.GetAttribute("y"));
                             TopoNode_VM topoNode_VM = new TopoNode_VM(x, y);
                             topoNode_VM.TopoNode.Name = tcElement.GetAttribute("name");
-                            switch (tcElement.GetAttribute("color"))
-                            {
-                                case "LightPink":
-                                    topoNode_VM.TopoNode.Color = Brushes.LightPink;
-                                    break;
-                                case "LightBlue":
-                                    topoNode_VM.TopoNode.Color = Brushes.LightBlue;
-                                    break;
-                                case "LightGreen":
-                                    topoNode_VM.TopoNode.Color = Brushes.LightGreen;
-                                    break;
-                                case "LightYellow":
-                                    topoNode_VM.TopoNode.Color = Brushes.LightYellow;
-                                    break;
-                                case "LightCyan":
-                                    topoNode_VM.TopoNode.Color = Brushes.LightCyan;
-                                    break;
-                            }
+                            topoNode_VM.TopoNode.Color = Brush.Parse(tcElement.GetAttribute("color"));
                             // 处理引用的进程模板
                             int processRef = int.Parse(tcElement.GetAttribute("process_ref"));
                             if (processRef == -1)

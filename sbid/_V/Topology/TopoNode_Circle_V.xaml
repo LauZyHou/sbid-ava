@@ -5,17 +5,17 @@
              xmlns:v="clr-namespace:sbid._V;assembly=sbid"
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
              Height="65" Width="65"
-             x:Class="sbid._V.TopoNode_V">
+             x:Class="sbid._V.TopoNode_Circle_V">
   <Design.DataContext>
-    <vm:TopoNode_VM/>
+    <vm:TopoNode_Circle_VM/>
   </Design.DataContext>
 
   <Grid Width="56" Height="56">
     <Ellipse Fill="{Binding TopoNode.Color}" Stroke="Black" StrokeThickness="2"/>
-    <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1"
-          ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1">
-      <TextBlock Text="{Binding TopoNode.Name}" Grid.Row="1" Grid.Column="1" 
-                 Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" 
+    <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,2"
+          ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,2">
+      <TextBlock Text="{Binding TopoNode.Name}" Grid.Row="1" Grid.Column="1"
+                 Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center"
                  VerticalAlignment="Center" HorizontalAlignment="Center"
                  Foreground="Black" FontSize="12" TextWrapping="Wrap"/>
       <!--锚点顺时针排列-->

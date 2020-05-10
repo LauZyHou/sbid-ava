@@ -15,14 +15,14 @@ namespace sbid._VM
 
         public TopoNode_VM()
         {
-            init();
+            //init();
         }
 
         public TopoNode_VM(double x, double y)
         {
             X = x;
             Y = y;
-            init();
+            //init();
         }
 
         public TopoNode TopoNode { get => topoNode; }
@@ -64,6 +64,7 @@ namespace sbid._VM
 
         #endregion
 
+        /*
         #region 私有
 
         // 辅助构造
@@ -106,5 +107,6 @@ namespace sbid._VM
         }
 
         #endregion
+        */
     }
 }

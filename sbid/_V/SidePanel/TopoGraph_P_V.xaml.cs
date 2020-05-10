@@ -70,6 +70,22 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "添加了拓扑结点";
         }
 
+        // 创建圆形拓扑结点
+        public void CreateTopoNodeCircleVM()
+        {
+            TopoNode_Circle_VM topoNode_Circle_VM = new TopoNode_Circle_VM(mousePos.X, mousePos.Y);
+            TopoGraphPVM.UserControlVMs.Add(topoNode_Circle_VM);
+            ResourceManager.mainWindowVM.Tips = "添加了拓扑结点(圆形)";
+        }
+
+        // 创建正方形拓扑结点
+        public void CreateTopoNodeSquareVM()
+        {
+            TopoNode_Square_VM topoNode_Square_VM = new TopoNode_Square_VM(mousePos.X, mousePos.Y);
+            TopoGraphPVM.UserControlVMs.Add(topoNode_Square_VM);
+            ResourceManager.mainWindowVM.Tips = "添加了拓扑结点(正方形)";
+        }
+
         #endregion
 
         #region 按钮命令
