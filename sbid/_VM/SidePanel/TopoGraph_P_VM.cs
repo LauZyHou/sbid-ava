@@ -10,9 +10,9 @@ namespace sbid._VM
     {
         public static int _id = 0;
         private Connector_VM activeConnector;
+        private TopoNodeShape topoNodeShape = TopoNodeShape.Circle;
         private TopoLinkType topoLinkType = TopoLinkType.OneWay;
         private bool connectorVisible = true;
-
 
         // 默认构造时使用默认名称
         public TopoGraph_P_VM()
@@ -23,6 +23,8 @@ namespace sbid._VM
 
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
+        // 当且选中的TopoNodeShape枚举
+        public TopoNodeShape TopoNodeShape { get => topoNodeShape; set => this.RaiseAndSetIfChanged(ref topoNodeShape, value); }
         // 当前选中的TopoLinkType枚举
         public TopoLinkType TopoLinkType { get => topoLinkType; set => this.RaiseAndSetIfChanged(ref topoLinkType, value); }
         // 锚点是否可见
@@ -36,7 +38,7 @@ namespace sbid._VM
             // 根据TopoLinkType枚举的类型不同来创建不同的TopoLink
             TopoLink_VM topoLink_VM;
             switch (topoLinkType)
-            { 
+            {
                 case TopoLinkType.OneWay:
                     topoLink_VM = new OneWayTopoLink_VM();
                     break;

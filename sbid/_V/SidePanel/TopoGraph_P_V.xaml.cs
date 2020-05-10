@@ -27,7 +27,10 @@ namespace sbid._V
         // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
         private void init_binding()
         {
-            // 绑定TopoLink类型枚举
+            // 绑定TopoNodeShape枚举
+            ComboBox topoNodeShape_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "topoNodeShape_ComboBox");
+            topoNodeShape_ComboBox.Items = System.Enum.GetValues(typeof(TopoNodeShape));
+            // 绑定TopoLinkType枚举
             ComboBox topoLinkType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "topoLinkType_ComboBox");
             topoLinkType_ComboBox.Items = System.Enum.GetValues(typeof(TopoLinkType));
             // 绑定ConnectorVisible
@@ -65,25 +68,22 @@ namespace sbid._V
         // 创建拓扑结点
         public void CreateTopoNodeVM()
         {
-            TopoNode_VM topoNode_VM = new TopoNode_VM(mousePos.X, mousePos.Y);
+            TopoNode_VM topoNode_VM;
+            switch (TopoGraphPVM.TopoNodeShape)
+            {
+                case TopoNodeShape.Circle:
+                    topoNode_VM = new TopoNode_Circle_VM(mousePos.X, mousePos.Y);
+                    ResourceManager.mainWindowVM.Tips = "添加了拓扑结点(圆形)";
+                    break;
+                case TopoNodeShape.Square:
+                    topoNode_VM = new TopoNode_Square_VM(mousePos.X, mousePos.Y);
+                    ResourceManager.mainWindowVM.Tips = "添加了拓扑结点(正方形)";
+                    break;
+                default:
+                    ResourceManager.mainWindowVM.Tips = "[ERROR]发生在TopoGraph_P_V.xaml.cs";
+                    return;
+            }
             TopoGraphPVM.UserControlVMs.Add(topoNode_VM);
-            ResourceManager.mainWindowVM.Tips = "添加了拓扑结点";
-        }
-
-        // 创建圆形拓扑结点
-        public void CreateTopoNodeCircleVM()
-        {
-            TopoNode_Circle_VM topoNode_Circle_VM = new TopoNode_Circle_VM(mousePos.X, mousePos.Y);
-            TopoGraphPVM.UserControlVMs.Add(topoNode_Circle_VM);
-            ResourceManager.mainWindowVM.Tips = "添加了拓扑结点(圆形)";
-        }
-
-        // 创建正方形拓扑结点
-        public void CreateTopoNodeSquareVM()
-        {
-            TopoNode_Square_VM topoNode_Square_VM = new TopoNode_Square_VM(mousePos.X, mousePos.Y);
-            TopoGraphPVM.UserControlVMs.Add(topoNode_Square_VM);
-            ResourceManager.mainWindowVM.Tips = "添加了拓扑结点(正方形)";
         }
 
         #endregion

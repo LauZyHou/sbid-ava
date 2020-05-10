@@ -12,8 +12,8 @@
   
   <Grid Width="56" Height="56">
     <Ellipse Fill="LightBlue" Stroke="Black" StrokeThickness="2"/>
-    <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1" 
-          ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,1">
+    <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,2" 
+          ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,2">
       <TextBlock Text="{Binding Relation}" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
       <!--锚点顺时针排列-->
       <v:AttackConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="4" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
