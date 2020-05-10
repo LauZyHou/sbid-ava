@@ -695,6 +695,10 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("x", topoNode_VM.X.ToString());
                             xmlWriter.WriteAttributeString("y", topoNode_VM.Y.ToString());
                             xmlWriter.WriteAttributeString("name", topoNode_VM.TopoNode.Name);
+                            if (vm is TopoNode_Circle_VM)
+                                xmlWriter.WriteAttributeString("shape", "Circle");
+                            else if (vm is TopoNode_Square_VM)
+                                xmlWriter.WriteAttributeString("shape", "Square");
                             xmlWriter.WriteAttributeString("color", topoNode_VM.TopoNode.Color.ToString());
                             if (topoNode_VM.TopoNode.Process != null) // 设了Process
                                 xmlWriter.WriteAttributeString("process_ref", topoNode_VM.TopoNode.Process.Id.ToString());
@@ -1822,7 +1826,22 @@ namespace sbid._VM
                         {
                             double x = double.Parse(tcElement.GetAttribute("x"));
                             double y = double.Parse(tcElement.GetAttribute("y"));
-                            TopoNode_VM topoNode_VM = new TopoNode_VM(x, y);
+                            TopoNode_VM topoNode_VM = null;
+                            switch (tcElement.GetAttribute("shape"))
+                            {
+                                case "Circle":
+                                    topoNode_VM = new TopoNode_Circle_VM(x, y);
+                                    break;
+                                case "Square":
+                                    topoNode_VM = new TopoNode_Square_VM(x, y);
+                                    break;
+                            }
+                            if (topoNode_VM == null)
+                            {
+                                Tips = "[解析TopoNode_VM时出错]无法识别的结点形状！";
+                                cleanProject();
+                                return false;
+                            }
                             topoNode_VM.TopoNode.Name = tcElement.GetAttribute("name");
                             topoNode_VM.TopoNode.Color = Brush.Parse(tcElement.GetAttribute("color"));
                             // 处理引用的进程模板
