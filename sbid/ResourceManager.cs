@@ -7,6 +7,7 @@ using sbid._M;
 using sbid._V;
 using sbid._VM;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -65,9 +66,81 @@ namespace sbid
             xmlWriter.WriteAttributeString("id", attr.Id.ToString());
         }
 
+        public static void writeInstance(XmlTextWriter xmlWriter, Instance instance)
+        {
+            xmlWriter.WriteStartElement("Instance");
+            xmlWriter.WriteAttributeString("type_ref", instance.Type.Id.ToString());
+            xmlWriter.WriteAttributeString("identifier", instance.Identifier);
+            xmlWriter.WriteAttributeString("isArray", instance.IsArray.ToString());
+            if (instance is ValueInstance)
+            {
+                ValueInstance valueInstance = (ValueInstance)instance;
+                xmlWriter.WriteAttributeString("value", valueInstance.Value);
+            }
+            else if (instance is ArrayInstance)
+            {
+                ArrayInstance arrayInstance = (ArrayInstance)instance;
+                foreach (Instance inst in arrayInstance.ArrayItems)
+                {
+                    writeInstance(xmlWriter, inst);
+                }
+            }
+            else if (instance is ReferenceInstance)
+            {
+                ReferenceInstance referenceInstance = (ReferenceInstance)instance;
+                foreach (Instance inst in referenceInstance.Properties)
+                {
+                    writeInstance(xmlWriter, inst);
+                }
+            }
+            xmlWriter.WriteEndElement();
+        }
+
         #endregion
 
         #region 读XML的一些接口(项目读取)
+
+        public static Instance readInstance(XmlNode node, Dictionary<int, Type> typeDict)
+        {
+            XmlElement element = (XmlElement)node;
+            int typeRef = int.Parse(element.GetAttribute("type_ref"));
+            Debug.Assert(typeDict.ContainsKey(typeRef));
+            string identifier = element.GetAttribute("identifier");
+            bool isArray = bool.Parse(element.GetAttribute("isArray"));
+            // 使用临时Attribute来构造Instance
+            Attribute attribute = new Attribute(
+                typeDict[typeRef],
+                identifier,
+                isArray,
+                true
+            );
+            if (isArray) // 数组类型，继续解析数组项
+            {
+                ArrayInstance arrayInstance = new ArrayInstance(attribute);
+                foreach (XmlNode childNode in node.ChildNodes)
+                {
+                    Instance itemInstance = readInstance(childNode, typeDict);
+                    arrayInstance.ArrayItems.Add(itemInstance);
+                }
+                return arrayInstance;
+            }
+            else if (typeDict[typeRef] is UserType) // 引用类型，继续解析成员
+            {
+                ReferenceInstance referenceInstance = new ReferenceInstance(attribute);
+                foreach (XmlNode childNode in node.ChildNodes)
+                {
+                    Instance propInstance = readInstance(childNode, typeDict);
+                    referenceInstance.Properties.Add(propInstance);
+                }
+                return referenceInstance;
+            }
+            else // 值类型，要把值读出来
+            {
+                ValueInstance valueInstance = new ValueInstance(attribute);
+                valueInstance.Value = element.GetAttribute("value");
+                return valueInstance;
+            }
+        }
 
         #endregion
     }

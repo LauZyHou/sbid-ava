@@ -710,7 +710,11 @@ namespace sbid._VM
                                 xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
                                 xmlWriter.WriteEndElement();
                             }
-                            // todo Instance的保存
+                            // 例化的各个Instance的保存
+                            foreach (Instance instance in topoNode_VM.TopoNode.Properties)
+                            {
+                                ResourceManager.writeInstance(xmlWriter, instance);
+                            }
                             xmlWriter.WriteEndElement();
                         }
                         else if (vm is TopoLink_VM) // 这是拓扑连线的基类,具体要创建的标签取决于具体连线类型
@@ -1860,21 +1864,33 @@ namespace sbid._VM
                             {
                                 topoNode_VM.TopoNode.Process = processVMDict[processRef].Process;
                             }
-                            // 处理锚点
-                            if (topoNode_VM.ConnectorVMs.Count != tcElement.ChildNodes.Count)
+                            // 处理锚点 和 例化的Instance
+                            int connectorNum = 0; // 用来记录锚点数量
+                            foreach (XmlNode nodeChildNode in topoChildNode.ChildNodes)
                             {
-                                Tips = "[解析TopoNode_VM时出错]锚点数量和系统要求不一致！";
-                                cleanProject();
-                                return false;
-                            }
-                            // 锚点记录到字典里
-                            for (int j = 0; j < topoNode_VM.ConnectorVMs.Count; j++)
-                            {
-                                XmlNode connectorNode = tcElement.ChildNodes[j];
-                                XmlElement connectorElement = (XmlElement)connectorNode;
-                                int id = int.Parse(connectorElement.GetAttribute("id"));
-                                topoNode_VM.ConnectorVMs[j].Id = id;
-                                connectorDict.Add(id, topoNode_VM.ConnectorVMs[j]);
+                                XmlElement nodeChildElement = (XmlElement)nodeChildNode;
+                                switch (nodeChildNode.Name)
+                                {
+                                    case "Connector_VM": // 锚点
+                                        if(connectorNum == topoNode_VM.ConnectorVMs.Count)
+                                        {
+                                            Tips = "[解析TopoNode_VM时出错]锚点数量和系统要求不一致！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int id = int.Parse(nodeChildElement.GetAttribute("id"));
+                                        topoNode_VM.ConnectorVMs[connectorNum].Id = id;
+                                        connectorDict.Add(id, topoNode_VM.ConnectorVMs[connectorNum]);
+                                        connectorNum++;
+                                        break;
+                                    case "Instance": // 例化对象
+                                        topoNode_VM.TopoNode.Properties.Add(ResourceManager.readInstance(nodeChildNode, typeDict));
+                                        break;
+                                    default:
+                                        Tips = "[解析TopoNode_VM时出错]无法识别的子标签！";
+                                        cleanProject();
+                                        return false;
+                                }
                             }
                             topoGraph_P_VM.UserControlVMs.Add(topoNode_VM);
                         }

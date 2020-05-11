@@ -52,7 +52,10 @@
       <ComboBox Name="color_ComboBox" SelectedItem="{Binding TopoNode.Color}"/>
     </StackPanel>
     <StackPanel Grid.Column="1">
-      <TextBlock Text="进程模板例化："/>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="进程模板例化："/>
+        <Button Margin="0" Padding="1" Command="{Binding ReleaseProcess}">清除</Button>
+      </StackPanel>
       <ComboBox Name="process_ComboBox" Items="{Binding Processes}" MinWidth="60"
                     SelectedItem="{Binding TopoNode.Process, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
