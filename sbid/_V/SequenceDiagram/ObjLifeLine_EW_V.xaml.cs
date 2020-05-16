@@ -50,7 +50,7 @@ namespace sbid._V
                 }
             }
             // 提示
-            ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.Name + "]，旧的消息通信已清除";
+            ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.RefName + "]，旧的消息通信已清除";
         }
 
         #endregion

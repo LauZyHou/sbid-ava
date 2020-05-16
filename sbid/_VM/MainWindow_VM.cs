@@ -301,7 +301,7 @@ namespace sbid._VM
                         xmlWriter.WriteStartElement("Process_VM");
                         xmlWriter.WriteAttributeString("x", vm.X.ToString());
                         xmlWriter.WriteAttributeString("y", vm.Y.ToString());
-                        xmlWriter.WriteAttributeString("name", vm.Process.Name);
+                        xmlWriter.WriteAttributeString("name", vm.Process.RefName.Content);
                         xmlWriter.WriteAttributeString("id", vm.Process.Id.ToString());
                         foreach (Attribute attr in vm.Process.Attributes)
                         {
@@ -560,7 +560,7 @@ namespace sbid._VM
                 {
                     AttackTree_P_VM attackTree_P_VM = (AttackTree_P_VM)sidePanel_VM;
                     xmlWriter.WriteStartElement("AttackTree_P_VM");
-                    xmlWriter.WriteAttributeString("name", attackTree_P_VM.Name);
+                    xmlWriter.WriteAttributeString("name", attackTree_P_VM.RefName.Content);
                     foreach (ViewModelBase vm in attackTree_P_VM.UserControlVMs) // 写入结点和连线等
                     {
                         if (vm is Attack_VM)
@@ -616,7 +616,7 @@ namespace sbid._VM
                 {
                     SequenceDiagram_P_VM sequenceDiagram_P_VM = (SequenceDiagram_P_VM)sidePanel_VM;
                     xmlWriter.WriteStartElement("SequenceDiagram_P_VM");
-                    xmlWriter.WriteAttributeString("name", sequenceDiagram_P_VM.Name);
+                    xmlWriter.WriteAttributeString("name", sequenceDiagram_P_VM.RefName.Content);
                     foreach (ViewModelBase vm in sequenceDiagram_P_VM.UserControlVMs) // 对象-生命线 或 消息
                     {
                         if (vm is ObjLifeLine_VM)
@@ -685,7 +685,7 @@ namespace sbid._VM
                 {
                     TopoGraph_P_VM topoGraph_P_VM = (TopoGraph_P_VM)sidePanel_VM;
                     xmlWriter.WriteStartElement("TopoGraph_P_VM");
-                    xmlWriter.WriteAttributeString("name", topoGraph_P_VM.Name);
+                    xmlWriter.WriteAttributeString("name", topoGraph_P_VM.RefName.Content);
                     foreach (ViewModelBase vm in topoGraph_P_VM.UserControlVMs) // 拓扑结点 或 拓扑连线
                     {
                         if (vm is TopoNode_VM) // 拓扑结点
@@ -860,7 +860,7 @@ namespace sbid._VM
                             Process_VM process_VM = (Process_VM)userControl_VM;
                             process_VM.Process.Id = id;
                             processVMDict[id] = process_VM; // 写入字典
-                            process_VM.Process.Name = element.GetAttribute("name");
+                            process_VM.Process.RefName.Content = element.GetAttribute("name");
                             // 创建对应的状态机面板，加到当前协议的状态机选项卡下面
                             StateMachine_P_VM pvm = new StateMachine_P_VM(process_VM.Process);
                             protocolVM.PanelVMs[1].SidePanelVMs.Add(pvm);
@@ -1616,7 +1616,7 @@ namespace sbid._VM
                 {
                     XmlElement element = (XmlElement)node;
                     AttackTree_P_VM attackTree_P_VM = new AttackTree_P_VM();
-                    attackTree_P_VM.Name = element.GetAttribute("name");
+                    attackTree_P_VM.RefName.Content = element.GetAttribute("name");
                     Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
                     foreach (XmlNode attackChildNode in node.ChildNodes) // Attack_VM/Relation_VM/Arrow_VM
                     {
@@ -1698,7 +1698,7 @@ namespace sbid._VM
                 {
                     XmlElement element = (XmlElement)node;
                     SequenceDiagram_P_VM sequenceDiagram_P_VM = new SequenceDiagram_P_VM();
-                    sequenceDiagram_P_VM.Name = element.GetAttribute("name");
+                    sequenceDiagram_P_VM.RefName.Content = element.GetAttribute("name");
                     Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
                     Dictionary<int, CommMethod> outCommMethodDict = new Dictionary<int, CommMethod>(); // 记录id->OUT型CommMethod的字典，用于连线上的CommMethod查找
                     foreach (XmlNode sequenceChildNode in node.ChildNodes) // ObjLifeLine_VM/各类Message_VM
@@ -1821,7 +1821,7 @@ namespace sbid._VM
                 {
                     XmlElement element = (XmlElement)node;
                     TopoGraph_P_VM topoGraph_P_VM = new TopoGraph_P_VM();
-                    topoGraph_P_VM.Name = element.GetAttribute("name");
+                    topoGraph_P_VM.RefName.Content = element.GetAttribute("name");
                     Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
                     foreach (XmlNode topoChildNode in node.ChildNodes) // TopoNode_VM 和 各类TopoLink_VM
                     {

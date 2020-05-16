@@ -62,7 +62,7 @@ namespace sbid._V
                 }
                 TopoNodeEWVM.TopoNode.Properties.Add(instance);
             }
-            ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.Name + "]，例化对象已重新生成";
+            ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.RefName + "]，例化对象已重新生成";
         }
 
         #endregion

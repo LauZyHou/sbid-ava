@@ -16,7 +16,7 @@
   <Grid RowDefinitions="20,1,15,*,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="110" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <TextBlock Text=" 进程模板 " FontWeight="Bold"/>
-      <TextBlock Text="{Binding Process.Name}"/>
+      <TextBlock Text="{Binding Process.RefName.Content}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
     <TextBlock Grid.Row="2" Text=" 属性:"/>

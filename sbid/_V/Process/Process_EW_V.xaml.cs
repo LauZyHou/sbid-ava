@@ -114,7 +114,7 @@ namespace sbid._V
                 (bool)attr_IsArray_ComboBox.SelectedItem
             );
             ((Process_EW_VM)DataContext).Process.Attributes.Add(attribute);
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]添加了成员变量：" + attribute;
+            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]添加了成员变量：" + attribute;
         }
 
         public void Update_Attribute()
@@ -153,7 +153,7 @@ namespace sbid._V
             attribute.Type = (sbid._M.Type)type_ListBox.SelectedItem;
             attribute.Identifier = attrId_TextBox.Text;
             attribute.IsArray = (bool)attr_IsArray_ComboBox.SelectedItem;
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]更新了成员变量：" + attribute;
+            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]更新了成员变量：" + attribute;
         }
 
         public void Delete_Attribute()
@@ -167,7 +167,7 @@ namespace sbid._V
 
             Attribute attribute = (Attribute)attr_ListBox.SelectedItem;
             ((Process_EW_VM)DataContext).Process.Attributes.Remove(attribute);
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]删除了成员变量：" + attribute;
+            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]删除了成员变量：" + attribute;
         }
 
         public void Add_NZMethod()
@@ -198,7 +198,7 @@ namespace sbid._V
             // 这里加密方法要用用户选中的,而不是内置方法模板里的None
             Method method = new Method(method_template.ReturnType, method_template.Name, paramerters, (Crypto)crypto_ComboBox.SelectedItem);
             ((Process_EW_VM)DataContext).Process.Methods.Add(method);
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]添加了成员方法：" + method;
+            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]添加了成员方法：" + method;
         }
 
         public void Update_NZMethod()
@@ -238,7 +238,7 @@ namespace sbid._V
             method.Name = method_template.Name;
             method.Parameters = paramerters;
             method.CryptoSuffix = (Crypto)crypto_ComboBox.SelectedItem;
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.Name + "]更新了成员方法：" + method;
+            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]更新了成员方法：" + method;
         }
 
         public void Delete_NZMethod()

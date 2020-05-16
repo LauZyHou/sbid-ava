@@ -32,6 +32,7 @@
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditStateVM}"/>
+        <MenuItem Header="精化" IsEnabled="False"/>
         <MenuItem Header="删除"/>
       </ContextMenu>
     </Grid.ContextMenu>

@@ -10,7 +10,7 @@ namespace sbid._M
     public class Process : ReactiveObject
     {
         public static int _id = 0;
-        private string name;
+        private Formula refName;
         private ObservableCollection<Attribute> attributes = new ObservableCollection<Attribute>();
         private ObservableCollection<Method> methods = new ObservableCollection<Method>();
         private ObservableCollection<CommMethod> commMethods = new ObservableCollection<CommMethod>();
@@ -18,16 +18,17 @@ namespace sbid._M
         private ObservableCollection<State> states;
         private int id;
 
+
         public Process()
         {
             _id++;
             this.id = _id;
-            this.name = "P" + this.id;
+            this.refName = new Formula("P" + this.id);
             //test_data();
         }
 
-        // 进程模板名
-        public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
+        // 进程模板名，使用引用型Name，因为需要状态机SidePanel面板名自动同步
+        public Formula RefName { get => refName; }
         // 成员参数列表
         public ObservableCollection<Attribute> Attributes { get => attributes; set => attributes = value; }
         // 方法列表
@@ -48,6 +49,7 @@ namespace sbid._M
                     _id = value;
             }
         }
+        
 
         // Process的所有UserType型Attribute的列表，给认证性质使用
         // 因为只有UserType型Attribute才有二级属性可言
@@ -56,7 +58,7 @@ namespace sbid._M
             get
             {
                 List<Attribute> list = new List<Attribute>();
-                foreach(Attribute attribute in attributes)
+                foreach (Attribute attribute in attributes)
                 {
                     if (attribute.Type is UserType)
                     {

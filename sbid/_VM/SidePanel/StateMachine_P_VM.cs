@@ -20,8 +20,7 @@ namespace sbid._VM
         public StateMachine_P_VM(Process process)
         {
             this.process = process;
-            // todo数据绑定
-            this.Name = process.Name;
+            this.refName = process.RefName;
         }
 
         // 集成所在Process,以反向查询(以用其Name)

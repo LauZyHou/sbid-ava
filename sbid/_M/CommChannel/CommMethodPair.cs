@@ -28,7 +28,7 @@ namespace sbid._M
 
         public override string ToString()
         {
-            return "(" + processA.Name + "." + commMethodA.Name + ")->(" + processB.Name + "." + commMethodB.Name + ")";
+            return "(" + processA.RefName + "." + commMethodA.Name + ")->(" + processB.RefName + "." + commMethodB.Name + ")";
         }
     }
 }

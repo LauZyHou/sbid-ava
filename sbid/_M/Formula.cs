@@ -17,5 +17,10 @@ namespace sbid._M
         }
 
         public string Content { get => content; set => this.RaiseAndSetIfChanged(ref content, value); }
+
+        public override string ToString()
+        {
+            return this.content;
+        }
     }
 }

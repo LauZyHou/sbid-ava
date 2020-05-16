@@ -34,8 +34,8 @@ namespace sbid._M
 
         public override string ToString()
         {
-            return processA.Name + "." + stateA.Name + "." + attributeA.Identifier + " | "
-                + processB.Name + "." + stateB.Name + "." + AttributeB.Identifier;
+            return processA.RefName + "." + stateA.Name + "." + attributeA.Identifier + " | "
+                + processB.RefName + "." + stateB.Name + "." + AttributeB.Identifier;
         }
     }
 }

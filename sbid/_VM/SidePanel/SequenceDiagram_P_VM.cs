@@ -17,7 +17,7 @@ namespace sbid._VM
         public SequenceDiagram_P_VM()
         {
             _id++;
-            this.Name = "序列图" + _id;
+            this.refName = new Formula("序列图" + _id);
         }
 
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线

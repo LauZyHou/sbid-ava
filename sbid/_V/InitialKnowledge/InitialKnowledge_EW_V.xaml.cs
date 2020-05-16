@@ -34,7 +34,7 @@ namespace sbid._V
             Process process = (Process)process_ComboBox.SelectedItem;
 
             ((InitialKnowledge_EW_VM)DataContext).InitialKnowledge.Process = process;
-            ResourceManager.mainWindowVM.Tips = "关联到Process：" + process.Name;
+            ResourceManager.mainWindowVM.Tips = "关联到Process：" + process.RefName;
         }
 
         public void Add_KnowledgePair()

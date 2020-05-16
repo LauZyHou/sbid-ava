@@ -22,7 +22,7 @@ namespace sbid._M
 
         public override string ToString()
         {
-            return "<" + process.Name + ", " + attribute.Identifier + ">";
+            return "<" + process.RefName + ", " + attribute.Identifier + ">";
         }
     }
 }

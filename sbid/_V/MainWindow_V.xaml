@@ -87,7 +87,7 @@
                   <!--侧栏面板标签(如攻击树下就是默认攻击树1,攻击树2)-->
                   <TabControl.ItemTemplate>
                     <DataTemplate>
-                      <TextBlock Text="{Binding Name, Mode=TwoWay}"/>
+                      <TextBlock Text="{Binding RefName.Content, Mode=OneWay}"/>
                     </DataTemplate>
                   </TabControl.ItemTemplate>
                   <!--侧栏面板内容-->

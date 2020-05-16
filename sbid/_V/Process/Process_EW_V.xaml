@@ -39,7 +39,7 @@
       <StackPanel>
         <StackPanel Orientation="Horizontal">
           <TextBlock Text="进程模板名：" FontSize="18"/>
-          <TextBox Text="{Binding Process.Name, Mode=TwoWay}"/>
+          <TextBox Text="{Binding Process.RefName.Content, Mode=TwoWay}"/>
         </StackPanel>
       </StackPanel>
     </TabItem>

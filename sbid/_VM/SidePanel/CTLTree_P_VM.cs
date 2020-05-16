@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sbid._M;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace sbid._VM
         public CTLTree_P_VM()
         {
             _id++;
-            this.Name = "CTL树" + _id;
+            this.refName = new Formula("CTL树" + _id);
         }
     }
 }

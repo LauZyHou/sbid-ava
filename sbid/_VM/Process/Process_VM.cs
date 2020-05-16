@@ -31,7 +31,7 @@ namespace sbid._VM
             // 将对应状态机面板也删除
             nowProtocolPanel.PanelVMs[1].SidePanelVMs.Remove(stateMachine_P_VM);
 
-            ResourceManager.mainWindowVM.Tips = "删除了进程模板：" + process.Name + "及对应状态机";
+            ResourceManager.mainWindowVM.Tips = "删除了进程模板：" + process.RefName + "及对应状态机";
         }
 
         // 查看当前Process_VM对应的状态机
@@ -63,7 +63,7 @@ namespace sbid._VM
             }
 
             processEWV.ShowDialog(ResourceManager.mainWindowV);
-            ResourceManager.mainWindowVM.Tips = "打开了进程模板：" + process.Name + "的编辑窗体";
+            ResourceManager.mainWindowVM.Tips = "打开了进程模板：" + process.RefName + "的编辑窗体";
         }
 
         #endregion

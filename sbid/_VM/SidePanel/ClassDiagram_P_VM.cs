@@ -10,7 +10,7 @@ namespace sbid._VM
     {
         public ClassDiagram_P_VM()
         {
-            Name = "类图";
+            this.refName = new Formula("类图");
         }
 
         // 这里改成给外部主动调用
@@ -82,7 +82,7 @@ namespace sbid._VM
             processVM.StateMachine_P_VM = ResourceManager.mainWindowVM.AddStateMachine(processVM.Process);
 
             UserControlVMs.Add(processVM);
-            ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.Name;
+            ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.RefName;
         }
 
         // 创建公理

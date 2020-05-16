@@ -64,7 +64,7 @@ namespace sbid._V
             processVM.StateMachine_P_VM = ResourceManager.mainWindowVM.AddStateMachine(processVM.Process);
 
             ClassDiagramPVM.UserControlVMs.Add(processVM);
-            ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.Name;
+            ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.RefName;
         }
 
         // 创建公理

@@ -43,11 +43,11 @@ namespace sbid._M
 
         public override string ToString()
         {
-            return processA.Name + "." 
+            return processA.RefName + "." 
                 + stateA.Name + "." 
                 + attributeA.Identifier + "." 
                 + attributeA_Attr.Identifier + " | "
-                + processB.Name + "." 
+                + processB.RefName + "." 
                 + stateB.Name + "." 
                 + AttributeB.Identifier + "."
                 + AttributeB_Attr.Identifier;
