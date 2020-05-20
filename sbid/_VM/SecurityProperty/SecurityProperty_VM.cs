@@ -40,7 +40,7 @@ namespace sbid._VM
 
                     // 计算Process对应状态机的所有状态,写入Process附加的States字段中
                     processVM.Process.States = new ObservableCollection<State>();
-                    foreach (ViewModelBase vm in processVM.StateMachine_P_VM.UserControlVMs)
+                    foreach (ViewModelBase vm in processVM.ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
                     {
                         if (vm is State_VM)
                         {

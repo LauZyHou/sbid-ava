@@ -50,7 +50,7 @@
                    SelectedItem="{Binding #confidential_ListBox.SelectedItem.Process, Mode=OneWay}">
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding RefName.Content}"/>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
@@ -83,7 +83,7 @@
               <TextBlock>
                 <TextBlock.Text>
                   <MultiBinding StringFormat=" {0}.{1}">
-                    <Binding Path="Process.Name"/>
+                    <Binding Path="Process.RefName.Content"/>
                     <Binding Path="Attribute.Identifier"/>
                   </MultiBinding>
                 </TextBlock.Text>
@@ -103,7 +103,7 @@
                       SelectedItem="{Binding #authenticity_ListBox.SelectedItem.ProcessA, Mode=OneWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Name}"/>
+                  <TextBlock Text="{Binding RefName.Content}"/>
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
@@ -147,7 +147,7 @@
                       SelectedItem="{Binding #authenticity_ListBox.SelectedItem.ProcessB, Mode=OneWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Name}"/>
+                  <TextBlock Text="{Binding RefName.Content}"/>
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
@@ -198,11 +198,11 @@
               <TextBlock>
                 <TextBlock.Text>
                   <MultiBinding StringFormat=" {0}.{1}.{2}.{3} | {4}.{5}.{6}.{7}">
-                    <Binding Path="ProcessA.Name"/>
+                    <Binding Path="ProcessA.RefName.Content"/>
                     <Binding Path="StateA.Name"/>
                     <Binding Path="AttributeA.Identifier"/>
                     <Binding Path="AttributeA_Attr.Identifier"/>
-                    <Binding Path="ProcessB.Name"/>
+                    <Binding Path="ProcessB.RefName.Content"/>
                     <Binding Path="StateB.Name"/>
                     <Binding Path="AttributeB.Identifier"/>
                     <Binding Path="AttributeB_Attr.Identifier"/>
@@ -224,7 +224,7 @@
                       SelectedItem="{Binding #integrity_ListBox.SelectedItem.ProcessA, Mode=OneWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Name}"/>
+                  <TextBlock Text="{Binding RefName.Content}"/>
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
@@ -257,7 +257,7 @@
                       SelectedItem="{Binding #integrity_ListBox.SelectedItem.ProcessB, Mode=OneWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Name}"/>
+                  <TextBlock Text="{Binding RefName.Content}"/>
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
@@ -297,10 +297,10 @@
               <TextBlock>
                 <TextBlock.Text>
                   <MultiBinding StringFormat=" {0}.{1}.{2} | {3}.{4}.{5}">
-                    <Binding Path="ProcessA.Name"/>
+                    <Binding Path="ProcessA.RefName.Content"/>
                     <Binding Path="StateA.Name"/>
                     <Binding Path="AttributeA.Identifier"/>
-                    <Binding Path="ProcessB.Name"/>
+                    <Binding Path="ProcessB.RefName.Content"/>
                     <Binding Path="StateB.Name"/>
                     <Binding Path="AttributeB.Identifier"/>
                   </MultiBinding>

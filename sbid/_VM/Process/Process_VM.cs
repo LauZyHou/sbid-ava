@@ -9,7 +9,7 @@ namespace sbid._VM
     public class Process_VM : NetworkItem_VM
     {
         private Process process;
-        private StateMachine_P_VM stateMachine_P_VM;
+        private ProcessToSM_P_VM processToSM_P_VM;
 
         public Process_VM()
         {
@@ -18,7 +18,8 @@ namespace sbid._VM
 
         public Process Process { get => process; set => process = value; }
         // 集成当前Process对应的状态机的面板VM
-        public StateMachine_P_VM StateMachine_P_VM { get => stateMachine_P_VM; set => stateMachine_P_VM = value; }
+        public ProcessToSM_P_VM ProcessToSM_P_VM { get => processToSM_P_VM; set => processToSM_P_VM = value; }
+
 
         #region 右键菜单命令
 
@@ -29,17 +30,21 @@ namespace sbid._VM
             nowProtocolPanel.SelectedItem.SelectedItem.UserControlVMs.Remove(this);
 
             // 将对应状态机面板也删除
-            nowProtocolPanel.PanelVMs[1].SidePanelVMs.Remove(stateMachine_P_VM);
+            nowProtocolPanel.PanelVMs[1].SidePanelVMs.Remove(processToSM_P_VM);
 
             ResourceManager.mainWindowVM.Tips = "删除了进程模板：" + process.RefName + "及对应状态机";
         }
 
         // 查看当前Process_VM对应的状态机
-        public void FindStateMachinePVM()
+        public void FindProcessToSMPVM()
         {
             Protocol_VM nowProtocolPanel = ResourceManager.mainWindowVM.SelectedItem;
+            // 跳到"协议>状态机"选项卡
             nowProtocolPanel.SelectedItem = nowProtocolPanel.PanelVMs[1];
-            nowProtocolPanel.PanelVMs[1].SelectedItem = stateMachine_P_VM;
+            // 选中当前进程对应的ProcessToSM_P_VM
+            nowProtocolPanel.PanelVMs[1].SelectedItem = processToSM_P_VM;
+            // 并且选中其第一个状态机(顶层状态机)
+            processToSM_P_VM.SelectedItem = processToSM_P_VM.StateMachinePVMs[0];
         }
 
         // 打开当前Process_VM的编辑窗体

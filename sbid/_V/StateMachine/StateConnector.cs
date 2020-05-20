@@ -11,7 +11,8 @@ namespace sbid._V
             base.OnPointerPressed(e);
 
             // 获取当前状态机面板
-            StateMachine_P_VM nowSMPVM = (StateMachine_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
+            StateMachine_P_VM nowSMPVM = processToSM_P_VM.SelectedItem;
 
             // 如果有连线,那么要做的是删除连线
             if (ConnectorVM.ConnectionVM != null)

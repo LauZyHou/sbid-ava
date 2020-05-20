@@ -75,12 +75,12 @@ namespace sbid._VM
         }
         */
 
-        // 添加状态机,要将所在Process引用传入以反向查询,将状态机面板返回以给Process_VM集成
+        // 添加"进程模板-状态机"大面板,要将所在Process引用传入以反向查询,将大面板返回以给Process_VM集成
         // 此方法在用户创建Process时调用
-        public StateMachine_P_VM AddStateMachine(Process process)
+        public ProcessToSM_P_VM AddProcessToSM(Process process)
         {
-            StateMachine_P_VM pvm = new StateMachine_P_VM(process);
-            pvm.init_data();
+            ProcessToSM_P_VM pvm = new ProcessToSM_P_VM(process);
+            pvm.init_data(); // 这里实际是初始化第一个孩子StateMachine(顶层)
 
             // 添加到当前协议的状态机下
             selectedItem.PanelVMs[1].SidePanelVMs.Add(pvm);
@@ -476,77 +476,84 @@ namespace sbid._VM
                 xmlWriter.WriteEndElement();
                 #endregion
 
-                #region 状态机面板
-                xmlWriter.WriteStartElement("StateMachine_P_VMs");
-                ObservableCollection<SidePanel_VM> stateMachine_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 所有的状态机
-                foreach (SidePanel_VM sidePanel_VM in stateMachine_P_VMs)
+                #region "进程模板-状态机"面板
+                xmlWriter.WriteStartElement("ProcessToSM_P_VMs");
+                ObservableCollection<SidePanel_VM> processToSM_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 所有的"进程模板-状态机"面板
+                foreach (SidePanel_VM sidePanel_VM in processToSM_P_VMs)
                 {
-                    StateMachine_P_VM stateMachine_P_VM = (StateMachine_P_VM)sidePanel_VM;
-                    xmlWriter.WriteStartElement("StateMachine_P_VM");
-                    xmlWriter.WriteAttributeString("process_ref", stateMachine_P_VM.Process.Id.ToString());
-                    foreach (ViewModelBase vm in stateMachine_P_VM.UserControlVMs) // 写入状态机的结点和连线等
+                    ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)sidePanel_VM;
+                    xmlWriter.WriteStartElement("ProcessToSM_P_VM");
+                    xmlWriter.WriteAttributeString("process_ref", processToSM_P_VM.Process.Id.ToString());
+                    // 对于里面的每个状态机面板，写入XML
+                    foreach (StateMachine_P_VM stateMachine_P_VM in processToSM_P_VM.StateMachinePVMs)
                     {
-                        if (vm is State_VM)
+                        xmlWriter.WriteStartElement("StateMachine_P_VM");
+                        xmlWriter.WriteAttributeString("state_ref", stateMachine_P_VM.State.Id.ToString());
+                        foreach (ViewModelBase vm in stateMachine_P_VM.UserControlVMs) // 写入状态机的结点和连线等
                         {
-                            State_VM state_VM = (State_VM)vm;
-                            xmlWriter.WriteStartElement("State_VM");
-                            xmlWriter.WriteAttributeString("x", state_VM.X.ToString());
-                            xmlWriter.WriteAttributeString("y", state_VM.Y.ToString());
-                            xmlWriter.WriteAttributeString("name", state_VM.State.Name);
-                            xmlWriter.WriteAttributeString("id", state_VM.State.Id.ToString());
-                            foreach (Connector_VM connector_VM in state_VM.ConnectorVMs) // 身上所有锚点的id号
+                            if (vm is State_VM)
                             {
-                                xmlWriter.WriteStartElement("Connector_VM");
-                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                State_VM state_VM = (State_VM)vm;
+                                xmlWriter.WriteStartElement("State_VM");
+                                xmlWriter.WriteAttributeString("x", state_VM.X.ToString());
+                                xmlWriter.WriteAttributeString("y", state_VM.Y.ToString());
+                                xmlWriter.WriteAttributeString("name", state_VM.State.Name);
+                                xmlWriter.WriteAttributeString("id", state_VM.State.Id.ToString());
+                                foreach (Connector_VM connector_VM in state_VM.ConnectorVMs) // 身上所有锚点的id号
+                                {
+                                    xmlWriter.WriteStartElement("Connector_VM");
+                                    xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                    xmlWriter.WriteEndElement();
+                                }
                                 xmlWriter.WriteEndElement();
                             }
-                            xmlWriter.WriteEndElement();
-                        }
-                        else if (vm is Transition_VM)
-                        {
-                            Transition_VM transition_VM = (Transition_VM)vm;
-                            xmlWriter.WriteStartElement("Transition_VM");
-                            xmlWriter.WriteAttributeString("source_ref", transition_VM.Source.Id.ToString()); // 源锚点
-                            xmlWriter.WriteAttributeString("dest_ref", transition_VM.Dest.Id.ToString()); // 目标锚点
-                            xmlWriter.WriteAttributeString("guard", transition_VM.Transition.Guard); // Guard条件
-                            foreach (Formula formula in transition_VM.Transition.Actions) // Actions列表
+                            else if (vm is Transition_VM)
                             {
-                                xmlWriter.WriteStartElement("Action");
-                                xmlWriter.WriteAttributeString("content", formula.Content);
+                                Transition_VM transition_VM = (Transition_VM)vm;
+                                xmlWriter.WriteStartElement("Transition_VM");
+                                xmlWriter.WriteAttributeString("source_ref", transition_VM.Source.Id.ToString()); // 源锚点
+                                xmlWriter.WriteAttributeString("dest_ref", transition_VM.Dest.Id.ToString()); // 目标锚点
+                                xmlWriter.WriteAttributeString("guard", transition_VM.Transition.Guard); // Guard条件
+                                foreach (Formula formula in transition_VM.Transition.Actions) // Actions列表
+                                {
+                                    xmlWriter.WriteStartElement("Action");
+                                    xmlWriter.WriteAttributeString("content", formula.Content);
+                                    xmlWriter.WriteEndElement();
+                                }
                                 xmlWriter.WriteEndElement();
                             }
-                            xmlWriter.WriteEndElement();
-                        }
-                        else if (vm is InitState_VM)
-                        {
-                            InitState_VM initState_VM = (InitState_VM)vm;
-                            xmlWriter.WriteStartElement("InitState_VM");
-                            xmlWriter.WriteAttributeString("x", initState_VM.X.ToString());
-                            xmlWriter.WriteAttributeString("y", initState_VM.Y.ToString());
-                            // *需不需要给InitState_VM本身设置id？目前的想法是不需要id
-                            foreach (Connector_VM connector_VM in initState_VM.ConnectorVMs) // 身上所有锚点的id号
+                            else if (vm is InitState_VM)
                             {
-                                xmlWriter.WriteStartElement("Connector_VM");
-                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                InitState_VM initState_VM = (InitState_VM)vm;
+                                xmlWriter.WriteStartElement("InitState_VM");
+                                xmlWriter.WriteAttributeString("x", initState_VM.X.ToString());
+                                xmlWriter.WriteAttributeString("y", initState_VM.Y.ToString());
+                                // *需不需要给InitState_VM本身设置id？目前的想法是不需要id
+                                foreach (Connector_VM connector_VM in initState_VM.ConnectorVMs) // 身上所有锚点的id号
+                                {
+                                    xmlWriter.WriteStartElement("Connector_VM");
+                                    xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                    xmlWriter.WriteEndElement();
+                                }
                                 xmlWriter.WriteEndElement();
                             }
-                            xmlWriter.WriteEndElement();
-                        }
-                        else if (vm is FinalState_VM)
-                        {
-                            FinalState_VM finalState_VM = (FinalState_VM)vm;
-                            xmlWriter.WriteStartElement("FinalState_VM");
-                            xmlWriter.WriteAttributeString("x", finalState_VM.X.ToString());
-                            xmlWriter.WriteAttributeString("y", finalState_VM.Y.ToString());
-                            // *需不需要给FinalState_VM本身设置id？目前的想法是不需要id
-                            foreach (Connector_VM connector_VM in finalState_VM.ConnectorVMs) // 身上所有锚点的id号
+                            else if (vm is FinalState_VM)
                             {
-                                xmlWriter.WriteStartElement("Connector_VM");
-                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                FinalState_VM finalState_VM = (FinalState_VM)vm;
+                                xmlWriter.WriteStartElement("FinalState_VM");
+                                xmlWriter.WriteAttributeString("x", finalState_VM.X.ToString());
+                                xmlWriter.WriteAttributeString("y", finalState_VM.Y.ToString());
+                                // *需不需要给FinalState_VM本身设置id？目前的想法是不需要id
+                                foreach (Connector_VM connector_VM in finalState_VM.ConnectorVMs) // 身上所有锚点的id号
+                                {
+                                    xmlWriter.WriteStartElement("Connector_VM");
+                                    xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                    xmlWriter.WriteEndElement();
+                                }
                                 xmlWriter.WriteEndElement();
                             }
-                            xmlWriter.WriteEndElement();
                         }
+                        xmlWriter.WriteEndElement();
                     }
                     xmlWriter.WriteEndElement();
                 }
@@ -861,11 +868,11 @@ namespace sbid._VM
                             process_VM.Process.Id = id;
                             processVMDict[id] = process_VM; // 写入字典
                             process_VM.Process.RefName.Content = element.GetAttribute("name");
-                            // 创建对应的状态机面板，加到当前协议的状态机选项卡下面
-                            StateMachine_P_VM pvm = new StateMachine_P_VM(process_VM.Process);
+                            // 创建对应的"进程-状态机"大面板，加到当前协议的状态机选项卡下面
+                            ProcessToSM_P_VM pvm = new ProcessToSM_P_VM(process_VM.Process);
                             protocolVM.PanelVMs[1].SidePanelVMs.Add(pvm);
                             protocolVM.PanelVMs[1].SelectedItem = pvm; // fixme 这里改成记录用户保存的选择
-                            process_VM.StateMachine_P_VM = pvm; // 从Process的反引
+                            process_VM.ProcessToSM_P_VM = pvm; // 从Process的反引
                             break;
                         case "Axiom_VM":
                             userControl_VM = new Axiom_VM();
@@ -911,129 +918,141 @@ namespace sbid._VM
                 }
                 #endregion
 
-                #region 状态机面板
-                ObservableCollection<SidePanel_VM> stateMachine_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 这里是创建进程模板时创建的
-                xmlNode = doc.SelectSingleNode("Protocol_VM/StateMachine_P_VMs");
+                #region "进程模板-状态机"面板
+                ObservableCollection<SidePanel_VM> processToSM_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 这里是创建进程模板时创建的
+                xmlNode = doc.SelectSingleNode("Protocol_VM/ProcessToSM_P_VMs");
                 nodeList = xmlNode.ChildNodes;
-                if (stateMachine_P_VMs.Count != nodeList.Count)
+                if (processToSM_P_VMs.Count != nodeList.Count)
                 {
-                    Tips = "[解析StateMachine_P_VMs时出错]子结点数和进程模板数不同！";
+                    Tips = "[解析ProcessToSM_P_VMs时出错]子结点数和进程模板数不同！";
                     cleanProject();
                     return false;
                 }
-                for (int j = 0; j < nodeList.Count; j++) // <StateMachine_P_VM process_ref="xxx">
+                for (int j = 0; j < nodeList.Count; j++) // <ProcessToSM_P_VM process_ref="xxx">
                 {
                     XmlNode node = nodeList[j];
                     XmlElement element = (XmlElement)node;
-                    StateMachine_P_VM stateMachine_P_VM = (StateMachine_P_VM)stateMachine_P_VMs[j];
-                    if (node.Name != "StateMachine_P_VM")
-                    {
-                        Tips = "[解析StateMachine_P_VMs时出错]其下出现了异常标签！";
-                        cleanProject();
-                        return false;
-                    }
-                    if (element.GetAttribute("process_ref") != stateMachine_P_VM.Process.Id.ToString())
+                    ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)processToSM_P_VMs[j];
+                    if (element.GetAttribute("process_ref") != processToSM_P_VM.Process.Id.ToString())
                     {
                         Tips = "[解析StateMachine_P_VM时出错]process_ref和进程模板不能按序对应！";
                         cleanProject();
                         return false;
                     }
-                    Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
-                    XmlNodeList stateAndTransList = node.ChildNodes;
-                    foreach (XmlNode satNode in stateAndTransList) // State_VM/Transition_VM/InitState_VM/FinalState_VM
+                    // 遍历里面的每个状态机面板
+                    Dictionary<int, State> stateDict = new Dictionary<int, State>(); // 边解析边记录状态
+                    stateDict.Add(1, State.TopState); // 顶层状态唯一实例
+                    foreach (XmlNode smNode in node.ChildNodes) // <StateMachine_P_VM state_ref="xxx">
                     {
-                        XmlElement satElement = (XmlElement)satNode;
-                        switch (satNode.Name)
+                        XmlElement smElement = (XmlElement)smNode;
+                        int state_ref = int.Parse(smElement.GetAttribute("state_ref"));
+                        if (!stateDict.ContainsKey(state_ref))
                         {
-                            case "State_VM":
-                                double x = double.Parse(satElement.GetAttribute("x"));
-                                double y = double.Parse(satElement.GetAttribute("y"));
-                                State_VM state_VM = new State_VM(x, y);
-                                state_VM.State.Name = satElement.GetAttribute("name");
-                                state_VM.State.Id = int.Parse(satElement.GetAttribute("id"));
-                                XmlNodeList connectorList = satNode.ChildNodes;
-                                if (state_VM.ConnectorVMs.Count != connectorList.Count)
-                                {
-                                    Tips = "[解析State_VM时出错]锚点数量和系统要求不一致！";
-                                    cleanProject();
-                                    return false;
-                                }
-                                for (int k = 0; k < connectorList.Count; k++) // <Connector_VM id="xxx" />
-                                {
-                                    XmlNode connectorNode = connectorList[k];
-                                    XmlElement connectorElement = (XmlElement)connectorNode;
-                                    int id = int.Parse(connectorElement.GetAttribute("id"));
-                                    state_VM.ConnectorVMs[k].Id = id;
-                                    connectorDict.Add(id, state_VM.ConnectorVMs[k]); // 记录到字典里
-                                }
-                                stateMachine_P_VM.UserControlVMs.Add(state_VM);
-                                break;
-                            case "InitState_VM":
-                                x = double.Parse(satElement.GetAttribute("x"));
-                                y = double.Parse(satElement.GetAttribute("y"));
-                                InitState_VM initState_VM = new InitState_VM(x, y);
-                                connectorList = satNode.ChildNodes;
-                                if (initState_VM.ConnectorVMs.Count != connectorList.Count)
-                                {
-                                    Tips = "[解析InitState_VM时出错]锚点数量和系统要求不一致！";
-                                    cleanProject();
-                                    return false;
-                                }
-                                for (int k = 0; k < connectorList.Count; k++) // <Connector_VM id="xxx" />
-                                {
-                                    XmlNode connectorNode = connectorList[k];
-                                    XmlElement connectorElement = (XmlElement)connectorNode;
-                                    int id = int.Parse(connectorElement.GetAttribute("id"));
-                                    initState_VM.ConnectorVMs[k].Id = id;
-                                    connectorDict.Add(id, initState_VM.ConnectorVMs[k]); // 记录到字典里
-                                }
-                                stateMachine_P_VM.UserControlVMs.Add(initState_VM);
-                                break;
-                            case "FinalState_VM":
-                                x = double.Parse(satElement.GetAttribute("x"));
-                                y = double.Parse(satElement.GetAttribute("y"));
-                                FinalState_VM finalState_VM = new FinalState_VM(x, y);
-                                connectorList = satNode.ChildNodes;
-                                if (finalState_VM.ConnectorVMs.Count != connectorList.Count)
-                                {
-                                    Tips = "[解析FinalState_VM时出错]锚点数量和系统要求不一致！";
-                                    cleanProject();
-                                    return false;
-                                }
-                                for (int k = 0; k < connectorList.Count; k++) // <Connector_VM id="xxx" />
-                                {
-                                    XmlNode connectorNode = connectorList[k];
-                                    XmlElement connectorElement = (XmlElement)connectorNode;
-                                    int id = int.Parse(connectorElement.GetAttribute("id"));
-                                    finalState_VM.ConnectorVMs[k].Id = id;
-                                    connectorDict.Add(id, finalState_VM.ConnectorVMs[k]); // 记录到字典里
-                                }
-                                stateMachine_P_VM.UserControlVMs.Add(finalState_VM);
-                                break;
-                            case "Transition_VM":
-                                Transition_VM transition_VM = new Transition_VM();
-                                int sourceRef = int.Parse(satElement.GetAttribute("source_ref"));
-                                int destRef = int.Parse(satElement.GetAttribute("dest_ref"));
-                                if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
-                                {
-                                    Tips = "[解析Transition_VM时出错]无法找到某端的锚点！";
-                                    cleanProject();
-                                    return false;
-                                }
-                                transition_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
-                                transition_VM.Dest = connectorDict[destRef];
-                                connectorDict[sourceRef].ConnectionVM = transition_VM; // 从锚点反引连线
-                                connectorDict[destRef].ConnectionVM = transition_VM;
-                                transition_VM.Transition.Guard = satElement.GetAttribute("guard"); // Gurad条件
-                                XmlNodeList actionList = satNode.ChildNodes;
-                                foreach (XmlNode actionNode in actionList) // <Action content="xxx" />
-                                {
-                                    XmlElement actionElement = (XmlElement)actionNode;
-                                    transition_VM.Transition.Actions.Add(new Formula(actionElement.GetAttribute("content")));
-                                }
-                                stateMachine_P_VM.UserControlVMs.Add(transition_VM);
-                                break;
+                            Tips = "[解析StateMachine_P_VM时出错]无法找到精化的状态！";
+                            cleanProject();
+                            return false;
                         }
+                        StateMachine_P_VM stateMachine_P_VM = new StateMachine_P_VM(stateDict[state_ref]);
+                        // 解析具体的状态机面板
+                        Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
+                        foreach (XmlNode satNode in smNode.ChildNodes) // State_VM/Transition_VM/InitState_VM/FinalState_VM
+                        {
+                            XmlElement satElement = (XmlElement)satNode;
+                            switch (satNode.Name)
+                            {
+                                case "State_VM":
+                                    double x = double.Parse(satElement.GetAttribute("x"));
+                                    double y = double.Parse(satElement.GetAttribute("y"));
+                                    State_VM state_VM = new State_VM(x, y);
+                                    state_VM.State.Name = satElement.GetAttribute("name");
+                                    state_VM.State.Id = int.Parse(satElement.GetAttribute("id"));
+                                    XmlNodeList connectorList = satNode.ChildNodes;
+                                    if (state_VM.ConnectorVMs.Count != connectorList.Count)
+                                    {
+                                        Tips = "[解析State_VM时出错]锚点数量和系统要求不一致！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    for (int k = 0; k < connectorList.Count; k++) // <Connector_VM id="xxx" />
+                                    {
+                                        XmlNode connectorNode = connectorList[k];
+                                        XmlElement connectorElement = (XmlElement)connectorNode;
+                                        int id = int.Parse(connectorElement.GetAttribute("id"));
+                                        state_VM.ConnectorVMs[k].Id = id;
+                                        connectorDict.Add(id, state_VM.ConnectorVMs[k]); // 锚点记录到字典
+                                    }
+                                    stateMachine_P_VM.UserControlVMs.Add(state_VM);
+                                    stateDict.Add(state_VM.State.Id, state_VM.State); // 状态记录到字典
+                                    break;
+                                case "InitState_VM":
+                                    x = double.Parse(satElement.GetAttribute("x"));
+                                    y = double.Parse(satElement.GetAttribute("y"));
+                                    InitState_VM initState_VM = new InitState_VM(x, y);
+                                    connectorList = satNode.ChildNodes;
+                                    if (initState_VM.ConnectorVMs.Count != connectorList.Count)
+                                    {
+                                        Tips = "[解析InitState_VM时出错]锚点数量和系统要求不一致！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    for (int k = 0; k < connectorList.Count; k++) // <Connector_VM id="xxx" />
+                                    {
+                                        XmlNode connectorNode = connectorList[k];
+                                        XmlElement connectorElement = (XmlElement)connectorNode;
+                                        int id = int.Parse(connectorElement.GetAttribute("id"));
+                                        initState_VM.ConnectorVMs[k].Id = id;
+                                        connectorDict.Add(id, initState_VM.ConnectorVMs[k]); // 记录到字典里
+                                    }
+                                    stateMachine_P_VM.UserControlVMs.Add(initState_VM);
+                                    break;
+                                case "FinalState_VM":
+                                    x = double.Parse(satElement.GetAttribute("x"));
+                                    y = double.Parse(satElement.GetAttribute("y"));
+                                    FinalState_VM finalState_VM = new FinalState_VM(x, y);
+                                    connectorList = satNode.ChildNodes;
+                                    if (finalState_VM.ConnectorVMs.Count != connectorList.Count)
+                                    {
+                                        Tips = "[解析FinalState_VM时出错]锚点数量和系统要求不一致！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    for (int k = 0; k < connectorList.Count; k++) // <Connector_VM id="xxx" />
+                                    {
+                                        XmlNode connectorNode = connectorList[k];
+                                        XmlElement connectorElement = (XmlElement)connectorNode;
+                                        int id = int.Parse(connectorElement.GetAttribute("id"));
+                                        finalState_VM.ConnectorVMs[k].Id = id;
+                                        connectorDict.Add(id, finalState_VM.ConnectorVMs[k]); // 记录到字典里
+                                    }
+                                    stateMachine_P_VM.UserControlVMs.Add(finalState_VM);
+                                    break;
+                                case "Transition_VM":
+                                    Transition_VM transition_VM = new Transition_VM();
+                                    int sourceRef = int.Parse(satElement.GetAttribute("source_ref"));
+                                    int destRef = int.Parse(satElement.GetAttribute("dest_ref"));
+                                    if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
+                                    {
+                                        Tips = "[解析Transition_VM时出错]无法找到某端的锚点！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    transition_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
+                                    transition_VM.Dest = connectorDict[destRef];
+                                    connectorDict[sourceRef].ConnectionVM = transition_VM; // 从锚点反引连线
+                                    connectorDict[destRef].ConnectionVM = transition_VM;
+                                    transition_VM.Transition.Guard = satElement.GetAttribute("guard"); // Gurad条件
+                                    XmlNodeList actionList = satNode.ChildNodes;
+                                    foreach (XmlNode actionNode in actionList) // <Action content="xxx" />
+                                    {
+                                        XmlElement actionElement = (XmlElement)actionNode;
+                                        transition_VM.Transition.Actions.Add(new Formula(actionElement.GetAttribute("content")));
+                                    }
+                                    stateMachine_P_VM.UserControlVMs.Add(transition_VM);
+                                    break;
+                            }
+                        }
+                        // 放入ProcessToSM_P_VM大面板里
+                        processToSM_P_VM.StateMachinePVMs.Add(stateMachine_P_VM);
                     }
                 }
 
@@ -1338,7 +1357,7 @@ namespace sbid._VM
                                         int stateB_ref = int.Parse(securityElement.GetAttribute("stateB_ref"));
                                         State stateA = null;
                                         State stateB = null;
-                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].StateMachine_P_VM.UserControlVMs)
+                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
                                         {
                                             if (vmb is State_VM)
                                             {
@@ -1349,7 +1368,7 @@ namespace sbid._VM
                                                 }
                                             }
                                         }
-                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].StateMachine_P_VM.UserControlVMs)
+                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
                                         {
                                             if (vmb is State_VM)
                                             {
@@ -1444,7 +1463,7 @@ namespace sbid._VM
                                         stateB_ref = int.Parse(securityElement.GetAttribute("stateB_ref"));
                                         stateA = null;
                                         stateB = null;
-                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].StateMachine_P_VM.UserControlVMs)
+                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
                                         {
                                             if (vmb is State_VM)
                                             {
@@ -1455,7 +1474,7 @@ namespace sbid._VM
                                                 }
                                             }
                                         }
-                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].StateMachine_P_VM.UserControlVMs)
+                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
                                         {
                                             if (vmb is State_VM)
                                             {
@@ -1872,7 +1891,7 @@ namespace sbid._VM
                                 switch (nodeChildNode.Name)
                                 {
                                     case "Connector_VM": // 锚点
-                                        if(connectorNum == topoNode_VM.ConnectorVMs.Count)
+                                        if (connectorNum == topoNode_VM.ConnectorVMs.Count)
                                         {
                                             Tips = "[解析TopoNode_VM时出错]锚点数量和系统要求不一致！";
                                             cleanProject();
@@ -1937,11 +1956,15 @@ namespace sbid._VM
         private void cleanProject()
         {
             protocolVMs.Clear();
-            Protocol_VM._id = Type._id = Process._id = Axiom._id = InitialKnowledge._id
-                = Attribute._id = SafetyProperty._id = State._id = SecurityProperty._id
-                = Connector_VM._id = CommMethod._id = CommChannel._id = Method._id
+            Protocol_VM._id = Process._id = Axiom._id = InitialKnowledge._id
+                = Attribute._id = SafetyProperty._id = SecurityProperty._id
+                = Connector_VM._id = CommMethod._id = CommChannel._id
                 = SequenceDiagram_P_VM._id = TopoGraph_P_VM._id = CTLTree_P_VM._id
                 = AttackTree_P_VM._id = TopoNode._id = 0;
+            // 特别注意，对于带有静态创建的内置对象的类型，_id要置为内置对象的数目
+            Type._id = 6;
+            State._id = 1;
+            Method._id = 4;
             selectedItem = null;
         }
 

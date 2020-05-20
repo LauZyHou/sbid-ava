@@ -65,6 +65,27 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "打开了状态[" + state.Name + "]的编辑窗体";
         }
 
+        // 对状态进行精化(跳转到精化的状态机面板)
+        public void RefineStateVM()
+        {
+            // 获取当前"进程模板-状态机"侧栏面板
+            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
+            // 判断是否已经精化过，如果精化过直接跳到面板
+            foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
+            {
+                if (pvm.State == state)
+                {
+                    processToSM_P_VM.SelectedItem = pvm;
+                    return;
+                }
+            }
+            // 否则，创建、初始化并跳转
+            StateMachine_P_VM stateMachine_P_VM = new StateMachine_P_VM(state);
+            stateMachine_P_VM.init_data();
+            processToSM_P_VM.StateMachinePVMs.Add(stateMachine_P_VM);
+            processToSM_P_VM.SelectedItem = stateMachine_P_VM;
+        }
+
         #endregion
     }
 }

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace sbid._VM
 {
-    public class StateMachine_P_VM : SidePanel_VM
+    public class StateMachine_P_VM : Network_P_VM
     {
-        private Process process;
+        private State state;
         private Connector_VM activeConnector;
         private bool connectorVisible = true;
 
@@ -17,20 +17,20 @@ namespace sbid._VM
         {
         }
 
-        public StateMachine_P_VM(Process process)
+        // 状态机构造时，传入其所精化的状态
+        public StateMachine_P_VM(State state)
         {
-            this.process = process;
-            this.refName = process.RefName;
+            this.state = state;
         }
 
-        // 集成所在Process,以反向查询(以用其Name)
-        public Process Process { get => process; set => process = value; }
+        // 精化的状态
+        public State State { get => state; }
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
         // 锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
-        #region 对外的初始化调用
+        #region 对外的初始化调用(在用户创建时需要调用，在从项目文件读取时不可调用)
 
         public void init_data()
         {

@@ -41,6 +41,7 @@
     <AvaloniaResource Remove="_V\SidePanel\AttackTree_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\CTLTree_P_V.xaml" />
+    <AvaloniaResource Remove="_V\SidePanel\ProcessToSM_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
@@ -89,6 +90,7 @@
     <None Remove="_V\SidePanel\AttackTree_P_V.xaml" />
     <None Remove="_V\SidePanel\ClassDiagram_P_V.xaml" />
     <None Remove="_V\SidePanel\CTLTree_P_V.xaml" />
+    <None Remove="_V\SidePanel\ProcessToSM_P_V.xaml" />
     <None Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
     <None Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <None Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
@@ -139,7 +141,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="_V\SidePanel\StateMachine_P_V.xaml">
+    <EmbeddedResource Include="_V\StateMachine\StateMachine_P_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -350,6 +352,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\Topology\TopoNode_Square_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\SidePanel\ProcessToSM_P_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

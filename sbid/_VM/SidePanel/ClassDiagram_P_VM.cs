@@ -79,7 +79,7 @@ namespace sbid._VM
             Process_VM processVM = new Process_VM();
 
             // 创建相应的状态机,并集成到当前Process_VM里
-            processVM.StateMachine_P_VM = ResourceManager.mainWindowVM.AddStateMachine(processVM.Process);
+            processVM.ProcessToSM_P_VM = ResourceManager.mainWindowVM.AddProcessToSM(processVM.Process);
 
             UserControlVMs.Add(processVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.RefName;

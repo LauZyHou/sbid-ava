@@ -29,5 +29,8 @@ namespace sbid._M
                     _id = value;
             }
         }
+
+        // 用于最顶层的状态机面板维护的状态
+        public static readonly State TopState = new State() { Name="顶层" };
     }
 }

@@ -27,7 +27,7 @@
           <TextBlock>
             <TextBlock.Text>
               <MultiBinding StringFormat=" {0}.{1}">
-                <Binding Path="Process.Name"/>
+                <Binding Path="Process.RefName.Content"/>
                 <Binding Path="Attribute.Identifier"/>
               </MultiBinding>
             </TextBlock.Text>
@@ -44,11 +44,11 @@
           <TextBlock>
             <TextBlock.Text>
               <MultiBinding StringFormat=" {0}.{1}.{2}.{3} | {4}.{5}.{6}.{7}">
-                <Binding Path="ProcessA.Name"/>
+                <Binding Path="ProcessA.RefName.Content"/>
                 <Binding Path="StateA.Name"/>
                 <Binding Path="AttributeA.Identifier"/>
                 <Binding Path="AttributeA_Attr.Identifier"/>
-                <Binding Path="ProcessB.Name"/>
+                <Binding Path="ProcessB.RefName.Content"/>
                 <Binding Path="StateB.Name"/>
                 <Binding Path="AttributeB.Identifier"/>
                 <Binding Path="AttributeB_Attr.Identifier"/>
@@ -67,10 +67,10 @@
           <TextBlock>
             <TextBlock.Text>
               <MultiBinding StringFormat=" {0}.{1}.{2} | {3}.{4}.{5}">
-                <Binding Path="ProcessA.Name"/>
+                <Binding Path="ProcessA.RefName.Content"/>
                 <Binding Path="StateA.Name"/>
                 <Binding Path="AttributeA.Identifier"/>
-                <Binding Path="ProcessB.Name"/>
+                <Binding Path="ProcessB.RefName.Content"/>
                 <Binding Path="StateB.Name"/>
                 <Binding Path="AttributeB.Identifier"/>
               </MultiBinding>
