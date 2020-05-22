@@ -24,7 +24,9 @@ namespace sbid._M
         public static ReferenceInstance build(Attribute attribute)
         {
             ReferenceInstance referenceInstance = new ReferenceInstance(attribute);
-            foreach (Attribute attr in ((UserType)attribute.Type).Attributes)
+            UserType userType = (UserType)attribute.Type;
+            // 从自己的Attribute构造Instance列表
+            foreach (Attribute attr in userType.Attributes)
             {
                 Instance instance;
                 if (attr.IsArray) // 数组
@@ -41,6 +43,30 @@ namespace sbid._M
                 }
                 referenceInstance.properties.Add(instance);
             }
+            // 从祖先类的Attribute构造Instance列表
+            UserType pointer = userType.Parent;
+            while (pointer != null)
+            {
+                foreach (Attribute attr in pointer.Attributes)
+                {
+                    Instance instance;
+                    if (attr.IsArray) // 数组
+                    {
+                        instance = new ArrayInstance(attr);
+                    }
+                    else if (attr.Type is UserType) // 引用类型
+                    {
+                        instance = ReferenceInstance.build(attr);
+                    }
+                    else // 值类型
+                    {
+                        instance = new ValueInstance(attr);
+                    }
+                    referenceInstance.properties.Add(instance);
+                }
+                pointer = pointer.Parent;
+            }
+            // 构造完将这个列表返回
             return referenceInstance;
         }
 

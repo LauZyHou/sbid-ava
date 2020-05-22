@@ -109,7 +109,7 @@ namespace sbid._V
             // todo 变量名判重
 
             Attribute attribute = new Attribute(
-                (sbid._M.Type)type_ListBox.SelectedItem, 
+                (sbid._M.Type)type_ListBox.SelectedItem,
                 attrId_TextBox.Text,
                 (bool)attr_IsArray_ComboBox.SelectedItem
             );
@@ -147,13 +147,25 @@ namespace sbid._V
                 return;
             }
 
+            // 获取要修改的Attribute对象
+            Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
+
+            // 判断并删除Authenticity
+            bool del_auth = attribute.Type is UserType ? JudgeAndDeleteAuthenticity((UserType)attribute.Type, (Type)type_ListBox.SelectedItem) : false;
+
             // todo 变量名判重
 
-            Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
-            attribute.Type = (sbid._M.Type)type_ListBox.SelectedItem;
+            // 在该Attribute对象上原地修改
+            attribute.Type = (Type)type_ListBox.SelectedItem;
             attribute.Identifier = attrId_TextBox.Text;
             attribute.IsArray = (bool)attr_IsArray_ComboBox.SelectedItem;
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]更新了成员变量：" + attribute;
+            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]更新了成员变量：" + attribute + "。";
+
+            // Tips补充
+            if (del_auth)
+            {
+                ResourceManager.mainWindowVM.Tips += "[!]因UserType被修改，SecurityProperty中依赖于它的Authenticity的二级属性失配，被一同删除。";
+            }
         }
 
         public void Delete_Attribute()
@@ -165,9 +177,20 @@ namespace sbid._V
                 return;
             }
 
+            // 获取要删除的Attribute对象
             Attribute attribute = (Attribute)attr_ListBox.SelectedItem;
+
+            // 判断并删除Authenticity
+            bool del_auth = attribute.Type is UserType ? JudgeAndDeleteAuthenticity((UserType)attribute.Type, null) : false;
+
             ((Process_EW_VM)DataContext).Process.Attributes.Remove(attribute);
-            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]删除了成员变量：" + attribute;
+            ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]删除了成员变量：" + attribute + "。";
+
+            // Tips补充
+            if (del_auth)
+            {
+                ResourceManager.mainWindowVM.Tips += "[!]因UserType被修改，SecurityProperty中依赖于它的Authenticity的二级属性失配，被一同删除。";
+            }
         }
 
         public void Add_NZMethod()
@@ -279,7 +302,7 @@ namespace sbid._V
             }
 
             Attribute attribute = new Attribute(
-                (Type)paramType_ZD_ComboBox.SelectedItem, 
+                (Type)paramType_ZD_ComboBox.SelectedItem,
                 paramName_ZD_TextBox.Text,
                 (bool)param_ZD_IsArray_ComboBox.SelectedItem
             );
@@ -454,7 +477,7 @@ namespace sbid._V
             }
 
             Attribute attribute = new Attribute(
-                (Type)paramType_Comm_ComboBox.SelectedItem, 
+                (Type)paramType_Comm_ComboBox.SelectedItem,
                 paramName_Comm_TextBox.Text,
                 (bool)param_Comm_IsArray_ComboBox.SelectedItem
             );
@@ -680,6 +703,59 @@ namespace sbid._V
                 default:
                     break;
             }
+        }
+
+        #endregion
+
+        #region 私有
+
+
+        /// <summary>
+        /// 判断并删除某些SecurityProperty的Authenticity
+        /// 当用户修改/删除Process的某个Attribute的Type
+        /// 如果该Type是UserType，且被修改成的新Type和它不一致
+        /// 会导致SecurityProperty中依赖于该UserType的Authenticity失效(因为二级属性失配)
+        /// 该方法用于查找这样的Authenticity，并将其从SecurityProperty.Authenticities列表中删除
+        /// </summary>
+        /// <param name="oldType">被修改或删除的UserType</param>
+        /// <param name="newType">被修改成的新Type，若是删除则传入null</param>
+        /// <returns>本方法内是否做了删除Authenticity的操作</returns>
+        bool JudgeAndDeleteAuthenticity(UserType oldType, Type newType)
+        {
+            bool deleted = false; // 指示是否做了删除操作
+            if (oldType != newType)
+            {
+                // 当前协议面板VM
+                Protocol_VM protocolVM = ResourceManager.mainWindowVM.SelectedItem;
+                // 其下的类图面板VM
+                ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
+                // 遍历查找SecurityProperty的Authenticity
+                foreach (ViewModelBase item in classDiagram_P_VM.UserControlVMs)
+                {
+                    if (item is SecurityProperty_VM)
+                    {
+                        // 这里维护一个要删除的Authenticity列表，遍历结束后再统一删除
+                        List<Authenticity> authenticities = new List<Authenticity>();
+                        // 遍历查询
+                        SecurityProperty_VM vm = (SecurityProperty_VM)item;
+                        foreach (Authenticity authenticity in vm.SecurityProperty.Authenticities)
+                        {
+                            if (authenticity.AttributeA.Type == oldType
+                                || authenticity.AttributeB.Type == oldType)
+                            {
+                                authenticities.Add(authenticity); // 加到待删除列表里
+                            }
+                        }
+                        // 统一删除
+                        foreach (Authenticity authenticity in authenticities)
+                        {
+                            vm.SecurityProperty.Authenticities.Remove(authenticity);
+                            deleted = true; // 记录做了删除
+                        }
+                    }
+                }
+            }
+            return deleted;
         }
 
         #endregion
