@@ -62,6 +62,15 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "打开了拓扑结点：" + topoNode.Name + "的编辑窗体";
         }
 
+        // 删除当前拓扑结点
+        public void DeleteTopoNodeVM()
+        {
+            Protocol_VM nowProtocolPanel = ResourceManager.mainWindowVM.SelectedItem;
+            nowProtocolPanel.SelectedItem.SelectedItem.UserControlVMs.Remove(this);
+
+            ResourceManager.mainWindowVM.Tips = "删除了拓扑节点";
+        }
+
         #endregion
     }
 }

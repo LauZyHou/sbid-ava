@@ -32,7 +32,7 @@
       <ContextMenu>
         <!--禁止修改-->
         <MenuItem Header="编辑" Command="{Binding EditTopoNodeVM}"/>
-        <MenuItem Header="删除"/>
+        <MenuItem Header="删除" Command="{Binding DeleteTopoNodeVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>
