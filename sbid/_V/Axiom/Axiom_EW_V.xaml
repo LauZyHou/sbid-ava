@@ -45,7 +45,7 @@
                    SelectedItem="{Binding #processMethod_ListBox.SelectedItem.Process, Mode=OneWay}">
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding RefName.Content}"/>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>

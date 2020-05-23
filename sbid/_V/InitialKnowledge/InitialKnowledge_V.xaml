@@ -18,7 +18,7 @@
       <TextBlock Text=" 初始知识 " FontWeight="Bold"/>
       <TextBlock Text="(全局)" IsVisible="{Binding InitialKnowledge.IsGlobal}"/>
       <!--当不是全局的时候，这里要显示关联的Process的名称-->
-      <TextBlock Text="{Binding InitialKnowledge.Process.Name}" IsVisible="{Binding !InitialKnowledge.IsGlobal}"/>
+      <TextBlock Text="{Binding InitialKnowledge.Process.RefName.Content}" IsVisible="{Binding !InitialKnowledge.IsGlobal}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
     <ListBox Grid.Row="2" Items="{Binding InitialKnowledge.KnowledgePairs}" IsEnabled="False"
@@ -29,7 +29,7 @@
           <TextBlock>
             <TextBlock.Text>
               <MultiBinding StringFormat=" {0}.{1}">
-                <Binding Path="Process.Name"/>
+                <Binding Path="Process.RefName.Content"/>
                 <Binding Path="Attribute.Identifier"/>
               </MultiBinding>
             </TextBlock.Text>

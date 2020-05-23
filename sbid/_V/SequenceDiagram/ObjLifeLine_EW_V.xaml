@@ -25,7 +25,7 @@
                     SelectedItem="{Binding SeqObject.Process, Mode=TwoWay}">
       <ComboBox.ItemTemplate>
         <DataTemplate>
-          <TextBlock Text="{Binding Name}"/>
+          <TextBlock Text="{Binding RefName.Content}"/>
         </DataTemplate>
       </ComboBox.ItemTemplate>
     </ComboBox>
