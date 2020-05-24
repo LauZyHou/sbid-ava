@@ -84,7 +84,6 @@ namespace sbid._VM
 
         #region 私有
 
-
         /// <summary>
         /// 判断并删除SecurityProperty中依赖此Process的保密性/认证性/完整性
         /// </summary>

@@ -365,14 +365,24 @@ namespace sbid._V
 
         #region 私有
 
-        // 判断将ut设置为当前类型的父类是否会引起环形继承
-        private bool JudgeLoopExtend(UserType ut)
+        // 判断将userType设置为当前类型的父类是否会引起环形继承
+        private bool JudgeLoopExtend(UserType userType)
         {
-            if (ut == null)
+            if (userType == null)
                 return false;
-            if (ut == ((UserType_EW_VM)DataContext).UserType)
-                return true;
-            return JudgeLoopExtend(ut.Parent);
+            // 当前UserType
+            UserType nowUserType = ((UserType_EW_VM)DataContext).UserType;
+            // 在20步内判断，防止userType本身有环形继承而无限向上查找
+            // 程序正常使用不会使userType出现环路，但是用户可以对项目文件修改
+            // 所以错误或恶意的修改项目文件是可以使导入的项目出现环形继承的
+            // 但是在导入时检查环形继承又提高了导入代价，仅在此处防止出现死循环
+            for (int i = 0; i < 20 && userType != null; i++)
+            {
+                if (userType == nowUserType)
+                    return true;
+                userType = userType.Parent;
+            }
+            return false;
         }
 
         #endregion

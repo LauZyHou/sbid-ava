@@ -33,7 +33,7 @@
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditStateVM}"/>
         <MenuItem Header="精化" Command="{Binding RefineStateVM}"/>
-        <MenuItem Header="删除"/>
+        <MenuItem Header="删除" Command="{Binding DeleteStateVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>

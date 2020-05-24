@@ -43,7 +43,6 @@
     <AvaloniaResource Remove="_V\SidePanel\CTLTree_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\ProcessToSM_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
-    <AvaloniaResource Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\FinalState_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\InitState_V.xaml" />
@@ -51,6 +50,7 @@
     <AvaloniaResource Remove="_V\StateMachine\State_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\Transition_EW_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\Transition_V.xaml" />
+    <AvaloniaResource Remove="_V\StateMachine\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\OneWayTopoLink_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TopoLink_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TopoNode_Circle_V.xaml" />
@@ -91,7 +91,6 @@
     <None Remove="_V\SidePanel\CTLTree_P_V.xaml" />
     <None Remove="_V\SidePanel\ProcessToSM_P_V.xaml" />
     <None Remove="_V\SidePanel\SequenceDiagram_P_V.xaml" />
-    <None Remove="_V\SidePanel\StateMachine_P_V.xaml" />
     <None Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <None Remove="_V\StateMachine\FinalState_V.xaml" />
     <None Remove="_V\StateMachine\InitState_V.xaml" />
@@ -99,6 +98,7 @@
     <None Remove="_V\StateMachine\State_V.xaml" />
     <None Remove="_V\StateMachine\Transition_EW_V.xaml" />
     <None Remove="_V\StateMachine\Transition_V.xaml" />
+    <None Remove="_V\StateMachine\StateMachine_P_V.xaml" />
     <None Remove="_V\Topology\OneWayTopoLink_V.xaml" />
     <None Remove="_V\Topology\TopoLink_V.xaml" />
     <None Remove="_V\Topology\TopoNode_Circle_V.xaml" />

@@ -86,6 +86,143 @@ namespace sbid._VM
             processToSM_P_VM.SelectedItem = stateMachine_P_VM;
         }
 
+        // 删除状态，级联删除对应内容
+        public void DeleteStateVM()
+        {
+            // 获取当前"进程模板-状态机"侧栏面板
+            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
+            // 获取当前的状态机面板
+            StateMachine_P_VM stateMachine_P_VM = processToSM_P_VM.SelectedItem;
+            // 删除状态上所有连线，并同时维护面板的活动锚点
+            foreach (Connector_VM connector_VM in ConnectorVMs)
+            {
+                // 如果活动锚点在这个要删除的状态上就会假死，所以要判断并清除活动锚点
+                if (connector_VM == stateMachine_P_VM.ActiveConnector)
+                    stateMachine_P_VM.ActiveConnector = null;
+                // 清除连线(实际是Transition_VM，这里父类就够用)两端状态锚点的反引，再删除连线
+                Connection_VM connection_VM = connector_VM.ConnectionVM;
+                if (connection_VM != null)
+                {
+                    connection_VM.Source.ConnectionVM = null;
+                    connection_VM.Dest.ConnectionVM = null;
+                    stateMachine_P_VM.UserControlVMs.Remove(connection_VM);
+                }
+            }
+
+            // 判断并删除SecurityProperty中依赖此State的认证性/完整性
+            // 因为它们能使用的只有顶层状态，所以这里判断一下是顶层面板，这样可以优化速度
+            if (stateMachine_P_VM.State == State.TopState)
+                JudgeAndDeleteAuthenticityAndIntegrity();
+
+            // 删除对应状态机面板，以及递归删除其中的状态对应的状态机面板
+            foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
+            {
+                if (pvm.State == state)
+                {
+                    DeleteStateMachinePVMCascade(pvm);
+                    break; // 每个状态最多精化一次，所以找到一个面板删除完就可以break了
+                }
+            }
+
+            // 从当前状态机面板删除这个状态
+            stateMachine_P_VM.UserControlVMs.Remove(this);
+
+            ResourceManager.mainWindowVM.Tips = "已经删除状态" + state.Name + "，并级联删除了所有依赖于此状态的内容";
+        }
+
+        #endregion
+
+        #region 私有
+
+        /// <summary>
+        /// 判断并删除SecurityProperty中依赖此State的认证性/完整性
+        /// </summary>
+        /// <returns>是否做了删除操作</returns>
+        public bool JudgeAndDeleteAuthenticityAndIntegrity()
+        {
+            bool deleted = false;
+            // 当前协议面板VM
+            Protocol_VM protocolVM = ResourceManager.mainWindowVM.SelectedItem;
+            // 其下的类图面板VM
+            ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
+            // 遍历查找SecurityProperty
+            foreach (ViewModelBase item in classDiagram_P_VM.UserControlVMs)
+            {
+                if (item is SecurityProperty_VM)
+                {
+                    SecurityProperty_VM vm = (SecurityProperty_VM)item;
+                    // 这里维护要删除的两种性质列表，遍历结束后再统一删除
+                    List<Authenticity> authenticities = new List<Authenticity>();
+                    List<Integrity> integrities = new List<Integrity>();
+                    // 遍历查找
+                    foreach (Authenticity authenticity in vm.SecurityProperty.Authenticities)
+                    {
+                        if (authenticity.StateA == state
+                            || authenticity.StateB == state)
+                        {
+                            authenticities.Add(authenticity); // 加到待删除列表里
+                        }
+                    }
+                    foreach (Integrity integrity in vm.SecurityProperty.Integrities)
+                    {
+                        if (integrity.StateA == state
+                           || integrity.StateB == state)
+                        {
+                            integrities.Add(integrity);
+                        }
+                    }
+                    // 统一删除
+                    foreach (Authenticity authenticity in authenticities)
+                    {
+                        vm.SecurityProperty.Authenticities.Remove(authenticity);
+                        deleted = true;
+                    }
+                    foreach (Integrity integrity in integrities)
+                    {
+                        vm.SecurityProperty.Integrities.Remove(integrity);
+                        deleted = true;
+                    }
+                }
+            }
+            return deleted;
+        }
+
+        // 删除状态机面板，并递归删除其中的状态对应的状态机面板
+        // 因为能删除的状态机面板一定不是顶层面板，面板的删除绝不会导致其中的状态被删除而影响Authenticity和Integrity
+        public static void DeleteStateMachinePVMCascade(StateMachine_P_VM stateMachine_P_VM)
+        {
+            // 获取当前"进程模板-状态机"侧栏面板
+            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
+
+            // 递归删除状态机面板中所有状态精化出的状态机面板
+            // 先获取传入的状态机面板中的所有状态集合
+            Collection<State> states = new Collection<State>();
+            foreach (ViewModelBase viewModel in stateMachine_P_VM.UserControlVMs)
+            {
+                if (viewModel is State_VM)
+                {
+                    states.Add(((State_VM)viewModel).state);
+                }
+            }
+            // 然后检查当前"进程模板-状态机"侧栏面板下的所有状态机面板，对记录下的状态对应的面板级联删除
+            // 注意这里直接遍历processToSM_P_VM.StateMachinePVMs会导致迭代时删除，所以先记录到集合里去
+            Collection<StateMachine_P_VM> needToDelete = new Collection<StateMachine_P_VM>();
+            foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
+            {
+                if (states.Contains(pvm.State))
+                {
+                    needToDelete.Add(pvm);
+                }
+            }
+            foreach (StateMachine_P_VM pvm in needToDelete)
+            {
+                DeleteStateMachinePVMCascade(pvm);
+            }
+
+            // 最后删除传入的状态机面板
+            processToSM_P_VM.StateMachinePVMs.Remove(stateMachine_P_VM);
+        }
+
         #endregion
     }
 }
