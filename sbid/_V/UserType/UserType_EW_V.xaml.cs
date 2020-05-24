@@ -53,6 +53,7 @@ namespace sbid._V
 
         #region 按钮命令
 
+        // 写入继承关系
         public void Set_Parent()
         {
             ComboBox userType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "userType_ComboBox");
@@ -61,10 +62,22 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定UserType！";
                 return;
             }
+            // 选中的UserType
             UserType userType = (UserType)userType_ComboBox.SelectedItem;
+            // 当前UserType
+            UserType nowUserType = ((UserType_EW_VM)DataContext).UserType;
 
-            ((UserType_EW_VM)DataContext).UserType.Parent = userType;
-            ResourceManager.mainWindowVM.Tips = "继承自UserType：" + userType.Name;
+            // 判断环形继承
+            if (JudgeLoopExtend(userType))
+            {
+                string way = userType.Parent == nowUserType ? "直接" : "间接";
+                ResourceManager.mainWindowVM.Tips = "禁止！该操作会引起环形继承，因为" + userType.Name + way + "继承了" + nowUserType.Name;
+                return;
+            }
+
+            // 设置继承关系
+            nowUserType.Parent = userType;
+            ResourceManager.mainWindowVM.Tips = "写入继承关系，使继承自UserType：" + userType.Name;
         }
 
         public void Add_Attribute()
@@ -178,7 +191,7 @@ namespace sbid._V
             }
 
             Attribute attribute = new Attribute(
-                (Type)paramType_ComboBox.SelectedItem, 
+                (Type)paramType_ComboBox.SelectedItem,
                 paramName_TextBox.Text,
                 (bool)method_param_isArray_ComboBox.SelectedItem
             );
@@ -346,6 +359,20 @@ namespace sbid._V
                 ((UserType_EW_VM)DataContext).Params.Add(new Attribute(attribute));
             }
             ResourceManager.mainWindowVM.Tips = "选中了Method：" + (Method)method_ListBox.SelectedItem + "，已拷贝其参数列表";
+        }
+
+        #endregion
+
+        #region 私有
+
+        // 判断将ut设置为当前类型的父类是否会引起环形继承
+        private bool JudgeLoopExtend(UserType ut)
+        {
+            if (ut == null)
+                return false;
+            if (ut == ((UserType_EW_VM)DataContext).UserType)
+                return true;
+            return JudgeLoopExtend(ut.Parent);
         }
 
         #endregion
