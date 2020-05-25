@@ -18,6 +18,7 @@ namespace sbid._VM
         private string tips = "在此处获取操作提示";
         private ObservableCollection<Protocol_VM> protocolVMs = new ObservableCollection<Protocol_VM>();
         private Protocol_VM selectedItem;
+        private bool connectorVisible = true;
 
         #endregion
 
@@ -25,18 +26,6 @@ namespace sbid._VM
 
         public MainWindow_VM()
         {
-            //// 指示添加类图等命令是否可用的IObservable对象
-            //IObservable<bool> addEnabled = this.WhenAnyValue(
-            //    x => x.SelectedItem,
-            //    x => !Protocol_VM.IsNull(x)
-            //    );
-
-            //// 生成命令
-            //AddClassDiagram = ReactiveCommand.Create(
-            //    () => new ClassDiagram_P_VM(),
-            //    addEnabled
-            //    );
-
             // 把自己挂到全局资源上
             ResourceManager.mainWindowVM = this;
         }
@@ -1989,8 +1978,8 @@ namespace sbid._VM
             set => this.RaiseAndSetIfChanged(ref selectedItem, value);
         }
 
-        // [命令]添加类图
-        //public ReactiveCommand<Unit, ClassDiagram_P_VM> AddClassDiagram { get; set; }
+        // 锚点是否可见
+        public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
         #endregion
     }

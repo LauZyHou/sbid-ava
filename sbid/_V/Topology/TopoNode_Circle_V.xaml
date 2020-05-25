@@ -19,14 +19,14 @@
                  VerticalAlignment="Center" HorizontalAlignment="Center"
                  Foreground="Black" FontSize="12" TextWrapping="Wrap"/>
       <!--锚点顺时针排列-->
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="4" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="2" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[2]}" Grid.Row="0" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[3]}" Grid.Row="2" Grid.Column="6" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[4]}" Grid.Row="4" Grid.Column="8" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="6" Grid.Column="6" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="8" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
-      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="6" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="4" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="2" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[2]}" Grid.Row="0" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[3]}" Grid.Row="2" Grid.Column="6" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[4]}" Grid.Row="4" Grid.Column="8" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="6" Grid.Column="6" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="8" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:TopoConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="6" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
     </Grid>
     <Grid.ContextMenu>
       <ContextMenu>

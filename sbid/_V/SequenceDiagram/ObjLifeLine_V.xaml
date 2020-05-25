@@ -25,7 +25,7 @@
       <Line StartPoint="70,0" EndPoint="70,470" Stroke="Black" StrokeThickness="2" StrokeDashArray="1,1"/>
       <!--调整这里以保证锚点居中-->
       <Grid ColumnDefinitions="60*,40*,60*"
-            IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}">
+            IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}">
         <ItemsControl Grid.Column="1" Items="{Binding ConnectorVMs}" Background="Transparent" Height="440"
                  BorderBrush="Transparent">
           <ItemsControl.ItemsPanel>

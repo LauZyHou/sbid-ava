@@ -13,7 +13,7 @@
   <Grid Width="40" Height="40">
     <Ellipse Stroke="Black" Fill="Black"/>
     <Grid RowDefinitions="1*,2*,1*" ColumnDefinitions="1*,2*,1*" Margin="-6">
-      <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="2" Grid.Column="1" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
+      <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="2" Grid.Column="1" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
     </Grid>
   </Grid>
 </UserControl>

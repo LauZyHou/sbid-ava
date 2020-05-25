@@ -9,7 +9,7 @@
     <Ellipse Fill="White" Stroke="Black" StrokeThickness="3.5"/>
     <Grid RowDefinitions="1*,2*,1*" ColumnDefinitions="1*,2*,1*" Margin="-6">
       <Ellipse Fill="Black" Grid.Row="1" Grid.Column="1"/>
-      <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].DataContext.SelectedItem.SelectedItem.SelectedItem.ConnectorVisible}"/>
+      <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
     </Grid>
   </Grid>
 </UserControl>

@@ -13,7 +13,6 @@ namespace sbid._V
         public TopoGraph_P_V()
         {
             this.InitializeComponent();
-
             init_binding();
         }
 
@@ -33,12 +32,6 @@ namespace sbid._V
             // 绑定TopoLinkType枚举
             ComboBox topoLinkType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "topoLinkType_ComboBox");
             topoLinkType_ComboBox.Items = System.Enum.GetValues(typeof(TopoLinkType));
-            // 绑定ConnectorVisible
-            ComboBox connectorVisible_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "connectorVisible_ComboBox");
-            List<bool> boolList = new List<bool>();
-            boolList.Add(true);
-            boolList.Add(false);
-            connectorVisible_ComboBox.Items = boolList;
         }
 
         #endregion

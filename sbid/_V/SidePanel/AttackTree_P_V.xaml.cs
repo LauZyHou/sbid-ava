@@ -17,7 +17,6 @@ namespace sbid._V
         public AttackTree_P_V()
         {
             this.InitializeComponent();
-            init_binding();
             // 初始化.cs文件中的事件处理
             init_event();
         }
@@ -28,17 +27,6 @@ namespace sbid._V
         }
 
         #region 辅助构造
-
-        // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
-        private void init_binding()
-        {
-            // 绑定ConnectorVisible
-            ComboBox connectorVisible_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "connectorVisible_ComboBox");
-            List<bool> boolList = new List<bool>();
-            boolList.Add(true);
-            boolList.Add(false);
-            connectorVisible_ComboBox.Items = boolList;
-        }
 
         // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
         private void init_event()

@@ -38,6 +38,9 @@ namespace sbid
         // todo 做成全局菜单栏里保存的方式
         public static void RenderImage(string path, ItemsControl itemsControl)
         {
+            // 直接关闭导出窗口时path为空
+            if (path == null)
+                return;
             // 构造渲染图片的容器
             PixelSize pixelSize = new PixelSize((int)itemsControl.Width * 2, (int)itemsControl.Height * 2);
             RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(pixelSize, new Vector(192, 192));

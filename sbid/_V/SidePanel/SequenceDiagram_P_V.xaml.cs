@@ -13,7 +13,6 @@ namespace sbid._V
         public SequenceDiagram_P_V()
         {
             this.InitializeComponent();
-
             init_binding();
         }
 
@@ -30,12 +29,6 @@ namespace sbid._V
             // 绑定SeqMessage的类型枚举
             ComboBox seqMessage_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "seqMessage_ComboBox");
             seqMessage_ComboBox.Items = System.Enum.GetValues(typeof(SeqMessage));
-            // 绑定ConnectorVisible
-            ComboBox connectorVisible_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "connectorVisible_ComboBox");
-            List<bool> boolList = new List<bool>();
-            boolList.Add(true);
-            boolList.Add(false);
-            connectorVisible_ComboBox.Items = boolList;
         }
 
         #endregion

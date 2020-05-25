@@ -10,7 +10,6 @@ namespace sbid._VM
     {
         private State state;
         private Connector_VM activeConnector;
-        private bool connectorVisible = true;
 
         // 无参构造只是给xaml中的Design用
         public StateMachine_P_VM()
@@ -27,8 +26,6 @@ namespace sbid._VM
         public State State { get => state; }
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
-        // 锚点是否可见
-        public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
         #region 对外的初始化调用(在用户创建时需要调用，在从项目文件读取时不可调用)
 
