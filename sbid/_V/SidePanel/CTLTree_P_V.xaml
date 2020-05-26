@@ -10,6 +10,41 @@
     <vm:CTLTree_P_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <!--ItemsControl的样式-->
+    <Style Selector="ItemsControl">
+      <!--使用Canvas作面板-->
+      <Setter Property="ItemsPanel">
+        <Setter.Value>
+          <ItemsPanelTemplate>
+            <!--这里需要为Canvas设置颜色才能在按下时相应鼠标事件-->
+            <Canvas Background="#EEEEEE" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <!--右键菜单行为-->
+              <Canvas.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="创建原子命题" Command="{Binding $parent[UserControl].CreateAtomPropositionVM}"/>
+                </ContextMenu>
+              </Canvas.ContextMenu>
+            </Canvas>
+          </ItemsPanelTemplate>
+        </Setter.Value>
+      </Setter>
+      <!--里面放控件,即xxx_VM-->
+      <Setter Property="ItemTemplate">
+        <Setter.Value>
+          <DataTemplate DataType="vm:ViewModelBase">
+            <ContentControl Content="{Binding .}"/>
+          </DataTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
+    <Style Selector="ItemsControl > ContentPresenter">
+      <Setter Property="Canvas.Left" Value="{Binding X}"/>
+      <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+    </Style>
+  </UserControl.Styles>
+
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
       <Button>生成公式</Button>
@@ -29,9 +64,9 @@
       <Button>创建"析取"</Button>
       <Button>创建"蕴含"</Button>
     </StackPanel>
-    <Canvas DockPanel.Dock="Bottom">
-
-    </Canvas>
+    <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+    </ScrollViewer>
   </DockPanel>
  
 </UserControl>

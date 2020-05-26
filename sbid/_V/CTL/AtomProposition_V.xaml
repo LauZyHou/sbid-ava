@@ -1,0 +1,45 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             Height="64" Width="110"
+             x:Class="sbid._V.AtomProposition_V">
+  <Design.DataContext>
+    <vm:AtomProposition_VM/>
+  </Design.DataContext>
+
+  <Grid Width="100" Height="50">
+    <Rectangle Stroke="Black" Fill="WhiteSmoke" StrokeThickness="2"/>
+    <Grid Margin="-11,-7" ColumnDefinitions="1*,1*,1*,1*,1*" RowDefinitions="1*,1*,1*,1*">
+      <TextBlock Text="{Binding AtomProposition.RefName.Content}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2"
+                 FontSize="12" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[2]}" Grid.Row="0" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[3]}" Grid.Row="0" Grid.Column="3" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[4]}" Grid.Row="0" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="1" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="1" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="2" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[8]}" Grid.Row="2" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[9]}" Grid.Row="3" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[10]}" Grid.Row="3" Grid.Column="1" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[11]}" Grid.Row="3" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[12]}" Grid.Row="3" Grid.Column="3" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[13]}" Grid.Row="3" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    </Grid>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑"/>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
+  </Grid>
+  
+</UserControl>
