@@ -20,6 +20,7 @@
     <AvaloniaResource Remove="_V\CommChannel\CommChannel_EW_V.xaml" />
     <AvaloniaResource Remove="_V\CommChannel\CommChannel_V.xaml" />
     <AvaloniaResource Remove="_V\CTL\AtomProposition_V.xaml" />
+    <AvaloniaResource Remove="_V\CTL\CTLRelation_V.xaml" />
     <AvaloniaResource Remove="_V\InitialKnowledge\InitialKnowledge_EW_V.xaml" />
     <AvaloniaResource Remove="_V\InitialKnowledge\InitialKnowledge_V.xaml" />
     <AvaloniaResource Remove="_V\Network\Arrow_V.xaml" />
@@ -69,6 +70,7 @@
     <None Remove="_V\CommChannel\CommChannel_EW_V.xaml" />
     <None Remove="_V\CommChannel\CommChannel_V.xaml" />
     <None Remove="_V\CTL\AtomProposition_V.xaml" />
+    <None Remove="_V\CTL\CTLRelation_V.xaml" />
     <None Remove="_V\InitialKnowledge\InitialKnowledge_EW_V.xaml" />
     <None Remove="_V\InitialKnowledge\InitialKnowledge_V.xaml" />
     <None Remove="_V\Network\Arrow_V.xaml" />
@@ -357,6 +359,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\CTL\AtomProposition_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\CTL\CTLRelation_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

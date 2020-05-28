@@ -48,6 +48,14 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "创建了新的原子命题：" + apVM.AtomProposition.RefName.Content;
         }
 
+        // 创建CTL关系
+        public void CreateCTLRelationVM()
+        {
+            CTLRelation_VM ctlrVM = new CTLRelation_VM(mousePos.X, mousePos.Y);
+            CTLTreePVM.UserControlVMs.Add(ctlrVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的CTL关系结点";
+        }
+
         #endregion
 
         // 对应的VM

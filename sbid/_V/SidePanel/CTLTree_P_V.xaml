@@ -23,6 +23,7 @@
               <Canvas.ContextMenu>
                 <ContextMenu>
                   <MenuItem Header="创建原子命题" Command="{Binding $parent[UserControl].CreateAtomPropositionVM}"/>
+                  <MenuItem Header="创建CTL关系" Command="{Binding $parent[UserControl].CreateCTLRelationVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
