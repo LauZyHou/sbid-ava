@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using sbid._M;
+using sbid._V;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,5 +67,24 @@ namespace sbid._VM
         #endregion
 
         public CTLRelation CTLRelation { get => ctlRelation; set => this.RaiseAndSetIfChanged(ref ctlRelation, value); }
+
+        #region 右键菜单命令
+
+        // 打开编辑窗口
+        public void EditCTLRelationVM()
+        {
+            CTLRelation_EW_V ctlRelationEWV = new CTLRelation_EW_V()
+            {
+                DataContext = new CTLRelation_EW_VM()
+                {
+                    CTLRelation_VM = this
+                }
+            };
+            ctlRelationEWV.ShowDialog(ResourceManager.mainWindowV);
+            ResourceManager.mainWindowVM.Tips = "打开了CTL关系结点的编辑窗体";
+        }
+
+        #endregion
+
     }
 }

@@ -27,10 +27,7 @@
     </Grid>
     <Grid.ContextMenu>
       <ContextMenu>
-        <!--禁止修改-->
-        <!--<MenuItem Header="设为AND" Command="{Binding SetRelation_AND}"/>
-          <MenuItem Header="设为OR" Command="{Binding SetRelation_OR}"/>
-          <MenuItem Header="设为NEG" Command="{Binding SetRelation_NEG}"/>-->
+        <MenuItem Header="编辑" Command="{Binding EditCTLRelationVM}"/>
         <MenuItem Header="删除"/>
       </ContextMenu>
     </Grid.ContextMenu>
