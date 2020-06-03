@@ -10,7 +10,8 @@ namespace sbid._M
     {
         public static int _id = 0;
         private Process process;
-        private ObservableCollection<KnowledgePair> knowledgePairs = new ObservableCollection<KnowledgePair>();
+        private ObservableCollection<Knowledge> knowledges = new ObservableCollection<Knowledge>();
+        private ObservableCollection<KeyPair> keyPairs = new ObservableCollection<KeyPair>();
         private int id;
 
         public InitialKnowledge()
@@ -29,7 +30,8 @@ namespace sbid._M
                 this.RaisePropertyChanged("IsGlobal");
             }
         }
-        public ObservableCollection<KnowledgePair> KnowledgePairs { get => knowledgePairs; set => knowledgePairs = value; }
+        public ObservableCollection<Knowledge> Knowledges { get => knowledges; set => knowledges = value; }
+        public ObservableCollection<KeyPair> KeyPairs { get => keyPairs; set => keyPairs = value; }
         public int Id
         {
             get => id;

@@ -23,6 +23,9 @@
     <Style Selector="TabItem > Grid">
       <Setter Property="Margin" Value="7"/>
     </Style>
+    <Style Selector="TabItem ComboBox">
+      <Setter Property="Height" Value="26"/>
+    </Style>
   </Window.Styles>
 
   <TabControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
@@ -43,12 +46,12 @@
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="知识序偶">
+    <TabItem Header="知识">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="进程模板：" FontSize="17"/>
           <ListBox Name="process_ListBox" Height="82" Items="{Binding Processes}"
-                   SelectedItem="{Binding #knowledgePair_ListBox.SelectedItem.Process, Mode=OneWay}">
+                   SelectedItem="{Binding #knowledge_ListBox.SelectedItem.Process, Mode=OneWay}">
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <TextBlock Text="{Binding RefName.Content}"/>
@@ -57,7 +60,7 @@
           </ListBox>
           <TextBlock Text="进程模板下的属性：" FontSize="17"/>
           <ListBox Name="attribute_ListBox" Height="82" Items="{Binding #process_ListBox.SelectedItem.Attributes}"
-                   SelectedItem="{Binding #knowledgePair_ListBox.SelectedItem.Attribute, Mode=OneWay}">
+                   SelectedItem="{Binding #knowledge_ListBox.SelectedItem.Attribute, Mode=OneWay}">
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <TextBlock>
@@ -72,13 +75,13 @@
             </ListBox.ItemTemplate>
           </ListBox>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Classes="ButtonGroup">
-            <Button Command="{Binding $parent[Window].Add_KnowledgePair}">添加</Button>
-            <Button Command="{Binding $parent[Window].Update_KnowledgePair}">修改</Button>
-            <Button Command="{Binding $parent[Window].Delete_KnowledgePair}">删除</Button>
+            <Button Command="{Binding $parent[Window].Add_Knowledge}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_Knowledge}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_Knowledge}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0" Name="knowledgePair_ListBox" 
-                 Items="{Binding InitialKnowledge.KnowledgePairs}">
+        <ListBox Grid.Column="1" Margin="10,0" Name="knowledge_ListBox" 
+                 Items="{Binding InitialKnowledge.Knowledges}">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <TextBlock>
@@ -91,6 +94,71 @@
               </TextBlock>
             </DataTemplate>
           </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
+    <TabItem Header="公私钥对">
+      <Grid ColumnDefinitions="50*,50*">
+        <StackPanel Grid.Column="0" Margin="10,0">
+          <TextBlock Text="公钥所属进程：" FontSize="17"/>
+          <ComboBox Name="pubProcess_ComboBox" Items="{Binding Processes}"
+                   SelectedItem="{Binding #keyPair_ListBox.SelectedItem.PubProcess, Mode=OneWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding RefName.Content}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <TextBlock Text="公钥(属性)：" FontSize="17"/>
+          <ComboBox Name="pubKey_ComboBox" Items="{Binding #pubProcess_ComboBox.SelectedItem.Attributes}"
+                   SelectedItem="{Binding #keyPair_ListBox.SelectedItem.PubKey, Mode=OneWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                  <TextBlock.Text>
+                    <MultiBinding StringFormat=" {0} {1};">
+                      <Binding Path="Type.Name"/>
+                      <Binding Path="Identifier"/>
+                    </MultiBinding>
+                  </TextBlock.Text>
+                </TextBlock>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <TextBlock Text="私钥所属进程：" FontSize="17"/>
+          <ComboBox Name="secProcess_ComboBox" Items="{Binding Processes}"
+                   SelectedItem="{Binding #keyPair_ListBox.SelectedItem.SecProcess, Mode=OneWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding RefName.Content}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <TextBlock Text="私钥(属性)：" FontSize="17"/>
+          <ComboBox Name="secKey_ComboBox" Items="{Binding #secProcess_ComboBox.SelectedItem.Attributes}"
+                   SelectedItem="{Binding #keyPair_ListBox.SelectedItem.SecKey, Mode=OneWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                  <TextBlock.Text>
+                    <MultiBinding StringFormat=" {0} {1};">
+                      <Binding Path="Type.Name"/>
+                      <Binding Path="Identifier"/>
+                    </MultiBinding>
+                  </TextBlock.Text>
+                </TextBlock>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Classes="ButtonGroup">
+            <Button Command="{Binding $parent[Window].Add_KeyPair}">添加</Button>
+            <Button Command="{Binding $parent[Window].Update_KeyPair}">修改</Button>
+            <Button Command="{Binding $parent[Window].Delete_KeyPair}">删除</Button>
+          </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Margin="10,0" Name="keyPair_ListBox"
+                 Items="{Binding InitialKnowledge.KeyPairs}">
+          
         </ListBox>
       </Grid>
     </TabItem>

@@ -5,13 +5,13 @@ using System.Text;
 
 namespace sbid._M
 {
-    // 表达Knowledge,<进程模板,进程模板下的Attribute>的序对
-    public class KnowledgePair : ReactiveObject
+    // 表达Knowledge,<进程模板,进程模板下的Attribute>
+    public class Knowledge : ReactiveObject
     {
         private Process process;
         private Attribute attribute;
 
-        public KnowledgePair(Process process, Attribute attribute)
+        public Knowledge(Process process, Attribute attribute)
         {
             this.process = process;
             this.attribute = attribute;

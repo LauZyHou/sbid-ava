@@ -21,7 +21,7 @@
       <TextBlock Text="{Binding InitialKnowledge.Process.RefName.Content}" IsVisible="{Binding !InitialKnowledge.IsGlobal}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
-    <ListBox Grid.Row="2" Items="{Binding InitialKnowledge.KnowledgePairs}" IsEnabled="False"
+    <ListBox Grid.Row="2" Items="{Binding InitialKnowledge.Knowledges}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

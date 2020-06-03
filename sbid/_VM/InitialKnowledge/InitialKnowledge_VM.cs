@@ -31,7 +31,7 @@ namespace sbid._VM
                     InitialKnowledge = initialKnowledge
                 }
             };
-            // 将所有的Process传入,作为KnowledgePair去选用的参数
+            // 将所有的Process传入,作为Knowledge和KeyPair去选用的参数
             foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.UserControlVMs)
             {
                 if (item is Process_VM)

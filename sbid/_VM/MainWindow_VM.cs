@@ -368,13 +368,13 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("process_ref", vm.InitialKnowledge.Process.Id.ToString());
                         }
                         xmlWriter.WriteAttributeString("id", vm.InitialKnowledge.Id.ToString());
-                        foreach (KnowledgePair knowledgePair in vm.InitialKnowledge.KnowledgePairs)
+                        foreach (Knowledge knowledge in vm.InitialKnowledge.Knowledges)
                         {
                             xmlWriter.WriteStartElement("KnowledgePair");
-                            xmlWriter.WriteAttributeString("process_ref", knowledgePair.Process.Id.ToString());
+                            xmlWriter.WriteAttributeString("process_ref", knowledge.Process.Id.ToString());
                             // 为了这里需要，特地为Attribute也添加了Id，读取xml的时候才能知道选的是Process的哪个Attribute
                             // 下面类似的地方标注了"注意"字样
-                            xmlWriter.WriteAttributeString("attribute_ref", knowledgePair.Attribute.Id.ToString());
+                            xmlWriter.WriteAttributeString("attribute_ref", knowledge.Attribute.Id.ToString());
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();
@@ -1294,8 +1294,8 @@ namespace sbid._VM
                                     cleanProject();
                                     return false;
                                 }
-                                KnowledgePair knowledgePair = new KnowledgePair(processVMDict[processRef].Process, findAttr);
-                                initialKnowledge.KnowledgePairs.Add(knowledgePair);
+                                Knowledge knowledge = new Knowledge(processVMDict[processRef].Process, findAttr);
+                                initialKnowledge.Knowledges.Add(knowledge);
                             }
                             break;
                         case "SecurityProperty_VM":
