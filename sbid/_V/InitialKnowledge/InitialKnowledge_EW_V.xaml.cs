@@ -132,7 +132,7 @@ namespace sbid._V
                 (Process)secProcess_ComboBox.SelectedItem,
                 (Attribute)secKey_ComboBox.SelectedItem
             );
-            ((InitialKnowledge_EW_VM)DataContext).InitialKnowledge.KeyPairs.Add(keyPair);
+            VM.InitialKnowledge.KeyPairs.Add(keyPair);
             ResourceManager.mainWindowVM.Tips = "添加了KeyPair：" + keyPair;
         }
 
@@ -159,26 +159,37 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定SecKey！";
                 return;
             }
-            if(keyPair_ListBox.SelectedItem == null)
+            if (keyPair_ListBox.SelectedItem == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定要修改的KeyPair！";
                 return;
             }
+
+            KeyPair keyPair = (KeyPair)keyPair_ListBox.SelectedItem;
+            keyPair.PubProcess = (Process)pubProcess_ComboBox.SelectedItem;
+            keyPair.PubKey = (Attribute)pubKey_ComboBox.SelectedItem;
+            keyPair.SecProcess = (Process)secProcess_ComboBox.SelectedItem;
+            keyPair.SecKey = (Attribute)secKey_ComboBox.SelectedItem;
+            ResourceManager.mainWindowVM.Tips = "修改了KeyPair：" + keyPair;
         }
 
         public void Delete_KeyPair()
         {
-
+            KeyPair keyPair = (KeyPair)keyPair_ListBox.SelectedItem;
+            VM.InitialKnowledge.KeyPairs.Remove(keyPair);
+            ResourceManager.mainWindowVM.Tips = "删除了KeyPair：" + keyPair;
         }
 
         #endregion
 
 
-        #region 控件引用
+        #region 资源引用
 
         private ComboBox pubProcess_ComboBox, pubKey_ComboBox, secProcess_ComboBox, secKey_ComboBox;
 
         private ListBox keyPair_ListBox;
+
+        public InitialKnowledge_EW_VM VM { get => ((InitialKnowledge_EW_VM)DataContext); }
 
         // 获取控件引用
         private void get_control_reference()

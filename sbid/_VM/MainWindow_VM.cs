@@ -370,11 +370,20 @@ namespace sbid._VM
                         xmlWriter.WriteAttributeString("id", vm.InitialKnowledge.Id.ToString());
                         foreach (Knowledge knowledge in vm.InitialKnowledge.Knowledges)
                         {
-                            xmlWriter.WriteStartElement("KnowledgePair");
+                            xmlWriter.WriteStartElement("Knowledge");
                             xmlWriter.WriteAttributeString("process_ref", knowledge.Process.Id.ToString());
                             // 为了这里需要，特地为Attribute也添加了Id，读取xml的时候才能知道选的是Process的哪个Attribute
                             // 下面类似的地方标注了"注意"字样
                             xmlWriter.WriteAttributeString("attribute_ref", knowledge.Attribute.Id.ToString());
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (KeyPair keyPair in vm.InitialKnowledge.KeyPairs)
+                        {
+                            xmlWriter.WriteStartElement("KeyPair");
+                            xmlWriter.WriteAttributeString("pubProcess_ref", keyPair.PubProcess.Id.ToString());
+                            xmlWriter.WriteAttributeString("pubKey_ref", keyPair.PubKey.Id.ToString());
+                            xmlWriter.WriteAttributeString("secProcess_ref", keyPair.SecProcess.Id.ToString());
+                            xmlWriter.WriteAttributeString("secKey_ref", keyPair.SecKey.Id.ToString());
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();
@@ -1268,34 +1277,81 @@ namespace sbid._VM
                             {
                                 initialKnowledge.Process = processVMDict[processRef].Process;
                             }
-                            foreach (XmlNode ikpChildNode in node.ChildNodes) // <KnowledgePair process_ref="1" attribute_ref="8" />
+                            foreach (XmlNode ikpChildNode in node.ChildNodes) // Knowledge 或 KeyPair
                             {
                                 XmlElement ikpElement = (XmlElement)ikpChildNode;
-                                processRef = int.Parse(ikpElement.GetAttribute("process_ref"));
-                                if (!processVMDict.ContainsKey(processRef))
+                                switch (ikpElement.Name)
                                 {
-                                    Tips = "[解析InitialKnowledge_VM时出错]无法找到KnowledgePair引用的进程模板！";
-                                    cleanProject();
-                                    return false;
-                                }
-                                int attributeRef = int.Parse(ikpElement.GetAttribute("attribute_ref"));
-                                Attribute findAttr = null;
-                                foreach (Attribute attribute in processVMDict[processRef].Process.Attributes)
-                                {
-                                    if (attribute.Id == attributeRef)
-                                    {
-                                        findAttr = attribute;
+                                    case "Knowledge":
+                                        processRef = int.Parse(ikpElement.GetAttribute("process_ref"));
+                                        if (!processVMDict.ContainsKey(processRef))
+                                        {
+                                            Tips = "[解析InitialKnowledge_VM时出错]无法找到Knowledge引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int attributeRef = int.Parse(ikpElement.GetAttribute("attribute_ref"));
+                                        Attribute findAttr = null;
+                                        foreach (Attribute attribute in processVMDict[processRef].Process.Attributes)
+                                        {
+                                            if (attribute.Id == attributeRef)
+                                            {
+                                                findAttr = attribute;
+                                                break;
+                                            }
+                                        }
+                                        if (findAttr == null)
+                                        {
+                                            Tips = "[解析InitialKnowledge_VM时出错]无法找到Knowledge引用的进程模板下的Attribute！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        Knowledge knowledge = new Knowledge(processVMDict[processRef].Process, findAttr);
+                                        initialKnowledge.Knowledges.Add(knowledge);
                                         break;
-                                    }
+                                    case "KeyPair":
+                                        int pubProcess_ref = int.Parse(ikpElement.GetAttribute("pubProcess_ref"));
+                                        int secProcess_ref = int.Parse(ikpElement.GetAttribute("secProcess_ref"));
+                                        if (!processVMDict.ContainsKey(pubProcess_ref) || !processVMDict.ContainsKey(secProcess_ref))
+                                        {
+                                            Tips = "[解析InitialKnowledge_VM时出错]无法找到KeyPair引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int pubKey_ref = int.Parse(ikpElement.GetAttribute("pubKey_ref"));
+                                        int secKey_ref = int.Parse(ikpElement.GetAttribute("secKey_ref"));
+                                        Attribute pubKey = null, secKey = null;
+                                        foreach (Attribute attribute in processVMDict[pubProcess_ref].Process.Attributes)
+                                        {
+                                            if (attribute.Id == pubKey_ref)
+                                            {
+                                                pubKey = attribute;
+                                                break;
+                                            }
+                                        }
+                                        foreach (Attribute attribute in processVMDict[secProcess_ref].Process.Attributes)
+                                        {
+                                            if (attribute.Id == secKey_ref)
+                                            {
+                                                secKey = attribute;
+                                                break;
+                                            }
+                                        }
+                                        if (pubKey == null || secKey == null)
+                                        {
+                                            Tips = "[解析InitialKnowledge_VM时出错]无法找到KeyPair引用的进程模板下的Attribute！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        KeyPair keyPair = new KeyPair(
+                                            processVMDict[pubProcess_ref].Process,
+                                            pubKey,
+                                            processVMDict[secProcess_ref].Process,
+                                            secKey
+                                        );
+                                        initialKnowledge.KeyPairs.Add(keyPair);
+                                        break;
                                 }
-                                if (findAttr == null)
-                                {
-                                    Tips = "[解析InitialKnowledge_VM时出错]无法找到KnowledgePair引用的进程模板下的Attribute！";
-                                    cleanProject();
-                                    return false;
-                                }
-                                Knowledge knowledge = new Knowledge(processVMDict[processRef].Process, findAttr);
-                                initialKnowledge.Knowledges.Add(knowledge);
                             }
                             break;
                         case "SecurityProperty_VM":

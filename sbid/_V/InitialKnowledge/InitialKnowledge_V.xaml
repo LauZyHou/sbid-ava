@@ -13,15 +13,16 @@
     <SolidColorBrush x:Key="MyColor" Color="#82D782" />
   </UserControl.Resources>
 
-  <Grid RowDefinitions="20,1,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="100">
+  <Grid RowDefinitions="20,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="100">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <TextBlock Text=" 初始知识 " FontWeight="Bold"/>
       <TextBlock Text="(全局)" IsVisible="{Binding InitialKnowledge.IsGlobal}"/>
       <!--当不是全局的时候，这里要显示关联的Process的名称-->
       <TextBlock Text="{Binding InitialKnowledge.Process.RefName.Content}" IsVisible="{Binding !InitialKnowledge.IsGlobal}"/>
     </StackPanel>
-    <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
-    <ListBox Grid.Row="2" Items="{Binding InitialKnowledge.Knowledges}" IsEnabled="False"
+    <TextBlock Grid.Row="1" Background="Black"/>
+    <TextBlock Grid.Row="2" Text=" 单知识:"/>
+    <ListBox Grid.Row="3" Items="{Binding InitialKnowledge.Knowledges}" IsEnabled="False"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -31,6 +32,25 @@
               <MultiBinding StringFormat=" {0}.{1}">
                 <Binding Path="Process.RefName.Content"/>
                 <Binding Path="Attribute.Identifier"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBlock Grid.Row="4" Background="Black"/>
+    <TextBlock Grid.Row="5" Text=" 公私钥对:"/>
+    <ListBox Grid.Row="6" Items="{Binding InitialKnowledge.KeyPairs}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0}.{1}=>{2}.{3}">
+                <Binding Path="PubProcess.RefName.Content"/>
+                <Binding Path="PubKey.Identifier"/>
+                <Binding Path="SecProcess.RefName.Content"/>
+                <Binding Path="SecKey.Identifier"/>
               </MultiBinding>
             </TextBlock.Text>
           </TextBlock>

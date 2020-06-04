@@ -46,7 +46,7 @@
         </StackPanel>
       </StackPanel>
     </TabItem>
-    <TabItem Header="知识">
+    <TabItem Header="单知识">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="进程模板：" FontSize="17"/>
@@ -63,14 +63,12 @@
                    SelectedItem="{Binding #knowledge_ListBox.SelectedItem.Attribute, Mode=OneWay}">
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock>
-                  <TextBlock.Text>
-                    <MultiBinding StringFormat=" {0} {1};">
-                      <Binding Path="Type.Name"/>
-                      <Binding Path="Identifier"/>
-                    </MultiBinding>
-                  </TextBlock.Text>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Type.Name}"/>
+                  <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text=" "/>
+                  <TextBlock Text="{Binding Identifier}"/>
+                </StackPanel>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
@@ -114,14 +112,12 @@
                    SelectedItem="{Binding #keyPair_ListBox.SelectedItem.PubKey, Mode=OneWay}">
             <ComboBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock>
-                  <TextBlock.Text>
-                    <MultiBinding StringFormat=" {0} {1};">
-                      <Binding Path="Type.Name"/>
-                      <Binding Path="Identifier"/>
-                    </MultiBinding>
-                  </TextBlock.Text>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Type.Name}"/>
+                  <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text=" "/>
+                  <TextBlock Text="{Binding Identifier}"/>
+                </StackPanel>
               </DataTemplate>
             </ComboBox.ItemTemplate>
           </ComboBox>
@@ -139,14 +135,12 @@
                    SelectedItem="{Binding #keyPair_ListBox.SelectedItem.SecKey, Mode=OneWay}">
             <ComboBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock>
-                  <TextBlock.Text>
-                    <MultiBinding StringFormat=" {0} {1};">
-                      <Binding Path="Type.Name"/>
-                      <Binding Path="Identifier"/>
-                    </MultiBinding>
-                  </TextBlock.Text>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Type.Name}"/>
+                  <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text=" "/>
+                  <TextBlock Text="{Binding Identifier}"/>
+                </StackPanel>
               </DataTemplate>
             </ComboBox.ItemTemplate>
           </ComboBox>
@@ -158,7 +152,20 @@
         </StackPanel>
         <ListBox Grid.Column="1" Margin="10,0" Name="keyPair_ListBox"
                  Items="{Binding InitialKnowledge.KeyPairs}">
-          
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0}.{1}=>{2}.{3}">
+                    <Binding Path="PubProcess.RefName.Content"/>
+                    <Binding Path="PubKey.Identifier"/>
+                    <Binding Path="SecProcess.RefName.Content"/>
+                    <Binding Path="SecKey.Identifier"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
         </ListBox>
       </Grid>
     </TabItem>
