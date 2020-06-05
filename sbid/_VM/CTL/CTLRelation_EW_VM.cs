@@ -10,7 +10,7 @@ namespace sbid._VM
     {
         private CTLRelation_VM cTLRelation_VM;
 
-        // 注意这里传了整个VM，而不是里面的Relation枚举
+        // 注意这里传了整个VM，而不是里面的Relation枚举，为了能让枚举外面套个对象
         public CTLRelation_VM CTLRelation_VM { get => cTLRelation_VM; set => cTLRelation_VM = value; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using sbid._M;
+using sbid._V;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,23 @@ namespace sbid._VM
     public class AtomProposition_VM : NetworkItem_VM
     {
         private AtomProposition atomProposition;
+
+        public AtomProposition_VM()
+        {
+            atomProposition = new AtomProposition();
+
+            X = 100;
+            Y = 100;
+
+            // 左上角锚点中心位置
+            double baseX = X + 6;
+            double baseY = Y + 8;
+            // 横纵方向锚点间距
+            double deltaX = 24.5;
+            double deltaY = 16;
+
+            init_connector(baseX, baseY, deltaX, deltaY);
+        }
 
         public AtomProposition_VM(double x, double y)
         {
@@ -29,6 +47,24 @@ namespace sbid._VM
         }
 
         public AtomProposition AtomProposition { get => atomProposition; }
+
+        #region 右键菜单命令
+
+        // 打开编辑窗口
+        public void EditAtomPropositionVM()
+        {
+            AtomProposition_EW_V apEWV = new AtomProposition_EW_V()
+            {
+                DataContext = new AtomProposition_EW_VM()
+                {
+                    AtomProposition = atomProposition
+                }
+            };
+            apEWV.ShowDialog(ResourceManager.mainWindowV);
+            ResourceManager.mainWindowVM.Tips = "打开了原子命题的编辑窗体";
+        }
+
+        #endregion
 
         #region 私有
 

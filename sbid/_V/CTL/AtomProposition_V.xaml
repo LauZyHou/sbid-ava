@@ -36,7 +36,7 @@
     </Grid>
     <Grid.ContextMenu>
       <ContextMenu>
-        <MenuItem Header="编辑"/>
+        <MenuItem Header="编辑" Command="{Binding EditAtomPropositionVM}"/>
         <MenuItem Header="删除"/>
       </ContextMenu>
     </Grid.ContextMenu>
