@@ -5,8 +5,8 @@ using System.Text;
 namespace sbid._M
 {
     // 命题逻辑关系(合取/析取/非/蕴含)
-    public enum PropositionalLogicRelation
+    public enum LogicRelation
     {
-        CONJ, DISJ, NEG, IMPLIE
+        CONJ, DISJ, NEG, IMPL
     }
 }

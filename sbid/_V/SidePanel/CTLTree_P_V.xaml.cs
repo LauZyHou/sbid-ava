@@ -56,6 +56,14 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "创建了新的CTL关系结点";
         }
 
+        // 创建逻辑关系
+        public void CreateLogicRelationVM()
+        {
+            LogicRelation_VM logicrVM = new LogicRelation_VM(mousePos.X, mousePos.Y);
+            CTLTreePVM.UserControlVMs.Add(logicrVM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的逻辑关系结点";
+        }
+
         #endregion
 
         // 对应的VM

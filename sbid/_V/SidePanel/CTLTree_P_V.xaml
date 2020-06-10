@@ -24,6 +24,7 @@
                 <ContextMenu>
                   <MenuItem Header="创建原子命题" Command="{Binding $parent[UserControl].CreateAtomPropositionVM}"/>
                   <MenuItem Header="创建CTL关系" Command="{Binding $parent[UserControl].CreateCTLRelationVM}"/>
+                  <MenuItem Header="创建逻辑关系" Command="{Binding $parent[UserControl].CreateLogicRelationVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -49,7 +50,7 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
       <Button>生成公式</Button>
-      <Button>创建原子命题</Button>
+      <!--<Button>创建原子命题</Button>
       <Button>创建"bottom"</Button>
       <Button>创建"top"</Button>
       <Button>创建"AX"</Button>
@@ -63,7 +64,7 @@
       <Button>创建"非"</Button>
       <Button>创建"合取"</Button>
       <Button>创建"析取"</Button>
-      <Button>创建"蕴含"</Button>
+      <Button>创建"蕴含"</Button>-->
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
