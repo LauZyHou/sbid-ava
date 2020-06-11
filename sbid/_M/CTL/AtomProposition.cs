@@ -16,7 +16,7 @@ namespace sbid._M
         {
             _id++;
             this.id = _id;
-            this.refName = new Formula("AP" + this.id);
+            this.refName = new Formula("p" + this.id);
         }
 
         public Formula RefName { get => refName; }

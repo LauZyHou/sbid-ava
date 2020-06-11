@@ -4,5 +4,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="sbid._V.Connection_V">
-  <Line Stroke="Red" StrokeThickness="2" StartPoint="{Binding Source.Pos, Mode=OneWay}" EndPoint="{Binding Dest.Pos, Mode=OneWay}"/>
+  <Line Stroke="Black" StrokeThickness="2" StartPoint="{Binding Source.Pos, Mode=OneWay}" EndPoint="{Binding Dest.Pos, Mode=OneWay}"/>
 </UserControl>

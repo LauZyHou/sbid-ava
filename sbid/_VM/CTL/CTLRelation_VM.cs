@@ -40,16 +40,8 @@ namespace sbid._VM
             ConnectorVMs = new ObservableCollection<Connector_VM>();
 
             // 顺时针一圈锚点
-            ConnectorVMs.Add(new Connector_VM(baseX + 0,
-                                              baseY + r));
-            ConnectorVMs.Add(new Connector_VM(baseX + d,
-                                              baseY + d));
             ConnectorVMs.Add(new Connector_VM(baseX + r,
                                               baseY + 0));
-            ConnectorVMs.Add(new Connector_VM(baseX + 2 * r - d,
-                                              baseY + d));
-            ConnectorVMs.Add(new Connector_VM(baseX + 2 * r,
-                                              baseY + r));
             ConnectorVMs.Add(new Connector_VM(baseX + 2 * r - d,
                                               baseY + 2 * r - d));
             ConnectorVMs.Add(new Connector_VM(baseX + r,
@@ -82,6 +74,13 @@ namespace sbid._VM
             };
             ctlRelationEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了CTL关系结点的编辑窗体";
+        }
+
+        // 计算CTL公式
+        public void CalculateCTLFormula()
+        {
+            CTLTree_P_VM ctlTree_P_VM = (CTLTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            ctlTree_P_VM.CTLFormula.Content = CTLTree_P_VM.recursive_eval(this);
         }
 
         #endregion

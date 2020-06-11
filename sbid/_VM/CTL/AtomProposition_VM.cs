@@ -64,6 +64,13 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "打开了原子命题的编辑窗体";
         }
 
+        // 计算CTL公式
+        public void CalculateCTLFormula()
+        {
+            CTLTree_P_VM ctlTree_P_VM = (CTLTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            ctlTree_P_VM.CTLFormula.Content = CTLTree_P_VM.recursive_eval(this);
+        }
+
         #endregion
 
         #region 私有
@@ -73,24 +80,8 @@ namespace sbid._VM
         {
             ConnectorVMs = new ObservableCollection<Connector_VM>();
 
-            // 14个锚点,从左上角锚点中心位置进行位置推算
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 0 * deltaY));
+            // 原子命题具有唯一锚点
             ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 0 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 0 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 1 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 1 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 2 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 2 * deltaY));
-
-            ConnectorVMs.Add(new Connector_VM(baseX + 0 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 1 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 3 * deltaY));
-            ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 3 * deltaY));
 
             // 将这些锚点所在的NetworkItem_VM回引写入
             foreach (Connector_VM connector_VM in ConnectorVMs)

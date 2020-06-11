@@ -16,18 +16,15 @@
           ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,2">
       <TextBlock Text="{Binding LogicRelation}" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="7" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
       <!--锚点顺时针排列-->
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="4" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="2" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[2]}" Grid.Row="0" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[3]}" Grid.Row="2" Grid.Column="6" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[4]}" Grid.Row="4" Grid.Column="8" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="6" Grid.Column="6" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="8" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
-      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="6" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="6" Grid.Column="6" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[2]}" Grid.Row="8" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:CTLConnector_V DataContext="{Binding ConnectorVMs[3]}" Grid.Row="6" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
     </Grid>
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditLogicRelationVM}"/>
+        <MenuItem Header="计算CTL公式" Command="{Binding CalculateCTLFormula}"/>
         <MenuItem Header="删除"/>
       </ContextMenu>
     </Grid.ContextMenu>
