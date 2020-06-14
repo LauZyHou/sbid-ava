@@ -79,7 +79,7 @@
               <TextBlock>
                 <TextBlock.Text>
                   <MultiBinding StringFormat=" {0}.{1}[{2}]">
-                    <Binding Path="Process.Name"/>
+                    <Binding Path="Process.RefName.Content"/>
                     <Binding Path="Method.Name"/>
                     <Binding Path="Method.CryptoSuffix"/>
                   </MultiBinding>

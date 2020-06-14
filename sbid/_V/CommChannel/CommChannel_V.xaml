@@ -26,9 +26,9 @@
           <TextBlock>
             <TextBlock.Text>
               <MultiBinding StringFormat=" {0}.{1} → {2}.{3}">
-                <Binding Path="ProcessA.Name"/>
+                <Binding Path="ProcessA.RefName.Content"/>
                 <Binding Path="CommMethodA.Name"/>
-                <Binding Path="ProcessB.Name"/>
+                <Binding Path="ProcessB.RefName.Content"/>
                 <Binding Path="CommMethodB.Name"/>
               </MultiBinding>
             </TextBlock.Text>

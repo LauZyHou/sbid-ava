@@ -16,13 +16,7 @@
   <Canvas Width="2000" Height="1000">
     <v:Arrow Stroke="Black" StrokeThickness="2" StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
     <StackPanel Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White">
-      <TextBlock TextAlignment="Center">
-        <TextBlock.Text>
-          <MultiBinding StringFormat="IF {0} THEN">
-            <Binding Path="Transition.Guard"/>
-          </MultiBinding>
-        </TextBlock.Text>
-      </TextBlock>
+      <TextBlock TextAlignment="Center" Text="{Binding Transition.Guard}" Foreground="Blue"/>
       <ListBox Items="{Binding Transition.Actions}" IsHitTestVisible="False">
         <ListBox.ItemTemplate>
           <DataTemplate>
