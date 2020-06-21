@@ -79,7 +79,7 @@ namespace sbid._VM
             }
         }
 
-        // 反引所在的NetworkItemVM，只是为了方便查找(目前只在攻击树、序列图里实际使用了)
+        // 反引所在的NetworkItemVM，只是为了方便查找(目前只在攻击树、序列图、控制点里实际使用了)
         public NetworkItem_VM NetworkItemVM { get => networkItemVM; set => networkItemVM = value; }
 
         // 是否是活动锚点

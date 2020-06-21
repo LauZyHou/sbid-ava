@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia;
+using ReactiveUI;
 using sbid._M;
 using System;
 using System.Collections.Generic;
@@ -44,8 +45,8 @@ namespace sbid._VM
 
         #endregion
 
-        #region 状态机上的VM操作接口
-
+        #region 状态机上的VM操作接口（旧）
+        /*
         // 创建转移关系
         public void CreateTransitionVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
@@ -77,6 +78,97 @@ namespace sbid._VM
 
             // 清除反引
             source.ConnectionVM = dest.ConnectionVM = null;
+        }
+        */
+        #endregion
+
+        #region 状态机上的VM操作接口（新）
+
+        // 创建转移关系
+        public void CreateTransitionVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
+        {
+            Point pos = new Point(
+                (connectorVM1.Pos.X + connectorVM2.Pos.X) / 2,
+                (connectorVM1.Pos.Y + connectorVM2.Pos.Y) / 2
+            );
+            ControlPoint_VM controlPoint_VM = new ControlPoint_VM(pos.X, pos.Y);
+            linkByConnection(connectorVM1, controlPoint_VM.ConnectorVMs[0]);
+            linkByArrow(controlPoint_VM.ConnectorVMs[1], connectorVM2);
+            UserControlVMs.Add(controlPoint_VM);
+        }
+
+        // 删除锚点上的转移关系
+        public void BreakTransitionVM(Connector_VM connectorVM)
+        {
+            // 先删除这个锚点的直接连线
+            Connection_VM connectionVM = connectorVM.ConnectionVM;
+            UserControlVMs.Remove(connectionVM);
+            // 清除反引
+            connectorVM.ConnectionVM = null;
+            // 寻找 当前正在处理的“线另一端的锚点”，记录在nowConnector里
+            Connector_VM source = connectionVM.Source;
+            Connector_VM dest = connectionVM.Dest;
+            Connector_VM nowConnector;
+            if (source == connectorVM)
+            {
+                nowConnector = dest;
+            }
+            else // dest == connectorVM
+            {
+                nowConnector = source;
+            }
+            // 循环删除多段线，直到“线另一端的锚点”不再属于“控制点”为止
+            while (nowConnector.NetworkItemVM is ControlPoint_VM)
+            {
+                ControlPoint_VM controlPoint_VM = (ControlPoint_VM)nowConnector.NetworkItemVM;
+                UserControlVMs.Remove(controlPoint_VM);
+                // 删掉这个锚点，剩下的就是另一个
+                controlPoint_VM.ConnectorVMs.Remove(nowConnector);
+                // 接下来拿“控制点的”另一个锚点，把控制点控制的另一侧线条删除
+                nowConnector = controlPoint_VM.ConnectorVMs[0];
+                connectionVM = nowConnector.ConnectionVM;
+                UserControlVMs.Remove(connectionVM);
+                // 还是检查Source和Dest，以确定线条另一端的锚点
+                source = connectionVM.Source;
+                dest = connectionVM.Dest;
+                if (source == nowConnector)
+                {
+                    nowConnector = dest;
+                }
+                else
+                {
+                    nowConnector = source;
+                }
+            }
+            // 最后，“线另一端的锚点”清除反引
+            nowConnector.ConnectionVM = null;
+        }
+        #endregion
+
+        #region 私有工具
+
+        // 连线动作的封装
+        private void linkByConnection(Connector_VM c1, Connector_VM c2)
+        {
+            Connection_VM connection_VM = new Connection_VM()
+            {
+                Source = c1,
+                Dest = c2
+            };
+            c1.ConnectionVM = c2.ConnectionVM = connection_VM;
+            UserControlVMs.Add(connection_VM);
+        }
+
+        // 连箭头动作的封装
+        private void linkByArrow(Connector_VM c1, Connector_VM c2)
+        {
+            Arrow_VM arrow_VM = new Arrow_VM()
+            {
+                Source = c1,
+                Dest = c2
+            };
+            c1.ConnectionVM = c2.ConnectionVM = arrow_VM;
+            UserControlVMs.Add(arrow_VM);
         }
 
         #endregion

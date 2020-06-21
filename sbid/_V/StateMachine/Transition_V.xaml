@@ -15,7 +15,7 @@
   <!--注：这里至少是状态机面板V里ItemsControl的宽高-->
   <Canvas Width="2000" Height="1000">
     <v:Arrow Stroke="Black" StrokeThickness="2" StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
-    <StackPanel Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White">
+    <!--<StackPanel Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White">
       <TextBlock TextAlignment="Center" Text="{Binding Transition.Guard}" Foreground="Blue"/>
       <ListBox Items="{Binding Transition.Actions}" IsHitTestVisible="False">
         <ListBox.ItemTemplate>
@@ -29,6 +29,6 @@
           <MenuItem Header="编辑转移关系" Command="{Binding EditTransitionVM}"/>
         </ContextMenu>
       </StackPanel.ContextMenu>
-    </StackPanel>
+    </StackPanel>-->
   </Canvas>
 </UserControl>

@@ -65,6 +65,14 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "创建了新的状态转移结点";
         }
 
+        // *创建控制点测试
+        public void CreateControlPointVMTest()
+        {
+            ControlPoint_VM controlPoint_VM = new ControlPoint_VM(mousePos.X, mousePos.Y);
+            StateMachinePVM.UserControlVMs.Add(controlPoint_VM);
+            ResourceManager.mainWindowVM.Tips = "*创建了新的控制点";
+        }
+
         #endregion
 
         #region 按钮命令
