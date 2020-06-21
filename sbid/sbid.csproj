@@ -2,6 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
@@ -52,6 +53,8 @@
     <AvaloniaResource Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\FinalState_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\InitState_V.xaml" />
+    <AvaloniaResource Remove="_V\StateMachine\StateTrans_EW_V.xaml" />
+    <AvaloniaResource Remove="_V\StateMachine\StateTrans_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\State_EW_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\State_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\Transition_EW_V.xaml" />
@@ -106,6 +109,8 @@
     <None Remove="_V\SidePanel\TopoGraph_P_V.xaml" />
     <None Remove="_V\StateMachine\FinalState_V.xaml" />
     <None Remove="_V\StateMachine\InitState_V.xaml" />
+    <None Remove="_V\StateMachine\StateTrans_EW_V.xaml" />
+    <None Remove="_V\StateMachine\StateTrans_V.xaml" />
     <None Remove="_V\StateMachine\State_EW_V.xaml" />
     <None Remove="_V\StateMachine\State_V.xaml" />
     <None Remove="_V\StateMachine\Transition_EW_V.xaml" />
@@ -392,6 +397,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\CTL\LogicRelation_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\StateMachine\StateTrans_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\StateMachine\StateTrans_EW_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

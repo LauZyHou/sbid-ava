@@ -1,0 +1,56 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="60"
+             x:Class="sbid._V.StateTrans_V">
+  <Design.DataContext>
+    <vm:StateTrans_VM/>
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector="ListBox">
+      <Setter Property="MinWidth" Value="100"/>
+      <Setter Property="MinHeight" Value="24"/>
+    </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+  </UserControl.Styles>
+
+  <Grid Name="root_grid" RowDefinitions="2,*,2,*,2" ColumnDefinitions="2,*,2,*,2" 
+        Background="Transparent" Margin="4">
+    <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="3">
+      <ListBox Items="{Binding StateTrans.Guards}" IsHitTestVisible="False">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Content}" Foreground="Blue"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+      <ListBox Items="{Binding StateTrans.Actions}" IsHitTestVisible="False">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Content}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </StackPanel>
+    <!--一行一行排列-->
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[1]}" Grid.Row="0" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[2]}" Grid.Row="0" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[3]}" Grid.Row="2" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[4]}" Grid.Row="2" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[5]}" Grid.Row="4" Grid.Column="0" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[6]}" Grid.Row="4" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <v:StateConnector_V DataContext="{Binding ConnectorVMs[7]}" Grid.Row="4" Grid.Column="4" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑转移关系" Command="{Binding EditStateTrans}"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
+  </Grid>
+</UserControl>

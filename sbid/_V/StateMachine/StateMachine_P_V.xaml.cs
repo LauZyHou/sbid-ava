@@ -57,6 +57,14 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "创建了新的终止状态结点";
         }
 
+        // 创建转移关系结点
+        public void CreateStateTransVM()
+        {
+            StateTrans_VM stateTrans_VM = new StateTrans_VM(mousePos.X, mousePos.Y);
+            StateMachinePVM.UserControlVMs.Add(stateTrans_VM);
+            ResourceManager.mainWindowVM.Tips = "创建了新的状态转移结点";
+        }
+
         #endregion
 
         #region 按钮命令

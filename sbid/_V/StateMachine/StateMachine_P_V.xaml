@@ -25,6 +25,7 @@
                 <ContextMenu>
                   <MenuItem Header="创建普通状态结点" Command="{Binding $parent[UserControl].CreateStateVM}"/>
                   <MenuItem Header="创建终止状态结点" Command="{Binding $parent[UserControl].CreateFinalStateVM}"/>
+                  <MenuItem Header="创建转移关系结点" Command="{Binding $parent[UserControl].CreateStateTransVM}}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>

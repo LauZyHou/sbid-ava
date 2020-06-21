@@ -1,0 +1,53 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Height="330" Width="400" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.StateTrans_EW_V"
+        Title="编辑边上转移">
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="17"/>
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="FontSize" Value="17"/>
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Margin" Value="20, 2"/>
+    </Style>
+    <Style Selector="StackPanel > StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+  </Window.Styles>
+
+  <StackPanel>
+    <TextBlock Text="转移条件："/>
+    <ListBox Name="guard_ListBox" Items="{Binding StateTrans.Guards}" Height="70">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Content}"/>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBox Name="guard_TextBox" Text="{Binding #guard_ListBox.SelectedItem.Content, Mode=OneWay}"/>
+    <StackPanel Orientation="Horizontal">
+      <Button Command="{Binding $parent[Window].Add_Guard}">添加</Button>
+      <Button Command="{Binding $parent[Window].Update_Guard}">修改</Button>
+      <Button Command="{Binding $parent[Window].Delete_Guard}">删除</Button>
+    </StackPanel>
+    <TextBlock Text="转移动作："/>
+    <ListBox Name="action_ListBox" Items="{Binding StateTrans.Actions}" Height="70">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Content}"/>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBox Name="action_TextBox" Text="{Binding #action_ListBox.SelectedItem.Content, Mode=OneWay}"/>
+    <StackPanel Orientation="Horizontal">
+      <Button Command="{Binding $parent[Window].Add_Action}">添加</Button>
+      <Button Command="{Binding $parent[Window].Update_Action}">修改</Button>
+      <Button Command="{Binding $parent[Window].Delete_Action}">删除</Button>
+    </StackPanel>
+  </StackPanel>
+</Window>

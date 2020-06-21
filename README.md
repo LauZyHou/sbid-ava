@@ -29,3 +29,10 @@ todo
 
 ![顺序图展示](https://raw.githubusercontent.com/LauZyHou/pic/master/sbid-ava/SequenceDiagram.png)
 
+## 发布
+对于64位Windows/Linux/OSX可以直接在Visual Studio里Release模式下发布，其它操作系统可以使用命令行。
+
+例如，要发布32位Windows7的版本，进入`sbid`目录，并执行：
+```
+dotnet publish -r win7-x86 -c release -f netcoreapp3.0 /p:PublishTrimmed=true /p:PublishReadyToRun=true
+```

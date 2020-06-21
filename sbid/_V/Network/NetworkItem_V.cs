@@ -99,6 +99,7 @@ namespace sbid._V
 
         #endregion
 
+
         // 获取DataContext里的VM
         public NetworkItem_VM NetworkItemVM
         {
