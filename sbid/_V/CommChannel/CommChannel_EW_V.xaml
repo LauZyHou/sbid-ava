@@ -3,9 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        Height="320" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.CommChannel_EW_V"
-        Title="编辑信道">
+        Title="编辑信道模板">
 
   <Design.DataContext>
     <vm:CommChannel_EW_VM/>
@@ -35,7 +35,7 @@
     <TabItem Header="元信息">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock Text="信道名称：" FontSize="18"/>
+          <TextBlock Text="信道模板名称：" FontSize="18"/>
           <TextBox Text="{Binding CommChannel.Name, Mode=TwoWay}"/>
         </StackPanel>
       </StackPanel>
@@ -95,6 +95,11 @@
               </DataTemplate>
             </ComboBox.ItemTemplate>
           </ComboBox>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="私有信道通信：" FontSize="17"/>
+            <CheckBox Name="privacy_CheckBox" IsThreeState="False"
+              IsChecked="{Binding #commMethodPair_ListBox.SelectedItem.Privacy, Mode=OneWay}"/>
+          </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Command="{Binding $parent[Window].Add_CommMethodPair}">添加</Button>
             <Button Command="{Binding $parent[Window].Update_CommMethodPair}">修改</Button>
@@ -107,9 +112,10 @@
             <DataTemplate>
               <TextBlock>
                 <TextBlock.Text>
-                  <MultiBinding StringFormat=" {0}.{1} → {2}.{3}">
+                  <MultiBinding StringFormat=" {0}.{1} {2} {3}.{4}">
                     <Binding Path="ProcessA.RefName.Content"/>
                     <Binding Path="CommMethodA.Name"/>
+                    <Binding Path="Symbol"/>
                     <Binding Path="ProcessB.RefName.Content"/>
                     <Binding Path="CommMethodB.Name"/>
                   </MultiBinding>

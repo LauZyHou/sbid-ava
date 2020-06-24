@@ -466,6 +466,7 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("commMethodA_ref", commMethodPair.CommMethodA.Id.ToString()); // 这里用了CommMethod的Id
                             xmlWriter.WriteAttributeString("processB_ref", commMethodPair.ProcessB.Id.ToString());
                             xmlWriter.WriteAttributeString("commMethodB_ref", commMethodPair.CommMethodB.Id.ToString()); // 这里用了CommMethod的Id
+                            xmlWriter.WriteAttributeString("privacy", commMethodPair.Privacy.ToString());
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();
@@ -1618,11 +1619,13 @@ namespace sbid._VM
                                     cleanProject();
                                     return false;
                                 }
+                                bool privacy = bool.Parse(cmpElement.GetAttribute("privacy"));
                                 CommMethodPair commMethodPair = new CommMethodPair(
                                     processVMDict[processARef].Process,
                                     findCommMethodA,
                                     processVMDict[processBRef].Process,
-                                    findCommMethodB);
+                                    findCommMethodB,
+                                    privacy);
                                 commChannel.CommMethodPairs.Add(commMethodPair);
                             }
                             break;

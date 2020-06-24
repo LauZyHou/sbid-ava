@@ -25,9 +25,10 @@
         <DataTemplate>
           <TextBlock>
             <TextBlock.Text>
-              <MultiBinding StringFormat=" {0}.{1} → {2}.{3}">
+              <MultiBinding StringFormat=" {0}.{1} {2} {3}.{4}">
                 <Binding Path="ProcessA.RefName.Content"/>
                 <Binding Path="CommMethodA.Name"/>
+                <Binding Path="Symbol"/>
                 <Binding Path="ProcessB.RefName.Content"/>
                 <Binding Path="CommMethodB.Name"/>
               </MultiBinding>
