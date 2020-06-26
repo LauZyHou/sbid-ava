@@ -36,8 +36,8 @@ namespace sbid._M
         // 通信方法列表
         public ObservableCollection<CommMethod> CommMethods { get => commMethods; set => commMethods = value; }
 
-        // *对应的状态机上的所有状态(这是给SecurityProperty中编辑Authenticity时,选择Process里的状态用)
-        // 这个字段不是实时计算的,仅在编辑SecurityProperty窗口打开前重新计算,并重新写入
+        // *对应的状态机上的所有状态(这是给两类Property中编辑时,选择Process里的状态用)
+        // 这个字段不是实时计算的,仅在编辑两类Property窗口打开前重新计算,并重新写入
         public ObservableCollection<State> States { get => states; set => states = value; }
         public int Id
         {

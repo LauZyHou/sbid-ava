@@ -15,7 +15,7 @@
 
   <Grid RowDefinitions="20,1,*" Background="{StaticResource MyColor}" MinWidth="140" MinHeight="100">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text=" 信道 " FontWeight="Bold"/>
+      <TextBlock Text=" 信道模板 " FontWeight="Bold"/>
       <TextBlock Text="{Binding CommChannel.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>

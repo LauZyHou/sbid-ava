@@ -11,7 +11,6 @@ namespace sbid._VM
         private Axiom axiom;
         private ObservableCollection<Process> processes = new ObservableCollection<Process>();
 
-
         // 要编辑的公理
         public Axiom Axiom { get => axiom; set => axiom = value; }
         // 所有Process
