@@ -78,6 +78,7 @@ namespace sbid._V
         #region 按钮命令
 
         // 导出图片
+        // fixme 由于改用了ListBox这里要改渲染的函数
         public async void ExportImage()
         {
             string path = await ResourceManager.GetSaveFileName("png");

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:v="clr-namespace:sbid._V;assembly=sbid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="sbid._V.Arrow_V">
+             x:Class="sbid._V.Arrow_V" IsHitTestVisible="False">
   <v:Arrow Stroke="Black" StrokeThickness="2" HeadWidth="15" HeadHeight="4" 
            StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
 </UserControl>

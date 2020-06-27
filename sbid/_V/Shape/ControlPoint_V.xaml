@@ -4,11 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              Width="10" Height="10"
              xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-             x:Class="sbid._V.ControlPoint_V">
-
-  <Design.DataContext>
-    <vm:ControlPoint_VM/>
-  </Design.DataContext>
-  
+             x:Class="sbid._V.ControlPoint_V"
+             IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}">
   <Ellipse Stroke="Black" Fill="Black"/>
 </UserControl>

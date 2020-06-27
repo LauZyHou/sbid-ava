@@ -11,9 +11,10 @@
     <vm:StateMachine_P_VM/>
   </Design.DataContext>
 
+  <!--从ItemsControl改用ListBox，能将切换TabItem时的渲染加速到之前的三倍-->
   <UserControl.Styles>
     <!--ItemsControl的样式-->
-    <Style Selector="ItemsControl">
+    <Style Selector="ListBox#panel">
       <!--使用Canvas作面板-->
       <Setter Property="ItemsPanel">
         <Setter.Value>
@@ -43,20 +44,26 @@
       </Setter>
     </Style>
     <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
-    <Style Selector="ItemsControl > ContentPresenter">
+    <!--ItemsControl > ContentPresenter-->
+    <Style Selector="ListBox#panel ListBoxItem">
+      <Setter Property="Focusable" Value="False"/>
       <Setter Property="Canvas.Left" Value="{Binding X}"/>
       <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+    </Style>
+    <Style Selector="ListBox#panel ListBoxItem > ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="IsHitTestVisible" Value="{Binding IsNetWorkItemVM}"/>
     </Style>
   </UserControl.Styles>
 
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
-      <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
+      <Button Command="{Binding $parent[UserControl].ExportImage}" IsEnabled="False">导出图片</Button>
       <TextBlock Text=" 连线控制点数目：" FontSize="17"/>
       <ComboBox Items="{Binding ControlPointNums}" SelectedItem="{Binding ControlPointNum, Mode=TwoWay}" Width="50" Background="WhiteSmoke"/>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+      <ListBox Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>
