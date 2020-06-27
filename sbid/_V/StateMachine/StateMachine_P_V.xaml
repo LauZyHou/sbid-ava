@@ -52,6 +52,8 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
       <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
+      <TextBlock Text=" 连线控制点数目：" FontSize="17"/>
+      <ComboBox Items="{Binding ControlPointNums}" SelectedItem="{Binding ControlPointNum, Mode=TwoWay}" Width="50" Background="WhiteSmoke"/>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>

@@ -3,6 +3,7 @@ using ReactiveUI;
 using sbid._M;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace sbid._VM
@@ -11,22 +12,31 @@ namespace sbid._VM
     {
         private State state;
         private Connector_VM activeConnector;
+        private ObservableCollection<int> controlPointNums = new ObservableCollection<int>();
+        private int controlPointNum = 0;
 
         // 无参构造只是给xaml中的Design用
         public StateMachine_P_VM()
         {
+            init_control_point_nums();
         }
 
         // 状态机构造时，传入其所精化的状态
         public StateMachine_P_VM(State state)
         {
             this.state = state;
+            init_control_point_nums();
         }
 
         // 精化的状态
         public State State { get => state; }
         // 活动锚点,当按下一个空闲锚点时,该锚点成为面板上唯一的活动锚点,当按下另一空闲锚点进行转移关系连线
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
+        // 控制点数目可选列表
+        public ObservableCollection<int> ControlPointNums { get => controlPointNums; }
+        // 控制点数目
+        public int ControlPointNum { get => controlPointNum; set => this.RaiseAndSetIfChanged(ref controlPointNum, value); }
+
 
         #region 对外的初始化调用(在用户创建时需要调用，在从项目文件读取时不可调用)
 
@@ -87,14 +97,25 @@ namespace sbid._VM
         // 创建转移关系
         public void CreateTransitionVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
-            Point pos = new Point(
-                (connectorVM1.Pos.X + connectorVM2.Pos.X) / 2,
-                (connectorVM1.Pos.Y + connectorVM2.Pos.Y) / 2
-            );
-            ControlPoint_VM controlPoint_VM = new ControlPoint_VM(pos.X, pos.Y);
-            linkByConnection(connectorVM1, controlPoint_VM.ConnectorVMs[0]);
-            linkByArrow(controlPoint_VM.ConnectorVMs[1], connectorVM2);
-            UserControlVMs.Add(controlPoint_VM);
+            // 控制点X/Y方向间距
+            double deltaX = (connectorVM2.Pos.X - connectorVM1.Pos.X) / (controlPointNum + 1);
+            double deltaY = (connectorVM2.Pos.Y - connectorVM1.Pos.Y) / (controlPointNum + 1);
+            // 当前控制点所在为止，从c1的位置开始
+            double nowX = connectorVM1.Pos.X;
+            double nowY = connectorVM1.Pos.Y;
+            // 从c1连控制点数目个线段
+            Connector_VM nowConnector = connectorVM1;
+            for (int i = 0; i < controlPointNum; i++)
+            {
+                nowX += deltaX;
+                nowY += deltaY;
+                ControlPoint_VM controlPoint_VM = new ControlPoint_VM(nowX, nowY);
+                UserControlVMs.Add(controlPoint_VM);
+                linkByConnection(nowConnector, controlPoint_VM.ConnectorVMs[0]);
+                nowConnector = controlPoint_VM.ConnectorVMs[1];
+            }
+            // 然后再连接一个箭头到c2即可
+            linkByArrow(nowConnector, connectorVM2);
         }
 
         // 删除锚点上的转移关系
@@ -189,6 +210,17 @@ namespace sbid._VM
             FinalState_VM finalStateVM = new FinalState_VM(0, 0);
             UserControlVMs.Add(finalStateVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的终止状态结点";
+        }
+
+        #endregion
+
+        #region 辅助构造
+
+        // 初始化连线控制点数目列表
+        private void init_control_point_nums()
+        {
+            for (int i = 0; i < 5; i++)
+                controlPointNums.Add(i);
         }
 
         #endregion

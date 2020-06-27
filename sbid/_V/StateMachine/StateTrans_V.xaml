@@ -20,7 +20,7 @@
     </Style>
   </UserControl.Styles>
 
-  <Grid Name="root_grid" RowDefinitions="2,*,2,*,2" ColumnDefinitions="2,*,2,*,2" 
+  <Grid Name="root_grid" RowDefinitions="2,*,2,*,2" ColumnDefinitions="2,*,2,*,2"
         Background="Transparent" Margin="4">
     <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="3">
       <ListBox Items="{Binding StateTrans.Guards}" IsHitTestVisible="False">

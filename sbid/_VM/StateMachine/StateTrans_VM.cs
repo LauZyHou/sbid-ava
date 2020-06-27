@@ -12,7 +12,23 @@ namespace sbid._VM
     {
         private StateTrans stateTrans = new StateTrans();
 
-        public StateTrans_VM() { }
+        public StateTrans_VM()
+        {
+            X = 50;
+            Y = 50;
+            ConnectorVMs = new ObservableCollection<Connector_VM>();
+
+            // 左上角锚点中心位置
+            double baseX = X + 4;
+            double baseY = Y + 4;
+
+            // 8个锚点，只需要设置好第一个，其它锚点可以后续通过它的位置配合H/W刷新确定
+            ConnectorVMs.Add(new Connector_VM(baseX, baseY));
+            for (int i = 0; i < 7; i++)
+            {
+                ConnectorVMs.Add(new Connector_VM());
+            }
+        }
 
         // 构造时添加8个锚点
         public StateTrans_VM(double x, double y)
