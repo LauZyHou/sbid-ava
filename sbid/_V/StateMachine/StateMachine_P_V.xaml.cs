@@ -78,11 +78,11 @@ namespace sbid._V
         #region 按钮命令
 
         // 导出图片
-        // fixme 由于改用了ListBox这里要改渲染的函数
         public async void ExportImage()
         {
             string path = await ResourceManager.GetSaveFileName("png");
-            ItemsControl panel = ControlExtensions.FindControl<ItemsControl>(this, "panel");
+            // 由于改用了ListBox这里要取用ListBox
+            ListBox panel = ControlExtensions.FindControl<ListBox>(this, "panel");
             ResourceManager.RenderImage(path, panel);
         }
 

@@ -48,6 +48,22 @@ namespace sbid
             // 在可视树上找到这个ItemsControl的的孩子ItemsPresenter
             IEnumerator<IVisual> panelChildren = itemsControl.GetVisualChildren().GetEnumerator();
             panelChildren.MoveNext();
+            // ListBox > Border > ScrollViewer > Grid > ScrollContentPresenter > ItemsPresenter
+            if (itemsControl is ListBox)
+            {
+                Border border = (Border)panelChildren.Current;
+                panelChildren = border.GetVisualChildren().GetEnumerator();
+                panelChildren.MoveNext();
+                ScrollViewer scrollViewer = (ScrollViewer)panelChildren.Current;
+                panelChildren = scrollViewer.GetVisualChildren().GetEnumerator();
+                panelChildren.MoveNext();
+                Grid grid = (Grid)panelChildren.Current;
+                panelChildren = grid.GetVisualChildren().GetEnumerator();
+                panelChildren.MoveNext();
+                ScrollContentPresenter scrollContentPresenter = (ScrollContentPresenter)panelChildren.Current;
+                panelChildren = scrollContentPresenter.GetVisualChildren().GetEnumerator();
+                panelChildren.MoveNext();
+            }
             ItemsPresenter itemsPresenter = (ItemsPresenter)panelChildren.Current;
 
             // 渲染并保存

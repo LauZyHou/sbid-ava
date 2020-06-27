@@ -58,7 +58,7 @@
 
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
-      <Button Command="{Binding $parent[UserControl].ExportImage}" IsEnabled="False">导出图片</Button>
+      <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
       <TextBlock Text=" 连线控制点数目：" FontSize="17"/>
       <ComboBox Items="{Binding ControlPointNums}" SelectedItem="{Binding ControlPointNum, Mode=TwoWay}" Width="50" Background="WhiteSmoke"/>
     </StackPanel>
