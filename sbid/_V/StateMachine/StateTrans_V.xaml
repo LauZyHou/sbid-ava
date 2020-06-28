@@ -21,19 +21,19 @@
   </UserControl.Styles>
 
   <Grid Name="root_grid" RowDefinitions="2,*,2,*,2" ColumnDefinitions="2,*,2,*,2"
-        Background="LightBlue" Margin="4">
+        Background="LightSeaGreen" Margin="4">
     <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="3">
       <ListBox Items="{Binding StateTrans.Guards}" IsHitTestVisible="False">
         <ListBox.ItemTemplate>
           <DataTemplate>
-            <TextBlock Text="{Binding Content}" Foreground="Blue"/>
+            <TextBlock Text="{Binding Content}" Foreground="DarkBlue"/>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
       <ListBox Items="{Binding StateTrans.Actions}" IsHitTestVisible="False">
         <ListBox.ItemTemplate>
           <DataTemplate>
-            <TextBlock Text="{Binding Content}"/>
+            <TextBlock Text="{Binding Content}" Foreground="DarkRed"/>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>

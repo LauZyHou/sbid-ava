@@ -2,9 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Height="330" Width="400" WindowStartupLocation="CenterOwner"
+        Height="530" Width="400" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.StateTrans_EW_V"
-        Title="编辑边上转移">
+        Title="编辑状态转移">
   <Window.Styles>
     <Style Selector="TextBlock">
       <Setter Property="FontSize" Value="17"/>
@@ -21,29 +21,32 @@
   </Window.Styles>
 
   <StackPanel>
-    <TextBlock Text="转移条件："/>
-    <ListBox Name="guard_ListBox" Items="{Binding StateTrans.Guards}" Height="70">
+    <TextBlock Text="转移条件" TextAlignment="Center"/>
+    <ListBox Name="guard_ListBox" Items="{Binding StateTrans.Guards}" Height="160">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <TextBlock Text="{Binding Content}"/>
+          <TextBlock Text="{Binding Content}" TextAlignment="Center" Foreground="DarkBlue"/>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <TextBox Name="guard_TextBox" Text="{Binding #guard_ListBox.SelectedItem.Content, Mode=OneWay}"/>
+    <TextBox Name="guard_TextBox" Text="{Binding #guard_ListBox.SelectedItem.Content, Mode=OneWay}"
+             TextAlignment="Center" Foreground="DarkBlue"/>
     <StackPanel Orientation="Horizontal">
       <Button Command="{Binding $parent[Window].Add_Guard}">添加</Button>
       <Button Command="{Binding $parent[Window].Update_Guard}">修改</Button>
       <Button Command="{Binding $parent[Window].Delete_Guard}">删除</Button>
     </StackPanel>
-    <TextBlock Text="转移动作："/>
-    <ListBox Name="action_ListBox" Items="{Binding StateTrans.Actions}" Height="70">
+    <Separator BorderBrush="LightGray" BorderThickness="2" Margin="0,10"/>
+    <TextBlock Text="转移动作" TextAlignment="Center"/>
+    <ListBox Name="action_ListBox" Items="{Binding StateTrans.Actions}" Height="160">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <TextBlock Text="{Binding Content}"/>
+          <TextBlock Text="{Binding Content}" TextAlignment="Center" Foreground="DarkRed"/>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <TextBox Name="action_TextBox" Text="{Binding #action_ListBox.SelectedItem.Content, Mode=OneWay}"/>
+    <TextBox Name="action_TextBox" Text="{Binding #action_ListBox.SelectedItem.Content, Mode=OneWay}"
+             TextAlignment="Center" Foreground="DarkRed"/>
     <StackPanel Orientation="Horizontal">
       <Button Command="{Binding $parent[Window].Add_Action}">添加</Button>
       <Button Command="{Binding $parent[Window].Update_Action}">修改</Button>

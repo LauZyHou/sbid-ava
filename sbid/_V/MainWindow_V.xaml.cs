@@ -30,11 +30,15 @@ namespace sbid._V
         private void init_binding()
         {
             // 绑定ConnectorVisible
+            /*
             ComboBox connectorVisible_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "connectorVisible_ComboBox");
             List<bool> boolList = new List<bool>();
             boolList.Add(true);
             boolList.Add(false);
             connectorVisible_ComboBox.Items = boolList;
+            */
+            CheckBox connectorVisible_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(connectorVisible_CheckBox));
+            connectorVisible_CheckBox.IsChecked = true;
         }
 
         #endregion

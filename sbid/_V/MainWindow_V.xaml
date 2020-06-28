@@ -54,7 +54,8 @@
       <Button Command="{Binding AddCTLTree}">新CTL语法树</Button>
       <Button Command="{Binding AddSequenceDiagram}">新序列图</Button>
       <TextBlock Text=" 锚点/控制点可见：" FontSize="13" VerticalAlignment="Center"/>
-      <ComboBox Name="connectorVisible_ComboBox" Width="60" Background="WhiteSmoke" SelectedItem="{Binding ConnectorVisible, Mode=TwoWay}"/>
+      <CheckBox Name="connectorVisible_CheckBox" IsChecked="{Binding ConnectorVisible, Mode=TwoWay}" IsThreeState="False"/>
+      <!--<ComboBox Name="connectorVisible_ComboBox" Width="60" Background="WhiteSmoke" SelectedItem="{Binding ConnectorVisible, Mode=TwoWay}"/>-->
     </StackPanel>
 
     <!--协议选项卡-->
