@@ -464,6 +464,7 @@ namespace sbid._VM
                         foreach (CommMethodPair commMethodPair in vm.CommChannel.CommMethodPairs)
                         {
                             xmlWriter.WriteStartElement("CommMethodPair");
+                            xmlWriter.WriteAttributeString("id", commMethodPair.Id.ToString());
                             xmlWriter.WriteAttributeString("processA_ref", commMethodPair.ProcessA.Id.ToString());
                             xmlWriter.WriteAttributeString("commMethodA_ref", commMethodPair.CommMethodA.Id.ToString()); // 这里用了CommMethod的Id
                             xmlWriter.WriteAttributeString("processB_ref", commMethodPair.ProcessB.Id.ToString());
@@ -783,6 +784,7 @@ namespace sbid._VM
                             }
                             xmlWriter.WriteEndElement();
                         }
+                        /*
                         else if (vm is TopoLink_VM) // 这是拓扑连线的基类,具体要创建的标签取决于具体连线类型
                         {
                             TopoLink_VM topoLink_VM = (TopoLink_VM)vm;
@@ -801,6 +803,25 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("content", topoLink_VM.TopoLink.Content); // 线上内容，即TopoLink对象唯一字段
                             xmlWriter.WriteAttributeString("source_ref", topoLink_VM.Source.Id.ToString()); // 源锚点
                             xmlWriter.WriteAttributeString("dest_ref", topoLink_VM.Dest.Id.ToString()); // 目标锚点
+                            xmlWriter.WriteEndElement();
+                        }
+                        */
+                        else if (vm is TopoEdge_VM) // 拓扑图上的边
+                        {
+                            TopoEdge_VM topoEdge_VM = (TopoEdge_VM)vm;
+                            xmlWriter.WriteStartElement("TopoEdge_VM");
+                            xmlWriter.WriteAttributeString("cost", topoEdge_VM.TopoEdge.Cost); // 通信代价
+                            // 通信方法序对
+                            if (topoEdge_VM.TopoEdge.CommMethodPair == null)
+                            {
+                                xmlWriter.WriteAttributeString("commMethodPair_ref", "-1");
+                            }
+                            else
+                            {
+                                xmlWriter.WriteAttributeString("commMethodPair_ref", topoEdge_VM.TopoEdge.CommMethodPair.Id.ToString());
+                            }
+                            xmlWriter.WriteAttributeString("source_ref", topoEdge_VM.Source.Id.ToString()); // 源锚点
+                            xmlWriter.WriteAttributeString("dest_ref", topoEdge_VM.Dest.Id.ToString()); // 目标锚点
                             xmlWriter.WriteEndElement();
                         }
                     }
@@ -858,6 +879,7 @@ namespace sbid._VM
                  */
                 Dictionary<int, Type> typeDict = new Dictionary<int, Type>(); // id->类型
                 Dictionary<int, Process_VM> processVMDict = new Dictionary<int, Process_VM>(); // id->进程模板VM(VM里才能找到状态机)
+                Dictionary<int, CommMethodPair> commMethodPairDict = new Dictionary<int, CommMethodPair>(); // id->通信方法序对
                 ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
                 XmlNode xmlNode = doc.SelectSingleNode("Protocol_VM/ClassDiagram_P_VM");
                 XmlNodeList nodeList = xmlNode.ChildNodes;
@@ -1822,6 +1844,9 @@ namespace sbid._VM
                                     processVMDict[processBRef].Process,
                                     findCommMethodB,
                                     privacy);
+                                int id = int.Parse(element.GetAttribute("id"));
+                                commMethodPair.Id = id;
+                                commMethodPairDict.Add(id, commMethodPair);
                                 commChannel.CommMethodPairs.Add(commMethodPair);
                             }
                             break;
@@ -2157,6 +2182,7 @@ namespace sbid._VM
                             }
                             topoGraph_P_VM.UserControlVMs.Add(topoNode_VM);
                         }
+                        /*
                         else
                         {
                             TopoLink_VM topoLink_VM = null;
@@ -2187,6 +2213,36 @@ namespace sbid._VM
                                 topoGraph_P_VM.UserControlVMs.Add(topoLink_VM);
                             }
                         }
+                        */
+                        else if (topoChildNode.Name == "TopoEdge_VM")
+                        {
+                            TopoEdge_VM topoEdge_VM = new TopoEdge_VM();
+                            topoEdge_VM.TopoEdge.Cost = tcElement.GetAttribute("cost");
+                            int commMethodPair_ref = int.Parse(tcElement.GetAttribute("commMethodPair_ref"));
+                            if (commMethodPair_ref >= 0)
+                            {
+                                if (!commMethodPairDict.ContainsKey(commMethodPair_ref))
+                                {
+                                    Tips = "[解析TopoEdge_VM时出错]无法找到引用的CommMethodPair！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                topoEdge_VM.TopoEdge.CommMethodPair = commMethodPairDict[commMethodPair_ref];
+                            }
+                            int sourceRef = int.Parse(tcElement.GetAttribute("source_ref"));
+                            int destRef = int.Parse(tcElement.GetAttribute("dest_ref"));
+                            if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
+                            {
+                                Tips = "[解析TopoEdge_VM时出错]无法找到某端的锚点！";
+                                cleanProject();
+                                return false;
+                            }
+                            topoEdge_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
+                            topoEdge_VM.Dest = connectorDict[destRef];
+                            connectorDict[sourceRef].ConnectionVM = topoEdge_VM; // 从锚点反引连线
+                            connectorDict[destRef].ConnectionVM = topoEdge_VM;
+                            topoGraph_P_VM.UserControlVMs.Add(topoEdge_VM);
+                        }
                     }
                     topoGraph_P_VMs.Add(topoGraph_P_VM);
                     protocolVM.PanelVMs[2].SelectedItem = topoGraph_P_VM; // fixme 改成记录SelectedItem
@@ -2204,7 +2260,7 @@ namespace sbid._VM
                 = Attribute._id = SafetyProperty._id = SecurityProperty._id
                 = Connector_VM._id = CommMethod._id = CommChannel._id
                 = SequenceDiagram_P_VM._id = TopoGraph_P_VM._id = CTLTree_P_VM._id
-                = AttackTree_P_VM._id = TopoNode._id = 0;
+                = AttackTree_P_VM._id = TopoNode._id = CommMethodPair._id = 0;
             // 特别注意，对于带有静态创建的内置对象的类型，_id要置为内置对象的数目
             Type._id = 6;
             State._id = 1;

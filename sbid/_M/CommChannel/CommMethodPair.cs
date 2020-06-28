@@ -8,14 +8,18 @@ namespace sbid._M
     // 表达选择的CommMethod，<进程模板,进程模板下的CommMethod>的序对
     public class CommMethodPair : ReactiveObject
     {
+        public static int _id = 0;
         private Process processA;
         private Process processB;
         private CommMethod commMethodA;
         private CommMethod commMethodB;
         private bool privacy;
+        private int id;
 
         public CommMethodPair(Process processA, CommMethod commMethodA, Process processB, CommMethod commMethodB, bool privacy)
         {
+            _id++;
+            this.id = _id;
             this.processA = processA;
             this.processB = processB;
             this.commMethodA = commMethodA;
@@ -35,6 +39,16 @@ namespace sbid._M
             {
                 this.RaiseAndSetIfChanged(ref privacy, value);
                 this.RaisePropertyChanged(nameof(Symbol));
+            }
+        }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                id = value;
+                if (value > _id)
+                    _id = value;
             }
         }
 
