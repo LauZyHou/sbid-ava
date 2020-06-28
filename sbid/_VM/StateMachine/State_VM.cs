@@ -99,7 +99,12 @@ namespace sbid._VM
                 // 如果活动锚点在这个要删除的状态上就会假死，所以要判断并清除活动锚点
                 if (connector_VM == stateMachine_P_VM.ActiveConnector)
                     stateMachine_P_VM.ActiveConnector = null;
-                // 清除连线(实际是Transition_VM，这里父类就够用)两端状态锚点的反引，再删除连线
+                // 清除该锚点上的连线，这里直接调用这个方法，即和用户手动点掉连线共享一样的行为
+                if (connector_VM.ConnectionVM != null)
+                {
+                    stateMachine_P_VM.BreakTransitionVM(connector_VM);
+                }
+                /*
                 Connection_VM connection_VM = connector_VM.ConnectionVM;
                 if (connection_VM != null)
                 {
@@ -107,6 +112,7 @@ namespace sbid._VM
                     connection_VM.Dest.ConnectionVM = null;
                     stateMachine_P_VM.UserControlVMs.Remove(connection_VM);
                 }
+                */
             }
 
             // 判断并删除SecurityProperty中依赖此State的认证性/完整性
