@@ -30,8 +30,8 @@ namespace sbid._V
             ComboBox topoNodeShape_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "topoNodeShape_ComboBox");
             topoNodeShape_ComboBox.Items = System.Enum.GetValues(typeof(TopoNodeShape));
             // 绑定TopoLinkType枚举
-            ComboBox topoLinkType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "topoLinkType_ComboBox");
-            topoLinkType_ComboBox.Items = System.Enum.GetValues(typeof(TopoLinkType));
+            // ComboBox topoLinkType_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "topoLinkType_ComboBox");
+            // topoLinkType_ComboBox.Items = System.Enum.GetValues(typeof(TopoLinkType));
         }
 
         #endregion

@@ -62,6 +62,8 @@
     <AvaloniaResource Remove="_V\StateMachine\Transition_V.xaml" />
     <AvaloniaResource Remove="_V\StateMachine\StateMachine_P_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\OneWayTopoLink_V.xaml" />
+    <AvaloniaResource Remove="_V\Topology\TopoEdge_EW_V.xaml" />
+    <AvaloniaResource Remove="_V\Topology\TopoEdge_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TopoLink_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TopoNode_Circle_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TopoNode_EW_V.xaml" />
@@ -119,6 +121,8 @@
     <None Remove="_V\StateMachine\Transition_V.xaml" />
     <None Remove="_V\StateMachine\StateMachine_P_V.xaml" />
     <None Remove="_V\Topology\OneWayTopoLink_V.xaml" />
+    <None Remove="_V\Topology\TopoEdge_EW_V.xaml" />
+    <None Remove="_V\Topology\TopoEdge_V.xaml" />
     <None Remove="_V\Topology\TopoLink_V.xaml" />
     <None Remove="_V\Topology\TopoNode_Circle_V.xaml" />
     <None Remove="_V\Topology\TopoNode_EW_V.xaml" />
@@ -414,6 +418,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\Shape\ControlPoint_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\Topology\TopoEdge_EW_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_V\Topology\TopoEdge_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

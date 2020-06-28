@@ -46,8 +46,10 @@ namespace sbid._VM
                 // 顺序图也是一样
                 else if (connectionVM is Message_VM)
                     connectionVM.RaisePropertyChanged("MidPos");
-                // 还有拓扑图也要通知
+                // 拓扑图
                 else if (connectionVM is TopoLink_VM)
+                    connectionVM.RaisePropertyChanged("MidPos");
+                else if (connectionVM is TopoEdge_VM)
                     connectionVM.RaisePropertyChanged("MidPos");
             }
         }
@@ -79,7 +81,8 @@ namespace sbid._VM
             }
         }
 
-        // 反引所在的NetworkItemVM，只是为了方便查找(目前只在攻击树、序列图、控制点里实际使用了)
+        // 反引所在的NetworkItemVM，只是为了方便查找
+        // 目前只在攻击树、序列图、控制点、拓扑图里实际使用了
         public NetworkItem_VM NetworkItemVM { get => networkItemVM; set => networkItemVM = value; }
 
         // 是否是活动锚点

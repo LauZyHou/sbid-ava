@@ -50,8 +50,8 @@
       <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
       <TextBlock Text=" 结点形状：" FontSize="17"/>
       <ComboBox Name="topoNodeShape_ComboBox" Width="80" Background="WhiteSmoke" SelectedItem="{Binding TopoNodeShape, Mode=TwoWay}"/>
-      <TextBlock Text=" 连线类型：" FontSize="17"/>
-      <ComboBox Name="topoLinkType_ComboBox" Width="80" Background="WhiteSmoke" SelectedItem="{Binding TopoLinkType, Mode=TwoWay}"/>
+      <!--<TextBlock Text=" 连线类型：" FontSize="17"/>-->
+      <!--<ComboBox Name="topoLinkType_ComboBox" Width="80" Background="WhiteSmoke" SelectedItem="{Binding TopoLinkType, Mode=TwoWay}"/>-->
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>

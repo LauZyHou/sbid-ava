@@ -1,0 +1,39 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             x:Class="sbid._V.TopoEdge_V">
+
+  <Design.DataContext>
+    <vm:TopoEdge_VM/>
+  </Design.DataContext>
+
+  <!--必须为Canvas设置足够的宽高,否则这个容器没有宽高.也可以用自适应子元素宽高但是似乎没必要-->
+  <!--注：这里至少是拓扑图面板V里ItemsControl的宽高-->
+  <Canvas Width="2000" Height="1000">
+    <v:Arrow Stroke="Black" StrokeThickness="2" StartPoint="{Binding Source.Pos}" EndPoint="{Binding Dest.Pos}" IsHitTestVisible="False"/>
+    <StackPanel Canvas.Left="{Binding MidPos.X}" Canvas.Top="{Binding MidPos.Y}" Background="White">
+      <!--根据CommMethodPair是否设置二选一-->
+      <TextBlock IsVisible="{Binding TopoEdge.NullCommMethodPair}" Text="未设置"/>
+      <TextBlock IsVisible="{Binding !TopoEdge.NullCommMethodPair}">
+        <TextBlock.Text>
+          <MultiBinding StringFormat=" {0}.{1} {2} {3}.{4}">
+            <Binding Path="TopoEdge.CommMethodPair.ProcessA.RefName.Content"/>
+            <Binding Path="TopoEdge.CommMethodPair.CommMethodA.Name"/>
+            <Binding Path="TopoEdge.CommMethodPair.Symbol"/>
+            <Binding Path="TopoEdge.CommMethodPair.ProcessB.RefName.Content"/>
+            <Binding Path="TopoEdge.CommMethodPair.CommMethodB.Name"/>
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
+      <!--右键菜单-->
+      <StackPanel.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="编辑拓扑边" Command="{Binding EditTopoEdgeVM}"/>
+        </ContextMenu>
+      </StackPanel.ContextMenu>
+    </StackPanel>
+  </Canvas>
+</UserControl>

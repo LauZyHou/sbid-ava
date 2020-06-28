@@ -28,7 +28,7 @@
                   <MenuItem Header="创建初始知识" Command="{Binding $parent[UserControl].CreateInitialKnowledgeVM}"/>
                   <MenuItem Header="创建功能安全性质" Command="{Binding $parent[UserControl].CreateSafetyPropertyVM}"/>
                   <MenuItem Header="创建信息安全性质" Command="{Binding $parent[UserControl].CreateSecurityPropertyVM}"/>
-                  <MenuItem Header="创建信道" Command="{Binding $parent[UserControl].CreateCommChannelVM}"/>
+                  <MenuItem Header="创建信道模板" Command="{Binding $parent[UserControl].CreateCommChannelVM}"/>
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>

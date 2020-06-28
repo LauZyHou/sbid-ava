@@ -1,0 +1,32 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Height="110" Width="400" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.TopoEdge_EW_V"
+        Title="编辑拓扑图边">
+  <StackPanel Margin="20,10">
+    <StackPanel Orientation="Horizontal" Margin="0,5">
+      <TextBlock Text="通信代价：" FontSize="17"/>
+      <TextBox Text="{Binding TopoEdge.Cost, Mode=TwoWay}" MinWidth="80"/>
+    </StackPanel>
+    <TextBlock Text="通信方法序对：" FontSize="17"/>
+    <ComboBox Height="25" Items="{Binding CommMethodPairs}" SelectedItem="{Binding TopoEdge.CommMethodPair, Mode=TwoWay}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0}.{1} {2} {3}.{4}">
+                <Binding Path="ProcessA.RefName.Content"/>
+                <Binding Path="CommMethodA.Name"/>
+                <Binding Path="Symbol"/>
+                <Binding Path="ProcessB.RefName.Content"/>
+                <Binding Path="CommMethodB.Name"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
+  </StackPanel>
+</Window>

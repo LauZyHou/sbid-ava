@@ -30,8 +30,9 @@ namespace sbid._VM
         // 锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
-        #region 拓扑图上的VM操作接口
 
+        #region 拓扑图上的VM操作接口（旧）
+        /*
         // 创建拓扑图TopoLink连线关系（此函数在"_V"下的"TopoConnector_V"中调用）
         public void CreateTopoLinkVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
@@ -58,6 +59,44 @@ namespace sbid._VM
             connectorVM2.ConnectionVM = topoLink_VM;
 
             UserControlVMs.Add(topoLink_VM);
+        }
+
+        // 删除图上连线关系
+        public void BreakTopoLinkVM(Connector_VM connectorVM)
+        {
+            // 要删除的转移关系
+            Connection_VM connectionVM = connectorVM.ConnectionVM;
+
+            // 从图形上移除
+            UserControlVMs.Remove(connectionVM);
+
+            // 找转移关系的两端锚点(有一个是自己,但是不用管哪个是自己)
+            Connector_VM source = connectionVM.Source;
+            Connector_VM dest = connectionVM.Dest;
+
+            // 清除反引
+            source.ConnectionVM = dest.ConnectionVM = null;
+        }
+        */
+        #endregion
+
+
+        #region 拓扑图上的VM操作接口（新）
+
+        // 创建拓扑图连线关系（此函数在"_V"下的"TopoConnector_V"中调用）
+        public void CreateTopoLinkVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
+        {
+            TopoEdge_VM topoEdge_VM = new TopoEdge_VM()
+            {
+                Source = connectorVM1,
+                Dest = connectorVM2
+            };
+
+            // 锚点反引连接关系
+            connectorVM1.ConnectionVM = topoEdge_VM;
+            connectorVM2.ConnectionVM = topoEdge_VM;
+
+            UserControlVMs.Add(topoEdge_VM);
         }
 
         // 删除图上连线关系
