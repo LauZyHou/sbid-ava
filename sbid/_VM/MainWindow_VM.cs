@@ -46,24 +46,6 @@ namespace sbid._VM
             classDiagram_P_VM.init_data();
         }
 
-        // 添加新类图
-        /*
-        public void AddClassDiagram()
-        {
-            // 判定协议已创建
-            if (selectedItem == null)
-                return;
-
-            // 切换到当前协议的类图面板下
-            selectedItem.SelectedItem = selectedItem.PanelVMs[0];
-
-            // 添加过程
-            ClassDiagram_P_VM pvm = new ClassDiagram_P_VM();
-            selectedItem.PanelVMs[0].SidePanelVMs.Add(pvm);
-            selectedItem.PanelVMs[0].SelectedItem = pvm;
-        }
-        */
-
         // 添加"进程模板-状态机"大面板,要将所在Process引用传入以反向查询,将大面板返回以给Process_VM集成
         // 此方法在用户创建Process时调用
         public ProcessToSM_P_VM AddProcessToSM(Process process)
@@ -130,7 +112,7 @@ namespace sbid._VM
             selectedItem.PanelVMs[5].SelectedItem = pvm;
         }
 
-        // 按下保存按钮
+        // 按下【保存】按钮
         public async void SaveAllVM()
         {
             string saveFileName = await GetSaveFileName();
@@ -147,7 +129,7 @@ namespace sbid._VM
                 Tips = "[ERROR]项目保存失败！";
         }
 
-        // 按下载入按钮
+        // 按下【载入】按钮
         public async void ReloadAllVM()
         {
             string openFileName = await GetOpenFileName();
@@ -163,6 +145,23 @@ namespace sbid._VM
             //else
             //    Tips = "项目载入失败！请检查项目文件是否被手动修改";
             // 这里改成在返回false时提示具体的错误
+        }
+
+        // 按下【生成XML】按钮
+        public async void GenerateXml()
+        {
+            string saveFileName = await GetSaveFileName();
+            if (string.IsNullOrEmpty(saveFileName))
+            {
+                Tips = "取消生成XML";
+                return;
+            }
+            // 执行生成XML逻辑，这一套是生成验证用的XML，不能用来返回模型文件
+            bool succ = DoSave2(saveFileName);
+            if (succ)
+                Tips = "生成XML，至：" + saveFileName;
+            else
+                Tips = "[ERROR]XML生成失败！";
         }
         #endregion
 
@@ -2266,6 +2265,511 @@ namespace sbid._VM
             State._id = 1;
             Method._id = 4;
             selectedItem = null;
+        }
+
+        // 生成验证用的XML文件，类似于DoSave的行为，但是XML文件规则不同
+        private bool DoSave2(string fileName)
+        {
+            // 项目文件去除后缀名".sbid"部分
+            string cleanName = fileName.Substring(0, fileName.Length - 5);
+
+            // 写入".sbid"文件
+            XmlTextWriter xmlWriter = new XmlTextWriter(fileName, null);
+            xmlWriter.Formatting = Formatting.Indented;
+            xmlWriter.WriteStartElement("Project");
+            string nowTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            xmlWriter.WriteAttributeString("updTime", nowTime); // 最后修改时间
+            for (int i = 0; i < protocolVMs.Count; i++)
+            {
+                xmlWriter.WriteStartElement("Protocol");
+                // xmlWriter.WriteAttributeString("id", i.ToString());
+                xmlWriter.WriteAttributeString("name", protocolVMs[i].Protocol.Name);
+                xmlWriter.WriteEndElement();
+            }
+            xmlWriter.WriteEndElement();
+            xmlWriter.Flush();
+            xmlWriter.Close();
+
+            // 写入各个协议的".xml"文件
+            for (int i = 0; i < protocolVMs.Count; i++)
+            {
+                // 当前协议
+                Protocol_VM protocolVM = protocolVMs[i];
+                // 每个协议文件名是"项目名_i.xml"
+                xmlWriter = new XmlTextWriter(cleanName + "_" + i.ToString() + ".xml", null);
+                xmlWriter.Formatting = Formatting.Indented;
+                xmlWriter.WriteStartElement("Protocol");
+                xmlWriter.WriteAttributeString("name", protocolVM.Protocol.Name);
+
+                #region 概览>类图面板
+                // 这个比较特殊，因为就这一个，而且一定有这一个，用户既不能创建也不能销毁
+                xmlWriter.WriteStartElement("ClassDiagram");
+                ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
+                foreach (ViewModelBase item in classDiagram_P_VM.UserControlVMs)
+                {
+                    // 按照每个类图的类型做不同的保存方法
+                    if (item is UserType_VM)
+                    {
+                        UserType_VM vm = (UserType_VM)item;
+                        xmlWriter.WriteStartElement("UserType");
+                        xmlWriter.WriteAttributeString("name", vm.Type.Name);
+                        // xmlWriter.WriteAttributeString("id", vm.Type.Id.ToString());
+                        if (!(vm.Type is UserType)) // 基本类型
+                        {
+                            xmlWriter.WriteAttributeString("basic", "true");
+                            // 注意，基本类型在创建类图时就创建了，所以要
+                        }
+                        else if (vm.Type == Type.TYPE_BYTE_VEC || vm.Type == Type.TYPE_TIMER) // 内置的复合类型
+                        {
+                            xmlWriter.WriteAttributeString("basic", "middle");
+                        }
+                        else // 用户自定义复合类型
+                        {
+                            UserType userType = (UserType)vm.Type;
+                            xmlWriter.WriteAttributeString("basic", "false");
+                            if (userType.Parent != null) // 有继承关系
+                                xmlWriter.WriteAttributeString("parent", userType.Parent.Name);
+                            else // 无继承关系
+                                xmlWriter.WriteAttributeString("parent", "");
+                            foreach (Attribute attr in userType.Attributes)
+                            {
+                                xmlWriter.WriteStartElement("Attribute");
+                                ResourceManager.writeAttribute2(xmlWriter, attr);
+                                xmlWriter.WriteEndElement();
+                            }
+                            foreach (Method method in userType.Methods)
+                            {
+                                xmlWriter.WriteStartElement("Method");
+                                xmlWriter.WriteAttributeString("returnType", method.ReturnType.Name);
+                                xmlWriter.WriteAttributeString("name", method.Name);
+                                xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                                // xmlWriter.WriteAttributeString("id", method.Id.ToString());
+                                foreach (Attribute attr in method.Parameters)
+                                {
+                                    xmlWriter.WriteStartElement("Parameter"); // 注意这里叫Parameter了
+                                    ResourceManager.writeAttribute2(xmlWriter, attr);
+                                    xmlWriter.WriteEndElement();
+                                }
+                                xmlWriter.WriteEndElement();
+                            }
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is Process_VM)
+                    {
+                        Process_VM vm = (Process_VM)item;
+                        xmlWriter.WriteStartElement("Process");
+                        xmlWriter.WriteAttributeString("name", vm.Process.RefName.Content);
+                        // xmlWriter.WriteAttributeString("id", vm.Process.Id.ToString());
+                        foreach (Attribute attr in vm.Process.Attributes)
+                        {
+                            xmlWriter.WriteStartElement("Attribute");
+                            ResourceManager.writeAttribute2(xmlWriter, attr);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Method method in vm.Process.Methods)
+                        {
+                            xmlWriter.WriteStartElement("Method");
+                            xmlWriter.WriteAttributeString("returnType", method.ReturnType.Name);
+                            xmlWriter.WriteAttributeString("name", method.Name);
+                            xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                            // xmlWriter.WriteAttributeString("id", method.Id.ToString());
+                            foreach (Attribute attr in method.Parameters)
+                            {
+                                xmlWriter.WriteStartElement("Parameter");
+                                ResourceManager.writeAttribute2(xmlWriter, attr);
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (CommMethod commMethod in vm.Process.CommMethods)
+                        {
+                            xmlWriter.WriteStartElement("CommMethod");
+                            xmlWriter.WriteAttributeString("name", commMethod.Name);
+                            xmlWriter.WriteAttributeString("inOutSuffix", commMethod.InOutSuffix.ToString());
+                            xmlWriter.WriteAttributeString("commWay", commMethod.CommWay.ToString());
+                            // xmlWriter.WriteAttributeString("id", commMethod.Id.ToString());
+                            foreach (Attribute attr in commMethod.Parameters)
+                            {
+                                xmlWriter.WriteStartElement("Parameter");
+                                ResourceManager.writeAttribute2(xmlWriter, attr);
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is Axiom_VM)
+                    {
+                        Axiom_VM vm = (Axiom_VM)item;
+                        xmlWriter.WriteStartElement("Axiom");
+                        xmlWriter.WriteAttributeString("name", vm.Axiom.Name);
+                        // xmlWriter.WriteAttributeString("id", vm.Axiom.Id.ToString());
+                        foreach (ProcessMethod processMethod in vm.Axiom.ProcessMethods)
+                        {
+                            xmlWriter.WriteStartElement("ProcessMethod");
+                            xmlWriter.WriteAttributeString("process", processMethod.Process.RefName.Content);
+                            xmlWriter.WriteAttributeString("method", processMethod.Method.Name);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Formula formula in vm.Axiom.Formulas)
+                        {
+                            xmlWriter.WriteStartElement("Formula");
+                            xmlWriter.WriteAttributeString("content", formula.Content);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is InitialKnowledge_VM)
+                    {
+                        InitialKnowledge_VM vm = (InitialKnowledge_VM)item;
+                        xmlWriter.WriteStartElement("InitialKnowledge");
+                        if (vm.InitialKnowledge.Process == null) // 全局，不关联Process
+                        {
+                            xmlWriter.WriteAttributeString("process", "");
+                        }
+                        else
+                        {
+                            xmlWriter.WriteAttributeString("process", vm.InitialKnowledge.Process.RefName.Content);
+                        }
+                        // xmlWriter.WriteAttributeString("id", vm.InitialKnowledge.Id.ToString());
+                        foreach (Knowledge knowledge in vm.InitialKnowledge.Knowledges)
+                        {
+                            xmlWriter.WriteStartElement("Knowledge");
+                            xmlWriter.WriteAttributeString("process", knowledge.Process.RefName.Content);
+                            // 这里不再用Attribute的Id，而是直接用Identifier
+                            xmlWriter.WriteAttributeString("attribute", knowledge.Attribute.Identifier);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (KeyPair keyPair in vm.InitialKnowledge.KeyPairs)
+                        {
+                            xmlWriter.WriteStartElement("KeyPair");
+                            xmlWriter.WriteAttributeString("pubProcess", keyPair.PubProcess.RefName.Content);
+                            xmlWriter.WriteAttributeString("pubKey", keyPair.PubKey.Identifier);
+                            xmlWriter.WriteAttributeString("secProcess", keyPair.SecProcess.RefName.Content);
+                            xmlWriter.WriteAttributeString("secKey", keyPair.SecKey.Identifier);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is SafetyProperty_VM)
+                    {
+                        SafetyProperty_VM vm = (SafetyProperty_VM)item;
+                        xmlWriter.WriteStartElement("SafetyProperty");
+                        xmlWriter.WriteAttributeString("name", vm.SafetyProperty.Name);
+                        // xmlWriter.WriteAttributeString("id", vm.SafetyProperty.Id.ToString());
+                        foreach (CTL ctl in vm.SafetyProperty.CTLs)
+                        {
+                            xmlWriter.WriteStartElement("CTL");
+                            xmlWriter.WriteAttributeString("process", ctl.Process.RefName.Content);
+                            xmlWriter.WriteAttributeString("state", ctl.State.Name);
+                            xmlWriter.WriteAttributeString("formula", ctl.Formula.Content);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Formula formula in vm.SafetyProperty.Invariants)
+                        {
+                            xmlWriter.WriteStartElement("Invariant");
+                            xmlWriter.WriteAttributeString("content", formula.Content);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is SecurityProperty_VM)
+                    {
+                        SecurityProperty_VM vm = (SecurityProperty_VM)item;
+                        xmlWriter.WriteStartElement("SecurityProperty");
+                        xmlWriter.WriteAttributeString("name", vm.SecurityProperty.Name);
+                        // xmlWriter.WriteAttributeString("id", vm.SecurityProperty.Id.ToString());
+                        foreach (Confidential confidential in vm.SecurityProperty.Confidentials)
+                        {
+                            xmlWriter.WriteStartElement("Confidential");
+                            xmlWriter.WriteAttributeString("process", confidential.Process.RefName.Content);
+                            xmlWriter.WriteAttributeString("attribute", confidential.Attribute.Identifier);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Authenticity authenticity in vm.SecurityProperty.Authenticities)
+                        {
+                            xmlWriter.WriteStartElement("Authenticity");
+                            xmlWriter.WriteAttributeString("processA", authenticity.ProcessA.RefName.Content);
+                            xmlWriter.WriteAttributeString("stateA", authenticity.StateA.Name);
+                            xmlWriter.WriteAttributeString("attributeA", authenticity.AttributeA.Identifier);
+                            xmlWriter.WriteAttributeString("attributeA_Attr", authenticity.AttributeA_Attr.Identifier);
+                            xmlWriter.WriteAttributeString("processB", authenticity.ProcessB.RefName.Content);
+                            xmlWriter.WriteAttributeString("stateB", authenticity.StateB.Name);
+                            xmlWriter.WriteAttributeString("attributeB", authenticity.AttributeB.Identifier);
+                            xmlWriter.WriteAttributeString("attributeB_Attr", authenticity.AttributeB_Attr.Identifier);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Integrity integrity in vm.SecurityProperty.Integrities)
+                        {
+                            xmlWriter.WriteStartElement("Integrity");
+                            xmlWriter.WriteAttributeString("processA", integrity.ProcessA.RefName.Content);
+                            xmlWriter.WriteAttributeString("stateA", integrity.StateA.Name);
+                            xmlWriter.WriteAttributeString("attributeA", integrity.AttributeA.Identifier);
+                            xmlWriter.WriteAttributeString("processB", integrity.ProcessB.RefName.Content);
+                            xmlWriter.WriteAttributeString("stateB", integrity.StateB.Name);
+                            xmlWriter.WriteAttributeString("attributeB", integrity.AttributeB.Identifier);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    else if (item is CommChannel_VM)
+                    {
+                        CommChannel_VM vm = (CommChannel_VM)item;
+                        xmlWriter.WriteStartElement("CommChannel");
+                        xmlWriter.WriteAttributeString("name", vm.CommChannel.Name);
+                        // xmlWriter.WriteAttributeString("id", vm.CommChannel.Id.ToString());
+                        foreach (CommMethodPair commMethodPair in vm.CommChannel.CommMethodPairs)
+                        {
+                            xmlWriter.WriteStartElement("CommMethodPair");
+                            xmlWriter.WriteAttributeString("id", commMethodPair.Id.ToString());
+                            xmlWriter.WriteAttributeString("processA", commMethodPair.ProcessA.RefName.Content);
+                            xmlWriter.WriteAttributeString("commMethodA", commMethodPair.CommMethodA.Name);
+                            xmlWriter.WriteAttributeString("processB", commMethodPair.ProcessB.RefName.Content);
+                            xmlWriter.WriteAttributeString("commMethodB", commMethodPair.CommMethodB.Name);
+                            xmlWriter.WriteAttributeString("privacy", commMethodPair.Privacy.ToString());
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                }
+                xmlWriter.WriteEndElement();
+                #endregion
+
+                #region "进程模板-状态机"面板
+                xmlWriter.WriteStartElement("ProcessToSMs");
+                ObservableCollection<SidePanel_VM> processToSM_P_VMs = protocolVM.PanelVMs[1].SidePanelVMs; // 所有的"进程模板-状态机"面板
+                foreach (SidePanel_VM sidePanel_VM in processToSM_P_VMs)
+                {
+                    ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)sidePanel_VM;
+                    xmlWriter.WriteStartElement("ProcessToSM");
+                    xmlWriter.WriteAttributeString("process", processToSM_P_VM.Process.RefName.Content);
+                    // 对于里面的每个状态机面板，写入XML
+                    foreach (StateMachine_P_VM stateMachine_P_VM in processToSM_P_VM.StateMachinePVMs)
+                    {
+                        xmlWriter.WriteStartElement("StateMachine");
+                        xmlWriter.WriteAttributeString("refine_state", stateMachine_P_VM.State.Name);
+                        foreach (ViewModelBase vm in stateMachine_P_VM.UserControlVMs) // 写入状态机的结点和连线等
+                        {
+                            if (vm is State_VM)
+                            {
+                                State_VM state_VM = (State_VM)vm;
+                                xmlWriter.WriteStartElement("State");
+                                xmlWriter.WriteAttributeString("name", state_VM.State.Name);
+                                // xmlWriter.WriteAttributeString("id", state_VM.State.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            /*
+                            else if (vm is InitState_VM)
+                            {
+                                //InitState_VM initState_VM = (InitState_VM)vm;
+                                //xmlWriter.WriteStartElement("InitState");
+                                xmlWriter.WriteStartElement("State");
+                                xmlWriter.WriteAttributeString("name", "_init");
+                                xmlWriter.WriteEndElement();
+                            }
+                            else if (vm is FinalState_VM)
+                            {
+                                //FinalState_VM finalState_VM = (FinalState_VM)vm;
+                                //xmlWriter.WriteStartElement("FinalState");
+                                xmlWriter.WriteStartElement("State");
+                                xmlWriter.WriteAttributeString("name", "_final");
+                                xmlWriter.WriteEndElement();
+                            }
+                            */
+                            // 对于普通状态和初始状态，允许出边，遍历锚点计算目标状态和转移，以生成转移关系
+                            if (vm is State_VM || vm is InitState_VM)
+                            {
+                                // 当前状态名
+                                string sourceState = vm is InitState_VM ? "_init" : ((State_VM)vm).State.Name;
+                                NetworkItem_VM networkItem_VM = (NetworkItem_VM)vm;
+                                // 遍历当前状态所有锚点
+                                foreach (Connector_VM connector_VM in networkItem_VM.ConnectorVMs)
+                                {
+                                    // 当前状态存在出边
+                                    if (connector_VM.ConnectionVM != null && connector_VM.ConnectionVM.Source == connector_VM)
+                                    {
+                                        xmlWriter.WriteStartElement("Transition");
+                                        StateTrans_VM stateTrans_VM = null; // 记录途经的（最后一个）StateTrans，也可没有
+                                        Connector_VM nowConnector_VM = connector_VM.ConnectionVM.Dest;
+                                        // 跳过若干控制点和StateTrans结点
+                                        while (true)
+                                        {
+                                            // 控制点，跳过向Dest走
+                                            if (nowConnector_VM.NetworkItemVM is ControlPoint_VM)
+                                            {
+                                                ControlPoint_VM controlPoint_VM = (ControlPoint_VM)nowConnector_VM.NetworkItemVM;
+                                                nowConnector_VM = controlPoint_VM.ConnectorVMs[1].ConnectionVM.Dest;
+                                            }
+                                            // StateTrans结点，记录一下然后向下走
+                                            else if (nowConnector_VM.NetworkItemVM is StateTrans_VM)
+                                            {
+                                                stateTrans_VM = (StateTrans_VM)nowConnector_VM.NetworkItemVM;
+                                                // 遍历StateTrans的锚点找向下走的点
+                                                nowConnector_VM = null;
+                                                foreach (Connector_VM stc in stateTrans_VM.ConnectorVMs)
+                                                {
+                                                    if (stc.ConnectionVM != null && stc.ConnectionVM.Source == stc)
+                                                    {
+                                                        nowConnector_VM = stc.ConnectionVM.Dest;
+                                                        break;
+                                                    }
+                                                }
+                                                // 如果没找到向下走的点，说明用户StateTrans没往下连，这里就直接break用默认的_final就行了
+                                                if (nowConnector_VM == null)
+                                                {
+                                                    break;
+                                                }
+                                            }
+                                            else // 遇到三类状态了，结束
+                                            {
+                                                break;
+                                            }
+                                        }
+
+                                        // 目标状态名，如果没找到（StatTrans没往下连）那就认为是连到FinalState了
+                                        string destState = "_final";
+                                        // 根据三类状态不同计算destState名称
+                                        if (nowConnector_VM == null)
+                                        {
+                                            destState = "_final";
+                                        }
+                                        else if (nowConnector_VM.NetworkItemVM is State_VM)
+                                        {
+                                            State_VM state_VM = (State_VM)nowConnector_VM.NetworkItemVM;
+                                            destState = state_VM.State.Name;
+                                        }
+                                        else if (nowConnector_VM.NetworkItemVM is FinalState_VM)
+                                        {
+                                            destState = "_final";
+                                        }
+                                        else if (nowConnector_VM.NetworkItemVM is InitState_VM) // 不符合规约
+                                        {
+                                            destState = "_init";
+                                        }
+                                        // 源和目标状态
+                                        xmlWriter.WriteAttributeString("source", sourceState);
+                                        xmlWriter.WriteAttributeString("dest", destState);
+                                        // 转移上的Guard和Action
+                                        if (stateTrans_VM != null)
+                                        {
+                                            foreach (Formula formula in stateTrans_VM.StateTrans.Guards) // Guard条件列表
+                                            {
+                                                xmlWriter.WriteStartElement("Guard");
+                                                xmlWriter.WriteAttributeString("content", formula.Content);
+                                                xmlWriter.WriteEndElement();
+                                            }
+                                            foreach (Formula formula in stateTrans_VM.StateTrans.Actions) // Action动作列表
+                                            {
+                                                xmlWriter.WriteStartElement("Action");
+                                                xmlWriter.WriteAttributeString("content", formula.Content);
+                                                xmlWriter.WriteEndElement();
+                                            }
+                                        }
+                                        xmlWriter.WriteEndElement();
+                                    }
+                                }
+                            }
+                            /*
+                            else if (vm is StateTrans_VM)
+                            {
+                                StateTrans_VM stateTrans_VM = (StateTrans_VM)vm;
+                                // 遍历身上所有锚点，计算转移的源头和目标
+                                string destState = null;
+                                string sourceState = null;
+                                foreach (Connector_VM connector_VM in stateTrans_VM.ConnectorVMs)
+                                {
+                                    if (connector_VM.ConnectionVM != null)
+                                    {
+                                        // 寻找转移的"目标"状态
+                                        if (connector_VM.ConnectionVM.Source == connector_VM)
+                                        {
+                                            Connector_VM nowConnector_VM = connector_VM.ConnectionVM.Dest;
+                                            // 跳过若干控制点
+                                            while (nowConnector_VM.NetworkItemVM is ControlPoint_VM)
+                                            {
+                                                ControlPoint_VM controlPoint_VM = (ControlPoint_VM)nowConnector_VM.NetworkItemVM;
+                                                nowConnector_VM = controlPoint_VM.ConnectorVMs[1].ConnectionVM.Dest;
+                                            }
+                                            if (nowConnector_VM.NetworkItemVM is State_VM)
+                                            {
+                                                State_VM state_VM = (State_VM)nowConnector_VM.NetworkItemVM;
+                                                destState = state_VM.State.Name;
+                                            }
+                                            else if (nowConnector_VM.NetworkItemVM is FinalState_VM)
+                                            {
+                                                destState = "_final";
+                                            }
+                                            else if (nowConnector_VM.NetworkItemVM is InitState_VM)
+                                            {
+                                                // 实际上目标状态不应该往InitState连
+                                                destState = "_init";
+                                            }
+                                        }
+                                        // 寻找转移的"源头"状态
+                                        else if (connector_VM.ConnectionVM.Dest == connector_VM)
+                                        {
+                                            Connector_VM nowConnector_VM = connector_VM.ConnectionVM.Source;
+                                            // 跳过若干控制点
+                                            while (nowConnector_VM.NetworkItemVM is ControlPoint_VM)
+                                            {
+                                                ControlPoint_VM controlPoint_VM = (ControlPoint_VM)nowConnector_VM.NetworkItemVM;
+                                                nowConnector_VM = controlPoint_VM.ConnectorVMs[0].ConnectionVM.Source;
+                                            }
+                                            if (nowConnector_VM.NetworkItemVM is State_VM)
+                                            {
+                                                State_VM state_VM = (State_VM)nowConnector_VM.NetworkItemVM;
+                                                sourceState = state_VM.State.Name;
+                                            }
+                                            else if (nowConnector_VM.NetworkItemVM is FinalState_VM)
+                                            {
+                                                // 实际上源头状态不应该往FinalState连
+                                                sourceState = "_final";
+                                            }
+                                            else if (nowConnector_VM.NetworkItemVM is InitState_VM)
+                                            {
+                                                sourceState = "_init";
+                                            }
+                                        }
+                                    }
+                                }
+                                // 为了减少后端解析压力，对于用户没有连接完整的StateTrans不生成XML
+                                if (destState == null || sourceState == null)
+                                {
+                                    continue;
+                                }
+                                xmlWriter.WriteStartElement("StateTrans");
+                                xmlWriter.WriteAttributeString("source", sourceState);
+                                xmlWriter.WriteAttributeString("dest", destState);
+                                foreach (Formula formula in stateTrans_VM.StateTrans.Guards) // Guard条件列表
+                                {
+                                    xmlWriter.WriteStartElement("Guard");
+                                    xmlWriter.WriteAttributeString("content", formula.Content);
+                                    xmlWriter.WriteEndElement();
+                                }
+                                foreach (Formula formula in stateTrans_VM.StateTrans.Actions) // Action动作列表
+                                {
+                                    xmlWriter.WriteStartElement("Action");
+                                    xmlWriter.WriteAttributeString("content", formula.Content);
+                                    xmlWriter.WriteEndElement();
+                                }
+                                xmlWriter.WriteEndElement();
+                            }
+                            */
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    xmlWriter.WriteEndElement();
+                }
+                xmlWriter.WriteEndElement();
+                #endregion
+
+                // 协议尾
+                xmlWriter.WriteEndElement();
+                xmlWriter.Flush();
+                xmlWriter.Close();
+            }
+            return true;
         }
 
         #endregion

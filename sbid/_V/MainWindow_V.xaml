@@ -47,7 +47,7 @@
       <Button Command="{Binding AddProtocol}">新协议</Button>
       <Button Command="{Binding SaveAllVM}">保存</Button>
       <Button Command="{Binding ReloadAllVM}">载入</Button>
-      <Button IsEnabled="False">生成XML</Button>
+      <Button Command="{Binding GenerateXml}" Foreground="DarkRed">生成XML</Button>
       <!--<Button Command="{Binding AddClassDiagram}">新类图</Button>-->
       <Button Command="{Binding AddTopoGraph}">新拓扑图</Button>
       <Button Command="{Binding AddAttackTree}">新攻击树</Button>

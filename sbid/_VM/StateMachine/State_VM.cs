@@ -44,6 +44,12 @@ namespace sbid._VM
             ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 3 * deltaY));
             ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 3 * deltaY));
             ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 3 * deltaY));
+
+            // 将这些锚点所在的NetworkItem_VM回引写入
+            foreach (Connector_VM connector_VM in ConnectorVMs)
+            {
+                connector_VM.NetworkItemVM = this;
+            }
         }
 
         public State State { get => state; set => state = value; }

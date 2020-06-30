@@ -28,6 +28,11 @@ namespace sbid._VM
             {
                 ConnectorVMs.Add(new Connector_VM());
             }
+            // 将这些锚点所在的NetworkItem_VM回引写入
+            foreach (Connector_VM connector_VM in ConnectorVMs)
+            {
+                connector_VM.NetworkItemVM = this;
+            }
         }
 
         // 构造时添加8个锚点
@@ -46,6 +51,11 @@ namespace sbid._VM
             for (int i = 0; i < 7; i++)
             {
                 ConnectorVMs.Add(new Connector_VM());
+            }
+            // 将这些锚点所在的NetworkItem_VM回引写入
+            foreach (Connector_VM connector_VM in ConnectorVMs)
+            {
+                connector_VM.NetworkItemVM = this;
             }
         }
 

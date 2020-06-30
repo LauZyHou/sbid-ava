@@ -12,7 +12,7 @@ namespace sbid._VM
         public InitState_VM()
         {
             ConnectorVMs = new ObservableCollection<Connector_VM>();
-            ConnectorVMs.Add(new Connector_VM(X + 20, Y + 44));
+            ConnectorVMs.Add(new Connector_VM(X + 20, Y + 44) { NetworkItemVM = this });
         }
 
         // 带位置的构造,构造时添加一个锚点,并为锚点设定好初始位置(todo 自动计算)
@@ -22,7 +22,7 @@ namespace sbid._VM
             X = x;
             Y = y;
             ConnectorVMs = new ObservableCollection<Connector_VM>();
-            ConnectorVMs.Add(new Connector_VM(X + 20, Y + 44));
+            ConnectorVMs.Add(new Connector_VM(X + 20, Y + 44) { NetworkItemVM = this });
         }
     }
 }

@@ -12,7 +12,7 @@ namespace sbid._VM
             X = x;
             Y = y;
             ConnectorVMs = new ObservableCollection<Connector_VM>();
-            ConnectorVMs.Add(new Connector_VM(X + 20, Y + 4));
+            ConnectorVMs.Add(new Connector_VM(X + 20, Y + 4) { NetworkItemVM = this });
         }
     }
 }

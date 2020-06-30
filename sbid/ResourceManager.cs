@@ -162,5 +162,17 @@ namespace sbid
         }
 
         #endregion
+
+        #region 写XML的一些接口（保存为验证用的XML）
+
+        public static void writeAttribute2(XmlTextWriter xmlWriter, Attribute attr)
+        {
+            xmlWriter.WriteAttributeString("type", attr.Type.Name);
+            xmlWriter.WriteAttributeString("identifier", attr.Identifier);
+            xmlWriter.WriteAttributeString("isArray", attr.IsArray.ToString());
+            // xmlWriter.WriteAttributeString("id", attr.Id.ToString());
+        }
+
+        #endregion
     }
 }
