@@ -829,6 +829,75 @@ namespace sbid._VM
                 xmlWriter.WriteEndElement();
                 #endregion
 
+                #region CTL面板
+
+                xmlWriter.WriteStartElement("CTLTree_P_VMs");
+                ObservableCollection<SidePanel_VM> ctlTree_P_VMs = protocolVM.PanelVMs[4].SidePanelVMs; // 所有的CTL语法树
+                foreach (SidePanel_VM sidePanel_VM in ctlTree_P_VMs)
+                {
+                    CTLTree_P_VM ctlTree_P_VM = (CTLTree_P_VM)sidePanel_VM;
+                    xmlWriter.WriteStartElement("CTLTree_P_VM");
+                    xmlWriter.WriteAttributeString("name", ctlTree_P_VM.RefName.Content);
+                    foreach (ViewModelBase vm in ctlTree_P_VM.UserControlVMs)
+                    {
+                        if (vm is AtomProposition_VM) // 原子命题结点
+                        {
+                            AtomProposition_VM atomProposition_VM = (AtomProposition_VM)vm;
+                            xmlWriter.WriteStartElement("AtomProposition_VM");
+                            xmlWriter.WriteAttributeString("x", atomProposition_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", atomProposition_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("name", atomProposition_VM.AtomProposition.RefName.Content);
+                            foreach (Connector_VM connector_VM in atomProposition_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is CTLRelation_VM) // CTL关系结点
+                        {
+                            CTLRelation_VM ctlRelation_VM = (CTLRelation_VM)vm;
+                            xmlWriter.WriteStartElement("CTLRelation_VM");
+                            xmlWriter.WriteAttributeString("x", ctlRelation_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", ctlRelation_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("ctlRelation", ctlRelation_VM.CTLRelation.ToString());
+                            foreach (Connector_VM connector_VM in ctlRelation_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is LogicRelation_VM) // 命题逻辑关系结点
+                        {
+                            LogicRelation_VM logicRelation_VM = (LogicRelation_VM)vm;
+                            xmlWriter.WriteStartElement("LogicRelation_VM");
+                            xmlWriter.WriteAttributeString("x", logicRelation_VM.X.ToString());
+                            xmlWriter.WriteAttributeString("y", logicRelation_VM.Y.ToString());
+                            xmlWriter.WriteAttributeString("logicRelation", logicRelation_VM.LogicRelation.ToString());
+                            foreach (Connector_VM connector_VM in logicRelation_VM.ConnectorVMs) // 身上所有锚点的id号
+                            {
+                                xmlWriter.WriteStartElement("Connector_VM");
+                                xmlWriter.WriteAttributeString("id", connector_VM.Id.ToString());
+                                xmlWriter.WriteEndElement();
+                            }
+                            xmlWriter.WriteEndElement();
+                        }
+                        else if (vm is Connection_VM) // 连接线
+                        {
+                            Connection_VM connection_VM = (Connection_VM)vm;
+                            xmlWriter.WriteStartElement("Connection_VM");
+                            xmlWriter.WriteAttributeString("source_ref", connection_VM.Source.Id.ToString()); // 源锚点
+                            xmlWriter.WriteAttributeString("dest_ref", connection_VM.Dest.Id.ToString()); // 目标锚点
+                            xmlWriter.WriteEndElement();
+                        }
+                    }
+                }
+
+                #endregion
+
                 // 协议尾
                 xmlWriter.WriteEndElement();
                 xmlWriter.Flush();
@@ -2548,7 +2617,8 @@ namespace sbid._VM
                     foreach (StateMachine_P_VM stateMachine_P_VM in processToSM_P_VM.StateMachinePVMs)
                     {
                         xmlWriter.WriteStartElement("StateMachine");
-                        xmlWriter.WriteAttributeString("refine_state", stateMachine_P_VM.State.Name);
+                        // 注意顶层状态这里改用空串""
+                        xmlWriter.WriteAttributeString("refine_state", stateMachine_P_VM.State == State.TopState ? "" : stateMachine_P_VM.State.Name);
                         foreach (ViewModelBase vm in stateMachine_P_VM.UserControlVMs) // 写入状态机的结点和连线等
                         {
                             if (vm is State_VM)
@@ -2670,92 +2740,6 @@ namespace sbid._VM
                                     }
                                 }
                             }
-                            /*
-                            else if (vm is StateTrans_VM)
-                            {
-                                StateTrans_VM stateTrans_VM = (StateTrans_VM)vm;
-                                // 遍历身上所有锚点，计算转移的源头和目标
-                                string destState = null;
-                                string sourceState = null;
-                                foreach (Connector_VM connector_VM in stateTrans_VM.ConnectorVMs)
-                                {
-                                    if (connector_VM.ConnectionVM != null)
-                                    {
-                                        // 寻找转移的"目标"状态
-                                        if (connector_VM.ConnectionVM.Source == connector_VM)
-                                        {
-                                            Connector_VM nowConnector_VM = connector_VM.ConnectionVM.Dest;
-                                            // 跳过若干控制点
-                                            while (nowConnector_VM.NetworkItemVM is ControlPoint_VM)
-                                            {
-                                                ControlPoint_VM controlPoint_VM = (ControlPoint_VM)nowConnector_VM.NetworkItemVM;
-                                                nowConnector_VM = controlPoint_VM.ConnectorVMs[1].ConnectionVM.Dest;
-                                            }
-                                            if (nowConnector_VM.NetworkItemVM is State_VM)
-                                            {
-                                                State_VM state_VM = (State_VM)nowConnector_VM.NetworkItemVM;
-                                                destState = state_VM.State.Name;
-                                            }
-                                            else if (nowConnector_VM.NetworkItemVM is FinalState_VM)
-                                            {
-                                                destState = "_final";
-                                            }
-                                            else if (nowConnector_VM.NetworkItemVM is InitState_VM)
-                                            {
-                                                // 实际上目标状态不应该往InitState连
-                                                destState = "_init";
-                                            }
-                                        }
-                                        // 寻找转移的"源头"状态
-                                        else if (connector_VM.ConnectionVM.Dest == connector_VM)
-                                        {
-                                            Connector_VM nowConnector_VM = connector_VM.ConnectionVM.Source;
-                                            // 跳过若干控制点
-                                            while (nowConnector_VM.NetworkItemVM is ControlPoint_VM)
-                                            {
-                                                ControlPoint_VM controlPoint_VM = (ControlPoint_VM)nowConnector_VM.NetworkItemVM;
-                                                nowConnector_VM = controlPoint_VM.ConnectorVMs[0].ConnectionVM.Source;
-                                            }
-                                            if (nowConnector_VM.NetworkItemVM is State_VM)
-                                            {
-                                                State_VM state_VM = (State_VM)nowConnector_VM.NetworkItemVM;
-                                                sourceState = state_VM.State.Name;
-                                            }
-                                            else if (nowConnector_VM.NetworkItemVM is FinalState_VM)
-                                            {
-                                                // 实际上源头状态不应该往FinalState连
-                                                sourceState = "_final";
-                                            }
-                                            else if (nowConnector_VM.NetworkItemVM is InitState_VM)
-                                            {
-                                                sourceState = "_init";
-                                            }
-                                        }
-                                    }
-                                }
-                                // 为了减少后端解析压力，对于用户没有连接完整的StateTrans不生成XML
-                                if (destState == null || sourceState == null)
-                                {
-                                    continue;
-                                }
-                                xmlWriter.WriteStartElement("StateTrans");
-                                xmlWriter.WriteAttributeString("source", sourceState);
-                                xmlWriter.WriteAttributeString("dest", destState);
-                                foreach (Formula formula in stateTrans_VM.StateTrans.Guards) // Guard条件列表
-                                {
-                                    xmlWriter.WriteStartElement("Guard");
-                                    xmlWriter.WriteAttributeString("content", formula.Content);
-                                    xmlWriter.WriteEndElement();
-                                }
-                                foreach (Formula formula in stateTrans_VM.StateTrans.Actions) // Action动作列表
-                                {
-                                    xmlWriter.WriteStartElement("Action");
-                                    xmlWriter.WriteAttributeString("content", formula.Content);
-                                    xmlWriter.WriteEndElement();
-                                }
-                                xmlWriter.WriteEndElement();
-                            }
-                            */
                         }
                         xmlWriter.WriteEndElement();
                     }
