@@ -2179,7 +2179,7 @@ namespace sbid._VM
                     TopoGraph_P_VM topoGraph_P_VM = new TopoGraph_P_VM();
                     topoGraph_P_VM.RefName.Content = element.GetAttribute("name");
                     Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
-                    foreach (XmlNode topoChildNode in node.ChildNodes) // TopoNode_VM 和 各类TopoLink_VM
+                    foreach (XmlNode topoChildNode in node.ChildNodes) // TopoNode_VM 和 TopoEdge_VM
                     {
                         XmlElement tcElement = (XmlElement)topoChildNode;
                         if (topoChildNode.Name == "TopoNode_VM")
@@ -2315,6 +2315,115 @@ namespace sbid._VM
                     topoGraph_P_VMs.Add(topoGraph_P_VM);
                     protocolVM.PanelVMs[2].SelectedItem = topoGraph_P_VM; // fixme 改成记录SelectedItem
                 }
+                #endregion
+
+                #region CTL面板
+
+                xmlNode = doc.SelectSingleNode("Protocol_VM/CTLTree_P_VMs");
+                nodeList = xmlNode.ChildNodes;
+                ObservableCollection<SidePanel_VM> ctlTree_P_VMs = protocolVM.PanelVMs[4].SidePanelVMs;
+                foreach (XmlNode node in nodeList) // <CTLTree_P_VM name="xxx">
+                {
+                    XmlElement element = (XmlElement)node;
+                    CTLTree_P_VM ctlTree_P_VM = new CTLTree_P_VM();
+                    ctlTree_P_VM.RefName.Content = element.GetAttribute("name");
+                    Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线
+                    foreach (XmlNode ctlChildNode in node.ChildNodes) // AtomProposition_VM/CTLRelation_VM/LogicRelation_VM/Connection_VM
+                    {
+                        XmlElement ccElement = (XmlElement)ctlChildNode;
+                        switch (ctlChildNode.Name)
+                        {
+                            case "AtomProposition_VM":
+                                double x = double.Parse(ccElement.GetAttribute("x"));
+                                double y = double.Parse(ccElement.GetAttribute("y"));
+                                AtomProposition_VM atomProposition_VM = new AtomProposition_VM(x, y);
+                                atomProposition_VM.AtomProposition.RefName.Content = ccElement.GetAttribute("name");
+                                // 处理锚点
+                                int connectorNum = 0; // 用来记录锚点数量
+                                foreach (XmlNode nodeChildNode in ctlChildNode.ChildNodes)
+                                {
+                                    XmlElement nodeChildElement = (XmlElement)nodeChildNode;
+                                    if (connectorNum == atomProposition_VM.ConnectorVMs.Count)
+                                    {
+                                        Tips = "[解析AtomProposition_VM时出错]锚点数量和系统要求不一致！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    int id = int.Parse(nodeChildElement.GetAttribute("id"));
+                                    atomProposition_VM.ConnectorVMs[connectorNum].Id = id;
+                                    connectorDict.Add(id, atomProposition_VM.ConnectorVMs[connectorNum]);
+                                    connectorNum++;
+                                }
+                                ctlTree_P_VM.UserControlVMs.Add(atomProposition_VM);
+                                break;
+                            case "CTLRelation_VM":
+                                x = double.Parse(ccElement.GetAttribute("x"));
+                                y = double.Parse(ccElement.GetAttribute("y"));
+                                CTLRelation_VM ctlRelation_VM = new CTLRelation_VM(x, y);
+                                ctlRelation_VM.CTLRelation = (CTLRelation)System.Enum.Parse(typeof(CTLRelation), ccElement.GetAttribute("ctlRelation"));
+                                // 处理锚点
+                                connectorNum = 0; // 用来记录锚点数量
+                                foreach (XmlNode nodeChildNode in ctlChildNode.ChildNodes)
+                                {
+                                    XmlElement nodeChildElement = (XmlElement)nodeChildNode;
+                                    if (connectorNum == ctlRelation_VM.ConnectorVMs.Count)
+                                    {
+                                        Tips = "[解析CTLRelation_VM时出错]锚点数量和系统要求不一致！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    int id = int.Parse(nodeChildElement.GetAttribute("id"));
+                                    ctlRelation_VM.ConnectorVMs[connectorNum].Id = id;
+                                    connectorDict.Add(id, ctlRelation_VM.ConnectorVMs[connectorNum]);
+                                    connectorNum++;
+                                }
+                                ctlTree_P_VM.UserControlVMs.Add(ctlRelation_VM);
+                                break;
+                            case "LogicRelation_VM":
+                                x = double.Parse(ccElement.GetAttribute("x"));
+                                y = double.Parse(ccElement.GetAttribute("y"));
+                                LogicRelation_VM logicRelation_VM = new LogicRelation_VM(x, y);
+                                logicRelation_VM.LogicRelation = (LogicRelation)System.Enum.Parse(typeof(LogicRelation), ccElement.GetAttribute("logicRelation"));
+                                // 处理锚点
+                                connectorNum = 0; // 用来记录锚点数量
+                                foreach (XmlNode nodeChildNode in ctlChildNode.ChildNodes)
+                                {
+                                    XmlElement nodeChildElement = (XmlElement)nodeChildNode;
+                                    if (connectorNum == logicRelation_VM.ConnectorVMs.Count)
+                                    {
+                                        Tips = "[解析LogicRelation_VM时出错]锚点数量和系统要求不一致！";
+                                        cleanProject();
+                                        return false;
+                                    }
+                                    int id = int.Parse(nodeChildElement.GetAttribute("id"));
+                                    logicRelation_VM.ConnectorVMs[connectorNum].Id = id;
+                                    connectorDict.Add(id, logicRelation_VM.ConnectorVMs[connectorNum]);
+                                    connectorNum++;
+                                }
+                                ctlTree_P_VM.UserControlVMs.Add(logicRelation_VM);
+                                break;
+                            case "Connection_VM":
+                                Connection_VM connection_VM = new Connection_VM();
+                                int sourceRef = int.Parse(ccElement.GetAttribute("source_ref"));
+                                int destRef = int.Parse(ccElement.GetAttribute("dest_ref"));
+                                if (!(connectorDict.ContainsKey(sourceRef) && connectorDict.ContainsKey(destRef)))
+                                {
+                                    Tips = "[解析Connection_VM时出错]无法找到某端的锚点！";
+                                    cleanProject();
+                                    return false;
+                                }
+                                connection_VM.Source = connectorDict[sourceRef]; // 连线两端引用锚点
+                                connection_VM.Dest = connectorDict[destRef];
+                                connectorDict[sourceRef].ConnectionVM = connection_VM; // 从锚点反引连线
+                                connectorDict[destRef].ConnectionVM = connection_VM;
+                                ctlTree_P_VM.UserControlVMs.Add(connection_VM);
+                                break;
+                        }
+                    }
+                    ctlTree_P_VMs.Add(ctlTree_P_VM);
+                    protocolVM.PanelVMs[4].SelectedItem = ctlTree_P_VM; // fixme 改成记录SelectedItem
+                }
+
                 #endregion
             }
             return true;
