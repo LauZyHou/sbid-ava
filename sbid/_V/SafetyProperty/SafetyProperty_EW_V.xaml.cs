@@ -33,12 +33,12 @@ namespace sbid._V
             }
             Process process = (Process)process_ComboBox.SelectedItem;
 
-            if (state_ComboBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定一个状态！";
-                return;
-            }
-            State state = (State)state_ComboBox.SelectedItem;
+            //if (state_ComboBox.SelectedItem == null)
+            //{
+            //    ResourceManager.mainWindowVM.Tips = "需要选定一个状态！";
+            //    return;
+            //}
+            //State state = (State)state_ComboBox.SelectedItem;
 
             if (ctl_TextBox.Text == null || ctl_TextBox.Text.Length == 0)
             {
@@ -47,7 +47,7 @@ namespace sbid._V
             }
 
             Formula formula = new Formula(ctl_TextBox.Text);
-            CTL ctl = new CTL(process, state, formula);
+            CTL ctl = new CTL(process, formula);
             VM.SafetyProperty.CTLs.Add(ctl);
             ResourceManager.mainWindowVM.Tips = "添加了CTL公式：" + ctl;
         }
@@ -67,12 +67,12 @@ namespace sbid._V
             }
             Process process = (Process)process_ComboBox.SelectedItem;
 
-            if (state_ComboBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定一个状态！";
-                return;
-            }
-            State state = (State)state_ComboBox.SelectedItem;
+            //if (state_ComboBox.SelectedItem == null)
+            //{
+            //    ResourceManager.mainWindowVM.Tips = "需要选定一个状态！";
+            //    return;
+            //}
+            //State state = (State)state_ComboBox.SelectedItem;
 
             if (ctl_TextBox.Text == null || ctl_TextBox.Text.Length == 0)
             {
@@ -82,7 +82,7 @@ namespace sbid._V
 
             CTL ctl = (CTL)ctl_ListBox.SelectedItem;
             ctl.Process = process;
-            ctl.State = state;
+            // ctl.State = state;
             ctl.Formula.Content = ctl_TextBox.Text;
             ResourceManager.mainWindowVM.Tips = "修改了CTL公式：" + ctl;
         }
@@ -159,7 +159,7 @@ namespace sbid._V
             ctl_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(ctl_ListBox));
             invariant_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(invariant_ListBox));
             process_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(process_ComboBox));
-            state_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(state_ComboBox));
+            // state_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(state_ComboBox));
             ctl_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(ctl_TextBox));
             invariant_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(invariant_TextBox));
         }

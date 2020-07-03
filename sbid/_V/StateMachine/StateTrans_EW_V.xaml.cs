@@ -25,6 +25,7 @@ namespace sbid._V
 
         #region 按钮命令
 
+        /*
         public void Add_Guard()
         {
             if (guard_TextBox.Text == null || guard_TextBox.Text.Length == 0)
@@ -69,6 +70,7 @@ namespace sbid._V
             VM.StateTrans.Guards.Remove(guard);
             ResourceManager.mainWindowVM.Tips = "删除了转移条件：" + guard.Content;
         }
+        */
 
         public void Add_Action()
         {
@@ -126,9 +128,9 @@ namespace sbid._V
         // 获取控件引用
         private void get_control_reference()
         {
-            guard_ListBox = ControlExtensions.FindControl<ListBox>(this, "guard_ListBox");
+            // guard_ListBox = ControlExtensions.FindControl<ListBox>(this, "guard_ListBox");
             action_ListBox = ControlExtensions.FindControl<ListBox>(this, "action_ListBox");
-            guard_TextBox = ControlExtensions.FindControl<TextBox>(this, "guard_TextBox");
+            // guard_TextBox = ControlExtensions.FindControl<TextBox>(this, "guard_TextBox");
             action_TextBox = ControlExtensions.FindControl<TextBox>(this, "action_TextBox");
         }
 

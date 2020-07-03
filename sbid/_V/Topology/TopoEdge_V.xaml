@@ -19,12 +19,13 @@
       <TextBlock IsVisible="{Binding TopoEdge.NullCommMethodPair}" Text="未设置"/>
       <TextBlock IsVisible="{Binding !TopoEdge.NullCommMethodPair}">
         <TextBlock.Text>
-          <MultiBinding StringFormat=" {0}.{1} {2} {3}.{4}">
+          <MultiBinding StringFormat=" {0}.{1}{2}{3}.{4}({5})">
             <Binding Path="TopoEdge.CommMethodPair.ProcessA.RefName.Content"/>
             <Binding Path="TopoEdge.CommMethodPair.CommMethodA.Name"/>
             <Binding Path="TopoEdge.CommMethodPair.Symbol"/>
             <Binding Path="TopoEdge.CommMethodPair.ProcessB.RefName.Content"/>
             <Binding Path="TopoEdge.CommMethodPair.CommMethodB.Name"/>
+            <Binding Path="TopoEdge.Cost"/>
           </MultiBinding>
         </TextBlock.Text>
       </TextBlock>

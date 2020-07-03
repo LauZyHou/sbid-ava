@@ -399,7 +399,7 @@ namespace sbid._VM
                         {
                             xmlWriter.WriteStartElement("CTL");
                             xmlWriter.WriteAttributeString("process_ref", ctl.Process.Id.ToString());
-                            xmlWriter.WriteAttributeString("state_ref", ctl.State.Id.ToString());
+                            // xmlWriter.WriteAttributeString("state_ref", ctl.State.Id.ToString());
                             xmlWriter.WriteAttributeString("formula", ctl.Formula.Content);
                             xmlWriter.WriteEndElement();
                         }
@@ -561,12 +561,13 @@ namespace sbid._VM
                                 xmlWriter.WriteStartElement("StateTrans_VM");
                                 xmlWriter.WriteAttributeString("x", stateTrans_VM.X.ToString());
                                 xmlWriter.WriteAttributeString("y", stateTrans_VM.Y.ToString());
-                                foreach (Formula formula in stateTrans_VM.StateTrans.Guards) // Guard条件列表
-                                {
-                                    xmlWriter.WriteStartElement("Guard");
-                                    xmlWriter.WriteAttributeString("content", formula.Content);
-                                    xmlWriter.WriteEndElement();
-                                }
+                                xmlWriter.WriteAttributeString("guard", stateTrans_VM.StateTrans.Guard.Content);
+                                //foreach (Formula formula in stateTrans_VM.StateTrans.Guards) // Guard条件列表
+                                //{
+                                //    xmlWriter.WriteStartElement("Guard");
+                                //    xmlWriter.WriteAttributeString("content", formula.Content);
+                                //    xmlWriter.WriteEndElement();
+                                //}
                                 foreach (Formula formula in stateTrans_VM.StateTrans.Actions) // Action动作列表
                                 {
                                     xmlWriter.WriteStartElement("Action");
@@ -1204,16 +1205,17 @@ namespace sbid._VM
                                     x = double.Parse(satElement.GetAttribute("x"));
                                     y = double.Parse(satElement.GetAttribute("y"));
                                     StateTrans_VM stateTrans_VM = new StateTrans_VM(x, y);
+                                    stateTrans_VM.StateTrans.Guard.Content = satElement.GetAttribute("guard");
                                     int connector_index = 0; // 当前搜索到第几个锚点，从0计数
                                     foreach (XmlNode childNode in satNode.ChildNodes)
                                     {
                                         XmlElement childElement = (XmlElement)childNode;
                                         switch (childNode.Name)
                                         {
-                                            case "Guard":
-                                                Formula guard = new Formula(childElement.GetAttribute("content"));
-                                                stateTrans_VM.StateTrans.Guards.Add(guard);
-                                                break;
+                                            //case "Guard":
+                                            //    Formula guard = new Formula(childElement.GetAttribute("content"));
+                                            //    stateTrans_VM.StateTrans.Guards.Add(guard);
+                                            //    break;
                                             case "Action":
                                                 Formula action = new Formula(childElement.GetAttribute("content"));
                                                 stateTrans_VM.StateTrans.Actions.Add(action);
@@ -1614,6 +1616,7 @@ namespace sbid._VM
                                             cleanProject();
                                             return false;
                                         }
+                                        /*
                                         int stateRef = int.Parse(safetyElement.GetAttribute("state_ref"));
                                         State state = null;
                                         foreach (ViewModelBase vmb in processVMDict[processRef].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
@@ -1633,8 +1636,9 @@ namespace sbid._VM
                                             cleanProject();
                                             return false;
                                         }
+                                        */
                                         string content = safetyElement.GetAttribute("formula");
-                                        safetyProperty.CTLs.Add(new CTL(processVMDict[processRef].Process, state, new Formula(content)));
+                                        safetyProperty.CTLs.Add(new CTL(processVMDict[processRef].Process, new Formula(content)));
                                         break;
                                     case "Invariant":
                                         content = safetyElement.GetAttribute("content");
@@ -2642,7 +2646,7 @@ namespace sbid._VM
                         {
                             xmlWriter.WriteStartElement("CTL");
                             xmlWriter.WriteAttributeString("process", ctl.Process.RefName.Content);
-                            xmlWriter.WriteAttributeString("state", ctl.State.Name);
+                            // xmlWriter.WriteAttributeString("state", ctl.State.Name);
                             xmlWriter.WriteAttributeString("formula", ctl.Formula.Content);
                             xmlWriter.WriteEndElement();
                         }
@@ -2834,12 +2838,13 @@ namespace sbid._VM
                                         // 转移上的Guard和Action
                                         if (stateTrans_VM != null)
                                         {
-                                            foreach (Formula formula in stateTrans_VM.StateTrans.Guards) // Guard条件列表
-                                            {
-                                                xmlWriter.WriteStartElement("Guard");
-                                                xmlWriter.WriteAttributeString("content", formula.Content);
-                                                xmlWriter.WriteEndElement();
-                                            }
+                                            xmlWriter.WriteAttributeString("guard", stateTrans_VM.StateTrans.Guard.Content);
+                                            //foreach (Formula formula in stateTrans_VM.StateTrans.Guards) // Guard条件列表
+                                            //{
+                                            //    xmlWriter.WriteStartElement("Guard");
+                                            //    xmlWriter.WriteAttributeString("content", formula.Content);
+                                            //    xmlWriter.WriteEndElement();
+                                            //}
                                             foreach (Formula formula in stateTrans_VM.StateTrans.Actions) // Action动作列表
                                             {
                                                 xmlWriter.WriteStartElement("Action");

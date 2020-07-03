@@ -57,6 +57,6 @@ namespace sbid._M
             return "(" + processA.RefName + "." + commMethodA.Name + ")->(" + processB.RefName + "." + commMethodB.Name + ")";
         }
 
-        public string Symbol { get => privacy ? "-->" : "|->"; }
+        public string Symbol { get => privacy ? "-私有->" : "-公共->"; }
     }
 }

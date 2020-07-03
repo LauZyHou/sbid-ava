@@ -26,9 +26,9 @@
         <DataTemplate>
           <TextBlock>
             <TextBlock.Text>
-              <MultiBinding StringFormat=" {0}.{1}:{2}">
+              <MultiBinding StringFormat=" {0}:{1}">
                 <Binding Path="Process.RefName.Content"/>
-                <Binding Path="State.Name"/>
+                <!--<Binding Path="State.Name"/>-->
                 <Binding Path="Formula.Content"/>
               </MultiBinding>
             </TextBlock.Text>
