@@ -1441,6 +1441,7 @@ namespace sbid._VM
                                         process.Methods.Add(method);
                                         break;
                                     case "CommMethod":
+                                        id = int.Parse(pcElement.GetAttribute("id"));
                                         name = pcElement.GetAttribute("name");
                                         InOut inOutSuffix = (InOut)System.Enum.Parse(typeof(InOut), pcElement.GetAttribute("inOutSuffix"));
                                         CommWay commWay = (CommWay)System.Enum.Parse(typeof(CommWay), pcElement.GetAttribute("commWay"));
@@ -1463,6 +1464,7 @@ namespace sbid._VM
                                             parameters.Add(param);
                                         }
                                         CommMethod commMethod = new CommMethod(name, parameters, inOutSuffix, commWay);
+                                        commMethod.Id = id;
                                         process.CommMethods.Add(commMethod);
                                         break;
                                 }
@@ -1862,7 +1864,7 @@ namespace sbid._VM
                         case "CommChannel_VM":
                             CommChannel_VM commChannel_VM = (CommChannel_VM)userControl_VM;
                             CommChannel commChannel = commChannel_VM.CommChannel;
-                            foreach (XmlNode cmpChildNode in node.ChildNodes) // <CommMethodPair process_ref="1" commMethod_ref="1" />
+                            foreach (XmlNode cmpChildNode in node.ChildNodes) // <CommMethodPair id="1" processA_ref="2" commMethodA_ref="4" processB_ref="3" commMethodB_ref="8" privacy="False" />
                             {
                                 XmlElement cmpElement = (XmlElement)cmpChildNode;
                                 if (cmpElement.Name != "CommMethodPair")
@@ -1912,7 +1914,7 @@ namespace sbid._VM
                                     processVMDict[processBRef].Process,
                                     findCommMethodB,
                                     privacy);
-                                int id = int.Parse(element.GetAttribute("id"));
+                                int id = int.Parse(cmpElement.GetAttribute("id"));
                                 commMethodPair.Id = id;
                                 commMethodPairDict.Add(id, commMethodPair);
                                 commChannel.CommMethodPairs.Add(commMethodPair);
