@@ -14,6 +14,7 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
+            this.get_control_reference();
         }
 
         private void InitializeComponent()
@@ -342,6 +343,84 @@ namespace sbid._V
             ((SecurityProperty_EW_VM)DataContext).SecurityProperty.Integrities.Remove(integrity);
             ResourceManager.mainWindowVM.Tips = "删除了Integrity：" + integrity;
         }
+
+        public void Add_Availability()
+        {
+            if (process_Ava_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定进程模板！";
+                return;
+            }
+            Process process = (Process)process_Ava_ListBox.SelectedItem;
+
+            if (state_Ava_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定状态！";
+                return;
+            }
+            State state = (State)state_Ava_ListBox.SelectedItem;
+
+            Availability availability = new Availability(process, state);
+            VM.SecurityProperty.Availabilities.Add(availability);
+            ResourceManager.mainWindowVM.Tips = "添加了可用性：" + availability;
+        }
+
+        public void Update_Availability()
+        {
+            if (process_Ava_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定进程模板！";
+                return;
+            }
+            Process process = (Process)process_Ava_ListBox.SelectedItem;
+
+            if (state_Ava_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定状态！";
+                return;
+            }
+            State state = (State)state_Ava_ListBox.SelectedItem;
+
+            if (availability_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定可用性！";
+                return;
+            }
+            Availability availability = (Availability)availability_ListBox.SelectedItem;
+
+            availability.Process = process;
+            availability.State = state;
+            ResourceManager.mainWindowVM.Tips = "修改了可用性：" + availability;
+        }
+
+        public void Delete_Availability()
+        {
+            if (availability_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定可用性！";
+                return;
+            }
+            Availability availability = (Availability)availability_ListBox.SelectedItem;
+
+            VM.SecurityProperty.Availabilities.Remove(availability);
+            ResourceManager.mainWindowVM.Tips = "删除了可用性：" + availability;
+        }
+
+        #endregion
+
+        #region 资源引用
+
+        private ListBox process_Ava_ListBox, state_Ava_ListBox, availability_ListBox;
+
+        // 获取控件引用
+        private void get_control_reference()
+        {
+            process_Ava_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(process_Ava_ListBox));
+            state_Ava_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(state_Ava_ListBox));
+            availability_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(availability_ListBox));
+        }
+
+        public SecurityProperty_EW_VM VM { get => ((SecurityProperty_EW_VM)DataContext); }
 
         #endregion
     }

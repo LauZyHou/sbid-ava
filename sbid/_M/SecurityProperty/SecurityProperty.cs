@@ -13,6 +13,7 @@ namespace sbid._M
         private ObservableCollection<Confidential> confidentials = new ObservableCollection<Confidential>();
         private ObservableCollection<Authenticity> authenticities = new ObservableCollection<Authenticity>();
         private ObservableCollection<Integrity> integrities = new ObservableCollection<Integrity>();
+        private ObservableCollection<Availability> availabilities = new ObservableCollection<Availability>();
         private int id;
 
         public SecurityProperty()
@@ -26,6 +27,7 @@ namespace sbid._M
         public ObservableCollection<Confidential> Confidentials { get => confidentials; set => confidentials = value; }
         public ObservableCollection<Authenticity> Authenticities { get => authenticities; set => authenticities = value; }
         public ObservableCollection<Integrity> Integrities { get => integrities; set => integrities = value; }
+        public ObservableCollection<Availability> Availabilities { get => availabilities; }
         public int Id
         {
             get => id;

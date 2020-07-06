@@ -155,15 +155,16 @@ namespace sbid._VM
             Protocol_VM protocolVM = ResourceManager.mainWindowVM.SelectedItem;
             // 其下的类图面板VM
             ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
-            // 遍历查找SecurityProperty和SafetyProperty
+            // 遍历查找SecurityProperty
             foreach (ViewModelBase item in classDiagram_P_VM.UserControlVMs)
             {
                 if (item is SecurityProperty_VM)
                 {
                     SecurityProperty_VM vm = (SecurityProperty_VM)item;
-                    // 这里维护要删除的两种性质列表，遍历结束后再统一删除
+                    // 这里维护要删除的三种性质列表，遍历结束后再统一删除
                     List<Authenticity> authenticities = new List<Authenticity>();
                     List<Integrity> integrities = new List<Integrity>();
+                    List<Availability> availabilities = new List<Availability>();
                     // 遍历查找
                     foreach (Authenticity authenticity in vm.SecurityProperty.Authenticities)
                     {
@@ -181,6 +182,13 @@ namespace sbid._VM
                             integrities.Add(integrity);
                         }
                     }
+                    foreach (Availability availability in vm.SecurityProperty.Availabilities)
+                    {
+                        if (availability.State == state)
+                        {
+                            availabilities.Add(availability);
+                        }
+                    }
                     // 统一删除
                     foreach (Authenticity authenticity in authenticities)
                     {
@@ -192,21 +200,9 @@ namespace sbid._VM
                         vm.SecurityProperty.Integrities.Remove(integrity);
                         deleted = true;
                     }
-                }
-                else if (item is SafetyProperty_VM)
-                {
-                    SafetyProperty_VM vm = (SafetyProperty_VM)item;
-                    List<Availability> availabilities = new List<Availability>();
-                    foreach (Availability availability in vm.SafetyProperty.Availabilities)
-                    {
-                        if (availability.State == state)
-                        {
-                            availabilities.Add(availability);
-                        }
-                    }
                     foreach (Availability availability in availabilities)
                     {
-                        vm.SafetyProperty.Availabilities.Remove(availability);
+                        vm.SecurityProperty.Availabilities.Remove(availability);
                         deleted = true;
                     }
                 }

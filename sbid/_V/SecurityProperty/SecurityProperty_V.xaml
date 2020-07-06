@@ -13,7 +13,7 @@
     <SolidColorBrush x:Key="MyColor" Color="#80E0E6" />
   </UserControl.Resources>
 
-  <Grid RowDefinitions="20,1,15,*,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
+  <Grid RowDefinitions="20,1,15,*,1,15,*,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <TextBlock Text=" 信息安全性质 " FontWeight="Bold"/>
       <TextBlock Text="{Binding SecurityProperty.Name}"/>
@@ -73,6 +73,23 @@
                 <Binding Path="ProcessB.RefName.Content"/>
                 <Binding Path="StateB.Name"/>
                 <Binding Path="AttributeB.Identifier"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBlock Grid.Row="10" Background="Black"/>
+    <TextBlock Grid.Row="11" Text=" 可用性:"/>
+    <ListBox Grid.Row="12" Items="{Binding SecurityProperty.Availabilities}" IsEnabled="False"
+             Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0}.{1}">
+                <Binding Path="Process.RefName.Content"/>
+                <Binding Path="State.Name"/>
               </MultiBinding>
             </TextBlock.Text>
           </TextBlock>

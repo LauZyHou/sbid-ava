@@ -409,13 +409,6 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("content", formula.Content);
                             xmlWriter.WriteEndElement();
                         }
-                        foreach (Availability availability in vm.SafetyProperty.Availabilities)
-                        {
-                            xmlWriter.WriteStartElement("Availability");
-                            xmlWriter.WriteAttributeString("process_ref", availability.Process.Id.ToString());
-                            xmlWriter.WriteAttributeString("state_ref", availability.State.Id.ToString());
-                            xmlWriter.WriteEndElement();
-                        }
                         xmlWriter.WriteEndElement();
                     }
                     else if (item is SecurityProperty_VM)
@@ -455,6 +448,13 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("processB_ref", integrity.ProcessB.Id.ToString());
                             xmlWriter.WriteAttributeString("stateB_ref", integrity.StateB.Id.ToString());
                             xmlWriter.WriteAttributeString("attributeB_ref", integrity.AttributeB.Id.ToString()); // 注意
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Availability availability in vm.SecurityProperty.Availabilities)
+                        {
+                            xmlWriter.WriteStartElement("Availability");
+                            xmlWriter.WriteAttributeString("process_ref", availability.Process.Id.ToString());
+                            xmlWriter.WriteAttributeString("state_ref", availability.State.Id.ToString());
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();
@@ -1651,32 +1651,6 @@ namespace sbid._VM
                                         content = safetyElement.GetAttribute("content");
                                         safetyProperty.Invariants.Add(new Formula(content));
                                         break;
-                                    case "Availability":
-                                        processRef = int.Parse(safetyElement.GetAttribute("process_ref"));
-                                        if (!processVMDict.ContainsKey(processRef))
-                                        {
-                                            Tips = "[解析SafetyProperty_VM时出错]无法找到Availability引用的进程模板！";
-                                            cleanProject();
-                                            return false;
-                                        }
-                                        int stateRef = int.Parse(safetyElement.GetAttribute("state_ref"));
-                                        State state = null;
-                                        foreach (State s in processVMDict[processRef].Process.States)
-                                        {
-                                            if (s.Id == stateRef)
-                                            {
-                                                state = s;
-                                                break;
-                                            }
-                                        }
-                                        if (state == null)
-                                        {
-                                            Tips = "[解析SafetyProperty_VM时出错]无法找到Availability引用的状态机下的State！";
-                                            cleanProject();
-                                            return false;
-                                        }
-                                        safetyProperty.Availabilities.Add(new Availability(processVMDict[processRef].Process, state));
-                                        break;
                                 }
                             }
                             break;
@@ -1878,6 +1852,32 @@ namespace sbid._VM
                                             processVMDict[processB_ref].Process,
                                             stateB, attributeB);
                                         securityProperty.Integrities.Add(integrity);
+                                        break;
+                                    case "Availability":
+                                        processRef = int.Parse(securityElement.GetAttribute("process_ref"));
+                                        if (!processVMDict.ContainsKey(processRef))
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Availability引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int stateRef = int.Parse(securityElement.GetAttribute("state_ref"));
+                                        State state = null;
+                                        foreach (State s in processVMDict[processRef].Process.States)
+                                        {
+                                            if (s.Id == stateRef)
+                                            {
+                                                state = s;
+                                                break;
+                                            }
+                                        }
+                                        if (state == null)
+                                        {
+                                            Tips = "[解析SecurityProperty_VM时出错]无法找到Availability引用的状态机下的State！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        securityProperty.Availabilities.Add(new Availability(processVMDict[processRef].Process, state));
                                         break;
                                 }
                             }
@@ -2710,6 +2710,13 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("processB", integrity.ProcessB.RefName.Content);
                             xmlWriter.WriteAttributeString("stateB", integrity.StateB.Name);
                             xmlWriter.WriteAttributeString("attributeB", integrity.AttributeB.Identifier);
+                            xmlWriter.WriteEndElement();
+                        }
+                        foreach (Availability availability in vm.SecurityProperty.Availabilities)
+                        {
+                            xmlWriter.WriteStartElement("Availability");
+                            xmlWriter.WriteAttributeString("process", availability.Process.RefName.Content);
+                            xmlWriter.WriteAttributeString("state", availability.State.Name);
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();

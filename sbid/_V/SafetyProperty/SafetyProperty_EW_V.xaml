@@ -100,49 +100,5 @@
         </ListBox>
       </Grid>
     </TabItem>
-    <TabItem Header="可用性">
-      <Grid ColumnDefinitions="50*,50*">
-        <StackPanel Grid.Column="0" Margin="10,0">
-          <TextBlock Text="进程模板：" FontSize="17"/>
-          <ListBox Name="process_Ava_ListBox" Height="82" Items="{Binding Processes}"
-                   SelectedItem="{Binding #availability_ListBox.SelectedItem.Process, Mode=OneWay}">
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding RefName.Content}"/>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-          <TextBlock Text="状态机上的状态：" FontSize="17"/>
-          <ListBox Name="state_Ava_ListBox" Height="82" Items="{Binding #process_Ava_ListBox.SelectedItem.States}"
-                   SelectedItem="{Binding #availability_ListBox.SelectedItem.State, Mode=OneWay}">
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding Name}"/>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Command="{Binding $parent[Window].Add_Availability}">添加</Button>
-            <Button Command="{Binding $parent[Window].Update_Availability}">修改</Button>
-            <Button Command="{Binding $parent[Window].Delete_Availability}">删除</Button>
-          </StackPanel>
-        </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0" Name="availability_ListBox"
-                 Items="{Binding SafetyProperty.Availabilities}">
-          <ListBox.ItemTemplate>
-            <DataTemplate>
-              <TextBlock>
-                <TextBlock.Text>
-                  <MultiBinding StringFormat=" {0}.{1}">
-                    <Binding Path="Process.RefName.Content"/>
-                    <Binding Path="State.Name"/>
-                  </MultiBinding>
-                </TextBlock.Text>
-              </TextBlock>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
-      </Grid>
-    </TabItem>
   </TabControl>
 </Window>
