@@ -409,6 +409,13 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("content", formula.Content);
                             xmlWriter.WriteEndElement();
                         }
+                        foreach (Availability availability in vm.SafetyProperty.Availabilities)
+                        {
+                            xmlWriter.WriteStartElement("Availability");
+                            xmlWriter.WriteAttributeString("process_ref", availability.Process.Id.ToString());
+                            xmlWriter.WriteAttributeString("state_ref", availability.State.Id.ToString());
+                            xmlWriter.WriteEndElement();
+                        }
                         xmlWriter.WriteEndElement();
                     }
                     else if (item is SecurityProperty_VM)
@@ -1644,6 +1651,32 @@ namespace sbid._VM
                                         content = safetyElement.GetAttribute("content");
                                         safetyProperty.Invariants.Add(new Formula(content));
                                         break;
+                                    case "Availability":
+                                        processRef = int.Parse(safetyElement.GetAttribute("process_ref"));
+                                        if (!processVMDict.ContainsKey(processRef))
+                                        {
+                                            Tips = "[解析SafetyProperty_VM时出错]无法找到Availability引用的进程模板！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        int stateRef = int.Parse(safetyElement.GetAttribute("state_ref"));
+                                        State state = null;
+                                        foreach (State s in processVMDict[processRef].Process.States)
+                                        {
+                                            if (s.Id == stateRef)
+                                            {
+                                                state = s;
+                                                break;
+                                            }
+                                        }
+                                        if (state == null)
+                                        {
+                                            Tips = "[解析SafetyProperty_VM时出错]无法找到Availability引用的状态机下的State！";
+                                            cleanProject();
+                                            return false;
+                                        }
+                                        safetyProperty.Availabilities.Add(new Availability(processVMDict[processRef].Process, state));
+                                        break;
                                 }
                             }
                             break;
@@ -1695,26 +1728,18 @@ namespace sbid._VM
                                         int stateB_ref = int.Parse(securityElement.GetAttribute("stateB_ref"));
                                         State stateA = null;
                                         State stateB = null;
-                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
+                                        foreach (State s in processVMDict[processA_ref].Process.States)
                                         {
-                                            if (vmb is State_VM)
+                                            if (s.Id == stateA_ref)
                                             {
-                                                State_VM state_VM = (State_VM)vmb;
-                                                if (state_VM.State.Id == stateA_ref)
-                                                {
-                                                    stateA = state_VM.State;
-                                                }
+                                                stateA = s;
                                             }
                                         }
-                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
+                                        foreach (State s in processVMDict[processB_ref].Process.States)
                                         {
-                                            if (vmb is State_VM)
+                                            if (s.Id == stateB_ref)
                                             {
-                                                State_VM state_VM = (State_VM)vmb;
-                                                if (state_VM.State.Id == stateB_ref)
-                                                {
-                                                    stateB = state_VM.State;
-                                                }
+                                                stateB = s;
                                             }
                                         }
                                         if (stateA == null || stateB == null)
@@ -1801,26 +1826,18 @@ namespace sbid._VM
                                         stateB_ref = int.Parse(securityElement.GetAttribute("stateB_ref"));
                                         stateA = null;
                                         stateB = null;
-                                        foreach (ViewModelBase vmb in processVMDict[processA_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
+                                        foreach (State s in processVMDict[processA_ref].Process.States)
                                         {
-                                            if (vmb is State_VM)
+                                            if (s.Id == stateA_ref)
                                             {
-                                                State_VM state_VM = (State_VM)vmb;
-                                                if (state_VM.State.Id == stateA_ref)
-                                                {
-                                                    stateA = state_VM.State;
-                                                }
+                                                stateA = s;
                                             }
                                         }
-                                        foreach (ViewModelBase vmb in processVMDict[processB_ref].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
+                                        foreach (State s in processVMDict[processB_ref].Process.States)
                                         {
-                                            if (vmb is State_VM)
+                                            if (s.Id == stateB_ref)
                                             {
-                                                State_VM state_VM = (State_VM)vmb;
-                                                if (state_VM.State.Id == stateB_ref)
-                                                {
-                                                    stateB = state_VM.State;
-                                                }
+                                                stateB = s;
                                             }
                                         }
                                         if (stateA == null || stateB == null)

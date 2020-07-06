@@ -39,6 +39,7 @@ namespace sbid._VM
                     Process_VM processVM = (Process_VM)item;
 
                     // 计算Process对应状态机的所有状态,写入Process附加的States字段中
+                    /*
                     processVM.Process.States = new ObservableCollection<State>();
                     foreach (ViewModelBase vm in processVM.ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
                     {
@@ -48,6 +49,7 @@ namespace sbid._VM
                             processVM.Process.States.Add(stateVM.State);
                         }
                     }
+                    */
 
                     ((SecurityProperty_EW_VM)securityPropertyEWV.DataContext).Processes.Add(processVM.Process);
                 }

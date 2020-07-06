@@ -121,10 +121,8 @@ namespace sbid._VM
                 */
             }
 
-            // 判断并删除SecurityProperty中依赖此State的认证性/完整性
-            // 因为它们能使用的只有顶层状态，所以这里判断一下是顶层面板，这样可以优化速度
-            if (stateMachine_P_VM.State == State.TopState)
-                JudgeAndDeleteAuthenticityAndIntegrity();
+            // 判断并删除依赖此State的认证性/完整性/可用性
+            JudgeAndDeleteProperty();
 
             // 删除对应状态机面板，以及递归删除其中的状态对应的状态机面板
             foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
@@ -147,17 +145,17 @@ namespace sbid._VM
         #region 私有
 
         /// <summary>
-        /// 判断并删除SecurityProperty中依赖此State的认证性/完整性
+        /// 判断并删除SecurityProperty中依赖此State的认证性/完整性，SafetyProperty中依赖此State的Availability
         /// </summary>
         /// <returns>是否做了删除操作</returns>
-        public bool JudgeAndDeleteAuthenticityAndIntegrity()
+        public bool JudgeAndDeleteProperty()
         {
             bool deleted = false;
             // 当前协议面板VM
             Protocol_VM protocolVM = ResourceManager.mainWindowVM.SelectedItem;
             // 其下的类图面板VM
             ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)protocolVM.PanelVMs[0].SidePanelVMs[0];
-            // 遍历查找SecurityProperty
+            // 遍历查找SecurityProperty和SafetyProperty
             foreach (ViewModelBase item in classDiagram_P_VM.UserControlVMs)
             {
                 if (item is SecurityProperty_VM)
@@ -195,6 +193,23 @@ namespace sbid._VM
                         deleted = true;
                     }
                 }
+                else if (item is SafetyProperty_VM)
+                {
+                    SafetyProperty_VM vm = (SafetyProperty_VM)item;
+                    List<Availability> availabilities = new List<Availability>();
+                    foreach (Availability availability in vm.SafetyProperty.Availabilities)
+                    {
+                        if (availability.State == state)
+                        {
+                            availabilities.Add(availability);
+                        }
+                    }
+                    foreach (Availability availability in availabilities)
+                    {
+                        vm.SafetyProperty.Availabilities.Remove(availability);
+                        deleted = true;
+                    }
+                }
             }
             return deleted;
         }
@@ -213,7 +228,10 @@ namespace sbid._VM
             {
                 if (viewModel is State_VM)
                 {
-                    states.Add(((State_VM)viewModel).state);
+                    State_VM state_VM = ((State_VM)viewModel);
+                    states.Add(state_VM.State);
+                    // 这里也要检查并删除性质
+                    state_VM.JudgeAndDeleteProperty();
                 }
             }
             // 然后检查当前"进程模板-状态机"侧栏面板下的所有状态机面板，对记录下的状态对应的面板级联删除

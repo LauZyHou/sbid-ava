@@ -5,23 +5,24 @@ using System.Text;
 
 namespace sbid._M
 {
-    public class Confidential : ReactiveObject
+    // 可用性
+    public class Availability : ReactiveObject
     {
         private Process process;
-        private Attribute attribute;
+        private State state;
 
-        public Confidential(Process process, Attribute attribute)
+        public Availability(Process process, State state)
         {
             this.process = process;
-            this.attribute = attribute;
+            this.state = state;
         }
 
         public Process Process { get => process; set => this.RaiseAndSetIfChanged(ref process, value); }
-        public Attribute Attribute { get => attribute; set => this.RaiseAndSetIfChanged(ref attribute, value); }
+        public State State { get => state; set => this.RaiseAndSetIfChanged(ref state, value); }
 
         public override string ToString()
         {
-            return process.RefName.Content + "." + attribute.Identifier;
+            return process.RefName.Content + "." + state.Name;
         }
     }
 }

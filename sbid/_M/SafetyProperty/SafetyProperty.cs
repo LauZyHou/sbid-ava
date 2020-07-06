@@ -12,6 +12,7 @@ namespace sbid._M
         private string name;
         private ObservableCollection<CTL> cTLs = new ObservableCollection<CTL>();
         private ObservableCollection<Formula> invariants = new ObservableCollection<Formula>();
+        private ObservableCollection<Availability> availabilities = new ObservableCollection<Availability>();
         private int id;
 
         public SafetyProperty()
@@ -24,6 +25,7 @@ namespace sbid._M
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
         public ObservableCollection<CTL> CTLs { get => cTLs; set => cTLs = value; }
         public ObservableCollection<Formula> Invariants { get => invariants; set => invariants = value; }
+        public ObservableCollection<Availability> Availabilities { get => availabilities; }
         public int Id
         {
             get => id;
