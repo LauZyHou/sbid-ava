@@ -19,6 +19,8 @@ namespace sbid._VM
             Y = y;
             ConnectorVMs = new ObservableCollection<Connector_VM>();
 
+            #region 矩形参数
+            /*
             // 左上角锚点中心位置
             double baseX = X + 6;
             double baseY = Y + 8;
@@ -44,6 +46,42 @@ namespace sbid._VM
             ConnectorVMs.Add(new Connector_VM(baseX + 2 * deltaX, baseY + 3 * deltaY));
             ConnectorVMs.Add(new Connector_VM(baseX + 3 * deltaX, baseY + 3 * deltaY));
             ConnectorVMs.Add(new Connector_VM(baseX + 4 * deltaX, baseY + 3 * deltaY));
+            */
+            #endregion
+
+            #region 椭圆参数
+
+            // 椭圆中心位置
+            double centerX = X + 65;
+            double centerY = Y + 40;
+
+            // 根据V中Grid的布局，计算横纵的一个单位的长度
+            int colSum = 1 + 2 + 6 + 6 + 8 + 6 + 6 + 2 + 1;
+            int rowSum = 1 + 1 + 2 + 3 + 3 + 3 + 2 + 1 + 1;
+            double c = 120 / colSum + 0.2; // 用Width除以份数得到列最小单位
+            double r = 70 / rowSum + 0.5; // 用Height除以份数得到行最小单位
+            // 这里加的是一个误差修复值
+
+            // 14个锚点,从椭圆中心位置进行位置推算，这里顺序和V中一样
+            ConnectorVMs.Add(new Connector_VM(centerX - (4 + 6 + 3) * c, centerY - (1.5 + 3 + 1) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX - (4 + 3) * c, centerY - (1.5 + 3 + 2 + 0.5) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX, centerY - (1.5 + 3 + 2 + 1 + 1) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX + (4 + 3) * c, centerY - (1.5 + 3 + 2 + 0.5) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX + (4 + 6 + 3) * c, centerY - (1.5 + 3 + 1) * r));
+
+            ConnectorVMs.Add(new Connector_VM(centerX - (4 + 6 + 6 + 1) * c, centerY - (1.5 + 1.5) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX + (4 + 6 + 6 + 1) * c, centerY - (1.5 + 1.5) * r));
+
+            ConnectorVMs.Add(new Connector_VM(centerX - (4 + 6 + 6 + 1) * c, centerY + (1.5 + 1.5) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX + (4 + 6 + 6 + 1) * c, centerY + (1.5 + 1.5) * r));
+
+            ConnectorVMs.Add(new Connector_VM(centerX - (4 + 6 + 3) * c, centerY + (1.5 + 3 + 1) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX - (4 + 3) * c, centerY + (1.5 + 3 + 2 + 0.5) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX, centerY + (1.5 + 3 + 2 + 1 + 1) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX + (4 + 3) * c, centerY + (1.5 + 3 + 2 + 0.5) * r));
+            ConnectorVMs.Add(new Connector_VM(centerX + (4 + 6 + 3) * c, centerY + (1.5 + 3 + 1) * r));
+
+            #endregion
 
             // 将这些锚点所在的NetworkItem_VM回引写入
             foreach (Connector_VM connector_VM in ConnectorVMs)
