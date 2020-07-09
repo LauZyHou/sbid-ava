@@ -9,6 +9,7 @@ namespace sbid._M
     {
         public static int _id = 0;
         private string name;
+        private bool haveRefine = false;
         private int id;
 
         public State()
@@ -19,6 +20,7 @@ namespace sbid._M
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
+        public bool HaveRefine { get => haveRefine; set => this.RaiseAndSetIfChanged(ref haveRefine, value); }
         public int Id
         {
             get => id;
@@ -31,6 +33,6 @@ namespace sbid._M
         }
 
         // 用于最顶层的状态机面板维护的状态
-        public static readonly State TopState = new State() { Name="顶层" };
+        public static readonly State TopState = new State() { Name = "顶层" };
     }
 }

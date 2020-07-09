@@ -112,6 +112,8 @@ namespace sbid._VM
         // 对状态进行精化(跳转到精化的状态机面板)
         public void RefineStateVM()
         {
+            // 标记当前状态"被精化"，以显示蓝色标识
+            state.HaveRefine = true;
             // 获取当前"进程模板-状态机"侧栏面板
             ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
             // 判断是否已经精化过，如果精化过直接跳到面板

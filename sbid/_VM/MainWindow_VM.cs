@@ -18,7 +18,7 @@ namespace sbid._VM
         private string tips = "在此处获取操作提示";
         private ObservableCollection<Protocol_VM> protocolVMs = new ObservableCollection<Protocol_VM>();
         private Protocol_VM selectedItem;
-        private bool connectorVisible = true;
+        private bool connectorVisible = false;
 
         #endregion
 
@@ -1109,6 +1109,9 @@ namespace sbid._VM
                             cleanProject();
                             return false;
                         }
+                        // 标记该状态是"被精化"的状态，仅用于在图形上显示蓝色标记
+                        stateDict[state_ref].HaveRefine = true;
+                        // 创建以此状态为精化状态的状态机面板
                         StateMachine_P_VM stateMachine_P_VM = new StateMachine_P_VM(stateDict[state_ref]);
                         // 解析具体的状态机面板
                         Dictionary<int, Connector_VM> connectorDict = new Dictionary<int, Connector_VM>(); // 记录id->锚点的字典,用于连线

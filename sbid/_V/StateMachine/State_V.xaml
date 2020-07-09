@@ -9,6 +9,7 @@
     <!--<Rectangle Stroke="Black" Fill="White" StrokeThickness="2"/>-->
     <Ellipse Stroke="Black" Fill="White" StrokeThickness="2"/>
     <Grid Margin="-1,-3" ColumnDefinitions="1*,2*,6*,6*,8*,6*,6*,2*,1*" RowDefinitions="1*,1*,2*,3*,3*,3*,2*,1*,1*">
+      <Ellipse Stroke="Blue" StrokeThickness="2" Width="7" Height="7" Grid.Row="3" Grid.Column="6" IsVisible="{Binding State.HaveRefine}"/>
       <TextBlock Text="{Binding State.Name}" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="5" Grid.RowSpan="5"
                  FontSize="12" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
       <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="2" Grid.Column="2" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
