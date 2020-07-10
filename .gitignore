@@ -231,3 +231,5 @@ _Pvt_Extensions
 *.binlog
 
 .DS_Store
+*.ttf
+*.TTF

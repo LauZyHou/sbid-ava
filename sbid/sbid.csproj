@@ -12,6 +12,7 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Remove="Assets\Fonts\HGDH_CNKI-Regular.TTF" />
     <AvaloniaResource Remove="Assets\SecurityPolicy.json" />
     <AvaloniaResource Remove="_V\AttackTree\Attack_EW_V.xaml" />
     <AvaloniaResource Remove="_V\AttackTree\Attack_V.xaml" />
@@ -71,6 +72,7 @@
     <AvaloniaResource Remove="_V\Topology\TwoWayTopoLink_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
+    <None Remove="Assets\Fonts\STZHONGS2.ttf" />
     <None Remove="Assets\SecurityPolicy.json" />
     <None Remove="_V\AttackTree\Attack_EW_V.xaml" />
     <None Remove="_V\AttackTree\Attack_V.xaml" />
@@ -430,5 +432,18 @@
     <EmbeddedResource Include="_V\Topology\TopoEdge_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\STZHONGS2.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\Fonts\HGDH_CNKI-Regular.TTF">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\HGDH_CNKI.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
