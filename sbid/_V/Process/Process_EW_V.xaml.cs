@@ -212,6 +212,11 @@ namespace sbid._V
             // todo 方法判重
 
             Method method_template = (Method)innerMethod_ListBox.SelectedItem;
+            if (!checkMethodName(method_template.Name))
+            {
+                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                return;
+            }
             // 形参表要拷贝一份,以防止在自定Method中对其修改时影响到内置Method
             ObservableCollection<Attribute> paramerters = new ObservableCollection<Attribute>();
             foreach (Attribute attribute in method_template.Parameters)
@@ -257,6 +262,11 @@ namespace sbid._V
             }
 
             Method method = (Method)method_NZ_ListBox.SelectedItem;
+            if (method_template.Name != method.Name && !checkMethodName(method_template.Name))
+            {
+                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                return;
+            }
             method.ReturnType = method_template.ReturnType;
             method.Name = method_template.Name;
             method.Parameters = paramerters;
@@ -377,6 +387,12 @@ namespace sbid._V
                 return;
             }
 
+            if (!checkMethodName(methodName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                return;
+            }
+
             ObservableCollection<Attribute> parameters = ((Process_EW_VM)DataContext).ZDParams;
             if (parameters.Count == 0)
             {
@@ -429,6 +445,11 @@ namespace sbid._V
             }
 
             Method method = (Method)method_ZD_ListBox.SelectedItem;
+            if (methodName_TextBox.Text != method.Name && !checkMethodName(methodName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                return;
+            }
             method.ReturnType = (Type)returnType_ComboBox.SelectedItem;
             method.Name = methodName_TextBox.Text;
             method.Parameters = parameters;
@@ -559,6 +580,12 @@ namespace sbid._V
                 return;
             }
 
+            if (!checkMethodName(commMethodName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                return;
+            }
+
             ObservableCollection<Attribute> parameters = ((Process_EW_VM)DataContext).CommParams;
             if (parameters.Count == 0)
             {
@@ -618,6 +645,11 @@ namespace sbid._V
             }
 
             CommMethod commMethod = (CommMethod)commMethod_ListBox.SelectedItem;
+            if (commMethodName_TextBox.Text != commMethod.Name && !checkMethodName(commMethodName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                return;
+            }
             commMethod.Name = commMethodName_TextBox.Text;
             commMethod.Parameters = parameters;
             commMethod.InOutSuffix = (InOut)inout_ComboBox.SelectedItem;
@@ -757,6 +789,30 @@ namespace sbid._V
             }
             return deleted;
         }
+
+        /// <summary>
+        /// 检查方法/通信方法的重名
+        /// </summary>
+        private bool checkMethodName(string name)
+        {
+            foreach (Method method in VM.Process.Methods)
+            {
+                if (method.Name == name)
+                    return false;
+            }
+            foreach (CommMethod commMethod in VM.Process.CommMethods)
+            {
+                if (commMethod.Name == name)
+                    return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region 资源引用
+
+        public Process_EW_VM VM { get => (Process_EW_VM)DataContext; }
 
         #endregion
     }
