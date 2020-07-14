@@ -17,6 +17,11 @@
       <Setter Property="Height" Value="30"/>
       <Setter Property="Margin" Value="7,5"/>
     </Style>
+    <Style Selector="Button.meta">
+      <Setter Property="Width" Value="40"/>
+      <Setter Property="Height" Value="25"/>
+      <Setter Property="Margin" Value="10,0"/>
+    </Style>
     <Style Selector="TabItem > StackPanel">
       <Setter Property="Margin" Value="7"/>
     </Style>
@@ -39,7 +44,8 @@
       <StackPanel>
         <StackPanel Orientation="Horizontal">
           <TextBlock Text="进程模板名：" FontSize="18"/>
-          <TextBox Text="{Binding Process.RefName.Content, Mode=TwoWay}"/>
+          <TextBox Name="refName_TextBox" Text="{Binding Process.RefName.Content, Mode=OneWay}"/>
+          <Button Classes="meta" Command="{Binding $parent[Window].Update_RefName}">确认</Button>
         </StackPanel>
       </StackPanel>
     </TabItem>

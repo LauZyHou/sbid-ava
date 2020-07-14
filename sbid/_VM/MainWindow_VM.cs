@@ -163,6 +163,116 @@ namespace sbid._VM
             else
                 Tips = "[ERROR]XML生成失败！";
         }
+
+        // 按下【规范检查】按钮
+        public void SpecCheck()
+        {
+            if (selectedItem == null)
+                return;
+
+            string checkedFailTip = "规范检查不通过，";
+
+            ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)selectedItem.PanelVMs[0].SidePanelVMs[0];
+
+            #region 检查UserType
+
+            // 1. 检查不同UserType和Type之间不能重名
+            HashSet<string> typeNameSet = new HashSet<string>();
+            foreach (ViewModelBase vmb in classDiagram_P_VM.UserControlVMs)
+            {
+                if (vmb is UserType_VM)
+                {
+                    Type type = ((UserType_VM)vmb).Type;
+                    if (typeNameSet.Contains(type.Name))
+                    {
+                        Tips = checkedFailTip + "发现重复的数据类型名称：" + type.Name;
+                        return;
+                    }
+                    typeNameSet.Add(type.Name);
+
+                    // 2. 检查UserType内的属性不重名、方法不重名
+                    if (type is UserType)
+                    {
+                        UserType userType = (UserType)type;
+                        HashSet<string> attrIdtSet = new HashSet<string>();
+                        foreach (Attribute attribute in userType.Attributes)
+                        {
+                            if (attrIdtSet.Contains(attribute.Identifier))
+                            {
+                                Tips = checkedFailTip + "在复合类型" + userType.Name + "中发现重复的属性名称：" + attribute.Identifier;
+                                return;
+                            }
+                            attrIdtSet.Add(attribute.Identifier);
+                        }
+                        HashSet<string> methodNameSet = new HashSet<string>();
+                        foreach (Method method in userType.Methods)
+                        {
+                            if (methodNameSet.Contains(method.Name))
+                            {
+                                Tips = checkedFailTip + "在复合类型" + userType.Name + "中发现重复的方法名称：" + method.Name;
+                                return;
+                            }
+                            methodNameSet.Add(method.Name);
+                        }
+                    }
+                }
+            }
+
+            Tips = "规范检查通过";
+
+            #endregion
+
+            #region 检查Process
+
+            // 1. 检查不同Process之间不能重名
+            HashSet<string> processNameSet = new HashSet<string>();
+            foreach (ViewModelBase vmb in classDiagram_P_VM.UserControlVMs)
+            {
+                if (vmb is Process_VM)
+                {
+                    Process process = ((Process_VM)vmb).Process;
+                    if (processNameSet.Contains(process.RefName.Content))
+                    {
+                        Tips = checkedFailTip + "发现重复的进程模板名称：" + process.RefName.Content;
+                        return;
+                    }
+                    processNameSet.Add(process.RefName.Content);
+                    // 2. 检查Process内的属性不重名、方法/通信方法不重名
+                    HashSet<string> attrIdtSet = new HashSet<string>();
+                    foreach (Attribute attribute in process.Attributes)
+                    {
+                        if (attrIdtSet.Contains(attribute.Identifier))
+                        {
+                            Tips = checkedFailTip + "在进程模板" + process.RefName.Content + "中发现重复的属性名称：" + attribute.Identifier;
+                            return;
+                        }
+                        attrIdtSet.Add(attribute.Identifier);
+                    }
+                    HashSet<string> methodNameSet = new HashSet<string>();
+                    foreach (Method method in process.Methods)
+                    {
+                        if (methodNameSet.Contains(method.Name))
+                        {
+                            Tips = checkedFailTip + "在进程模板" + process.RefName.Content + "中发现重复的方法名称：" + method.Name;
+                            return;
+                        }
+                        methodNameSet.Add(method.Name);
+                    }
+                    foreach (CommMethod commMethod in process.CommMethods)
+                    {
+                        if (methodNameSet.Contains(commMethod.Name))
+                        {
+                            Tips = checkedFailTip + "在进程模板" + process.RefName.Content + "中发现重复的通信方法名称：" + commMethod.Name;
+                            return;
+                        }
+                        methodNameSet.Add(commMethod.Name);
+                    }
+                }
+            }
+
+            #endregion
+        }
+
         #endregion
 
         #region 私有

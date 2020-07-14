@@ -21,6 +21,8 @@ namespace sbid._V
             init_binding();
             // 初始化.cs文件中的事件处理
             init_event();
+            // 获取控件资源引用
+            get_control_reference();
         }
 
         private void InitializeComponent()
@@ -82,6 +84,25 @@ namespace sbid._V
         #endregion
 
         #region 按钮命令
+
+        public void Update_RefName()
+        {
+            if (refName_TextBox.Text == null || refName_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要给出进程模板名称！";
+                return;
+            }
+
+            // 检查进程模板名称独一无二
+            if(!ResourceManager.checkProcessName(VM.Process, refName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "不可用的名称，与其它进程模板重名！";
+                return;
+            }
+
+            VM.Process.RefName.Content = refName_TextBox.Text;
+            ResourceManager.mainWindowVM.Tips = "为进程模板设置了名称：" + VM.Process.RefName.Content;
+        }
 
         public void Add_Attribute()
         {
@@ -811,6 +832,14 @@ namespace sbid._V
         #endregion
 
         #region 资源引用
+
+        private TextBox refName_TextBox;
+
+        // 获取控件引用
+        private void get_control_reference()
+        {
+            refName_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(refName_TextBox));
+        }
 
         public Process_EW_VM VM { get => (Process_EW_VM)DataContext; }
 
