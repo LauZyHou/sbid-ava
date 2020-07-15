@@ -19,6 +19,7 @@ namespace sbid._V
 #endif
             init_binding();
             init_event();
+            get_control_reference();
         }
 
         private void InitializeComponent()
@@ -52,6 +53,25 @@ namespace sbid._V
         #endregion
 
         #region 按钮命令
+
+        public void Update_Name()
+        {
+            if (name_TextBox.Text == null || name_TextBox.Text.Length == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要给出类型名称！";
+                return;
+            }
+
+            // 检查类型名称独一无二
+            if (!ResourceManager.checkUserTypeName(VM.UserType, name_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "不可用的名称，与其它类型重名！";
+                return;
+            }
+
+            VM.UserType.Name = name_TextBox.Text;
+            ResourceManager.mainWindowVM.Tips = "为自定义类型设置了名称：" + VM.UserType.Name;
+        }
 
         // 写入继承关系
         public void Set_Parent()
@@ -384,6 +404,20 @@ namespace sbid._V
             }
             return false;
         }
+
+        #endregion
+
+        #region 资源引用
+
+        private TextBox name_TextBox;
+
+        // 获取控件引用
+        private void get_control_reference()
+        {
+            name_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(name_TextBox));
+        }
+
+        public UserType_EW_VM VM { get => (UserType_EW_VM)DataContext; }
 
         #endregion
     }

@@ -15,6 +15,14 @@ namespace sbid._VM
         public UserType_VM()
         {
             this.type = new UserType();
+            // 为了防止新创建的UserType和用户已有的重名
+            // 这里检查一下重名，如果重名了就在后面补一个随机的字母
+            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            System.Random random = new System.Random();
+            while (!ResourceManager.checkUserTypeName((UserType)type, type.Name))
+            {
+                type.Name += letters[random.Next(52)];
+            }
         }
 
         // 传入Type参数的构造,当为内置的Type创建UserType_VM时使用此构造
