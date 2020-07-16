@@ -108,14 +108,18 @@ namespace sbid._V
                 return;
             }
 
-            // todo 变量名判重
+            if (!Checker.checkAttributeIdentifier(VM.UserType.Attributes, null, attrId_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                return;
+            }
 
             Attribute attribute = new Attribute(
                 (sbid._M.Type)type_ListBox.SelectedItem,
                 attrId_TextBox.Text,
                 (bool)attr_IsArray_CheckBox.IsChecked
             );
-            ((UserType_EW_VM)DataContext).UserType.Attributes.Add(attribute);
+            VM.UserType.Attributes.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "为自定义类型[" + ((UserType_EW_VM)DataContext).UserType.Name + "]添加了成员变量：" + attribute;
         }
 
@@ -148,9 +152,14 @@ namespace sbid._V
                 return;
             }
 
-            // todo 变量名判重
-
             Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
+
+            if (!Checker.checkAttributeIdentifier(VM.UserType.Attributes, attribute, attrId_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                return;
+            }
+
             attribute.Type = (sbid._M.Type)type_ListBox.SelectedItem;
             attribute.Identifier = attrId_TextBox.Text;
             attribute.IsArray = (bool)attr_IsArray_CheckBox.IsChecked;
@@ -268,12 +277,13 @@ namespace sbid._V
                 return;
             }
 
+            if (!Checker.checkMethodName(VM.UserType.Methods, null, methodName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "给出的方法名称和已有方法重名！";
+                return;
+            }
+
             ObservableCollection<Attribute> parameters = ((UserType_EW_VM)DataContext).Params;
-            //if (parameters.Count == 0)
-            //{
-            //    ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
-            //    return;
-            //}
 
             Method method = new Method(
                 (Type)returnType_ComboBox.SelectedItem,
@@ -312,12 +322,13 @@ namespace sbid._V
                 return;
             }
 
-            ObservableCollection<Attribute> parameters = ((UserType_EW_VM)DataContext).Params;
-            if (parameters.Count == 0)
+            if (!Checker.checkMethodName(VM.UserType.Methods, (Method)method_ListBox.SelectedItem, methodName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "至少要在形参表中添加一个参数！";
+                ResourceManager.mainWindowVM.Tips = "给出的方法名称和已有方法重名！";
                 return;
             }
+
+            ObservableCollection<Attribute> parameters = ((UserType_EW_VM)DataContext).Params;
 
             Method method = new Method(
                 (Type)returnType_ComboBox.SelectedItem,
@@ -325,7 +336,7 @@ namespace sbid._V
                 parameters,
                 Crypto.None
             );
-            ((UserType_EW_VM)DataContext).UserType.Methods[method_ListBox.SelectedIndex] = method;
+            VM.UserType.Methods[method_ListBox.SelectedIndex] = method;
             ResourceManager.mainWindowVM.Tips = "更新了自定Method：" + method;
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method

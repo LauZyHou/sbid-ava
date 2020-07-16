@@ -117,7 +117,11 @@ namespace sbid._V
                 return;
             }
 
-            // todo 变量名判重
+            if (!Checker.checkAttributeIdentifier(VM.Process.Attributes, null, attrId_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                return;
+            }
 
             Attribute attribute = new Attribute(
                 (sbid._M.Type)type_ListBox.SelectedItem,
@@ -160,6 +164,12 @@ namespace sbid._V
 
             // 获取要修改的Attribute对象
             Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
+
+            if (!Checker.checkAttributeIdentifier(VM.Process.Attributes, attribute, attrId_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                return;
+            }
 
             // 判断并删除Authenticity
             bool del_auth = attribute.Type is UserType ? JudgeAndDeleteAuthenticity((UserType)attribute.Type, (Type)type_ListBox.SelectedItem) : false;
@@ -220,14 +230,14 @@ namespace sbid._V
                 return;
             }
 
-            // todo 方法判重
-
             Method method_template = (Method)innerMethod_ListBox.SelectedItem;
-            if (!checkMethodName(method_template.Name))
+
+            if(!Checker.checkMethodName(VM.Process.Methods, null, method_template.Name) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, method_template.Name))
             {
                 ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
                 return;
             }
+
             // 形参表要拷贝一份,以防止在自定Method中对其修改时影响到内置Method
             ObservableCollection<Attribute> paramerters = new ObservableCollection<Attribute>();
             foreach (Attribute attribute in method_template.Parameters)
@@ -263,8 +273,6 @@ namespace sbid._V
                 return;
             }
 
-            // todo 方法判重
-
             Method method_template = (Method)innerMethod_ListBox.SelectedItem;
             ObservableCollection<Attribute> paramerters = new ObservableCollection<Attribute>();
             foreach (Attribute attribute in method_template.Parameters)
@@ -273,11 +281,13 @@ namespace sbid._V
             }
 
             Method method = (Method)method_NZ_ListBox.SelectedItem;
-            if (method_template.Name != method.Name && !checkMethodName(method_template.Name))
+
+            if (!Checker.checkMethodName(VM.Process.Methods, method, method_template.Name) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, method_template.Name))
             {
                 ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
                 return;
             }
+
             method.ReturnType = method_template.ReturnType;
             method.Name = method_template.Name;
             method.Parameters = paramerters;
@@ -321,6 +331,13 @@ namespace sbid._V
                 return;
             }
 
+            ListBox param_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_ZD_ListBox");
+            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_ZD_ListBox.Items, null, paramName_ZD_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "参数名重复！";
+                return;
+            }
+
             Attribute attribute = new Attribute(
                 (Type)paramType_ZD_ComboBox.SelectedItem,
                 paramName_ZD_TextBox.Text,
@@ -360,6 +377,13 @@ namespace sbid._V
             }
 
             Attribute attribute = (Attribute)param_ZD_ListBox.SelectedItem;
+
+            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_ZD_ListBox.Items, attribute, paramName_ZD_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "参数名重复！";
+                return;
+            }
+
             attribute.Type = (Type)paramType_ZD_ComboBox.SelectedItem;
             attribute.Identifier = paramName_ZD_TextBox.Text;
             attribute.IsArray = (bool)param_ZD_IsArray_CheckBox.IsChecked;
@@ -396,7 +420,7 @@ namespace sbid._V
                 return;
             }
 
-            if (!checkMethodName(methodName_TextBox.Text))
+            if (!Checker.checkMethodName(VM.Process.Methods, null, methodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, methodName_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
                 return;
@@ -454,11 +478,13 @@ namespace sbid._V
             }
 
             Method method = (Method)method_ZD_ListBox.SelectedItem;
-            if (methodName_TextBox.Text != method.Name && !checkMethodName(methodName_TextBox.Text))
+
+            if (!Checker.checkMethodName(VM.Process.Methods, method, methodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, methodName_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
                 return;
             }
+
             method.ReturnType = (Type)returnType_ComboBox.SelectedItem;
             method.Name = methodName_TextBox.Text;
             method.Parameters = parameters;
@@ -505,6 +531,13 @@ namespace sbid._V
                 return;
             }
 
+            ListBox param_Comm_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_Comm_ListBox");
+            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_Comm_ListBox.Items, null, paramName_Comm_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "参数名重复！";
+                return;
+            }
+
             Attribute attribute = new Attribute(
                 (Type)paramType_Comm_ComboBox.SelectedItem,
                 paramName_Comm_TextBox.Text,
@@ -544,6 +577,13 @@ namespace sbid._V
             }
 
             Attribute attribute = (Attribute)param_Comm_ListBox.SelectedItem;
+
+            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_Comm_ListBox.Items, attribute, paramName_Comm_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "参数名重复！";
+                return;
+            }
+
             attribute.Type = (Type)paramType_Comm_ComboBox.SelectedItem;
             attribute.Identifier = paramName_Comm_TextBox.Text;
             attribute.IsArray = (bool)param_Comm_IsArray_CheckBox.IsChecked;
@@ -587,7 +627,7 @@ namespace sbid._V
                 return;
             }
 
-            if (!checkMethodName(commMethodName_TextBox.Text))
+            if (!Checker.checkMethodName(VM.Process.Methods, null, commMethodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, commMethodName_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
                 return;
@@ -652,11 +692,13 @@ namespace sbid._V
             }
 
             CommMethod commMethod = (CommMethod)commMethod_ListBox.SelectedItem;
-            if (commMethodName_TextBox.Text != commMethod.Name && !checkMethodName(commMethodName_TextBox.Text))
+
+            if (!Checker.checkMethodName(VM.Process.Methods, null, commMethodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, commMethod, commMethodName_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
                 return;
             }
+
             commMethod.Name = commMethodName_TextBox.Text;
             commMethod.Parameters = parameters;
             commMethod.InOutSuffix = (InOut)inout_ComboBox.SelectedItem;
@@ -795,24 +837,6 @@ namespace sbid._V
                 }
             }
             return deleted;
-        }
-
-        /// <summary>
-        /// 检查方法/通信方法的重名
-        /// </summary>
-        private bool checkMethodName(string name)
-        {
-            foreach (Method method in VM.Process.Methods)
-            {
-                if (method.Name == name)
-                    return false;
-            }
-            foreach (CommMethod commMethod in VM.Process.CommMethods)
-            {
-                if (commMethod.Name == name)
-                    return false;
-            }
-            return true;
         }
 
         #endregion
