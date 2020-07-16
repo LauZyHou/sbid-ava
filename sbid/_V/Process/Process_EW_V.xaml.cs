@@ -53,16 +53,6 @@ namespace sbid._V
             ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
             commWay_ComboBox.Items = System.Enum.GetValues(typeof(CommWay));
             commWay_ComboBox.SelectedItem = CommWay.NativeEthernetFrame;
-
-            // 绑定是否是数组的True/False
-            List<bool> boolList = new List<bool>();
-            boolList.Add(true);
-            boolList.Add(false);
-            ComboBox attr_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_IsArray_ComboBox");
-            ComboBox param_ZD_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_ZD_IsArray_ComboBox");
-            ComboBox param_Comm_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_Comm_IsArray_ComboBox");
-            attr_IsArray_ComboBox.Items = param_ZD_IsArray_ComboBox.Items = param_Comm_IsArray_ComboBox.Items = boolList;
-            attr_IsArray_ComboBox.SelectedItem = param_ZD_IsArray_ComboBox.SelectedItem = param_Comm_IsArray_ComboBox.SelectedItem = false;
         }
 
         // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
@@ -120,8 +110,8 @@ namespace sbid._V
                 return;
             }
 
-            ComboBox attr_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_IsArray_ComboBox");
-            if (attr_IsArray_ComboBox.SelectedItem == null)
+            CheckBox attr_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(attr_IsArray_CheckBox));
+            if (attr_IsArray_CheckBox.IsChecked == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
                 return;
@@ -132,7 +122,7 @@ namespace sbid._V
             Attribute attribute = new Attribute(
                 (sbid._M.Type)type_ListBox.SelectedItem,
                 attrId_TextBox.Text,
-                (bool)attr_IsArray_ComboBox.SelectedItem
+                (bool)attr_IsArray_CheckBox.IsChecked
             );
             ((Process_EW_VM)DataContext).Process.Attributes.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]添加了成员变量：" + attribute;
@@ -161,8 +151,8 @@ namespace sbid._V
                 return;
             }
 
-            ComboBox attr_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "attr_IsArray_ComboBox");
-            if (attr_IsArray_ComboBox.SelectedItem == null)
+            CheckBox attr_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(attr_IsArray_CheckBox));
+            if (attr_IsArray_CheckBox.IsChecked == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
                 return;
@@ -179,7 +169,7 @@ namespace sbid._V
             // 在该Attribute对象上原地修改
             attribute.Type = (Type)type_ListBox.SelectedItem;
             attribute.Identifier = attrId_TextBox.Text;
-            attribute.IsArray = (bool)attr_IsArray_ComboBox.SelectedItem;
+            attribute.IsArray = (bool)attr_IsArray_CheckBox.IsChecked;
             ResourceManager.mainWindowVM.Tips = "为进程模板[" + ((Process_EW_VM)DataContext).Process.RefName + "]更新了成员变量：" + attribute + "。";
 
             // Tips补充
@@ -325,8 +315,7 @@ namespace sbid._V
                 return;
             }
 
-            ComboBox param_ZD_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_ZD_IsArray_ComboBox");
-            if (param_ZD_IsArray_ComboBox.SelectedItem == null)
+            if (param_ZD_IsArray_CheckBox.IsChecked == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
                 return;
@@ -335,7 +324,7 @@ namespace sbid._V
             Attribute attribute = new Attribute(
                 (Type)paramType_ZD_ComboBox.SelectedItem,
                 paramName_ZD_TextBox.Text,
-                (bool)param_ZD_IsArray_ComboBox.SelectedItem
+                (bool)param_ZD_IsArray_CheckBox.IsChecked
             );
             ((Process_EW_VM)DataContext).ZDParams.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中添加参数：" + attribute;
@@ -364,8 +353,7 @@ namespace sbid._V
                 return;
             }
 
-            ComboBox param_ZD_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_ZD_IsArray_ComboBox");
-            if (param_ZD_IsArray_ComboBox.SelectedItem == null)
+            if (param_ZD_IsArray_CheckBox.IsChecked == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
                 return;
@@ -374,7 +362,7 @@ namespace sbid._V
             Attribute attribute = (Attribute)param_ZD_ListBox.SelectedItem;
             attribute.Type = (Type)paramType_ZD_ComboBox.SelectedItem;
             attribute.Identifier = paramName_ZD_TextBox.Text;
-            attribute.IsArray = (bool)param_ZD_IsArray_ComboBox.SelectedItem;
+            attribute.IsArray = (bool)param_ZD_IsArray_CheckBox.IsChecked;
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中更新参数：" + attribute;
         }
 
@@ -511,8 +499,7 @@ namespace sbid._V
                 return;
             }
 
-            ComboBox param_Comm_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_Comm_IsArray_ComboBox");
-            if (param_Comm_IsArray_ComboBox.SelectedItem == null)
+            if (param_Comm_IsArray_CheckBox.IsChecked == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
                 return;
@@ -521,7 +508,7 @@ namespace sbid._V
             Attribute attribute = new Attribute(
                 (Type)paramType_Comm_ComboBox.SelectedItem,
                 paramName_Comm_TextBox.Text,
-                (bool)param_Comm_IsArray_ComboBox.SelectedItem
+                (bool)param_Comm_IsArray_CheckBox.IsChecked
             );
             ((Process_EW_VM)DataContext).CommParams.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中添加参数：" + attribute;
@@ -550,8 +537,7 @@ namespace sbid._V
                 return;
             }
 
-            ComboBox param_Comm_IsArray_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "param_Comm_IsArray_ComboBox");
-            if (param_Comm_IsArray_ComboBox.SelectedItem == null)
+            if (param_Comm_IsArray_CheckBox.IsChecked == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定是否是数组！";
                 return;
@@ -560,7 +546,7 @@ namespace sbid._V
             Attribute attribute = (Attribute)param_Comm_ListBox.SelectedItem;
             attribute.Type = (Type)paramType_Comm_ComboBox.SelectedItem;
             attribute.Identifier = paramName_Comm_TextBox.Text;
-            attribute.IsArray = (bool)param_Comm_IsArray_ComboBox.SelectedItem;
+            attribute.IsArray = (bool)param_Comm_IsArray_CheckBox.IsChecked;
             ResourceManager.mainWindowVM.Tips = "已在临时参数列表中更新参数：" + attribute;
         }
 
@@ -834,11 +820,16 @@ namespace sbid._V
         #region 资源引用
 
         private TextBox refName_TextBox;
+        private CheckBox attr_IsArray_CheckBox, param_ZD_IsArray_CheckBox, param_Comm_IsArray_CheckBox;
 
         // 获取控件引用
         private void get_control_reference()
         {
             refName_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(refName_TextBox));
+            attr_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(attr_IsArray_CheckBox));
+            param_ZD_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(param_ZD_IsArray_CheckBox));
+            param_Comm_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(param_Comm_IsArray_CheckBox));
+            attr_IsArray_CheckBox.IsChecked = param_ZD_IsArray_CheckBox.IsChecked = param_Comm_IsArray_CheckBox.IsChecked = false;
         }
 
         public Process_EW_VM VM { get => (Process_EW_VM)DataContext; }

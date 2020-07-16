@@ -63,8 +63,10 @@
           </ListBox>
           <TextBlock Text="变量名称：" FontSize="17"/>
           <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
-          <TextBlock Text="是否是数组：" FontSize="17"/>
-          <ComboBox Name="attr_IsArray_ComboBox" SelectedItem="{Binding #attr_ListBox.SelectedItem.IsArray, Mode=OneWay}"/>
+          <StackPanel Orientation="Horizontal" Margin="0,5">
+            <TextBlock Text="是否是数组：" FontSize="17"/>
+            <CheckBox Name="attr_IsArray_CheckBox" IsChecked="{Binding #attr_ListBox.SelectedItem.IsArray, Mode=OneWay}" IsThreeState="False"/>
+          </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
             <Button Command="{Binding $parent[Window].Update_Attribute}">修改</Button>
@@ -74,14 +76,6 @@
         <ListBox Grid.Column="1" Margin="10,0" Name="attr_ListBox" Items="{Binding Process.Attributes}">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <!--<TextBlock>
-                <TextBlock.Text>
-                  <MultiBinding StringFormat=" {0} {1};">
-                    <Binding Path="Type.Name"/>
-                    <Binding Path="Identifier"/>
-                  </MultiBinding>
-                </TextBlock.Text>
-              </TextBlock>-->
               <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Type.Name}"/>
                 <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
@@ -152,8 +146,10 @@
               </ComboBox>
               <TextBlock Text="参数名称：" FontSize="17"/>
               <TextBox Name="paramName_ZD_TextBox" Text="{Binding #param_ZD_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
-              <TextBlock Text="是否是数组：" FontSize="17"/>
-              <ComboBox Name="param_ZD_IsArray_ComboBox" SelectedItem="{Binding #param_ZD_ListBox.SelectedItem.IsArray, Mode=OneWay}"/>
+              <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="是否是数组：" FontSize="17"/>
+                <CheckBox Name="param_ZD_IsArray_CheckBox" IsChecked="{Binding #param_ZD_ListBox.SelectedItem.IsArray, Mode=OneWay}" IsThreeState="False"/>
+              </StackPanel>
               <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Command="{Binding $parent[Window].Add_ZDParam}">添加</Button>
                 <Button Command="{Binding $parent[Window].Update_ZDParam}">修改</Button>
@@ -229,8 +225,10 @@
               </ComboBox>
               <TextBlock Text="参数名称：" FontSize="17"/>
               <TextBox Name="paramName_Comm_TextBox" Text="{Binding #param_Comm_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
-              <TextBlock Text="是否是数组：" FontSize="17"/>
-              <ComboBox Name="param_Comm_IsArray_ComboBox" SelectedItem="{Binding #param_Comm_ListBox.SelectedItem.IsArray, Mode=OneWay}"/>
+              <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="是否是数组：" FontSize="17"/>
+                <CheckBox Name="param_Comm_IsArray_CheckBox" IsChecked="{Binding #param_Comm_ListBox.SelectedItem.IsArray, Mode=OneWay}" IsThreeState="False"/>
+              </StackPanel>
               <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Command="{Binding $parent[Window].Add_CommParam}">添加</Button>
                 <Button Command="{Binding $parent[Window].Update_CommParam}">修改</Button>

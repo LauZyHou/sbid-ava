@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="352" Width="500" WindowStartupLocation="CenterOwner"
+        Height="352" Width="540" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.UserType_EW_V"
         Title="编辑自定义类型">
 
@@ -76,8 +76,10 @@
           </ListBox>
           <TextBlock Text="变量名称：" FontSize="17"/>
           <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
-          <TextBlock Text="是否是数组：" FontSize="17"/>
-          <ComboBox Name="attr_isArray_ComboBox" SelectedItem="{Binding #attr_ListBox.SelectedItem.IsArray, Mode=OneWay}"/>
+          <StackPanel Orientation="Horizontal" Margin="0,5">
+            <TextBlock Text="是否是数组：" FontSize="17"/>
+            <CheckBox Name="attr_IsArray_CheckBox" IsChecked="{Binding #attr_ListBox.SelectedItem.IsArray, Mode=OneWay}" IsThreeState="False"/>
+          </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Classes="ButtonGroup">
             <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
             <Button Command="{Binding $parent[Window].Update_Attribute}">修改</Button>
@@ -133,8 +135,10 @@
               </ComboBox>
               <TextBlock Text="参数名称：" FontSize="17"/>
               <TextBox Name="paramName_TextBox" Text="{Binding #param_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
-              <TextBlock Text="是否是数组：" FontSize="17"/>
-              <ComboBox Name="method_param_isArray_ComboBox" SelectedItem="{Binding #param_ListBox.SelectedItem.IsArray, Mode=OneWay}"/>
+              <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="是否是数组：" FontSize="17"/>
+                <CheckBox Name="method_param_IsArray_CheckBox" IsChecked="{Binding #param_ListBox.SelectedItem.IsArray, Mode=OneWay}" IsThreeState="False"/>
+              </StackPanel>
               <StackPanel Classes="SmallButtonGroup" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Command="{Binding $parent[Window].Add_Param}">添加</Button>
                 <Button Command="{Binding $parent[Window].Update_Param}">修改</Button>
