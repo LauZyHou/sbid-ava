@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using sbid._VM;
+using System;
 using System.Collections.Generic;
 
 namespace sbid._V
@@ -45,7 +46,16 @@ namespace sbid._V
         public void CreateStateVM()
         {
             State_VM stateVM = new State_VM(mousePos.X, mousePos.Y);
-            StateMachinePVM.UserControlVMs.Add(stateVM);
+
+            // 确保状态没有重名，检查不通过时就在后面随机跟字母
+            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            Random random = new Random();
+            while (!Checker.checkStateName(VM, null, stateVM.State.Name))
+            {
+                stateVM.State.Name += letters[random.Next(52)];
+            }
+            VM.UserControlVMs.Add(stateVM);
+
             ResourceManager.mainWindowVM.Tips = "创建了新的状态结点：" + stateVM.State.Name;
         }
 
@@ -53,7 +63,7 @@ namespace sbid._V
         public void CreateFinalStateVM()
         {
             FinalState_VM finalStateVM = new FinalState_VM(mousePos.X, mousePos.Y);
-            StateMachinePVM.UserControlVMs.Add(finalStateVM);
+            VM.UserControlVMs.Add(finalStateVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的终止状态结点";
         }
 
@@ -61,7 +71,7 @@ namespace sbid._V
         public void CreateStateTransVM()
         {
             StateTrans_VM stateTrans_VM = new StateTrans_VM(mousePos.X, mousePos.Y);
-            StateMachinePVM.UserControlVMs.Add(stateTrans_VM);
+            VM.UserControlVMs.Add(stateTrans_VM);
             ResourceManager.mainWindowVM.Tips = "创建了新的状态转移结点";
         }
 
@@ -69,7 +79,7 @@ namespace sbid._V
         public void CreateControlPointVMTest()
         {
             ControlPoint_VM controlPoint_VM = new ControlPoint_VM(mousePos.X, mousePos.Y);
-            StateMachinePVM.UserControlVMs.Add(controlPoint_VM);
+            VM.UserControlVMs.Add(controlPoint_VM);
             ResourceManager.mainWindowVM.Tips = "*创建了新的控制点";
         }
 
@@ -89,6 +99,6 @@ namespace sbid._V
         #endregion
 
         // 对应的VM
-        public StateMachine_P_VM StateMachinePVM { get => (StateMachine_P_VM)DataContext; }
+        public StateMachine_P_VM VM { get => (StateMachine_P_VM)DataContext; }
     }
 }

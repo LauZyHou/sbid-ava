@@ -1,4 +1,5 @@
 ﻿using sbid._M;
+using sbid._VM;
 using System.Collections.ObjectModel;
 
 namespace sbid
@@ -47,8 +48,7 @@ namespace sbid
 
         #endregion
 
-
-        #region Proces
+        #region 进程模板
 
         /// <summary>
         /// 检查所有CommMethod的Name和给定的不重复
@@ -71,5 +71,31 @@ namespace sbid
 
         #endregion
 
+        #region 状态机
+
+        /// <summary>
+        /// 检查给出的状态名不会和状态机面板中的状态重名
+        /// </summary>
+        /// <param name="stateMachine_P_VM">要检查的状态机面板</param>
+        /// <param name="ignoreState">检查时忽略的状态</param>
+        /// <param name="name">给出的状态名</param>
+        /// <returns>检查是否通过</returns>
+        public static bool checkStateName(StateMachine_P_VM stateMachine_P_VM, State ignoreState, string name)
+        {
+            foreach (ViewModelBase vmb in stateMachine_P_VM.UserControlVMs)
+            {
+                if(vmb is State_VM)
+                {
+                    State_VM state_VM = (State_VM)vmb;
+                    if (state_VM.State == ignoreState)
+                        continue;
+                    if (state_VM.State.Name == name)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        #endregion
     }
 }
