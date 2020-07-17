@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace sbid._V
@@ -108,9 +107,9 @@ namespace sbid._V
                 return;
             }
 
-            if (!Checker.checkAttributeIdentifier(VM.UserType.Attributes, null, attrId_TextBox.Text))
+            if (Checker.UserType_Contain_PropName(VM.UserType, attrId_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -154,9 +153,9 @@ namespace sbid._V
 
             Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
 
-            if (!Checker.checkAttributeIdentifier(VM.UserType.Attributes, attribute, attrId_TextBox.Text))
+            if (attrId_TextBox.Text != attribute.Identifier && Checker.UserType_Contain_PropName(VM.UserType, attrId_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -202,6 +201,13 @@ namespace sbid._V
                 return;
             }
 
+            ListBox param_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_ListBox");
+            if (Checker.ParamList_Contain_Name(param_ListBox.Items, paramName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "重复的参数名！";
+                return;
+            }
+
             Attribute attribute = new Attribute(
                 (Type)paramType_ComboBox.SelectedItem,
                 paramName_TextBox.Text,
@@ -241,6 +247,13 @@ namespace sbid._V
             }
 
             Attribute attribute = (Attribute)param_ListBox.SelectedItem;
+
+            if (attribute.Identifier != paramName_TextBox.Text && Checker.ParamList_Contain_Name(param_ListBox.Items, paramName_TextBox.Text))
+            {
+                ResourceManager.mainWindowVM.Tips = "重复的参数名！";
+                return;
+            }
+
             attribute.Type = (Type)paramType_ComboBox.SelectedItem;
             attribute.Identifier = paramName_TextBox.Text;
             attribute.IsArray = (bool)method_param_IsArray_CheckBox.IsChecked;
@@ -277,9 +290,9 @@ namespace sbid._V
                 return;
             }
 
-            if (!Checker.checkMethodName(VM.UserType.Methods, null, methodName_TextBox.Text))
+            if (Checker.UserType_Contain_PropName(VM.UserType, methodName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "给出的方法名称和已有方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -322,9 +335,9 @@ namespace sbid._V
                 return;
             }
 
-            if (!Checker.checkMethodName(VM.UserType.Methods, (Method)method_ListBox.SelectedItem, methodName_TextBox.Text))
+            if (((Method)method_ListBox.SelectedItem).Name != methodName_TextBox.Text && Checker.UserType_Contain_PropName(VM.UserType, methodName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "给出的方法名称和已有方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 

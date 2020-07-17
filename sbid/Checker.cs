@@ -1,5 +1,6 @@
 ﻿using sbid._M;
 using sbid._VM;
+using System.Collections;
 using System.Collections.ObjectModel;
 
 namespace sbid
@@ -8,65 +9,15 @@ namespace sbid
     {
         #region 通用
 
-        /// <summary>
-        /// 检查所有Attribute的Identifier和给定的不重复
-        /// </summary>
-        /// <param name="attributes">要检查的Attribute列表</param>
-        /// <param name="ignoreAttr">检查时忽略的Attribute</param>
-        /// <param name="identifier">要检查的Identifier</param>
-        /// <returns>检查是否通过</returns>
-        public static bool checkAttributeIdentifier(ObservableCollection<Attribute> attributes, Attribute ignoreAttr, string identifier)
+        // 检查参数表中是否包含给定的名字
+        public static bool ParamList_Contain_Name(IEnumerable paramlist, string name)
         {
-            foreach (Attribute attr in attributes)
+            foreach (Attribute attribute in paramlist)
             {
-                if (attr == ignoreAttr)
-                    continue;
-                if (attr.Identifier == identifier)
-                    return false;
+                if (attribute.Identifier == name)
+                    return true;
             }
-            return true;
-        }
-
-        /// <summary>
-        /// 检查所有Method的Name和给定的不重复
-        /// </summary>
-        /// <param name="methods">要检查的Method列表</param>
-        /// <param name="ignoreMethod">检查时忽略的Method</param>
-        /// <param name="name">要检查的Name</param>
-        /// <returns>检查是否通过</returns>
-        public static bool checkMethodName(ObservableCollection<Method> methods, Method ignoreMethod, string name)
-        {
-            foreach (Method method in methods)
-            {
-                if (method == ignoreMethod)
-                    continue;
-                if (method.Name == name)
-                    return false;
-            }
-            return true;
-        }
-
-        #endregion
-
-        #region 进程模板
-
-        /// <summary>
-        /// 检查所有CommMethod的Name和给定的不重复
-        /// </summary>
-        /// <param name="commMethods">要检查的CommMethod列表</param>
-        /// <param name="ignoreCommMethod">检查时忽略的CommMethod</param>
-        /// <param name="name">要检查的Name</param>
-        /// <returns>检查是否通过</returns>
-        public static bool checkCommMethodName(ObservableCollection<CommMethod> commMethods, CommMethod ignoreCommMethod, string name)
-        {
-            foreach (CommMethod commMethod in commMethods)
-            {
-                if (commMethod == ignoreCommMethod)
-                    continue;
-                if (commMethod.Name == name)
-                    return false;
-            }
-            return true;
+            return false;
         }
 
         #endregion
@@ -94,6 +45,51 @@ namespace sbid
                 }
             }
             return true;
+        }
+
+        #endregion
+
+        #region UserType
+        
+        // 检查UserType中是否包含这个名字的内容
+        public static bool UserType_Contain_PropName(UserType userType, string name)
+        {
+            foreach (Attribute attribute in userType.Attributes)
+            {
+                if (attribute.Identifier == name)
+                    return true;
+            }
+            foreach (Method method in userType.Methods)
+            {
+                if (method.Name == name)
+                    return true;
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region Process
+
+        // 检查Process中是否包含这个名字的内容
+        public static bool Process_Contain_PropName(Process process, string name)
+        {
+            foreach (Attribute attribute in process.Attributes)
+            {
+                if (attribute.Identifier == name)
+                    return true;
+            }
+            foreach (Method method in process.Methods)
+            {
+                if (method.Name == name)
+                    return true;
+            }
+            foreach (CommMethod commMethod in process.CommMethods)
+            {
+                if (commMethod.Name == name)
+                    return true;
+            }
+            return false;
         }
 
         #endregion

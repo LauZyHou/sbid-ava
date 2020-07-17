@@ -84,7 +84,7 @@ namespace sbid._V
             }
 
             // 检查进程模板名称独一无二
-            if(!ResourceManager.checkProcessName(VM.Process, refName_TextBox.Text))
+            if (!ResourceManager.checkProcessName(VM.Process, refName_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "不可用的名称，与其它进程模板重名！";
                 return;
@@ -117,9 +117,9 @@ namespace sbid._V
                 return;
             }
 
-            if (!Checker.checkAttributeIdentifier(VM.Process.Attributes, null, attrId_TextBox.Text))
+            if (Checker.Process_Contain_PropName(VM.Process, attrId_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -165,16 +165,14 @@ namespace sbid._V
             // 获取要修改的Attribute对象
             Attribute attribute = ((Attribute)attr_ListBox.SelectedItem);
 
-            if (!Checker.checkAttributeIdentifier(VM.Process.Attributes, attribute, attrId_TextBox.Text))
+            if (attrId_TextBox.Text != attribute.Identifier && Checker.Process_Contain_PropName(VM.Process, attrId_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "属性名重复！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
             // 判断并删除Authenticity
             bool del_auth = attribute.Type is UserType ? JudgeAndDeleteAuthenticity((UserType)attribute.Type, (Type)type_ListBox.SelectedItem) : false;
-
-            // todo 变量名判重
 
             // 在该Attribute对象上原地修改
             attribute.Type = (Type)type_ListBox.SelectedItem;
@@ -232,9 +230,9 @@ namespace sbid._V
 
             Method method_template = (Method)innerMethod_ListBox.SelectedItem;
 
-            if(!Checker.checkMethodName(VM.Process.Methods, null, method_template.Name) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, method_template.Name))
+            if (Checker.Process_Contain_PropName(VM.Process, method_template.Name))
             {
-                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -282,9 +280,9 @@ namespace sbid._V
 
             Method method = (Method)method_NZ_ListBox.SelectedItem;
 
-            if (!Checker.checkMethodName(VM.Process.Methods, method, method_template.Name) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, method_template.Name))
+            if (method_template.Name != method.Name && Checker.Process_Contain_PropName(VM.Process, method_template.Name))
             {
-                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -332,7 +330,7 @@ namespace sbid._V
             }
 
             ListBox param_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_ZD_ListBox");
-            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_ZD_ListBox.Items, null, paramName_ZD_TextBox.Text))
+            if (Checker.ParamList_Contain_Name(param_ZD_ListBox.Items, paramName_ZD_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "参数名重复！";
                 return;
@@ -378,7 +376,7 @@ namespace sbid._V
 
             Attribute attribute = (Attribute)param_ZD_ListBox.SelectedItem;
 
-            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_ZD_ListBox.Items, attribute, paramName_ZD_TextBox.Text))
+            if (paramName_ZD_TextBox.Text != attribute.Identifier && Checker.ParamList_Contain_Name(param_ZD_ListBox.Items, paramName_ZD_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "参数名重复！";
                 return;
@@ -420,9 +418,9 @@ namespace sbid._V
                 return;
             }
 
-            if (!Checker.checkMethodName(VM.Process.Methods, null, methodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, methodName_TextBox.Text))
+            if (Checker.Process_Contain_PropName(VM.Process, methodName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -479,9 +477,9 @@ namespace sbid._V
 
             Method method = (Method)method_ZD_ListBox.SelectedItem;
 
-            if (!Checker.checkMethodName(VM.Process.Methods, method, methodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, methodName_TextBox.Text))
+            if (methodName_TextBox.Text != method.Name && Checker.Process_Contain_PropName(VM.Process, methodName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -532,7 +530,7 @@ namespace sbid._V
             }
 
             ListBox param_Comm_ListBox = ControlExtensions.FindControl<ListBox>(this, "param_Comm_ListBox");
-            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_Comm_ListBox.Items, null, paramName_Comm_TextBox.Text))
+            if (Checker.ParamList_Contain_Name(param_Comm_ListBox.Items, paramName_Comm_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "参数名重复！";
                 return;
@@ -578,7 +576,7 @@ namespace sbid._V
 
             Attribute attribute = (Attribute)param_Comm_ListBox.SelectedItem;
 
-            if (!Checker.checkAttributeIdentifier((ObservableCollection<Attribute>)param_Comm_ListBox.Items, attribute, paramName_Comm_TextBox.Text))
+            if (paramName_Comm_TextBox.Text != attribute.Identifier && Checker.ParamList_Contain_Name(param_Comm_ListBox.Items, paramName_Comm_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "参数名重复！";
                 return;
@@ -627,9 +625,9 @@ namespace sbid._V
                 return;
             }
 
-            if (!Checker.checkMethodName(VM.Process.Methods, null, commMethodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, null, commMethodName_TextBox.Text))
+            if (Checker.Process_Contain_PropName(VM.Process, commMethodName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -693,9 +691,9 @@ namespace sbid._V
 
             CommMethod commMethod = (CommMethod)commMethod_ListBox.SelectedItem;
 
-            if (!Checker.checkMethodName(VM.Process.Methods, null, commMethodName_TextBox.Text) || !Checker.checkCommMethodName(VM.Process.CommMethods, commMethod, commMethodName_TextBox.Text))
+            if (commMethodName_TextBox.Text != commMethod.Name && Checker.Process_Contain_PropName(VM.Process, commMethodName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "和已有的方法/通信方法重名！";
+                ResourceManager.mainWindowVM.Tips = "标识符重复！";
                 return;
             }
 
@@ -789,7 +787,6 @@ namespace sbid._V
         #endregion
 
         #region 私有
-
 
         /// <summary>
         /// 判断并删除某些SecurityProperty的Authenticity
