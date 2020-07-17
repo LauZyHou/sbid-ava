@@ -54,8 +54,8 @@ namespace sbid._V
             {
                 stateVM.State.Name += letters[random.Next(52)];
             }
-            VM.UserControlVMs.Add(stateVM);
 
+            VM.UserControlVMs.Add(stateVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的状态结点：" + stateVM.State.Name;
         }
 

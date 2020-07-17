@@ -174,47 +174,5 @@ namespace sbid
         }
 
         #endregion
-
-        #region 重名检查
-
-        public static bool checkProcessName(_M.Process ignoreProcess, string name)
-        {
-            ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0];
-            foreach (ViewModelBase vmb in classDiagram_P_VM.UserControlVMs)
-            {
-                if (vmb is Process_VM)
-                {
-                    Process_VM process_VM = (Process_VM)vmb;
-                    if (process_VM.Process == ignoreProcess)
-                        continue;
-                    if (process_VM.Process.RefName.Content == name)
-                    {
-                        return false; // 检查不通过
-                    }
-                }
-            }
-            return true;
-        }
-
-        public static bool checkUserTypeName(UserType ignoreUserType, string name)
-        {
-            ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0];
-            foreach (ViewModelBase vmb in classDiagram_P_VM.UserControlVMs)
-            {
-                if (vmb is UserType_VM)
-                {
-                    UserType_VM userType_VM = (UserType_VM)vmb;
-                    if (userType_VM.Type == ignoreUserType)
-                        continue;
-                    if (userType_VM.Type.Name == name)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        #endregion
     }
 }

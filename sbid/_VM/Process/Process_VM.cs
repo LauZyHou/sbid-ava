@@ -14,14 +14,6 @@ namespace sbid._VM
         public Process_VM()
         {
             process = new Process();
-            // 为了防止新创建的Process和用户已有的重名
-            // 这里检查一下重名，如果重名了就在后面补一个随机的字母
-            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            Random random = new Random();
-            while (!ResourceManager.checkProcessName(process, process.RefName.Content))
-            {
-                process.RefName.Content += letters[random.Next(52)];
-            }
         }
 
         public Process Process { get => process; set => process = value; }

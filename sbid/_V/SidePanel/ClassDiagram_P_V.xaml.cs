@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
+using sbid._M;
 using sbid._VM;
 using SharpDX.WIC;
 using System.Collections.Generic;
@@ -51,7 +52,17 @@ namespace sbid._V
         public void CreateUserTypeVM()
         {
             UserType_VM userTypeVM = new UserType_VM() { X = mousePos.X, Y = mousePos.Y };
-            ClassDiagramPVM.UserControlVMs.Add(userTypeVM);
+
+            // 确保UserType没有重名，检查有重名时就在后面随机跟字母
+            UserType userType = (UserType)userTypeVM.Type;
+            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            System.Random random = new System.Random();
+            while (Checker.UserType_Name_Repeat(userType, userType.Name))
+            {
+                userType.Name += letters[random.Next(52)];
+            }
+
+            VM.UserControlVMs.Add(userTypeVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的自定义类型：" + userTypeVM.Type.Name;
         }
 
@@ -60,10 +71,19 @@ namespace sbid._V
         {
             Process_VM processVM = new Process_VM() { X = mousePos.X, Y = mousePos.Y };
 
+            // 确保Process没有重名，检查有重名时就在后面随机跟字母
+            Process process = processVM.Process;
+            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            System.Random random = new System.Random();
+            while (Checker.Process_Name_Repeat(process, process.RefName.Content))
+            {
+                process.RefName.Content += letters[random.Next(52)];
+            }
+
             // 创建相应的"进程模板-状态机"大面板VM,并集成到当前Process_VM里
             processVM.ProcessToSM_P_VM = ResourceManager.mainWindowVM.AddProcessToSM(processVM.Process);
 
-            ClassDiagramPVM.UserControlVMs.Add(processVM);
+            VM.UserControlVMs.Add(processVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的进程模板：" + processVM.Process.RefName;
         }
 
@@ -71,7 +91,7 @@ namespace sbid._V
         public void CreateAxiomVM()
         {
             Axiom_VM axiomVM = new Axiom_VM() { X = mousePos.X, Y = mousePos.Y };
-            ClassDiagramPVM.UserControlVMs.Add(axiomVM);
+            VM.UserControlVMs.Add(axiomVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的公理：" + axiomVM.Axiom.Name;
         }
 
@@ -79,7 +99,7 @@ namespace sbid._V
         public void CreateInitialKnowledgeVM()
         {
             InitialKnowledge_VM initialKnowledgeVM = new InitialKnowledge_VM() { X = mousePos.X, Y = mousePos.Y };
-            ClassDiagramPVM.UserControlVMs.Add(initialKnowledgeVM);
+            VM.UserControlVMs.Add(initialKnowledgeVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的InitialKnowledge";
         }
 
@@ -87,7 +107,7 @@ namespace sbid._V
         public void CreateSafetyPropertyVM()
         {
             SafetyProperty_VM safetyPropertyVM = new SafetyProperty_VM() { X = mousePos.X, Y = mousePos.Y };
-            ClassDiagramPVM.UserControlVMs.Add(safetyPropertyVM);
+            VM.UserControlVMs.Add(safetyPropertyVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的SafetyProperty：" + safetyPropertyVM.SafetyProperty.Name;
         }
 
@@ -95,7 +115,7 @@ namespace sbid._V
         public void CreateSecurityPropertyVM()
         {
             SecurityProperty_VM securityPropertyVM = new SecurityProperty_VM() { X = mousePos.X, Y = mousePos.Y };
-            ClassDiagramPVM.UserControlVMs.Add(securityPropertyVM);
+            VM.UserControlVMs.Add(securityPropertyVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的SecurityProperty：" + securityPropertyVM.SecurityProperty.Name;
         }
 
@@ -103,7 +123,7 @@ namespace sbid._V
         public void CreateCommChannelVM()
         {
             CommChannel_VM commChannelVM = new CommChannel_VM() { X = mousePos.X, Y = mousePos.Y };
-            ClassDiagramPVM.UserControlVMs.Add(commChannelVM);
+            VM.UserControlVMs.Add(commChannelVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的CommChannel：" + commChannelVM.CommChannel.Name;
         }
 
@@ -122,6 +142,6 @@ namespace sbid._V
         #endregion
 
         // 对应的VM
-        public ClassDiagram_P_VM ClassDiagramPVM { get => (ClassDiagram_P_VM)DataContext; }
+        public ClassDiagram_P_VM VM { get => (ClassDiagram_P_VM)DataContext; }
     }
 }

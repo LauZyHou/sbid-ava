@@ -84,9 +84,9 @@ namespace sbid._V
             }
 
             // 检查进程模板名称独一无二
-            if (!ResourceManager.checkProcessName(VM.Process, refName_TextBox.Text))
+            if (Checker.Process_Name_Repeat(VM.Process, refName_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "不可用的名称，与其它进程模板重名！";
+                ResourceManager.mainWindowVM.Tips = "不可用的名称，与其它Process重名！";
                 return;
             }
 

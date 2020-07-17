@@ -48,9 +48,9 @@ namespace sbid._V
             }
 
             // 检查类型名称独一无二
-            if (!ResourceManager.checkUserTypeName(VM.UserType, name_TextBox.Text))
+            if (Checker.UserType_Name_Repeat(VM.UserType, name_TextBox.Text))
             {
-                ResourceManager.mainWindowVM.Tips = "不可用的名称，与其它类型重名！";
+                ResourceManager.mainWindowVM.Tips = "不可用的名称，与其它UserType重名！";
                 return;
             }
 

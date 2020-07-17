@@ -50,6 +50,26 @@ namespace sbid
         #endregion
 
         #region UserType
+
+        // 检查各个UserType的Name是否有和给定的名字重复的
+        public static bool UserType_Name_Repeat(UserType ignoreUserType, string name)
+        {
+            ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0];
+            foreach (ViewModelBase vmb in classDiagram_P_VM.UserControlVMs)
+            {
+                if (vmb is UserType_VM)
+                {
+                    UserType_VM userType_VM = (UserType_VM)vmb;
+                    if (userType_VM.Type == ignoreUserType)
+                        continue;
+                    if (userType_VM.Type.Name == name)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         
         // 检查UserType中是否包含这个名字的内容
         public static bool UserType_Contain_PropName(UserType userType, string name)
@@ -70,6 +90,26 @@ namespace sbid
         #endregion
 
         #region Process
+
+        // 检查各个Process的RefName的Content有没有和给定的名称重复的
+        public static bool Process_Name_Repeat(Process ignoreProcess, string name)
+        {
+            ClassDiagram_P_VM classDiagram_P_VM = (ClassDiagram_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0];
+            foreach (ViewModelBase vmb in classDiagram_P_VM.UserControlVMs)
+            {
+                if (vmb is Process_VM)
+                {
+                    Process_VM process_VM = (Process_VM)vmb;
+                    if (process_VM.Process == ignoreProcess)
+                        continue;
+                    if (process_VM.Process.RefName.Content == name)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         // 检查Process中是否包含这个名字的内容
         public static bool Process_Contain_PropName(Process process, string name)

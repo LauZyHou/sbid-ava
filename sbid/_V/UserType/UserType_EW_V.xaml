@@ -44,7 +44,7 @@
       <StackPanel>
         <StackPanel Orientation="Horizontal">
           <TextBlock Text="自定义类型名：" FontSize="18"/>
-          <TextBox Name="name_TextBox" Text="{Binding UserType.Name, Mode=TwoWay}"/>
+          <TextBox Name="name_TextBox" Text="{Binding UserType.Name, Mode=OneWay}"/>
           <Button Classes="meta" Command="{Binding $parent[Window].Update_Name}">确认</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
