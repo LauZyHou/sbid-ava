@@ -13,7 +13,7 @@
       <Setter Property="FontSize" Value="17"/>
     </Style>
     <Style Selector="Button">
-      <Setter Property="Margin" Value="20, 2"/>
+      <Setter Property="Margin" Value="12, 2"/>
     </Style>
     <Style Selector="StackPanel > StackPanel">
       <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -53,6 +53,8 @@
       <Button Command="{Binding $parent[Window].Add_Action}">添加</Button>
       <Button Command="{Binding $parent[Window].Update_Action}">修改</Button>
       <Button Command="{Binding $parent[Window].Delete_Action}">删除</Button>
+      <Button Command="{Binding $parent[Window].Move_Up}">▲</Button>
+      <Button Command="{Binding $parent[Window].Move_Down}">▼</Button>
     </StackPanel>
   </StackPanel>
 </Window>

@@ -25,53 +25,6 @@ namespace sbid._V
 
         #region 按钮命令
 
-        /*
-        public void Add_Guard()
-        {
-            if (guard_TextBox.Text == null || guard_TextBox.Text.Length == 0)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要给出转移条件！";
-                return;
-            }
-
-            Formula guard = new Formula(guard_TextBox.Text);
-            VM.StateTrans.Guards.Add(guard);
-            ResourceManager.mainWindowVM.Tips = "添加了转移条件：" + guard.Content;
-        }
-
-        public void Update_Guard()
-        {
-            if (guard_ListBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定要修改的转移条件！";
-                return;
-            }
-
-            if (guard_TextBox.Text == null || guard_TextBox.Text.Length == 0)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要给出转移条件！";
-                return;
-            }
-
-            Formula guard = (Formula)guard_ListBox.SelectedItem;
-            guard.Content = guard_TextBox.Text;
-            ResourceManager.mainWindowVM.Tips = "修改了转移条件：" + guard.Content;
-        }
-
-        public void Delete_Guard()
-        {
-            if (guard_ListBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定要删除的转移条件！";
-                return;
-            }
-
-            Formula guard = (Formula)guard_ListBox.SelectedItem;
-            VM.StateTrans.Guards.Remove(guard);
-            ResourceManager.mainWindowVM.Tips = "删除了转移条件：" + guard.Content;
-        }
-        */
-
         public void Add_Action()
         {
             if (action_TextBox.Text == null || action_TextBox.Text.Length == 0)
@@ -117,20 +70,62 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "删除了转移动作：" + action.Content;
         }
 
+        public void Move_Up()
+        {
+            if (action_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要上移的转移动作！";
+                return;
+            }
+
+            if (action_ListBox.SelectedIndex == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "已经是第一个了！";
+                return;
+            }
+
+            Formula action = (Formula)action_ListBox.SelectedItem;
+            int newIndex = VM.StateTrans.Actions.IndexOf(action) - 1;
+            VM.StateTrans.Actions.Remove(action);
+            VM.StateTrans.Actions.Insert(newIndex, action);
+            ResourceManager.mainWindowVM.Tips = "上移了转移动作：" + action.Content;
+            action_ListBox.SelectedItem = action;
+        }
+
+        public void Move_Down()
+        {
+            if (action_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要下移的转移动作！";
+                return;
+            }
+
+            if (action_ListBox.SelectedIndex == VM.StateTrans.Actions.Count - 1)
+            {
+                ResourceManager.mainWindowVM.Tips = "已经是最后一个了！";
+                return;
+            }
+
+            Formula action = (Formula)action_ListBox.SelectedItem;
+            int newIndex = VM.StateTrans.Actions.IndexOf(action) + 1;
+            VM.StateTrans.Actions.Remove(action);
+            VM.StateTrans.Actions.Insert(newIndex, action);
+            ResourceManager.mainWindowVM.Tips = "下移了转移动作：" + action.Content;
+            action_ListBox.SelectedItem = action;
+        }
+
         #endregion
 
 
         #region 资源引用
 
-        private ListBox guard_ListBox, action_ListBox;
-        private TextBox guard_TextBox, action_TextBox;
+        private ListBox action_ListBox;
+        private TextBox action_TextBox;
 
         // 获取控件引用
         private void get_control_reference()
         {
-            // guard_ListBox = ControlExtensions.FindControl<ListBox>(this, "guard_ListBox");
             action_ListBox = ControlExtensions.FindControl<ListBox>(this, "action_ListBox");
-            // guard_TextBox = ControlExtensions.FindControl<TextBox>(this, "guard_TextBox");
             action_TextBox = ControlExtensions.FindControl<TextBox>(this, "action_TextBox");
         }
 
