@@ -382,6 +382,7 @@ namespace sbid._VM
                                 xmlWriter.WriteAttributeString("name", method.Name);
                                 xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
                                 xmlWriter.WriteAttributeString("id", method.Id.ToString());
+                                xmlWriter.WriteAttributeString("achieve", method.Achieve);
                                 foreach (Attribute attr in method.Parameters)
                                 {
                                     xmlWriter.WriteStartElement("Parameter"); // 注意这里叫Parameter了
@@ -414,6 +415,7 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("name", method.Name);
                             xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
                             xmlWriter.WriteAttributeString("id", method.Id.ToString());
+                            xmlWriter.WriteAttributeString("achieve", method.Achieve);
                             foreach (Attribute attr in method.Parameters)
                             {
                                 xmlWriter.WriteStartElement("Parameter");
@@ -1480,6 +1482,7 @@ namespace sbid._VM
                                             }
                                             string name = attrElement.GetAttribute("name");
                                             Crypto cryptoSuffix = (Crypto)System.Enum.Parse(typeof(Crypto), attrElement.GetAttribute("cryptoSuffix"));
+                                            string achieve = attrElement.GetAttribute("achieve");
                                             ObservableCollection<Attribute> parameters = new ObservableCollection<Attribute>();
                                             foreach (XmlNode paramNode in attrNode.ChildNodes) // <Parameter type_ref="1" identifier="key" isArray="False" id="10" />
                                             {
@@ -1500,6 +1503,7 @@ namespace sbid._VM
                                             }
                                             Method method = new Method(typeDict[returnTypeRef], name, parameters, cryptoSuffix);
                                             method.Id = id;
+                                            method.Achieve = achieve;
                                             userType.Methods.Add(method);
                                             break;
                                     }
@@ -1531,6 +1535,7 @@ namespace sbid._VM
                                         break;
                                     case "Method":
                                         id = int.Parse(pcElement.GetAttribute("id"));
+                                        string achieve = pcElement.GetAttribute("achieve");
                                         int returnTypeRef = int.Parse(pcElement.GetAttribute("returnType_ref"));
                                         if (!typeDict.ContainsKey(returnTypeRef))
                                         {
@@ -1560,6 +1565,7 @@ namespace sbid._VM
                                         }
                                         Method method = new Method(typeDict[returnTypeRef], name, parameters, cryptoSuffix);
                                         method.Id = id;
+                                        method.Achieve = achieve;
                                         process.Methods.Add(method);
                                         break;
                                     case "CommMethod":
@@ -2657,6 +2663,7 @@ namespace sbid._VM
                                 xmlWriter.WriteAttributeString("returnType", method.ReturnType.Name);
                                 xmlWriter.WriteAttributeString("name", method.Name);
                                 xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                                xmlWriter.WriteAttributeString("achieve", method.Achieve);
                                 // xmlWriter.WriteAttributeString("id", method.Id.ToString());
                                 foreach (Attribute attr in method.Parameters)
                                 {
@@ -2687,6 +2694,7 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("returnType", method.ReturnType.Name);
                             xmlWriter.WriteAttributeString("name", method.Name);
                             xmlWriter.WriteAttributeString("cryptoSuffix", method.CryptoSuffix.ToString());
+                            xmlWriter.WriteAttributeString("achieve", method.Achieve);
                             // xmlWriter.WriteAttributeString("id", method.Id.ToString());
                             foreach (Attribute attr in method.Parameters)
                             {

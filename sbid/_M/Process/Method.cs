@@ -27,6 +27,7 @@ namespace sbid._M
         private string name;
         private ObservableCollection<Attribute> parameters; // 这里不创建,在构造时传入
         private Crypto cryptoSuffix;
+        private string achieve = "";
         private int id;
 
         public Method(Type returnType, string name, ObservableCollection<Attribute> parameters, Crypto cryptoSuffix = Crypto.None)
@@ -60,6 +61,9 @@ namespace sbid._M
 
         // 加解密方式(可选)
         public Crypto CryptoSuffix { get => cryptoSuffix; set => this.RaiseAndSetIfChanged(ref cryptoSuffix, value); }
+
+        // 方法实现
+        public string Achieve { get => achieve; set => this.RaiseAndSetIfChanged(ref achieve, value); }
 
         public int Id
         {

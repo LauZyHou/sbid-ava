@@ -507,6 +507,28 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "已删除成员方法：" + method;
         }
 
+        public void Achieve_ZDMethod()
+        {
+            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
+            if (method_ZD_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要实现的Method！";
+                return;
+            }
+
+            Method method = (Method)method_ZD_ListBox.SelectedItem;
+
+            Method_EW_V userType_Method_EW_V = new Method_EW_V()
+            {
+                DataContext = new Method_EW_VM()
+                {
+                    Method = method
+                }
+            };
+            userType_Method_EW_V.ShowDialog(this);
+            ResourceManager.mainWindowVM.Tips = "实现方法：" + method;
+        }
+
         public void Add_CommParam()
         {
             ComboBox paramType_Comm_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "paramType_Comm_ComboBox");

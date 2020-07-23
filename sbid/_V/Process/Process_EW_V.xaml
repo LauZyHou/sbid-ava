@@ -185,6 +185,7 @@
             <Button Command="{Binding $parent[Window].Add_ZDMethod}">添加</Button>
             <Button Command="{Binding $parent[Window].Update_ZDMethod}">修改</Button>
             <Button Command="{Binding $parent[Window].Delete_ZDMethod}">删除</Button>
+            <Button Command="{Binding $parent[Window].Achieve_ZDMethod}">实现</Button>
           </StackPanel>
         </StackPanel>
         <ListBox Grid.Column="1" Margin="10,0" Name="method_ZD_ListBox" Items="{Binding Process.Methods}">

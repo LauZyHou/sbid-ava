@@ -349,6 +349,10 @@ namespace sbid._V
                 parameters,
                 Crypto.None
             );
+
+            string achieve = ((Method)method_ListBox.SelectedItem).Achieve;
+            method.Achieve = achieve;
+
             VM.UserType.Methods[method_ListBox.SelectedIndex] = method;
             ResourceManager.mainWindowVM.Tips = "更新了自定Method：" + method;
 
@@ -368,6 +372,28 @@ namespace sbid._V
             Method method = (Method)method_ListBox.SelectedItem;
             ((UserType_EW_VM)DataContext).UserType.Methods.Remove(method);
             ResourceManager.mainWindowVM.Tips = "已删除成员方法：" + method;
+        }
+
+        public void Achieve_Method()
+        {
+            ListBox method_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ListBox");
+            if (method_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要实现的Method！";
+                return;
+            }
+
+            Method method = (Method)method_ListBox.SelectedItem;
+
+            Method_EW_V userType_Method_EW_V = new Method_EW_V()
+            {
+                DataContext = new Method_EW_VM()
+                {
+                    Method = method
+                }
+            };
+            userType_Method_EW_V.ShowDialog(this);
+            ResourceManager.mainWindowVM.Tips = "实现方法：" + method;
         }
 
         #endregion

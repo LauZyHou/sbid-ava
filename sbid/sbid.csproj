@@ -70,6 +70,7 @@
     <AvaloniaResource Remove="_V\Topology\TopoNode_EW_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TopoNode_Square_V.xaml" />
     <AvaloniaResource Remove="_V\Topology\TwoWayTopoLink_V.xaml" />
+    <AvaloniaResource Remove="_V\UserType\Method_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
     <None Remove="Assets\Fonts\STZHONGS2.ttf" />
@@ -130,6 +131,7 @@
     <None Remove="_V\Topology\TopoNode_EW_V.xaml" />
     <None Remove="_V\Topology\TopoNode_Square_V.xaml" />
     <None Remove="_V\Topology\TwoWayTopoLink_V.xaml" />
+    <None Remove="_V\UserType\Method_EW_V.xaml" />
     <None Remove="_V\UserType\UserType_EW_V.xaml" />
     <None Remove="_V\UserType\UserType_V.xaml" />
   </ItemGroup>
@@ -170,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\SidePanel\SequenceDiagram_P_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="_V\UserType\Method_EW_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -437,6 +442,11 @@
     <Resource Include="Assets\Fonts\STZHONGS2.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="_V\UserType\Method_EW_V.xaml.cs">
+      <DependentUpon>Method_EW_V.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Assets\Fonts\HGDH_CNKI-Regular.TTF">
