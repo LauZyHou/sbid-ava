@@ -9,6 +9,7 @@ using sbid._M;
 using sbid._VM;
 using SharpDX.WIC;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -53,13 +54,13 @@ namespace sbid._V
         {
             UserType_VM userTypeVM = new UserType_VM() { X = mousePos.X, Y = mousePos.Y };
 
-            // 确保UserType没有重名，检查有重名时就在后面随机跟字母
+            // 确保UserType没有重名，检查有重名时就增id
             UserType userType = (UserType)userTypeVM.Type;
-            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            System.Random random = new System.Random();
             while (Checker.UserType_Name_Repeat(userType, userType.Name))
             {
-                userType.Name += letters[random.Next(52)];
+                Type._id++;
+                userType.Id = Type._id;
+                userType.Name = "T" + userType.Id;
             }
 
             VM.UserControlVMs.Add(userTypeVM);
@@ -71,13 +72,13 @@ namespace sbid._V
         {
             Process_VM processVM = new Process_VM() { X = mousePos.X, Y = mousePos.Y };
 
-            // 确保Process没有重名，检查有重名时就在后面随机跟字母
+            // 确保Process没有重名，检查有重名时就增id
             Process process = processVM.Process;
-            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            System.Random random = new System.Random();
             while (Checker.Process_Name_Repeat(process, process.RefName.Content))
             {
-                process.RefName.Content += letters[random.Next(52)];
+                Process._id++;
+                process.Id = Process._id;
+                process.RefName.Content = "P" + process.Id;
             }
 
             // 创建相应的"进程模板-状态机"大面板VM,并集成到当前Process_VM里
@@ -125,6 +126,59 @@ namespace sbid._V
             CommChannel_VM commChannelVM = new CommChannel_VM() { X = mousePos.X, Y = mousePos.Y };
             VM.UserControlVMs.Add(commChannelVM);
             ResourceManager.mainWindowVM.Tips = "创建了新的CommChannel：" + commChannelVM.CommChannel.Name;
+        }
+
+        // 从类库获取集合类
+        public void Fetch_IntSet_UserTypeVM()
+        {
+            UserType_VM userTypeVM = new UserType_VM() { X = mousePos.X, Y = mousePos.Y };
+
+            // 确保UserType没有重名，检查有重名时就后面加下划线
+            UserType userType = (UserType)userTypeVM.Type;
+            userType.Name = "IntSet";
+            while (Checker.UserType_Name_Repeat(userType, userType.Name))
+            {
+                userType.Name += "_";
+            }
+
+            userType.Attributes.Add(new Attribute(Type.TYPE_INT, "val", true));
+
+            Method sizeMethod = new Method(
+                    Type.TYPE_INT,
+                    "size",
+                    new ObservableCollection<Attribute>()
+            );
+            userType.Methods.Add(sizeMethod);
+
+            ObservableCollection<Attribute> containsParams = new ObservableCollection<Attribute>();
+            containsParams.Add(new Attribute(Type.TYPE_INT, "v"));
+            Method containsMethod = new Method(
+                    Type.TYPE_BOOL,
+                    "contains",
+                    containsParams
+            );
+            userType.Methods.Add(containsMethod);
+
+            ObservableCollection<Attribute> addParams = new ObservableCollection<Attribute>();
+            addParams.Add(new Attribute(Type.TYPE_INT, "v"));
+            Method addMethod = new Method(
+                Type.TYPE_BOOL,
+                "add",
+                addParams
+            );
+            userType.Methods.Add(addMethod);
+
+            ObservableCollection<Attribute> removeParams = new ObservableCollection<Attribute>();
+            removeParams.Add(new Attribute(Type.TYPE_INT, "v"));
+            Method removeMethod = new Method(
+                Type.TYPE_BOOL,
+                "remove",
+                removeParams
+            );
+            userType.Methods.Add(removeMethod);
+
+            VM.UserControlVMs.Add(userTypeVM);
+            ResourceManager.mainWindowVM.Tips = "从类库获取了集合类：" + userTypeVM.Type.Name;
         }
 
         #endregion
