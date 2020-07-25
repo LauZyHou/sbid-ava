@@ -137,21 +137,22 @@ namespace sbid._V
         // "叶子攻击分析"ListBox的选中项变化的处理
         private void leafAttackVM_ListBox_Changed(object sender, SelectionChangedEventArgs e)
         {
-            // 先清空[安全策略数据库]的绑定列表
+            // 找出选中项(是一个Attack_VM)
+            ListBox leafAttackVM_ListBox = ControlExtensions.FindControl<ListBox>(this, "leafAttackVM_ListBox");
+            if (leafAttackVM_ListBox.SelectedItem == null)
+            {
+                return; // 如果选中了某一项，但是换到其它图的Panel，这里就会返回null
+            }
+            // 并获得其中Attack的文字
+            Attack_VM attack_VM = (Attack_VM)leafAttackVM_ListBox.SelectedItem;
+            string attackContent = attack_VM.Attack.Content;
+
+            // 清空[安全策略数据库]的绑定列表
             AttackTreePVM.SecurityPolicies.Clear();
 
             // 读取策略数据库文件，解析为策略List
             string jsonStr = File.ReadAllText("Assets/SecurityPolicy.json");
             List<LabelsContentsPair> labelsContentsPairs = JsonSerializer.Deserialize<List<LabelsContentsPair>>(jsonStr);
-
-            // 找出选中项(是一个Attack_VM)，并获得其中Attack的文字
-            ListBox leafAttackVM_ListBox = ControlExtensions.FindControl<ListBox>(this, "leafAttackVM_ListBox");
-            if (leafAttackVM_ListBox.SelectedItem == null)
-            {
-                return;
-            }
-            Attack_VM attack_VM = (Attack_VM)leafAttackVM_ListBox.SelectedItem;
-            string attackContent = attack_VM.Attack.Content;
 
             // 这里记录那些无法匹配的标签，用于快速判断一个标签是否能和选中项的Attack的文字匹配
             HashSet<string> failLabelHashSet = new HashSet<string>();

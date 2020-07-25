@@ -5,7 +5,8 @@ using System.Text;
 
 namespace sbid._M
 {
-    // 完整的CTL：状态和公式
+    // 此类作废
+    // 完整的CTL：进程和公式
     public class CTL : ReactiveObject
     {
         private Process process;

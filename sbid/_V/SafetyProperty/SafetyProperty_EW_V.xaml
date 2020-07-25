@@ -38,25 +38,15 @@
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="进程模板：" FontSize="17"/>
-          <ComboBox Name="process_ComboBox" Items="{Binding Processes}" Height="26"
-                    SelectedItem="{Binding #ctl_ListBox.SelectedItem.Process, Mode=OneWay}">
+          <ComboBox Name="process_ComboBox" Items="{Binding Processes}" Height="26">
             <ComboBox.ItemTemplate>
               <DataTemplate>
                 <TextBlock Text="{Binding RefName.Content}"/>
               </DataTemplate>
             </ComboBox.ItemTemplate>
           </ComboBox>
-          <!--<TextBlock Text="选择状态：" FontSize="17"/>
-          <ComboBox Name="state_ComboBox" Items="{Binding #process_ComboBox.SelectedItem.States}" Height="26"
-                    SelectedItem="{Binding #ctl_ListBox.SelectedItem.State, Mode=OneWay}">
-            <ComboBox.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding Name}"/>
-              </DataTemplate>
-            </ComboBox.ItemTemplate>
-          </ComboBox>-->
           <TextBlock Text="CTL公式：" FontSize="17"/>
-          <TextBox Name="ctl_TextBox" Text="{Binding #ctl_ListBox.SelectedItem.Formula.Content, Mode=OneWay}"/>
+          <TextBox Name="ctl_TextBox" Text="{Binding #ctl_ListBox.SelectedItem.Content, Mode=OneWay}"/>
           <StackPanel Orientation="Horizontal">
             <Button Command="{Binding $parent[Window].Add_CTL}">添加</Button>
             <Button Command="{Binding $parent[Window].Update_CTL}">修改</Button>
@@ -66,15 +56,7 @@
         <ListBox Name="ctl_ListBox" Grid.Column="1" Margin="10,0" Items="{Binding SafetyProperty.CTLs}">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <TextBlock>
-                <TextBlock.Text>
-                  <MultiBinding StringFormat=" {0}:{1}">
-                    <Binding Path="Process.RefName.Content"/>
-                    <!--<Binding Path="State.Name"/>-->
-                    <Binding Path="Formula.Content"/>
-                  </MultiBinding>
-                </TextBlock.Text>
-              </TextBlock>
+              <TextBlock Text="{Binding Content}"/>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>

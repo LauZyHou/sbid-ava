@@ -10,7 +10,7 @@ namespace sbid._M
     {
         public static int _id = 0;
         private string name;
-        private ObservableCollection<CTL> cTLs = new ObservableCollection<CTL>();
+        private ObservableCollection<Formula> cTLs = new ObservableCollection<Formula>();
         private ObservableCollection<Formula> invariants = new ObservableCollection<Formula>();
         private int id;
 
@@ -22,7 +22,7 @@ namespace sbid._M
         }
 
         public string Name { get => name; set => this.RaiseAndSetIfChanged(ref name, value); }
-        public ObservableCollection<CTL> CTLs { get => cTLs; set => cTLs = value; }
+        public ObservableCollection<Formula> CTLs { get => cTLs; set => cTLs = value; }
         public ObservableCollection<Formula> Invariants { get => invariants; set => invariants = value; }
         public int Id
         {

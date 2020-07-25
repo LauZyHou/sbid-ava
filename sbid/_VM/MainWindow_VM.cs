@@ -507,12 +507,10 @@ namespace sbid._VM
                         xmlWriter.WriteAttributeString("y", vm.Y.ToString());
                         xmlWriter.WriteAttributeString("name", vm.SafetyProperty.Name);
                         xmlWriter.WriteAttributeString("id", vm.SafetyProperty.Id.ToString());
-                        foreach (CTL ctl in vm.SafetyProperty.CTLs)
+                        foreach (Formula formula in vm.SafetyProperty.CTLs)
                         {
                             xmlWriter.WriteStartElement("CTL");
-                            xmlWriter.WriteAttributeString("process_ref", ctl.Process.Id.ToString());
-                            // xmlWriter.WriteAttributeString("state_ref", ctl.State.Id.ToString());
-                            xmlWriter.WriteAttributeString("formula", ctl.Formula.Content);
+                            xmlWriter.WriteAttributeString("content", formula.Content);
                             xmlWriter.WriteEndElement();
                         }
                         foreach (Formula formula in vm.SafetyProperty.Invariants)
@@ -1735,36 +1733,8 @@ namespace sbid._VM
                                 switch (safetyChildNode.Name)
                                 {
                                     case "CTL":
-                                        processRef = int.Parse(safetyElement.GetAttribute("process_ref"));
-                                        if (!processVMDict.ContainsKey(processRef))
-                                        {
-                                            Tips = "[解析SafetyProperty_VM时出错]无法找到CTL引用的进程模板！";
-                                            cleanProject();
-                                            return false;
-                                        }
-                                        /*
-                                        int stateRef = int.Parse(safetyElement.GetAttribute("state_ref"));
-                                        State state = null;
-                                        foreach (ViewModelBase vmb in processVMDict[processRef].ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
-                                        {
-                                            if (vmb is State_VM)
-                                            {
-                                                State_VM state_VM = (State_VM)vmb;
-                                                if (state_VM.State.Id == stateRef)
-                                                {
-                                                    state = state_VM.State;
-                                                }
-                                            }
-                                        }
-                                        if (state == null)
-                                        {
-                                            Tips = "[解析SafetyProperty_VM时出错]无法找到CTL引用的状态机下的State！";
-                                            cleanProject();
-                                            return false;
-                                        }
-                                        */
-                                        string content = safetyElement.GetAttribute("formula");
-                                        safetyProperty.CTLs.Add(new CTL(processVMDict[processRef].Process, new Formula(content)));
+                                        string content = safetyElement.GetAttribute("content");
+                                        safetyProperty.CTLs.Add(new Formula(content));
                                         break;
                                     case "Invariant":
                                         content = safetyElement.GetAttribute("content");
@@ -2780,12 +2750,10 @@ namespace sbid._VM
                         xmlWriter.WriteStartElement("SafetyProperty");
                         xmlWriter.WriteAttributeString("name", vm.SafetyProperty.Name);
                         // xmlWriter.WriteAttributeString("id", vm.SafetyProperty.Id.ToString());
-                        foreach (CTL ctl in vm.SafetyProperty.CTLs)
+                        foreach (Formula formula in vm.SafetyProperty.CTLs)
                         {
                             xmlWriter.WriteStartElement("CTL");
-                            xmlWriter.WriteAttributeString("process", ctl.Process.RefName.Content);
-                            // xmlWriter.WriteAttributeString("state", ctl.State.Name);
-                            xmlWriter.WriteAttributeString("formula", ctl.Formula.Content);
+                            xmlWriter.WriteAttributeString("formula", formula.Content);
                             xmlWriter.WriteEndElement();
                         }
                         foreach (Formula formula in vm.SafetyProperty.Invariants)
