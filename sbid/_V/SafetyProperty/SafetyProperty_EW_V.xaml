@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="300" Width="500" WindowStartupLocation="CenterOwner"
+        Height="320" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.SafetyProperty_EW_V"
         Title="编辑功能安全性质">
 
@@ -12,10 +12,10 @@
   </Design.DataContext>
 
   <Window.Styles>
-    <Style Selector="Button">
+    <Style Selector="StackPanel > Button">
       <Setter Property="Width" Value="50"/>
       <Setter Property="Height" Value="30"/>
-      <Setter Property="Margin" Value="7,5"/>
+      <Setter Property="Margin" Value="7,3"/>
     </Style>
     <Style Selector="TabItem > StackPanel">
       <Setter Property="Margin" Value="7"/>
@@ -36,23 +36,66 @@
     </TabItem>
     <TabItem Header="CTL">
       <Grid ColumnDefinitions="50*,50*">
-        <StackPanel Grid.Column="0" Margin="10,0">
-          <TextBlock Text="进程模板：" FontSize="17"/>
-          <ComboBox Name="process_ComboBox" Items="{Binding Processes}" Height="26">
-            <ComboBox.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding RefName.Content}"/>
-              </DataTemplate>
-            </ComboBox.ItemTemplate>
-          </ComboBox>
-          <TextBlock Text="CTL公式：" FontSize="17"/>
-          <TextBox Name="ctl_TextBox" Text="{Binding #ctl_ListBox.SelectedItem.Content, Mode=OneWay}"/>
-          <StackPanel Orientation="Horizontal">
-            <Button Command="{Binding $parent[Window].Add_CTL}">添加</Button>
-            <Button Command="{Binding $parent[Window].Update_CTL}">修改</Button>
-            <Button Command="{Binding $parent[Window].Delete_CTL}">删除</Button>
-          </StackPanel>
-        </StackPanel>
+        <!--左侧排布-->
+        <Grid RowDefinitions="24,*,24,24,24,24,24,24,30">
+          <Grid Grid.Row="0" ColumnDefinitions="100,*">
+            <TextBlock Grid.Column="0" Text="属性导航器：" FontSize="17"/>
+            <ComboBox Grid.Column="1" Name="process_CTL_ComboBox" Items="{Binding Processes}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding RefName.Content}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </Grid>
+          <TreeView Grid.Row="1">
+
+          </TreeView>
+          <Button Grid.Row="2">接入</Button>
+          <Grid Grid.Row="3" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
+            <Button Grid.Column="0">AX</Button>
+            <Button Grid.Column="1">EX</Button>
+            <Button Grid.Column="2">AF</Button>
+            <Button Grid.Column="3">EF</Button>
+            <Button Grid.Column="4">AG</Button>
+            <Button Grid.Column="5">EG</Button>
+            <Button Grid.Column="6">AU</Button>
+            <Button Grid.Column="7">EU</Button>
+          </Grid>
+          <Grid Grid.Row="4" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
+            <Button Grid.Column="0">∧</Button>
+            <Button Grid.Column="1">∨</Button>
+            <Button Grid.Column="2">¬</Button>
+            <Button Grid.Column="3">→</Button>
+            <Button Grid.Column="4">+</Button>
+            <Button Grid.Column="5">-</Button>
+            <Button Grid.Column="6">*</Button>
+            <Button Grid.Column="7">/</Button>
+          </Grid>
+          <Grid Grid.Row="5" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
+            <Button Grid.Column="0">=</Button>
+            <Button Grid.Column="1">&gt;</Button>
+            <Button Grid.Column="2">&lt;</Button>
+            <Button Grid.Column="3">&gt;=</Button>
+            <Button Grid.Column="4">&lt;=</Button>
+            <Button Grid.Column="5">≠</Button>
+            <Button Grid.Column="6">(</Button>
+            <Button Grid.Column="7">)</Button>
+          </Grid>
+          <Grid Grid.Row="6" ColumnDefinitions="1*,1*,1*,5*">
+            <Button Grid.Column="0">&amp;</Button>
+            <Button Grid.Column="1">|</Button>
+            <Button Grid.Column="2">!</Button>
+            <TextBlock Grid.Column="3" Text="CTL公式：" FontSize="17" TextAlignment="Center" VerticalAlignment="Center"/>
+          </Grid>
+          <TextBox Grid.Row="7" Name="ctl_TextBox" Text="{Binding #ctl_ListBox.SelectedItem.Content, Mode=OneWay}"/>
+          <Grid Grid.Row="8" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*">
+            <Button Grid.Column="1" Command="{Binding $parent[Window].Add_CTL}">添加</Button>
+            <Button Grid.Column="3" Command="{Binding $parent[Window].Update_CTL}">修改</Button>
+            <Button Grid.Column="5" Command="{Binding $parent[Window].Delete_CTL}">删除</Button>
+          </Grid>
+        </Grid>
+        <!--右侧ListBox-->
         <ListBox Name="ctl_ListBox" Grid.Column="1" Margin="10,0" Items="{Binding SafetyProperty.CTLs}">
           <ListBox.ItemTemplate>
             <DataTemplate>
@@ -64,15 +107,56 @@
     </TabItem>
     <TabItem Header="不变性">
       <Grid ColumnDefinitions="50*,50*">
-        <StackPanel Grid.Column="0" Margin="10,0">
-          <TextBlock Text="不变性条件：" FontSize="17"/>
-          <TextBox Name="invariant_TextBox" Text="{Binding #invariant_ListBox.SelectedItem.Content, Mode=OneWay}"/>
-          <StackPanel Orientation="Horizontal">
-            <Button Command="{Binding $parent[Window].Add_Invariant}">添加</Button>
-            <Button Command="{Binding $parent[Window].Update_Invariant}">修改</Button>
-            <Button Command="{Binding $parent[Window].Delete_Invariant}">删除</Button>
-          </StackPanel>
-        </StackPanel>
+        <!--左侧排布-->
+        <Grid RowDefinitions="24,*,24,24,24,24,24,30">
+          <Grid Grid.Row="0" ColumnDefinitions="100,*">
+            <TextBlock Grid.Column="0" Text="属性导航器：" FontSize="17"/>
+            <ComboBox Grid.Column="1" Name="process_Inv_ComboBox" Items="{Binding Processes}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding RefName.Content}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </Grid>
+          <TreeView Grid.Row="1">
+
+          </TreeView>
+          <Button Grid.Row="2">接入</Button>
+          <Grid Grid.Row="3" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
+            <Button Grid.Column="0">∧</Button>
+            <Button Grid.Column="1">∨</Button>
+            <Button Grid.Column="2">¬</Button>
+            <Button Grid.Column="3">→</Button>
+            <Button Grid.Column="4">+</Button>
+            <Button Grid.Column="5">-</Button>
+            <Button Grid.Column="6">*</Button>
+            <Button Grid.Column="7">/</Button>
+          </Grid>
+          <Grid Grid.Row="4" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
+            <Button Grid.Column="0">=</Button>
+            <Button Grid.Column="1">&gt;</Button>
+            <Button Grid.Column="2">&lt;</Button>
+            <Button Grid.Column="3">&gt;=</Button>
+            <Button Grid.Column="4">&lt;=</Button>
+            <Button Grid.Column="5">≠</Button>
+            <Button Grid.Column="6">(</Button>
+            <Button Grid.Column="7">)</Button>
+          </Grid>
+          <Grid Grid.Row="5" ColumnDefinitions="1*,1*,1*,5*">
+            <Button Grid.Column="0">&amp;</Button>
+            <Button Grid.Column="1">|</Button>
+            <Button Grid.Column="2">!</Button>
+            <TextBlock Grid.Column="3" Text="不变性公式：" FontSize="17" TextAlignment="Center" VerticalAlignment="Center"/>
+          </Grid>
+          <TextBox Grid.Row="6" Name="invariant_TextBox" Text="{Binding #invariant_ListBox.SelectedItem.Content, Mode=OneWay}"/>
+          <Grid Grid.Row="7" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*">
+            <Button Grid.Column="1" Command="{Binding $parent[Window].Add_Invariant}">添加</Button>
+            <Button Grid.Column="3" Command="{Binding $parent[Window].Update_Invariant}">修改</Button>
+            <Button Grid.Column="5" Command="{Binding $parent[Window].Delete_Invariant}">删除</Button>
+          </Grid>
+        </Grid>
+        <!--右侧ListBox-->
         <ListBox Name="invariant_ListBox" Grid.Column="1" Margin="10,0" Items="{Binding SafetyProperty.Invariants}">
           <ListBox.ItemTemplate>
             <DataTemplate>
