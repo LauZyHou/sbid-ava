@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        xmlns:m="clr-namespace:sbid._M;assembly=sbid"
         Height="320" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.SafetyProperty_EW_V"
         Title="编辑功能安全性质">
@@ -22,6 +23,20 @@
     </Style>
     <Style Selector="TabItem > Grid">
       <Setter Property="Margin" Value="7"/>
+    </Style>
+    <!--树形控件样式-->
+    <Style Selector="TreeView TextBlock">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style Selector="TreeView TextBox">
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Foreground" Value="Blue"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+      <Setter Property="BorderBrush" Value="{x:Null}"/>
+      <Setter Property="BorderThickness" Value="0"/>
     </Style>
   </Window.Styles>
 
@@ -48,10 +63,29 @@
               </ComboBox.ItemTemplate>
             </ComboBox>
           </Grid>
-          <TreeView Grid.Row="1">
-
+          <TreeView Grid.Row="1" Name="ctlPropNav_TreeView" Items="{Binding CTLProperties}">
+            <TreeView.DataTemplates>
+              <!--引用类型可展开-->
+              <TreeDataTemplate DataType="m:ReferenceNav" ItemsSource="{Binding ChildrenNav}">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding .}"/>
+                  <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+                  <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+                </StackPanel>
+              </TreeDataTemplate>
+              <!--值类型为叶子-->
+              <DataTemplate DataType="m:ValueNav">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding .}"/>
+                  <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+                  <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+                </StackPanel>
+              </DataTemplate>
+            </TreeView.DataTemplates>
           </TreeView>
-          <Button Grid.Row="2">接入</Button>
+          <Button Grid.Row="2" Command="{Binding $parent[Window].Append_CTL_PropNav}">接入</Button>
           <Grid Grid.Row="3" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
             <Button Grid.Column="0">AX</Button>
             <Button Grid.Column="1">EX</Button>
@@ -119,10 +153,29 @@
               </ComboBox.ItemTemplate>
             </ComboBox>
           </Grid>
-          <TreeView Grid.Row="1">
-
+          <TreeView Grid.Row="1" Name="invPropNav_TreeView" Items="{Binding InvProperties}">
+            <TreeView.DataTemplates>
+              <!--引用类型可展开-->
+              <TreeDataTemplate DataType="m:ReferenceNav" ItemsSource="{Binding ChildrenNav}">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding .}"/>
+                  <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+                  <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+                </StackPanel>
+              </TreeDataTemplate>
+              <!--值类型为叶子-->
+              <DataTemplate DataType="m:ValueNav">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding .}"/>
+                  <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+                  <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+                </StackPanel>
+              </DataTemplate>
+            </TreeView.DataTemplates>
           </TreeView>
-          <Button Grid.Row="2">接入</Button>
+          <Button Grid.Row="2" Command="{Binding $parent[Window].Append_Inv_PropNav}">接入</Button>
           <Grid Grid.Row="3" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
             <Button Grid.Column="0">∧</Button>
             <Button Grid.Column="1">∨</Button>

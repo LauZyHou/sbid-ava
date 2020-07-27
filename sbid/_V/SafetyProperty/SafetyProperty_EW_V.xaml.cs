@@ -15,6 +15,7 @@ namespace sbid._V
             this.AttachDevTools();
 #endif
             this.get_control_reference();
+            this.init_event();
         }
 
         private void InitializeComponent()
@@ -22,7 +23,9 @@ namespace sbid._V
             AvaloniaXamlLoader.Load(this);
         }
 
-        #region 按钮命令
+
+
+        #region 按钮命令（核心功能）
 
         public void Add_CTL()
         {
@@ -117,23 +120,138 @@ namespace sbid._V
 
         #endregion
 
+        #region 按钮命令（帮用户写公式的按钮）
+
+        public void Append_CTL_PropNav()
+        {
+            TreeView ctlPropNav_TreeView = ControlExtensions.FindControl<TreeView>(this, nameof(ctlPropNav_TreeView));
+            if (ctlPropNav_TreeView.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要接入的属性！";
+                return;
+            }
+
+            Nav nav = (Nav)ctlPropNav_TreeView.SelectedItem;
+            string navStr = nav.Identifier + (nav.IsArray ? ("[" + nav.ArrayIndex + "]") : "");
+            while (nav.ParentNav != null)
+            {
+                nav = nav.ParentNav;
+                navStr = nav.Identifier + (nav.IsArray ? ("[" + nav.ArrayIndex + "]") : "") + "." + navStr;
+            }
+
+            ctl_TextBox.Text += navStr;
+        }
+
+        public void Append_Inv_PropNav()
+        {
+            TreeView invPropNav_TreeView = ControlExtensions.FindControl<TreeView>(this, nameof(invPropNav_TreeView));
+            if (invPropNav_TreeView.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要接入的属性！";
+                return;
+            }
+
+            Nav nav = (Nav)invPropNav_TreeView.SelectedItem;
+            string navStr = nav.Identifier + (nav.IsArray ? ("[" + nav.ArrayIndex + "]") : "");
+            while (nav.ParentNav != null)
+            {
+                nav = nav.ParentNav;
+                navStr = nav.Identifier + (nav.IsArray ? ("[" + nav.ArrayIndex + "]") : "") + "." + navStr;
+            }
+
+            invariant_TextBox.Text += navStr;
+        }
+
+        #endregion
+
         #region 资源引用
 
         private ListBox ctl_ListBox, invariant_ListBox;
         private TextBox ctl_TextBox, invariant_TextBox;
-        private ComboBox process_ComboBox, state_ComboBox;
+        private ComboBox process_CTL_ComboBox, process_Inv_ComboBox;
 
         // 获取控件引用
         private void get_control_reference()
         {
             ctl_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(ctl_ListBox));
             invariant_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(invariant_ListBox));
-            process_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(process_ComboBox));
             ctl_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(ctl_TextBox));
             invariant_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(invariant_TextBox));
+            process_CTL_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(process_CTL_ComboBox));
+            process_Inv_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(process_Inv_ComboBox));
         }
 
         public SafetyProperty_EW_VM VM { get => ((SafetyProperty_EW_VM)DataContext); }
+
+        #endregion
+
+        #region 事件
+
+        // CTL页的属性导航器的进程模板选中项变化的处理
+        private void process_CTL_ComboBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // 清空属性列表
+            VM.CTLProperties.Clear();
+            // 获取选中的Process
+            if (process_CTL_ComboBox.SelectedItem == null)
+            {
+                return;
+            }
+            Process process = (Process)process_CTL_ComboBox.SelectedItem;
+            // 构造这个属性列表
+            foreach (Attribute attribute in process.Attributes)
+            {
+                Nav nav;
+                if (attribute.Type is UserType) // 引用类型
+                {
+                    nav = ReferenceNav.build(attribute, null);
+                }
+                else // 值类型
+                {
+                    nav = new ValueNav(attribute, null);
+                }
+                VM.CTLProperties.Add(nav);
+            }
+        }
+
+        // 不变性页的属性导航器的进程模板选中项变化的处理
+        private void process_Inv_ComboBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // 清空属性列表
+            VM.InvProperties.Clear();
+            // 获取选中的Process
+            if (process_Inv_ComboBox.SelectedItem == null)
+            {
+                return;
+            }
+            Process process = (Process)process_Inv_ComboBox.SelectedItem;
+            // 构造这个属性列表
+            foreach (Attribute attribute in process.Attributes)
+            {
+                Nav nav;
+                if (attribute.Type is UserType) // 引用类型
+                {
+                    nav = ReferenceNav.build(attribute, null);
+                }
+                else // 值类型
+                {
+                    nav = new ValueNav(attribute, null);
+                }
+                VM.InvProperties.Add(nav);
+            }
+        }
+
+        #endregion
+
+        #region 初始化
+
+        // 初始化.cs文件中的事件处理方法,一些无法在xaml中绑定的部分在这里绑定
+        private void init_event()
+        {
+            // 绑定进程模板ComboBox选中项变化的处理方法
+            process_CTL_ComboBox.SelectionChanged += process_CTL_ComboBox_Changed;
+            process_Inv_ComboBox.SelectionChanged += process_Inv_ComboBox_Changed;
+        }
 
         #endregion
     }
