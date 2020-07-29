@@ -124,6 +124,13 @@ namespace sbid._V
 
         public void Append_CTL_PropNav()
         {
+            if (process_CTL_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定进程模板！";
+                return;
+            }
+            Process process = (Process)process_CTL_ComboBox.SelectedItem;
+
             TreeView ctlPropNav_TreeView = ControlExtensions.FindControl<TreeView>(this, nameof(ctlPropNav_TreeView));
             if (ctlPropNav_TreeView.SelectedItem == null)
             {
@@ -138,12 +145,20 @@ namespace sbid._V
                 nav = nav.ParentNav;
                 navStr = nav.Identifier + (nav.IsArray ? ("[" + nav.ArrayIndex + "]") : "") + "." + navStr;
             }
+            navStr = process.RefName.Content + "." + navStr;
 
-            ctl_TextBox.Text += navStr;
+            Append_CTL_Symbol(navStr);
         }
 
         public void Append_Inv_PropNav()
         {
+            if (process_Inv_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定进程模板！";
+                return;
+            }
+            Process process = (Process)process_Inv_ComboBox.SelectedItem;
+
             TreeView invPropNav_TreeView = ControlExtensions.FindControl<TreeView>(this, nameof(invPropNav_TreeView));
             if (invPropNav_TreeView.SelectedItem == null)
             {
@@ -158,8 +173,57 @@ namespace sbid._V
                 nav = nav.ParentNav;
                 navStr = nav.Identifier + (nav.IsArray ? ("[" + nav.ArrayIndex + "]") : "") + "." + navStr;
             }
+            navStr = process.RefName.Content + "." + navStr;
 
-            invariant_TextBox.Text += navStr;
+            Append_Inv_Symbol(navStr);
+        }
+
+        #endregion
+
+        #region 私有工具
+
+        // 向ctl_TextBox中插入字符串symbol
+        // 在光标所在位置插入symbol，如果选中了一段，将这段替换为插入的symbol
+        private void Append_CTL_Symbol(string symbol)
+        {
+            if (ctl_TextBox.Text == null)
+            {
+                ctl_TextBox.Text = "";
+            }
+            int start = ctl_TextBox.SelectionStart;
+            int end = ctl_TextBox.SelectionEnd;
+            // 可能会鼠标从右往左选择，所以要判断交换两者的值，保证start在左边
+            if (end < start)
+            {
+                int tmp = start;
+                start = end;
+                end = tmp;
+            }
+            string leftStr = ctl_TextBox.Text.Substring(0, start);
+            string rightStr = ctl_TextBox.Text.Substring(end);
+            ctl_TextBox.Text = leftStr + symbol + rightStr;
+            ctl_TextBox.SelectionStart = ctl_TextBox.SelectionEnd = start + symbol.Length;
+        }
+
+        // 同上，只是针对Invarint的文本框
+        private void Append_Inv_Symbol(string symbol)
+        {
+            if (invariant_TextBox.Text == null)
+            {
+                invariant_TextBox.Text = "";
+            }
+            int start = invariant_TextBox.SelectionStart;
+            int end = invariant_TextBox.SelectionEnd;
+            if (end < start)
+            {
+                int tmp = start;
+                start = end;
+                end = tmp;
+            }
+            string leftStr = invariant_TextBox.Text.Substring(0, start);
+            string rightStr = invariant_TextBox.Text.Substring(end);
+            invariant_TextBox.Text = leftStr + symbol + rightStr;
+            invariant_TextBox.SelectionStart = invariant_TextBox.SelectionEnd = start + symbol.Length;
         }
 
         #endregion
