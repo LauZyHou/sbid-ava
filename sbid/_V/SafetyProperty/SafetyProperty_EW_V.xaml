@@ -119,12 +119,7 @@
             <Button Grid.Column="6" Command="{Binding $parent[Window].Append_CTL_Symbol}" CommandParameter="(">(</Button>
             <Button Grid.Column="7" Command="{Binding $parent[Window].Append_CTL_Symbol}" CommandParameter=")">)</Button>
           </Grid>
-          <Grid Grid.Row="6" ColumnDefinitions="1*,1*,1*,5*">
-            <Button Grid.Column="0" Command="{Binding $parent[Window].Append_CTL_Symbol}" CommandParameter="&amp;">&amp;</Button>
-            <Button Grid.Column="1" Command="{Binding $parent[Window].Append_CTL_Symbol}" CommandParameter="|">|</Button>
-            <Button Grid.Column="2" Command="{Binding $parent[Window].Append_CTL_Symbol}" CommandParameter="!">!</Button>
-            <TextBlock Grid.Column="3" Text="CTL公式：" FontSize="17" TextAlignment="Center" VerticalAlignment="Center"/>
-          </Grid>
+          <TextBlock Grid.Row="6" Text="CTL公式：" FontSize="17" VerticalAlignment="Center"/>
           <TextBox Grid.Row="7" Name="ctl_TextBox" Text="{Binding #ctl_ListBox.SelectedItem.Content, Mode=OneWay}"/>
           <Grid Grid.Row="8" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*">
             <Button Grid.Column="1" Command="{Binding $parent[Window].Add_CTL}">添加</Button>
@@ -199,12 +194,7 @@
             <Button Grid.Column="6" Command="{Binding $parent[Window].Append_Inv_Symbol}" CommandParameter="(">(</Button>
             <Button Grid.Column="7" Command="{Binding $parent[Window].Append_Inv_Symbol}" CommandParameter=")">)</Button>
           </Grid>
-          <Grid Grid.Row="5" ColumnDefinitions="1*,1*,1*,5*">
-            <Button Grid.Column="0" Command="{Binding $parent[Window].Append_Inv_Symbol}" CommandParameter="&amp;">&amp;</Button>
-            <Button Grid.Column="1" Command="{Binding $parent[Window].Append_Inv_Symbol}" CommandParameter="|">|</Button>
-            <Button Grid.Column="2" Command="{Binding $parent[Window].Append_Inv_Symbol}" CommandParameter="!">!</Button>
-            <TextBlock Grid.Column="3" Text="不变性公式：" FontSize="17" TextAlignment="Center" VerticalAlignment="Center"/>
-          </Grid>
+          <TextBlock Grid.Row="5" Text="不变性公式：" FontSize="17" VerticalAlignment="Center"/>
           <TextBox Grid.Row="6" Name="invariant_TextBox" Text="{Binding #invariant_ListBox.SelectedItem.Content, Mode=OneWay}"/>
           <Grid Grid.Row="7" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*">
             <Button Grid.Column="1" Command="{Binding $parent[Window].Add_Invariant}">添加</Button>
