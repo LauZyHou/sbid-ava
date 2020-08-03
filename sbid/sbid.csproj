@@ -34,6 +34,7 @@
     <AvaloniaResource Remove="_V\Network\Connector_V.xaml" />
     <AvaloniaResource Remove="_V\Process\Process_EW_V.xaml" />
     <AvaloniaResource Remove="_V\Process\Process_V.xaml" />
+    <AvaloniaResource Remove="_V\ResultShow\PropertyVerify_SW_V.xaml" />
     <AvaloniaResource Remove="_V\SafetyProperty\SafetyProperty_EW_V.xaml" />
     <AvaloniaResource Remove="_V\SafetyProperty\SafetyProperty_V.xaml" />
     <AvaloniaResource Remove="_V\SecurityProperty\SecurityProperty_EW_V.xaml" />
@@ -95,6 +96,7 @@
     <None Remove="_V\Network\Connector_V.xaml" />
     <None Remove="_V\Process\Process_EW_V.xaml" />
     <None Remove="_V\Process\Process_V.xaml" />
+    <None Remove="_V\ResultShow\PropertyVerify_SW_V.xaml" />
     <None Remove="_V\SafetyProperty\SafetyProperty_EW_V.xaml" />
     <None Remove="_V\SafetyProperty\SafetyProperty_V.xaml" />
     <None Remove="_V\SecurityProperty\SecurityProperty_EW_V.xaml" />
@@ -144,8 +146,12 @@
     <PackageReference Include="Avalonia" Version="0.9.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.0" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.0" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="_V\ResultShow\PropertyVerify_SW_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Include="_V\SidePanel\AttackTree_P_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

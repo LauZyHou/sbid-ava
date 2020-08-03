@@ -36,6 +36,10 @@
         <MenuItem Header="新CTL语法树(CTL AST)" Command="{Binding AddCTLTree}"/>
         <MenuItem Header="新序列图(Sequence Diagram)" Command="{Binding AddSequenceDiagram}"/>
       </MenuItem>
+      <MenuItem Header="操作">
+        <MenuItem Header="性质验证" Command="{Binding PropertyVerify}"/>
+        <MenuItem Header="模拟运行"/>
+      </MenuItem>
       <MenuItem Header="帮助">
         <MenuItem Header="使用手册" IsEnabled="False"/>
         <MenuItem Header="关于SBID-AVA" IsEnabled="False"/>

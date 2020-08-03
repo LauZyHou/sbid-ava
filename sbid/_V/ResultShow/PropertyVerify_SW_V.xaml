@@ -1,0 +1,28 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="400" Width="600" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.PropertyVerify_SW_V"
+        Title="PropertyVerify_SW_V">
+  <Design.DataContext>
+    <vm:PropertyVerify_SW_VM/>
+  </Design.DataContext>
+  
+  <StackPanel>
+    <DataGrid Items="{Binding People}" IsReadOnly="True">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="First Name"
+                            Binding="{Binding FirstName}"
+                            Width="2*" />
+        <DataGridTextColumn Header="Last Name"
+                            Binding="{Binding LastName}"
+                            Width="2*" />
+        <DataGridTextColumn Header="Department"
+                            Binding="{Binding DepartmentNumber}"
+                            Width="*" />
+      </DataGrid.Columns>
+    </DataGrid>
+  </StackPanel>
+</Window>

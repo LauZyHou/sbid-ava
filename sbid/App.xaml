@@ -9,14 +9,9 @@
   <Application.Styles>
     <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
     <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Default.xaml"/>
     <Style Selector="Window">
       <Setter Property="FontFamily" Value="avares://sbid/Assets/Fonts/STZHONGS2.ttf#STZhongsong"/>
     </Style>
-    <!--<Style Selector="TextBlock">
-      <Setter Property="FontFamily" Value="avares://sbid/Assets/Fonts/STZHONGS2.ttf#STZhongsong"/>
-    </Style>
-    <Style Selector="TextBox">
-      <Setter Property="FontFamily" Value="avares://sbid/Assets/Fonts/STZHONGS2.ttf#STZhongsong"/>
-    </Style>-->
   </Application.Styles>
 </Application>

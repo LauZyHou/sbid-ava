@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using System.Threading.Tasks;
 using System.Xml;
 using Avalonia.Media;
+using sbid._V;
 
 namespace sbid._VM
 {
@@ -271,6 +272,17 @@ namespace sbid._VM
             }
 
             #endregion
+        }
+
+        // 按下【性质验证】按钮
+        public void PropertyVerify()
+        {
+            // todo
+            PropertyVerify_SW_V propertyVerify_SW_V = new PropertyVerify_SW_V()
+            {
+                DataContext = new PropertyVerify_SW_VM()
+            };
+            propertyVerify_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
         #endregion
