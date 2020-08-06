@@ -9,19 +9,22 @@
   <Design.DataContext>
     <vm:PropertyVerify_SW_VM/>
   </Design.DataContext>
-  
+
   <StackPanel>
-    <DataGrid Items="{Binding People}" IsReadOnly="True">
+    <DataGrid Items="{Binding PropertiesVerified}" IsEnabled="False" IsReadOnly="True">
       <DataGrid.Columns>
-        <DataGridTextColumn Header="First Name"
-                            Binding="{Binding FirstName}"
-                            Width="2*" />
-        <DataGridTextColumn Header="Last Name"
-                            Binding="{Binding LastName}"
-                            Width="2*" />
-        <DataGridTextColumn Header="Department"
-                            Binding="{Binding DepartmentNumber}"
-                            Width="*" />
+        <DataGridTextColumn Header="性质"
+                            Binding="{Binding Type}"
+                            Width="1*" />
+        <DataGridTextColumn Header="描述"
+                            Binding="{Binding Description}"
+                            Width="4*" />
+        <DataGridTextColumn Header="验证结果"
+                            Binding="{Binding Passed}"
+                            Width="1*" />
+        <DataGridTextColumn Header="反例"
+                              Binding="{Binding CounterExample}"
+                              Width="4*" />
       </DataGrid.Columns>
     </DataGrid>
   </StackPanel>

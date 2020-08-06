@@ -8,44 +8,23 @@ namespace sbid._VM
 {
     public class PropertyVerify_SW_VM : ViewModelBase
     {
-        public ObservableCollection<Person> People { get; }
+        public ObservableCollection<PropertyVerified> PropertiesVerified { get; }
 
         public PropertyVerify_SW_VM()
         {
-            People = new ObservableCollection<Person>(GenerateMockPeopleTable());
+            PropertiesVerified = new ObservableCollection<PropertyVerified>(GenerateMockPropertiesVerified());
         }
 
-        private IEnumerable<Person> GenerateMockPeopleTable()
+        private IEnumerable<PropertyVerified> GenerateMockPropertiesVerified()
         {
-            var defaultPeople = new List<Person>()
+            List<PropertyVerified> defaultPropertiesVerified = new List<PropertyVerified>()
             {
-                new Person()
-                {
-                    FirstName = "Pat",
-                    LastName = "Patterson",
-                    EmployeeNumber = 1010,
-                    DepartmentNumber = 100,
-                    DeskLocation = "B3F3R5T7"
-                },
-                new Person()
-                {
-                    FirstName = "Jean",
-                    LastName = "Jones",
-                    EmployeeNumber = 973,
-                    DepartmentNumber = 200,
-                    DeskLocation = "B1F1R2T3"
-                },
-                new Person()
-                {
-                    FirstName = "Terry",
-                    LastName = "Tompson",
-                    EmployeeNumber = 300,
-                    DepartmentNumber = 100,
-                    DeskLocation = "B3F2R10T1"
-                }
+                new PropertyVerified("机密性", "P1.msg", true, "-"),
+                new PropertyVerified("可用性", "P2.State6", true, "-"),
+                new PropertyVerified("完整性", "P1.s1.msg | P2.s2.msg", false, "-"),
+                new PropertyVerified("机密性", "P1.S1.msg.auth | P2.S2.msg.auth", true, "-")
             };
-
-            return defaultPeople;
+            return defaultPropertiesVerified;
         }
     }
 }
