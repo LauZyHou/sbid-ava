@@ -32,25 +32,11 @@ namespace sbid._VM
                 }
             };
             // 将所有的Process也传入,作为ProcessMethod的可选进程
-            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem.UserControlVMs)
+            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
             {
                 if (item is Process_VM)
                 {
                     Process_VM processVM = (Process_VM)item;
-
-                    // 计算Process对应状态机的所有状态,写入Process附加的States字段中
-                    /*
-                    processVM.Process.States = new ObservableCollection<State>();
-                    foreach (ViewModelBase vm in processVM.ProcessToSM_P_VM.StateMachinePVMs[0].UserControlVMs)
-                    {
-                        if (vm is State_VM)
-                        {
-                            State_VM stateVM = (State_VM)vm;
-                            processVM.Process.States.Add(stateVM.State);
-                        }
-                    }
-                    */
-
                     ((SafetyProperty_EW_VM)safetyPropertyEWV.DataContext).Processes.Add(processVM.Process);
                 }
             }

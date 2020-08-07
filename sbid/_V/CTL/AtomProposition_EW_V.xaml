@@ -3,7 +3,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Width="240" Height="75" WindowStartupLocation="CenterOwner"
+        xmlns:m="clr-namespace:sbid._M;assembly=sbid"
+        Width="240" Height="240" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.AtomProposition_EW_V"
         Title="编辑原子命题">
 
@@ -11,8 +12,77 @@
     <vm:AtomProposition_EW_VM/>
   </Design.DataContext>
 
-  <StackPanel Margin="10">
-    <TextBlock Text="原子命题名称：" FontSize="17"/>
-    <TextBox Text="{Binding AtomProposition.RefName.Content, Mode=TwoWay}" FontSize="17"/>
-  </StackPanel>
+  <Window.Styles>
+    <Style Selector="Button">
+      <Setter Property="Focusable" Value="false"/>
+    </Style>
+    <!--树形控件样式-->
+    <Style Selector="TreeView TextBlock">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style Selector="TreeView TextBox">
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Foreground" Value="Blue"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+      <Setter Property="BorderBrush" Value="{x:Null}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="24,*,24,24,24,24" Margin="7">
+    <Grid Grid.Row="0" ColumnDefinitions="100,*">
+      <TextBlock Grid.Column="0" Text="属性导航器：" FontSize="17"/>
+      <ComboBox Grid.Column="1" Name="process_ComboBox" Items="{Binding Processes}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding RefName.Content}"/>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </Grid>
+    <TreeView Grid.Row="1" Name="propNav_TreeView" Items="{Binding Properties}">
+      <TreeView.DataTemplates>
+        <!--引用类型可展开-->
+        <TreeDataTemplate DataType="m:ReferenceNav" ItemsSource="{Binding ChildrenNav}">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding .}"/>
+            <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+            <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+            <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+          </StackPanel>
+        </TreeDataTemplate>
+        <!--值类型为叶子-->
+        <DataTemplate DataType="m:ValueNav">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding .}"/>
+            <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+            <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+            <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+          </StackPanel>
+        </DataTemplate>
+      </TreeView.DataTemplates>
+    </TreeView>
+    <Button Grid.Row="2" Command="{Binding $parent[Window].Append_PropNav}">接入</Button>
+    <Grid Grid.Row="3" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
+      <Button Grid.Column="0" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="+">+</Button>
+      <Button Grid.Column="1" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="-">-</Button>
+      <Button Grid.Column="2" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="*">*</Button>
+      <Button Grid.Column="3" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="/">/</Button>
+      <Button Grid.Column="4" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="=">=</Button>
+      <Button Grid.Column="5" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="&gt;">&gt;</Button>
+      <Button Grid.Column="6" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="&lt;">&lt;</Button>
+      <Button Grid.Column="7" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="&gt;=">&gt;=</Button>
+    </Grid>
+    <Grid Grid.Row="4" ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*">
+      <TextBlock Grid.Column="0" Grid.ColumnSpan="4" Text="原子命题：" FontSize="17" VerticalAlignment="Center"/>
+      <Button Grid.Column="4" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="&lt;=">&lt;=</Button>
+      <Button Grid.Column="5" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="≠">≠</Button>
+      <Button Grid.Column="6" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter="(">(</Button>
+      <Button Grid.Column="7" Command="{Binding $parent[Window].Append_Symbol}" CommandParameter=")">)</Button>
+    </Grid>
+    <TextBox Grid.Row="5" Name="ap_TextBox" Text="{Binding AtomProposition.RefName.Content, Mode=TwoWay}"/>
+  </Grid>  
 </Window>

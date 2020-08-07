@@ -29,5 +29,7 @@ namespace sbid._M
         public bool Passed { get => passed; set => passed = value; }
         // 反例
         public string CounterExample { get => counterExample; set => counterExample = value; }
+        // 是否通过的字符串描述
+        public string PassedSymbol { get => passed ? "√" : "×"; }
     }
 }

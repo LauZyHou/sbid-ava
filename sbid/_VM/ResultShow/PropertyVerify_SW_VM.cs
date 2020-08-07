@@ -8,13 +8,15 @@ namespace sbid._VM
 {
     public class PropertyVerify_SW_VM : ViewModelBase
     {
-        public ObservableCollection<PropertyVerified> PropertiesVerified { get; }
+        // 要展示的性质验证结果
+        public ObservableCollection<PropertyVerified> PropertiesVerified { get; } 
 
         public PropertyVerify_SW_VM()
         {
             PropertiesVerified = new ObservableCollection<PropertyVerified>(GenerateMockPropertiesVerified());
         }
 
+        // Mock数据,TODO替换为从可执行文件的执行结果中读取数据
         private IEnumerable<PropertyVerified> GenerateMockPropertiesVerified()
         {
             List<PropertyVerified> defaultPropertiesVerified = new List<PropertyVerified>()

@@ -60,6 +60,17 @@ namespace sbid._VM
                     AtomProposition = atomProposition
                 }
             };
+
+            // 将所有的Process也传入，作为原子命题编辑窗口中属性导航器的可选进程
+            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
+            {
+                if (item is Process_VM)
+                {
+                    Process_VM processVM = (Process_VM)item;
+                    ((AtomProposition_EW_VM)apEWV.DataContext).Processes.Add(processVM.Process);
+                }
+            }
+
             apEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了原子命题的编辑窗体";
         }

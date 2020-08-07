@@ -23,8 +23,6 @@ namespace sbid._V
             AvaloniaXamlLoader.Load(this);
         }
 
-
-
         #region 按钮命令（核心功能）
 
         public void Add_CTL()
@@ -245,7 +243,7 @@ namespace sbid._V
             process_Inv_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(process_Inv_ComboBox));
         }
 
-        public SafetyProperty_EW_VM VM { get => ((SafetyProperty_EW_VM)DataContext); }
+        public SafetyProperty_EW_VM VM { get => (SafetyProperty_EW_VM)DataContext; }
 
         #endregion
 

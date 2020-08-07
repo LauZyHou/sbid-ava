@@ -10,6 +10,17 @@
     <vm:PropertyVerify_SW_VM/>
   </Design.DataContext>
 
+  <Window.Styles>
+    <!--表格中单元格文字居中-->
+    <Style Selector="DataGrid TextBlock">
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+    <!--表头居中-->
+    <Style Selector="DataGridColumnHeader">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+  </Window.Styles>
+
   <StackPanel>
     <DataGrid Items="{Binding PropertiesVerified}" IsEnabled="False" IsReadOnly="True">
       <DataGrid.Columns>
@@ -20,7 +31,7 @@
                             Binding="{Binding Description}"
                             Width="4*" />
         <DataGridTextColumn Header="验证结果"
-                            Binding="{Binding Passed}"
+                            Binding="{Binding PassedSymbol}"
                             Width="1*" />
         <DataGridTextColumn Header="反例"
                               Binding="{Binding CounterExample}"
