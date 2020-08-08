@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="400" Width="600" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.PropertyVerify_SW_V"
-        Title="PropertyVerify_SW_V">
+        Title="性质验证结果">
   <Design.DataContext>
     <vm:PropertyVerify_SW_VM/>
   </Design.DataContext>

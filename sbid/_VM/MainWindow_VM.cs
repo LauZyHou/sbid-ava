@@ -277,12 +277,23 @@ namespace sbid._VM
         // 按下【性质验证】按钮
         public void PropertyVerify()
         {
-            // todo
+            // todo 调用后端
             PropertyVerify_SW_V propertyVerify_SW_V = new PropertyVerify_SW_V()
             {
                 DataContext = new PropertyVerify_SW_VM()
             };
             propertyVerify_SW_V.ShowDialog(ResourceManager.mainWindowV);
+        }
+
+        // 按下【模拟运行】按钮
+        public void SimulationRun()
+        {
+            // todo 调用后端
+            SimulationRun_SW_V simulationRun_SW_V = new SimulationRun_SW_V()
+            {
+                DataContext = new SimulationRun_SW_VM()
+            };
+            simulationRun_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
         #endregion

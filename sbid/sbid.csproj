@@ -35,6 +35,7 @@
     <AvaloniaResource Remove="_V\Process\Process_EW_V.xaml" />
     <AvaloniaResource Remove="_V\Process\Process_V.xaml" />
     <AvaloniaResource Remove="_V\ResultShow\PropertyVerify_SW_V.xaml" />
+    <AvaloniaResource Remove="_V\ResultShow\SimulationRun_SW_V.xaml" />
     <AvaloniaResource Remove="_V\SafetyProperty\SafetyProperty_EW_V.xaml" />
     <AvaloniaResource Remove="_V\SafetyProperty\SafetyProperty_V.xaml" />
     <AvaloniaResource Remove="_V\SecurityProperty\SecurityProperty_EW_V.xaml" />
@@ -97,6 +98,7 @@
     <None Remove="_V\Process\Process_EW_V.xaml" />
     <None Remove="_V\Process\Process_V.xaml" />
     <None Remove="_V\ResultShow\PropertyVerify_SW_V.xaml" />
+    <None Remove="_V\ResultShow\SimulationRun_SW_V.xaml" />
     <None Remove="_V\SafetyProperty\SafetyProperty_EW_V.xaml" />
     <None Remove="_V\SafetyProperty\SafetyProperty_V.xaml" />
     <None Remove="_V\SecurityProperty\SecurityProperty_EW_V.xaml" />
@@ -150,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_V\ResultShow\PropertyVerify_SW_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="_V\ResultShow\SimulationRun_SW_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="_V\SidePanel\AttackTree_P_V.xaml">
