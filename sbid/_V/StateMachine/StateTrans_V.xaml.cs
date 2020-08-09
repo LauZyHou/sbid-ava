@@ -43,7 +43,7 @@ namespace sbid._V
                 }
             });
         }
-
+        
         #endregion
 
         public StateTrans_VM VM { get => (StateTrans_VM)DataContext; }

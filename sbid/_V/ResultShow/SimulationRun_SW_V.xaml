@@ -3,11 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Height="400" Width="600" WindowStartupLocation="CenterOwner"
+        WindowState="Maximized" CanResize="False"
         x:Class="sbid._V.SimulationRun_SW_V"
         Title="协议模拟运行">
-  <Grid RowDefinitions="30,30,*">
+  <Grid RowDefinitions="30,*">
     <Button Grid.Row="0">模拟运行</Button>
-    <TextBlock Grid.Row="1" Text="{Binding #canvas.Bounds.Width}"/>
-    <Canvas Grid.Row="2" Name="canvas" Background="AliceBlue"/>
+    <Canvas Grid.Row="1" Name="canvas" Background="White"/>
   </Grid>
 </Window>
