@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Height="400" Width="600" WindowStartupLocation="CenterOwner"
+        Height="400" Width="800" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.PropertyVerify_SW_V"
         Title="性质验证结果">
   <Design.DataContext>
@@ -14,6 +14,7 @@
     <!--表格中单元格文字居中-->
     <Style Selector="DataGrid TextBlock">
       <Setter Property="TextAlignment" Value="Center"/>
+      <Setter Property="FontSize" Value="18"/>
     </Style>
     <!--表头居中-->
     <Style Selector="DataGridColumnHeader">
@@ -26,16 +27,16 @@
       <DataGrid.Columns>
         <DataGridTextColumn Header="性质"
                             Binding="{Binding Type}"
-                            Width="1*" />
+                            Width="70" />
         <DataGridTextColumn Header="描述"
                             Binding="{Binding Description}"
-                            Width="4*" />
+                            Width="1*" />
         <DataGridTextColumn Header="验证结果"
                             Binding="{Binding PassedSymbol}"
-                            Width="1*" />
+                            Width="80" />
         <DataGridTextColumn Header="反例"
                               Binding="{Binding CounterExample}"
-                              Width="4*" />
+                              Width="1*" />
       </DataGrid.Columns>
     </DataGrid>
   </StackPanel>

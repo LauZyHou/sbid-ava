@@ -100,8 +100,22 @@ namespace sbid._V
             textBlock.FontSize = fontSize;
             textBlock.Background = Brushes.AntiqueWhite;
 
+            // 计算文字占用的横向距离，以用来将其对齐中间位置
+            double textWidth = 0;
+            foreach (char c in text)
+            {
+                if (c > 127) // 非ASCII字（如中文字）加完整
+                    textWidth += fontSize;
+                else if (c >= 'A' && c <= 'Z') // 大写字母
+                    textWidth += fontSize * 2.0 / 3;
+                else if (c >= 'a' && c <= 'z') // 小写字母
+                    textWidth += fontSize * 9.0 / 16;
+                else // 其它的
+                    textWidth += fontSize * 10.0 / 16;
+            }
+
             // 向左上角偏移量
-            double dx = text.Length * fontSize / 2;
+            double dx = textWidth / 2;
             double dy = fontSize / 2;
 
             Canvas.SetLeft(textBlock, x - dx);
