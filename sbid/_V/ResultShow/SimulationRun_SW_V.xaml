@@ -2,10 +2,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="400" Width="600" WindowStartupLocation="CenterOwner"
         WindowState="Maximized" CanResize="False"
         x:Class="sbid._V.SimulationRun_SW_V"
         Title="协议模拟运行">
+  <Design.DataContext>
+    <vm:SimulationRun_SW_VM/>
+  </Design.DataContext>
+
   <Grid RowDefinitions="30,*">
     <Button Grid.Row="0">模拟运行</Button>
     <Canvas Grid.Row="1" Name="canvas" Background="White"/>

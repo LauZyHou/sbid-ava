@@ -49,11 +49,16 @@ namespace sbid._V
                 // 只有一条竖线时居中
                 draw_line_vertical(CanvasWidth / 2, deltaY, CanvasHeight - deltaY);
                 draw_text(processNames[0], CanvasWidth / 2, deltaY);
+                // 记录这个竖线的横向位置
+                processStartXs.Clear();
+                processStartXs.Add(CanvasWidth / 2);
             }
             else
             {
                 // 计算横向竖线间隔，然后依次绘制
+                // 注意，绘制时要记录startX的位置
                 double gapX = (CanvasWidth - 2 * deltaX) / (processNum - 1);
+                processStartXs.Clear();
                 for (int i = 0; i < processNum; i++)
                 {
                     double startX = deltaX + gapX * i;
@@ -61,7 +66,11 @@ namespace sbid._V
                     double endY = CanvasHeight - deltaY;
                     draw_line_vertical(startX, startY, endY);
                     draw_text(processNames[i], startX, startY);
+                    // 记录这个竖线的横向位置
+                    processStartXs.Add(startX);
                 }
+                // TODO 删掉下面这行测试内容
+                draw_arrow_horizontal(400, processStartXs[0], processStartXs[processStartXs.Count - 1]);
             }
         }
 
@@ -71,10 +80,21 @@ namespace sbid._V
             draw_line(X, startY, X, endY);
         }
 
-        // 画横直线
-        private void draw_line_horizontal(double Y, double startX, double endX)
+        // 画横箭头
+        private void draw_arrow_horizontal(double Y, double startX, double endX)
         {
             draw_line(startX, Y, endX, Y);
+            // 判断箭头是向左还是向右的
+            if (startX > endX) // 向左
+            {
+                draw_line(endX, Y, endX + 10, Y + 10);
+                draw_line(endX, Y, endX + 10, Y - 10);
+            }
+            else // 向右
+            {
+                draw_line(endX, Y, endX - 10, Y + 10);
+                draw_line(endX, Y, endX - 10, Y - 10);
+            }
         }
 
         // 画直线
@@ -163,7 +183,10 @@ namespace sbid._V
         public double CanvasWidth { get => canvas.Bounds.Width; }
         public double CanvasHeight { get => canvas.Bounds.Height; }
 
+        // 存放所有进程的名字
         private List<string> processNames = new List<string>();
+        // 记录进程的startX位置
+        private List<double> processStartXs = new List<double>();
 
         // 获取当前协议下所有的进程模板名字
         private void get_process_names()
