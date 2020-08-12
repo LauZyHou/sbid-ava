@@ -12,7 +12,7 @@
 
   <UserControl.Styles>
     <!--ItemsControl的样式-->
-    <Style Selector="ItemsControl">
+    <Style Selector="ListBox#panel">
       <!--使用Canvas作面板-->
       <Setter Property="ItemsPanel">
         <Setter.Value>
@@ -39,9 +39,21 @@
       </Setter>
     </Style>
     <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
-    <Style Selector="ItemsControl > ContentPresenter">
+    <Style Selector="ListBox#panel ListBoxItem">
+      <Setter Property="Focusable" Value="False"/>
       <Setter Property="Canvas.Left" Value="{Binding X}"/>
       <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+    </Style>
+    <Style Selector="ListBox#panel ListBoxItem > ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="IsHitTestVisible" Value="{Binding IsNetWorkItemVM}"/>
+    </Style>
+    <!--禁止在鼠标悬停或者点击时显色-->
+    <Style Selector="ListBox#panel ListBoxItem:selected > ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="ListBox#panel ListBoxItem:pointerover > ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
     </Style>
   </UserControl.Styles>
 
@@ -53,7 +65,7 @@
       <ComboBox Name="seqMessage_ComboBox" Width="140" Background="WhiteSmoke" SelectedItem="{Binding SeqMessage, Mode=TwoWay}"/>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="700" Width="2000"/>
+      <ListBox Name="panel" Items="{Binding UserControlVMs}" Height="700" Width="2000"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>
