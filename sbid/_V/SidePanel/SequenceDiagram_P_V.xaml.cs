@@ -40,7 +40,6 @@ namespace sbid._V
         // 无法直接获取到鼠标位置，必须在鼠标相关事件回调方法里取得
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
-            base.OnPointerPressed(e);
             // 特别注意，要取得的不是相对这个ClassDiagram_P_V的位置，而是相对于里面的内容控件
             ItemsControl panel = ControlExtensions.FindControl<ItemsControl>(this, "panel");
             // 右键在这个面板上按下时
