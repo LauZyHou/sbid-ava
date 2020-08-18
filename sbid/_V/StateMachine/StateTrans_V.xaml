@@ -51,6 +51,7 @@
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑转移关系" Command="{Binding EditStateTrans}"/>
+        <MenuItem Header="删除" Command="{Binding DeleteStateTrans}"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>
