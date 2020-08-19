@@ -16,9 +16,6 @@
     <Style Selector="StackPanel > Button">
       <Setter Property="Margin" Value="16, 2"/>
     </Style>
-    <Style Selector="Button">
-      <Setter Property="Focusable" Value="false"/>
-    </Style>
     <!--树形控件样式-->
     <Style Selector="TreeView TextBlock">
       <Setter Property="FontSize" Value="12"/>
@@ -32,6 +29,28 @@
       <Setter Property="TextAlignment" Value="Center"/>
       <Setter Property="BorderBrush" Value="{x:Null}"/>
       <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <!--防光标被其它控件捕获-->
+    <Style Selector="TreeView">
+      <Setter Property="Focusable" Value="false"/>
+    </Style>
+    <Style Selector="TreeView TreeViewItem">
+      <Setter Property="Focusable" Value="false"/>
+    </Style>
+    <Style Selector="Border">
+      <Setter Property="Focusable" Value="false"/>
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Focusable" Value="false"/>
+    </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="Focusable" Value="false"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Focusable" Value="false"/>
+    </Style>
+    <Style Selector="ComboBox ComboBoxItem">
+      <Setter Property="Focusable" Value="false"/>
     </Style>
   </Window.Styles>
 
@@ -61,21 +80,81 @@
       </StackPanel>
     </Grid>
     <!--右侧-->
-    <Grid Grid.Column="2" RowDefinitions="26,*,26,30,26,30">
+    <Grid Grid.Column="2" RowDefinitions="26,*,26,30,26,30,26,30">
       <TextBlock Grid.Row="0" Text="进程内属性导航" TextAlignment="Center"/>
       <Grid Grid.Row="1" ColumnDefinitions="30,*">
-        <Button Grid.Column="0">◄</Button>
-        <TreeView Grid.Column="1"></TreeView>
+        <Button Grid.Column="0" Command="{Binding $parent[Window].Append_PropNav}">◄</Button>
+        <TreeView Grid.Column="1" Name="propNav_TreeView" Items="{Binding Properties}">
+          <TreeView.DataTemplates>
+            <!--引用类型可展开-->
+            <TreeDataTemplate DataType="m:ReferenceNav" ItemsSource="{Binding ChildrenNav}">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding .}"/>
+                <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+                <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+                <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+              </StackPanel>
+            </TreeDataTemplate>
+            <!--值类型为叶子-->
+            <DataTemplate DataType="m:ValueNav">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding .}"/>
+                <TextBlock Text="[" IsVisible="{Binding IsArray}"/>
+                <TextBox Text="{Binding ArrayIndex, Mode=TwoWay}" IsVisible="{Binding IsArray}"/>
+                <TextBlock Text="]" IsVisible="{Binding IsArray}"/>
+              </StackPanel>
+            </DataTemplate>
+          </TreeView.DataTemplates>
+        </TreeView>
       </Grid>
-      <TextBlock Grid.Row="2" Text="类型" TextAlignment="Center"/>
+      <TextBlock Grid.Row="2" Text="协议内类型导航" TextAlignment="Center"/>
       <Grid Grid.Row="3" ColumnDefinitions="30,*">
-        <Button Grid.Column="0">◄</Button>
-        <ComboBox Grid.Column="1"></ComboBox>
+        <Button Grid.Column="0" Command="{Binding $parent[Window].Append_TypeNav}">◄</Button>
+        <ComboBox Grid.Column="1" Name="type_ComboBox" Items="{Binding Types}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Name}"/>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
       </Grid>
-      <TextBlock Grid.Row="4" Text="内置" TextAlignment="Center"/>
+      <TextBlock Grid.Row="4" Text="进程内方法导航" TextAlignment="Center"/>
       <Grid Grid.Row="5" ColumnDefinitions="30,*">
-        <Button Grid.Column="0">◄</Button>
-        <ComboBox Grid.Column="1"></ComboBox>
+        <Button Grid.Column="0" Command="{Binding $parent[Window].Append_MethodNav}">◄</Button>
+        <ComboBox Grid.Column="1" Name="method_ComboBox" Items="{Binding Process.Methods}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0} {1}({2})">
+                    <Binding Path="ReturnType.Name"/>
+                    <Binding Path="Name"/>
+                    <Binding Path="ParamString"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+      </Grid>
+      <TextBlock Grid.Row="6" Text="进程间通信导航" TextAlignment="Center"/>
+      <Grid Grid.Row="7" ColumnDefinitions="30,*">
+        <Button Grid.Column="0" Command="{Binding $parent[Window].Append_CommMethodNav}">◄</Button>
+        <ComboBox Grid.Column="1" Name="commMethod_ComboBox" Items="{Binding Process.CommMethods}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat=" {0}({1})[{2}]">
+                    <Binding Path="Name"/>
+                    <Binding Path="ParamString"/>
+                    <Binding Path="InOutSuffix"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
       </Grid>
     </Grid>
   </Grid>

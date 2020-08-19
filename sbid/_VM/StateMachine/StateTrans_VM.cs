@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using sbid._M;
 using sbid._V;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -66,13 +65,47 @@ namespace sbid._VM
         // 打开编辑窗口
         public void EditStateTrans()
         {
+            // 从所在的ProcessToSM面板取得当前状态机所在的进程模板
+            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
+
+            // 窗体VM
+            StateTrans_EW_VM stateTrans_EW_VM = new StateTrans_EW_VM()
+            {
+                StateTrans = stateTrans,
+                Process = processToSM_P_VM.Process
+            };
+
+            // 从进程模板生成属性导航
+            foreach (Attribute attribute in processToSM_P_VM.Process.Attributes)
+            {
+                Nav nav;
+                if (attribute.Type is UserType) // 引用类型
+                {
+                    nav = ReferenceNav.build(attribute, null);
+                }
+                else // 值类型
+                {
+                    nav = new ValueNav(attribute, null);
+                }
+                stateTrans_EW_VM.Properties.Add(nav);
+            }
+
+            // 窗体V
             StateTrans_EW_V stateTransEWV = new StateTrans_EW_V()
             {
-                DataContext = new StateTrans_EW_VM()
-                {
-                    StateTrans = stateTrans
-                }
+                DataContext = stateTrans_EW_VM
             };
+
+            // 将所有的Type传入，作为原子命题编辑窗口中属性导航器的可选进程
+            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
+            {
+                if (item is UserType_VM)
+                {
+                    UserType_VM userType_VM = (UserType_VM)item;
+                    ((StateTrans_EW_VM)stateTransEWV.DataContext).Types.Add(userType_VM.Type);
+                }
+            }
+
             stateTransEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了转移关系的编辑窗体";
         }
