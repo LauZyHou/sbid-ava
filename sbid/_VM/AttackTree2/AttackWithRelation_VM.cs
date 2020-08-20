@@ -14,7 +14,7 @@ namespace sbid._VM
     {
         #region 属性
 
-        private static int _id = 1;
+        public static int _id = 0;
         private AttackWithRelation attackWithRelation;
         private bool beAttacked = false;
         private bool isLocked = false;
@@ -49,14 +49,15 @@ namespace sbid._VM
         // 仅用于xaml设计
         public AttackWithRelation_VM()
         {
+            _id++;
             attackWithRelation = new AttackWithRelation("Attack" + _id);
         }
 
         // 实际使用这个构造
         public AttackWithRelation_VM(double x, double y)
         {
-            attackWithRelation = new AttackWithRelation("Attack" + _id);
             _id++;
+            attackWithRelation = new AttackWithRelation("Attack" + _id);
 
             X = x;
             Y = y;
@@ -185,12 +186,11 @@ namespace sbid._VM
                 return new List<AttackWithRelation_VM> { rootNode };
             }
             // 否则，根据当前的AttackRelation和所有子树的取值来计算
-            List<AttackWithRelation_VM> ret = null;
+            List<AttackWithRelation_VM> ret = new List<AttackWithRelation_VM>();
             switch (rootNode.AttackWithRelation.AttackRelation)
             {
-                // 或关系被攻击，则一定有孩子为true，将它们添加进来
+                // 或关系被攻击，则一定有孩子为true，将它们计算进来
                 case AttackRelation.OR:
-                    ret = new List<AttackWithRelation_VM>();
                     foreach (AttackWithRelation_VM child in childrenNodes)
                     {
                         if (child.beAttacked)
@@ -199,10 +199,13 @@ namespace sbid._VM
                         }
                     }
                     break;
-                // 与关系被攻击，则所有孩子肯定都是true，都要添加进来
+                // 与关系被攻击，则所有孩子肯定都是true，都要计算进来
                 case AttackRelation.AND:
                 case AttackRelation.SAND:
-                    ret = childrenNodes;
+                    foreach (AttackWithRelation_VM child in childrenNodes)
+                    {
+                        ret = ret.Union(find_leaf_attack(child)).ToList();
+                    }
                     break;
                 default:
                     break;
