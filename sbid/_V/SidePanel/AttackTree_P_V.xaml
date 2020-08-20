@@ -21,11 +21,12 @@
               <!--右键菜单行为-->
               <Canvas.ContextMenu>
                 <ContextMenu>
-                  <MenuItem Header="创建攻击结点" Command="{Binding $parent[UserControl].CreateAttackVM}"/>
-                  <MenuItem Header="创建[与]关系" Command="{Binding $parent[UserControl].CreateRelationVM_AND}"/>
-                  <MenuItem Header="创建[或]关系" Command="{Binding $parent[UserControl].CreateRelationVM_OR}"/>
-                  <MenuItem Header="创建[非]关系" Command="{Binding $parent[UserControl].CreateRelationVM_NEG}"/>
-                  <MenuItem Header="创建[顺序与]关系" Command="{Binding $parent[UserControl].CreateRelationVM_SAND}"/>
+                  <MenuItem Header="创建攻击树结点" Command="{Binding $parent[UserControl].CreateAttackWithRelationVM}"/>
+                  <!--<MenuItem Header="创建攻击结点" Command="{Binding $parent[UserControl].CreateAttackVM}" IsEnabled="False"/>
+                  <MenuItem Header="创建[与]关系" Command="{Binding $parent[UserControl].CreateRelationVM_AND}" IsEnabled="False"/>
+                  <MenuItem Header="创建[或]关系" Command="{Binding $parent[UserControl].CreateRelationVM_OR}" IsEnabled="False"/>
+                  <MenuItem Header="创建[非]关系" Command="{Binding $parent[UserControl].CreateRelationVM_NEG}" IsEnabled="False"/>
+                  <MenuItem Header="创建[顺序与]关系" Command="{Binding $parent[UserControl].CreateRelationVM_SAND}" IsEnabled="False"/>-->
                 </ContextMenu>
               </Canvas.ContextMenu>
             </Canvas>
@@ -50,18 +51,14 @@
 
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
-      <!--<Button Command="{Binding CreateAttackVM}">创建攻击结点</Button>
-      <Button Command="{Binding CreateRelationVM_AND}">创建[与]关系</Button>
-      <Button Command="{Binding CreateRelationVM_OR}">创建[或]关系</Button>
-      <Button Command="{Binding CreateRelationVM_NEG}">创建[非]关系</Button>
-      <Button Command="{Binding CreateRelationVM_SAND}">创建[顺序与]关系</Button>-->
       <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
       <TextBlock Text=" 当前在处理：" FontSize="17"/>
-      <TextBlock Text="{Binding HandleAttackVM.Attack.Content}" FontSize="17" Background="WhiteSmoke"/>
+      <!--<TextBlock Text="{Binding HandleAttackVM.Attack.Content}" FontSize="17" Background="WhiteSmoke"/>-->
+      <TextBlock Text="{Binding HandleAttackWithRelationVM.AttackWithRelation.Description}" FontSize="17" Background="WhiteSmoke"/>
     </StackPanel>
     <DockPanel DockPanel.Dock="Right" Width="200" Background="#EEEEEE">
       <TextBlock DockPanel.Dock="Top" Text="叶子攻击分析" FontSize="16" TextAlignment="Center"/>
-      <ListBox DockPanel.Dock="Top" Name="leafAttackVM_ListBox" Items="{Binding LeafAttackVMs}" Height="150" BorderBrush="Transparent">
+      <!--<ListBox DockPanel.Dock="Top" Name="leafAttackVM_ListBox" Items="{Binding LeafAttackVMs}" Height="150" BorderBrush="Transparent">
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal">
@@ -75,8 +72,24 @@
             </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
+      </ListBox>-->
+      <ListBox DockPanel.Dock="Top" Name="leafAttackWithRelationVM_ListBox" Items="{Binding LeafAttackWithRelationVMs}" Height="150" BorderBrush="Transparent">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="翻转 {0}">
+                    <Binding Path="AttackWithRelation.Description"/>
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
       </ListBox>
-      <Button DockPanel.Dock="Top" Command="{Binding $parent[UserControl].ReverseLeafAttackVM}">应用并重新计算</Button>
+      <!--<Button DockPanel.Dock="Top" Command="{Binding $parent[UserControl].ReverseLeafAttackVM}">应用并重新计算</Button>-->
+      <Button DockPanel.Dock="Top" Command="{Binding $parent[UserControl].ReverseLeafAttackWithRelationVM}">应用并重新计算</Button>
       <TextBlock DockPanel.Dock="Top" Text="安全策略数据库" FontSize="16" TextAlignment="Center"/>
       <ListBox DockPanel.Dock="Bottom" Items="{Binding SecurityPolicies}" BorderBrush="Transparent"/>
     </DockPanel>

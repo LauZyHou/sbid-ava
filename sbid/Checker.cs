@@ -1,7 +1,6 @@
 ﻿using sbid._M;
 using sbid._VM;
 using System.Collections;
-using System.Collections.ObjectModel;
 
 namespace sbid
 {

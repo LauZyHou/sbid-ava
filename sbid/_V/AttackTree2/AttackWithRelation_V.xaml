@@ -1,0 +1,43 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             Height="94" Width="110"
+             x:Class="sbid._V.AttackWithRelation_V">
+  <Design.DataContext>
+    <vm:AttackWithRelation_VM/>
+  </Design.DataContext>
+
+  <Grid Width="100" Height="80" RowDefinitions="5*,2*,2">
+    <Grid Grid.Row="0">
+      <Rectangle Stroke="Black" Fill="{Binding NodeColor}" StrokeThickness="2"/>
+      <!--右上角锁头图形-->
+      <v:Lock Name="lockControl" Stroke="Black" Fill="Transparent" StrokeThickness="2" Width="10" Height="10" Margin="81,0,0,34"/>
+      <!--解锁时显示这部分以盖住一小块锁圈-->
+      <Rectangle Width="5" Height="3" Fill="{Binding NodeColor}" Margin="74,0,0,39" IsVisible="{Binding !IsLocked}" IsHitTestVisible="False"/>
+      <Grid RowDefinitions="2,*" Margin="8,0">
+        <v:AttackConnector_V Grid.Row="0" DataContext="{Binding ConnectorVMs[0]}" HorizontalContentAlignment="Center" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+        <TextBlock Grid.Row="1" Text="{Binding AttackWithRelation.Description}" TextWrapping="Wrap" TextAlignment="Center"
+                   VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+      </Grid>
+    </Grid>
+    <TextBlock Grid.Row="1" Text="{Binding AttackWithRelation.AttackRelation}" TextAlignment="Center" Background="Black" Foreground="{Binding NodeColor}" FontSize="19"/>
+    <Grid Grid.Row="2" ColumnDefinitions="1*,1*,1*,1*,1*">
+      <v:AttackConnector_V Grid.Column="0" DataContext="{Binding ConnectorVMs[1]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:AttackConnector_V Grid.Column="1" DataContext="{Binding ConnectorVMs[2]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:AttackConnector_V Grid.Column="2" DataContext="{Binding ConnectorVMs[3]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:AttackConnector_V Grid.Column="3" DataContext="{Binding ConnectorVMs[4]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+      <v:AttackConnector_V Grid.Column="4" DataContext="{Binding ConnectorVMs[5]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
+    </Grid>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="编辑" Command="{Binding OpenEditWindow}"/>
+        <MenuItem Header="反转结点取值" Command="{Binding ReverseBeAttacked}"/>
+        <MenuItem Header="计算" Command="{Binding CalculateBeAttacked}"/>
+        <MenuItem Header="删除"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
+  </Grid>
+</UserControl>

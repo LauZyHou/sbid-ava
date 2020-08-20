@@ -12,7 +12,9 @@ namespace sbid._VM
         public static int _id = 0;
         private Connector_VM activeConnector;
         private Attack_VM handleAttackVM;
+        private AttackWithRelation_VM handleAttackWithRelationVM;
         private ObservableCollection<Attack_VM> leafAttackVMs = new ObservableCollection<Attack_VM>();
+        private ObservableCollection<AttackWithRelation_VM> leafAttackWithRelationVMs = new ObservableCollection<AttackWithRelation_VM>();
         private ObservableCollection<string> securityPolicies = new ObservableCollection<string>();
         private bool connectorVisible = true;
 
@@ -28,17 +30,21 @@ namespace sbid._VM
 
         // 记录刚刚计算完的Attack_VM，用于应用[叶子攻击分析]的结果
         public Attack_VM HandleAttackVM { get => handleAttackVM; set => this.RaiseAndSetIfChanged(ref handleAttackVM, value); }
+        // 【新】适合于AttackTree2目录的同一概念
+        public AttackWithRelation_VM HandleAttackWithRelationVM { get => handleAttackWithRelationVM; set => this.RaiseAndSetIfChanged(ref handleAttackWithRelationVM, value); }
 
         // 用于[叶子攻击分析]的绑定列表
         public ObservableCollection<Attack_VM> LeafAttackVMs { get => leafAttackVMs; }
+        // 【新】适合于AttackTree2目录的同一概念
+        public ObservableCollection<AttackWithRelation_VM> LeafAttackWithRelationVMs { get => leafAttackWithRelationVMs; }
 
         // 用于[安全策略数据库]的绑定列表，这里绑定的只是和LeafAttackVMs的选中项匹配的安全策略字符串
         public ObservableCollection<string> SecurityPolicies { get => securityPolicies; }
 
-        // 锚点是否可见
+        // 【作废】锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
 
-        #region 按钮命令
+        #region 按钮命令（作废）
 
         // 创建攻击结点
         public void CreateAttackVM()
@@ -84,7 +90,8 @@ namespace sbid._VM
 
         #region 攻击树上的VM操作接口
 
-        // 创建树上连线关系
+        /*
+        // 创建树上连线关系（旧，适合于AttackTree目录的有箭头连线）
         public void CreateArrowVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
             Arrow_VM arrow_VM = new Arrow_VM();
@@ -97,6 +104,22 @@ namespace sbid._VM
             connectorVM2.ConnectionVM = arrow_VM;
 
             UserControlVMs.Add(arrow_VM);
+        }
+        */
+
+        // 创建树上连线关系（新，适合于AttackTree2目录的无箭头连线）
+        public void CreateArrowVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
+        {
+            Connection_VM connection_VM = new Connection_VM();
+
+            connection_VM.Source = connectorVM1;
+            connection_VM.Dest = connectorVM2;
+
+            // 锚点反引连接关系
+            connectorVM1.ConnectionVM = connection_VM;
+            connectorVM2.ConnectionVM = connection_VM;
+
+            UserControlVMs.Add(connection_VM);
         }
 
         // 删除树上连线关系

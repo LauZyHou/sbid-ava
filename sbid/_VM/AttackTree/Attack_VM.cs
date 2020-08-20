@@ -127,7 +127,8 @@ namespace sbid._VM
             // 6. 递归求值时，出口是叶子攻击结点或锁定的攻击结点
             // 7. 在求值退栈过程中要将沿途的结点设定出计算后的值
 
-            // todo 以此结点为root，检查是否是合法的攻击树
+            // 以此结点为root，检查是否是合法的攻击树
+            
 
             // 移除[叶子攻击分析]结果列表
             attackTree_P_VM.LeafAttackVMs.Clear();
@@ -324,7 +325,7 @@ namespace sbid._VM
                                 ret = ret.Union(find_leaf_attack(attackIn)).ToList();
                             }
                         }
-                        else // 如果当前结点安全，那么安全的孩子结点有贡献
+                        else // 如果当前结点安全，那么安全的孩子结点有贡献（思考NEG存在）
                         {
                             foreach (Attack_VM attackIn in attackInList)
                             {

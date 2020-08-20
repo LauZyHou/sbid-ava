@@ -5,7 +5,7 @@ using System.Text;
 
 namespace sbid._VM
 {
-    public class Attack_EW_VM
+    public class Attack_EW_VM : ViewModelBase
     {
         private Attack attack;
 
