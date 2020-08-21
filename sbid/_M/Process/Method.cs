@@ -115,25 +115,25 @@ namespace sbid._M
             // 对称加密
             ObservableCollection<Attribute> symEncParams = new ObservableCollection<Attribute>();
             symEncParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
-            symEncParams.Add(new Attribute(Type.TYPE_INT, "key"));
+            symEncParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "key"));
             Method symEnc = new Method(Type.TYPE_BYTE_VEC, "SymEnc", symEncParams, Crypto.None);
             InnerMethods.Add(symEnc);
             // 对称解密
             ObservableCollection<Attribute> symDecParams = new ObservableCollection<Attribute>();
             symDecParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
-            symDecParams.Add(new Attribute(Type.TYPE_INT, "key"));
+            symDecParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "key"));
             Method symDec = new Method(Type.TYPE_BYTE_VEC, "SymDec", symDecParams, Crypto.None);
             InnerMethods.Add(symDec);
             // 私钥签名
             ObservableCollection<Attribute> signParams = new ObservableCollection<Attribute>();
             signParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
-            signParams.Add(new Attribute(Type.TYPE_INT, "skey"));
+            signParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "skey"));
             Method sign = new Method(Type.TYPE_BYTE_VEC, "Sign", signParams, Crypto.None);
             InnerMethods.Add(sign);
             // 公钥验证
             ObservableCollection<Attribute> verifyParams = new ObservableCollection<Attribute>();
             verifyParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
-            verifyParams.Add(new Attribute(Type.TYPE_INT, "pkey"));
+            verifyParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "pkey"));
             Method verify = new Method(Type.TYPE_BOOL, "Verify", verifyParams, Crypto.None);
             InnerMethods.Add(verify);
         }
