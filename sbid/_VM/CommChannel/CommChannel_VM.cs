@@ -2,6 +2,7 @@
 using sbid._V;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace sbid._VM
@@ -40,6 +41,14 @@ namespace sbid._VM
             }
             commMethodEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了通信通道定义：" + commChannel.Name + "的编辑窗体";
+        }
+
+        // 删除当前CommChannel_VM
+        private void DeleteCommChannelVM()
+        {
+            ObservableCollection<ViewModelBase> userControlVMs = ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs;
+            userControlVMs.Remove(this);
+            ResourceManager.mainWindowVM.Tips = "删除了通道：" + commChannel.Name;
         }
 
         #endregion

@@ -10,11 +10,11 @@ namespace sbid._M
     public enum Crypto
     {
         // 不使用
-        None, 
+        None,
         // 对称加密算法
-        AES, DES, 
+        AES, DES,
         // 非对称加密算法 
-        RSA, ECC, 
+        RSA, ECC,
         // 哈希签名算法
         MD5, SHA1, SHA256
     }
@@ -102,6 +102,15 @@ namespace sbid._M
             return retString;
         }
 
+        // 在xaml中直接关联这里，则更新内容时可以直接更新此串
+        public string ShowString
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
         #endregion
 
         #region 静态成员和静态构造
@@ -138,7 +147,7 @@ namespace sbid._M
             InnerMethods.Add(verify);
         }
         // 加密方式枚举的集合，用于判断对称加密/非对称加密/哈希签名
-        public static readonly List<Crypto> Sym = new List<Crypto>() { 
+        public static readonly List<Crypto> Sym = new List<Crypto>() {
             Crypto.AES, Crypto.DES
         };
         public static readonly List<Crypto> ASym = new List<Crypto>() {

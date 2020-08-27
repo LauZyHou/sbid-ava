@@ -45,6 +45,14 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "打开了SafetyProperty[" + safetyProperty.Name + "]的编辑窗体";
         }
 
+        // 删除当前SafetyProperty_VM
+        private void DeleteSafetyPropertyVM()
+        {
+            ObservableCollection<ViewModelBase> userControlVMs = ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs;
+            userControlVMs.Remove(this);
+            ResourceManager.mainWindowVM.Tips = "删除了功能安全性质：" + safetyProperty.Name;
+        }
+
         #endregion
     }
 }

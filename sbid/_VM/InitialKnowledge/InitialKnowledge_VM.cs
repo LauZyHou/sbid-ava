@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Avalonia.Controls;
 using sbid._M;
@@ -46,6 +47,14 @@ namespace sbid._VM
 
             initialKnowledgeEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了InitialKnowledge的编辑窗体";
+        }
+
+        // 删除当前InitialKnowledge_VM
+        private void DeleteInitialKnowledgeVM()
+        {
+            ObservableCollection<ViewModelBase> userControlVMs = ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs;
+            userControlVMs.Remove(this);
+            ResourceManager.mainWindowVM.Tips = "删除了初始知识";
         }
 
         #endregion

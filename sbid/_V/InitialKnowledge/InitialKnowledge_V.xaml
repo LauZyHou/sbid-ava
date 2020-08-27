@@ -61,7 +61,7 @@
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditInitialKnowledgeVM}"/>
-        <MenuItem Header="删除"/>
+        <MenuItem Header="删除" Command="{Binding DeleteInitialKnowledgeVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>

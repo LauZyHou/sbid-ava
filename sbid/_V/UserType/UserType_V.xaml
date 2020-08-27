@@ -29,7 +29,8 @@
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <!--使用多源绑定--><!--
+          <!--使用多源绑定-->
+          <!--
           <TextBlock>
             <TextBlock.Text>
               <MultiBinding StringFormat=" {0} {1};">
@@ -51,6 +52,19 @@
     <TextBlock Grid.Row="5" Text=" 方法:" IsVisible="{Binding !Type.Basic}"/>
     <ListBox Grid.Row="6" Items="{Binding Type.Methods}" IsEnabled="False" IsVisible="{Binding !Type.Basic}"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat=" {0} {1}({2})">
+                <Binding Path="ReturnType.Name"/>
+                <Binding Path="Name"/>
+                <Binding Path="ParamString"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
     </ListBox>
     <!--右键菜单-->
     <Grid.ContextMenu>

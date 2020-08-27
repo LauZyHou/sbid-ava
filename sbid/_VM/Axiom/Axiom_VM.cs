@@ -2,6 +2,7 @@
 using sbid._V;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace sbid._VM
@@ -41,6 +42,14 @@ namespace sbid._VM
 
             axiomEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了公理：" + axiom.Name + "的编辑窗体";
+        }
+
+        // 尝试删除当前Axiom_VM
+        private void DeleteAxiomVM()
+        {
+            ObservableCollection<ViewModelBase> userControlVMs = ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs;
+            userControlVMs.Remove(this);
+            ResourceManager.mainWindowVM.Tips = "删除了公理：" + axiom.Name;
         }
 
         #endregion

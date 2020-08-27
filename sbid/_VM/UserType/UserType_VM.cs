@@ -180,6 +180,7 @@ namespace sbid._VM
                 {
                     method.Parameters.Remove(param);
                 }
+                method.RaisePropertyChanged("ParamString");
             }
         }
 
@@ -202,6 +203,7 @@ namespace sbid._VM
                 {
                     commMethod.Parameters.Remove(param);
                 }
+                commMethod.RaisePropertyChanged("ParamString");
             }
         }
 

@@ -41,7 +41,7 @@
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditSafetyPropertyVM}"/>
-        <MenuItem Header="删除"/>
+        <MenuItem Header="删除" Command="{Binding DeleteSafetyPropertyVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>

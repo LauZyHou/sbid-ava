@@ -99,7 +99,7 @@
     <Grid.ContextMenu>
       <ContextMenu>
         <MenuItem Header="编辑" Command="{Binding EditSecurityPropertyVM}"/>
-        <MenuItem Header="删除"/>
+        <MenuItem Header="删除" Command="{Binding DeleteSecurityPropertyVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>
