@@ -82,6 +82,19 @@ namespace sbid._VM
             ctlTree_P_VM.CTLFormula.Content = CTLTree_P_VM.recursive_eval(this);
         }
 
+        // 删除原子命题结点
+        private void DeleteAtomPropositionVM()
+        {
+            CTLTree_P_VM cTLTree_P_VM = (CTLTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[4].SelectedItem;
+            if(cTLTree_P_VM.ActiveConnector != null)
+            {
+                cTLTree_P_VM.ActiveConnector.IsActive = false;
+                cTLTree_P_VM.ActiveConnector = null;
+            }
+            Utils.deleteAndClearNetworkItemVM(this, cTLTree_P_VM);
+            ResourceManager.mainWindowVM.Tips = "删除了原子命题节点：" + atomProposition.RefName.Content;
+        }
+
         #endregion
 
         #region 私有

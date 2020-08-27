@@ -83,6 +83,19 @@ namespace sbid._VM
             ctlTree_P_VM.CTLFormula.Content = CTLTree_P_VM.recursive_eval(this);
         }
 
+        // 删除当前的逻辑关系结点
+        private void DeleteLogicRelationVM()
+        {
+            CTLTree_P_VM cTLTree_P_VM = (CTLTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[4].SelectedItem;
+            if (cTLTree_P_VM.ActiveConnector != null)
+            {
+                cTLTree_P_VM.ActiveConnector.IsActive = false;
+                cTLTree_P_VM.ActiveConnector = null;
+            }
+            Utils.deleteAndClearNetworkItemVM(this, cTLTree_P_VM);
+            ResourceManager.mainWindowVM.Tips = "删除了逻辑关系节点";
+        }
+
         #endregion
     }
 }

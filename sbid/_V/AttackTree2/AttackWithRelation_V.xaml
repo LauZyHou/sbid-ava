@@ -36,7 +36,7 @@
         <MenuItem Header="编辑" Command="{Binding OpenEditWindow}"/>
         <MenuItem Header="反转结点取值" Command="{Binding ReverseBeAttacked}"/>
         <MenuItem Header="计算" Command="{Binding CalculateBeAttacked}"/>
-        <MenuItem Header="删除"/>
+        <MenuItem Header="删除" Command="{Binding DeleteAttackWithRelationVM}"/>
       </ContextMenu>
     </Grid.ContextMenu>
   </Grid>

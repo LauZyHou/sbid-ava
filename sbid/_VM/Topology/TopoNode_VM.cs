@@ -65,10 +65,14 @@ namespace sbid._VM
         // 删除当前拓扑结点
         public void DeleteTopoNodeVM()
         {
-            Protocol_VM nowProtocolPanel = ResourceManager.mainWindowVM.SelectedItem;
-            nowProtocolPanel.SelectedItem.SelectedItem.UserControlVMs.Remove(this);
-
-            ResourceManager.mainWindowVM.Tips = "删除了拓扑节点";
+            TopoGraph_P_VM topoGraph_P_VM = (TopoGraph_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[2].SelectedItem;
+            if (topoGraph_P_VM.ActiveConnector != null)
+            {
+                topoGraph_P_VM.ActiveConnector.IsActive = false;
+                topoGraph_P_VM.ActiveConnector = null;
+            }
+            Utils.deleteAndClearNetworkItemVM(this, topoGraph_P_VM);
+            ResourceManager.mainWindowVM.Tips = "删除了拓扑节点：" + topoNode.Name;
         }
 
         #endregion

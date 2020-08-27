@@ -16,7 +16,8 @@
                  Text="{Binding SeqObject.Process.RefName.Content}" TextAlignment="Center" FontSize="17" Background="White">
         <TextBlock.ContextMenu>
           <ContextMenu>
-            <MenuItem Header="编辑对象-生命线" Command="{Binding EditObjLifeLine}"/>
+            <MenuItem Header="编辑" Command="{Binding EditObjLifeLine}"/>
+            <MenuItem Header="删除" Command="{Binding DeleteObjLifeLine}"/>
           </ContextMenu>
         </TextBlock.ContextMenu>
       </TextBlock>

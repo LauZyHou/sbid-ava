@@ -34,7 +34,7 @@ namespace sbid._VM
         {
             if (!(type is UserType) || type == Type.TYPE_TIMER || type == Type.TYPE_BYTE_VEC)
             {
-                ResourceManager.mainWindowVM.Tips = "无效的操作，禁止删除内置类型：" + type.Name + "！";
+                ResourceManager.mainWindowVM.Tips = "无效的操作，禁止删除内置类型：" + type.Name;
                 return;
             }
             // 遍历这个类图面板的建模元素表
@@ -100,7 +100,7 @@ namespace sbid._VM
         {
             if (!(type is UserType) || type == Type.TYPE_TIMER || type == Type.TYPE_BYTE_VEC)
             {
-                ResourceManager.mainWindowVM.Tips = "无效的操作，禁止编辑内置类型：" + type.Name + "！";
+                ResourceManager.mainWindowVM.Tips = "无效的操作，禁止编辑内置类型：" + type.Name;
                 return;
             }
 

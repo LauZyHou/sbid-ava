@@ -153,6 +153,19 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "计算完成，结点[" + attackWithRelation.Description + "]是" + (beAttacked ? "可攻击" : "安全") + "的";
         }
 
+        // 删除该攻击树结点
+        private void DeleteAttackWithRelationVM()
+        {
+            AttackTree_P_VM attackTree_P_VM = (AttackTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[3].SelectedItem;
+            if (attackTree_P_VM.ActiveConnector != null)
+            {
+                attackTree_P_VM.ActiveConnector.IsActive = false;
+                attackTree_P_VM.ActiveConnector = null;
+            }
+            Utils.deleteAndClearNetworkItemVM(this, attackTree_P_VM);
+            ResourceManager.mainWindowVM.Tips = "删除了攻击树结点：" + attackWithRelation.Description;
+        }
+
         #endregion
 
         #region 静态

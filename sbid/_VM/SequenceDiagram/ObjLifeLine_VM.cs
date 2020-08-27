@@ -87,6 +87,19 @@ namespace sbid._VM
             ResourceManager.mainWindowVM.Tips = "打开了对象-生命线的编辑窗体";
         }
 
+        // 删除当前的对象-生命线
+        private void DeleteObjLifeLine()
+        {
+            SequenceDiagram_P_VM sequenceDiagram_P_VM = (SequenceDiagram_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[5].SelectedItem;
+            if (sequenceDiagram_P_VM.ActiveConnector != null)
+            {
+                sequenceDiagram_P_VM.ActiveConnector.IsActive = false;
+                sequenceDiagram_P_VM.ActiveConnector = null;
+            }
+            Utils.deleteAndClearNetworkItemVM(this, sequenceDiagram_P_VM);
+            ResourceManager.mainWindowVM.Tips = "删除了对象-生命线";
+        }
+
         #endregion
     }
 }

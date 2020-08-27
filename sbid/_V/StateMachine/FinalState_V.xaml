@@ -11,5 +11,10 @@
       <Ellipse Fill="Black" Grid.Row="1" Grid.Column="1"/>
       <v:StateConnector_V DataContext="{Binding ConnectorVMs[0]}" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
     </Grid>
+    <Grid.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="删除" Command="{Binding DeleteFinalStateVM}"/>
+      </ContextMenu>
+    </Grid.ContextMenu>
   </Grid>
 </UserControl>
