@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
-        Width="200" Height="180" WindowStartupLocation="CenterOwner"
+        Width="200" Height="205" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.AttackWithRelation_EW_V"
         Title="编辑">
   <Design.DataContext>
@@ -16,11 +16,15 @@
     </Style>
   </Window.Styles>
 
-  <Grid Margin="8" RowDefinitions="25,*,25,28,28">
+  <Grid Margin="8" RowDefinitions="25,*,25,28,25,28">
     <TextBlock Grid.Row="0" Text="攻击内容描述："/>
     <TextBox Grid.Row="1" Name="description_TextBox" Text="{Binding AttackWithRelation.Description, Mode=OneWay}" FontSize="17" TextWrapping="Wrap" AcceptsReturn="True"/>
     <TextBlock Grid.Row="2" Text="与子结点的关系："/>
     <ComboBox Grid.Row="3" Name="attackRelation_ComboBox" SelectedItem="{Binding AttackWithRelation.AttackRelation, Mode=OneWay}" Height="28"/>
-    <Button Grid.Row="4" Command="{Binding $parent[Window].Save}">保存</Button>
+    <StackPanel Grid.Row="4" Orientation="Horizontal">
+      <TextBlock Text="显示关系部分："/>
+      <CheckBox Name="visible_CheckBox" IsChecked="{Binding AttackWithRelation.RelationVisible, Mode=OneWay}" IsThreeState="False"/>
+    </StackPanel>
+    <Button Grid.Row="5" Command="{Binding $parent[Window].Save}">保存</Button>
   </Grid>
 </Window>

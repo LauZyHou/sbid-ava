@@ -23,8 +23,8 @@
                    VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
       </Grid>
     </Grid>
-    <TextBlock Grid.Row="1" Text="{Binding AttackWithRelation.AttackRelation}" TextAlignment="Center" Background="Black" Foreground="{Binding NodeColor}" FontSize="19"/>
-    <Grid Grid.Row="2" ColumnDefinitions="1*,1*,1*,1*,1*">
+    <TextBlock Grid.Row="1" Text="{Binding AttackWithRelation.AttackRelation}" TextAlignment="Center" Background="Black" Foreground="{Binding NodeColor}" FontSize="19" IsVisible="{Binding AttackWithRelation.RelationVisible, Mode=OneWay}"/>
+    <Grid Grid.Row="2" ColumnDefinitions="1*,1*,1*,1*,1*" IsVisible="{Binding AttackWithRelation.RelationVisible, Mode=OneWay}">
       <v:AttackConnector_V Grid.Column="0" DataContext="{Binding ConnectorVMs[1]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
       <v:AttackConnector_V Grid.Column="1" DataContext="{Binding ConnectorVMs[2]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>
       <v:AttackConnector_V Grid.Column="2" DataContext="{Binding ConnectorVMs[3]}" IsVisible="{Binding $parent[Window].DataContext.ConnectorVisible}"/>

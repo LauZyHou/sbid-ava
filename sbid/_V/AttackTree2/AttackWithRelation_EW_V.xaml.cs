@@ -28,6 +28,7 @@ namespace sbid._V
         {
             VM.AttackWithRelation.Description = description_TextBox.Text;
             VM.AttackWithRelation.AttackRelation = (AttackRelation)attackRelation_ComboBox.SelectedItem;
+            VM.AttackWithRelation.RelationVisible = (bool)visible_CheckBox.IsChecked;
             ResourceManager.mainWindowVM.Tips = "保存了对攻击树结点的修改";
         }
 
@@ -37,12 +38,14 @@ namespace sbid._V
 
         ComboBox attackRelation_ComboBox;
         TextBox description_TextBox;
+        CheckBox visible_CheckBox;
 
         private void get_control_reference()
         {
             attackRelation_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(attackRelation_ComboBox));
             attackRelation_ComboBox.Items = System.Enum.GetValues(typeof(AttackRelation));
             description_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(description_TextBox));
+            visible_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(visible_CheckBox));
         }
 
         public AttackWithRelation_EW_VM VM { get => (AttackWithRelation_EW_VM)DataContext; }

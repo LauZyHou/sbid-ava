@@ -16,6 +16,7 @@ namespace sbid._M
     {
         private string description;
         private AttackRelation attackRelation = AttackRelation.OR;
+        private bool relationVisible = true;
 
         public AttackWithRelation(string description)
         {
@@ -26,5 +27,7 @@ namespace sbid._M
         public string Description { get => description; set => this.RaiseAndSetIfChanged(ref description, value); }
         // 关系类型
         public AttackRelation AttackRelation { get => attackRelation; set => this.RaiseAndSetIfChanged(ref attackRelation, value); }
+        // 显示关系部分
+        public bool RelationVisible { get => relationVisible; set => this.RaiseAndSetIfChanged(ref relationVisible, value); }
     }
 }
