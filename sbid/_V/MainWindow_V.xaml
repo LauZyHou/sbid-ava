@@ -114,7 +114,7 @@
     </TabControl>
 
     <!--底下的提示条-->
-    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+    <StackPanel Orientation="Horizontal" Grid.Row="3"
                 Background="Black" MinHeight="15">
       <TextBlock Text=" > " Foreground="White" Background="Black" FontSize="17"/>
       <TextBlock Name="tipTextBox" Text="{Binding Path=Tips}" Foreground="White" Background="Black" FontSize="17"/>

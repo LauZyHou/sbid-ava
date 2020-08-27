@@ -38,7 +38,7 @@ namespace sbid._V
             connectorVisible_ComboBox.Items = boolList;
             */
             CheckBox connectorVisible_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(connectorVisible_CheckBox));
-            connectorVisible_CheckBox.IsChecked = true;
+            connectorVisible_CheckBox.IsChecked = false;
         }
 
         #endregion
