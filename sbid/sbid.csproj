@@ -77,7 +77,9 @@
     <AvaloniaResource Remove="_V\UserType\Method_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_EW_V.xaml" />
     <AvaloniaResource Remove="_V\UserType\UserType_V.xaml" />
+    <AvaloniaResource Remove="_V\Verification\UseProVerif_EW_V.xaml" />
     <None Remove="Assets\Fonts\STZHONGS2.ttf" />
+    <None Remove="Assets\proverif.pv" />
     <None Remove="Assets\SecurityPolicy.json" />
     <None Remove="_V\AttackTree2\AttackWithRelation_EW_V.xaml" />
     <None Remove="_V\AttackTree2\AttackWithRelation_V.xaml" />
@@ -142,6 +144,7 @@
     <None Remove="_V\UserType\Method_EW_V.xaml" />
     <None Remove="_V\UserType\UserType_EW_V.xaml" />
     <None Remove="_V\UserType\UserType_V.xaml" />
+    <None Remove="_V\Verification\UseProVerif_EW_V.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\SecurityPolicy.json">
@@ -458,10 +461,16 @@
     <EmbeddedResource Include="_V\Topology\TopoEdge_V.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="_V\Verification\UseProVerif_EW_V.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Fonts\STZHONGS2.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\proverif.pv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>

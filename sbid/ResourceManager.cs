@@ -19,6 +19,8 @@ namespace sbid
         public static MainWindow_VM mainWindowVM;
         // 保存主窗体View,用于在全局任何位置都能直接获取
         public static MainWindow_V mainWindowV;
+        // 保存当前操作系统信息
+        public static Platform Platform;
 
         #region 导出图片相关接口
 

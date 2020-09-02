@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Avalonia.Media;
 using sbid._V;
+using System.Runtime.InteropServices;
 
 namespace sbid._VM
 {
@@ -29,6 +30,23 @@ namespace sbid._VM
         {
             // 把自己挂到全局资源上
             ResourceManager.mainWindowVM = this;
+            // 检测当前运行的操作系统
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                ResourceManager.Platform = Platform.Linux;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                ResourceManager.Platform = Platform.Windows;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                ResourceManager.Platform = Platform.OSX;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+            {
+                ResourceManager.Platform = Platform.FreeBSD;
+            }
         }
 
         #endregion
@@ -294,6 +312,16 @@ namespace sbid._VM
                 DataContext = new SimulationRun_SW_VM()
             };
             simulationRun_SW_V.ShowDialog(ResourceManager.mainWindowV);
+        }
+
+        // 按下【测试ProVerif】按钮
+        public void TestCallProVerif()
+        {
+            UseProVerif_EW_V useProVerif_EW_V = new UseProVerif_EW_V()
+            {
+                DataContext = new UseProVerif_EW_VM()
+            };
+            useProVerif_EW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
         #endregion
