@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using ReactiveUI;
-using System.Reactive;
 using sbid._M;
 using Avalonia.Controls;
 using System.Threading.Tasks;
@@ -47,6 +45,8 @@ namespace sbid._VM
             {
                 ResourceManager.Platform = Platform.FreeBSD;
             }
+            // 检测当前运行的程序所在的目录
+            ResourceManager.RunPath = System.Environment.CurrentDirectory.Replace('\\', '/');
         }
 
         #endregion

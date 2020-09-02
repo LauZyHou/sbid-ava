@@ -11,9 +11,11 @@
   <Design.DataContext>
     <vm:UseProVerif_EW_VM/>
   </Design.DataContext>
-  
+
   <Grid RowDefinitions="2*,20*">
     <Button Grid.Row="0" Command="{Binding OnVerify}">验证</Button>
-    <TextBlock Grid.Row="1" Text="{Binding VerifyResult, Mode=OneWay}" TextWrapping="Wrap"/>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+      <TextBlock Text="{Binding VerifyResult, Mode=OneWay}" TextWrapping="Wrap"/>
+    </ScrollViewer>
   </Grid>
 </Window>

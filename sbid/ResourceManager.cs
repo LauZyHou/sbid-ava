@@ -21,6 +21,8 @@ namespace sbid
         public static MainWindow_V mainWindowV;
         // 保存当前操作系统信息
         public static Platform Platform;
+        // 保存当前程序所在的目录路径信息
+        public static string RunPath;
 
         #region 导出图片相关接口
 

@@ -469,9 +469,9 @@
     <Resource Include="Assets\Fonts\STZHONGS2.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\proverif.pv">
+    <Content Include="Assets\proverif.pv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="_V\UserType\Method_EW_V.xaml.cs">

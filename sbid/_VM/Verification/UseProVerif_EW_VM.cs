@@ -1,9 +1,6 @@
 ﻿using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 namespace sbid._VM
 {
@@ -18,7 +15,8 @@ namespace sbid._VM
         // 按下【验证】按钮
         private void OnVerify()
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo("proverif", Environment.CurrentDirectory.Replace('\\', '/') + "/Assets/proverif.pv") { RedirectStandardOutput = true };
+            string proverifFilePath = ResourceManager.RunPath + "/Assets/proverif.pv";
+            ProcessStartInfo processStartInfo = new ProcessStartInfo("proverif", proverifFilePath) { RedirectStandardOutput = true };
             Process process = Process.Start(processStartInfo); // 这里可能抛掷异常
             if (process is null)
             {
