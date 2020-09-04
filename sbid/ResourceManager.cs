@@ -19,10 +19,14 @@ namespace sbid
         public static MainWindow_VM mainWindowVM;
         // 保存主窗体View,用于在全局任何位置都能直接获取
         public static MainWindow_V mainWindowV;
-        // 保存当前操作系统信息
+        // 保存当前运行的操作系统信息（在MainWindow_VM构造时写入）
         public static Platform Platform;
-        // 保存当前程序所在的目录路径信息
+        // 保存当前程序所在的运行目录路径（在MainWindow_VM构造时写入）
         public static string RunPath;
+        // 维护当前项目保存位置（项目打开时写入，也可在首选项中编辑）
+        public static string projectSavePath = null;
+        // 维护ProVerif可执行文件位置（在首选项中编辑）
+        public static string proVerifPath = null;
 
         #region 导出图片相关接口
 

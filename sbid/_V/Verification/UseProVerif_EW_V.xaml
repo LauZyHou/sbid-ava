@@ -6,7 +6,7 @@
         Height="352" Width="540" WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="sbid._V.UseProVerif_EW_V"
-        Title="UseProVerif_EW_V">
+        Title="使用ProVerif验证">
 
   <Design.DataContext>
     <vm:UseProVerif_EW_VM/>

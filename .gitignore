@@ -233,3 +233,8 @@ _Pvt_Extensions
 .DS_Store
 *.ttf
 *.TTF
+*.svg
+*.png
+*.ico
+*.jpg
+*.jpeg

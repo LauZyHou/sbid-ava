@@ -45,6 +45,9 @@
         <MenuItem Header="使用手册" IsEnabled="False"/>
         <MenuItem Header="关于SBID-AVA" IsEnabled="False"/>
       </MenuItem>
+      <MenuItem Header="设置">
+        <MenuItem Header="首选项" Command="{Binding Preference}"/>
+      </MenuItem>
     </Menu>
 
     <!--快捷按键-->

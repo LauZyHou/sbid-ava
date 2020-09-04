@@ -134,16 +134,25 @@ namespace sbid._VM
         // 按下【保存】按钮
         public async void SaveAllVM()
         {
-            string saveFileName = await GetSaveFileName();
+            string saveFileName = ResourceManager.projectSavePath;
+            // 如果没有记录保存位置，则要用GetSaveFileName让用户打开窗口做另存为的操作
             if (string.IsNullOrEmpty(saveFileName))
             {
-                Tips = "取消保存项目";
-                return;
+                saveFileName = await GetSaveFileName();
+                if (string.IsNullOrEmpty(saveFileName))
+                {
+                    Tips = "取消保存项目";
+                    return;
+                }
             }
             // 执行保存逻辑
             bool succ = DoSave(saveFileName);
             if (succ)
+            {
                 Tips = "项目保存，至：" + saveFileName;
+                // 记录保存位置，下次可以直接保存
+                ResourceManager.projectSavePath = saveFileName;
+            }
             else
                 Tips = "[ERROR]项目保存失败！";
         }
@@ -160,7 +169,11 @@ namespace sbid._VM
             // 执行载入逻辑
             bool succ = DoReload(openFileName);
             if (succ)
+            {
                 Tips = "载入项目，从：" + openFileName;
+                // 记录载入的项目位置为保存位置，下次可以直接保存
+                ResourceManager.projectSavePath = openFileName;
+            }
             //else
             //    Tips = "项目载入失败！请检查项目文件是否被手动修改";
             // 这里改成在返回false时提示具体的错误
@@ -322,6 +335,16 @@ namespace sbid._VM
                 DataContext = new UseProVerif_EW_VM()
             };
             useProVerif_EW_V.ShowDialog(ResourceManager.mainWindowV);
+        }
+
+        // 按下【首选项】按钮
+        public void Preference()
+        {
+            Preference_EW_V preference_EW_V = new Preference_EW_V()
+            {
+                DataContext = new Preference_EW_VM()
+            };
+            preference_EW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
         #endregion
