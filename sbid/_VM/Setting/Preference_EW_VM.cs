@@ -13,12 +13,14 @@ namespace sbid._VM
         private readonly string platformStr;
         private string projectSavePath;
         private string proVerifPath;
+        private string beaglePath;
 
         public Preference_EW_VM()
         {
             platformStr = RuntimeInformation.OSDescription;
             projectSavePath = ResourceManager.projectSavePath;
             proVerifPath = ResourceManager.proVerifPath;
+            beaglePath = ResourceManager.beaglePath;
         }
 
         // 运行平台
@@ -33,7 +35,7 @@ namespace sbid._VM
                 ResourceManager.projectSavePath = value;
             }
         }
-        // ProVerif文件保存位置
+        // ProVerif可执行文件所在位置
         public string ProVerifPath
         {
             get => proVerifPath;
@@ -41,6 +43,16 @@ namespace sbid._VM
             {
                 this.RaiseAndSetIfChanged(ref proVerifPath, value);
                 ResourceManager.proVerifPath = value;
+            }
+        }
+        // Beagle可执行文件所在位置
+        public string BeaglePath
+        {
+            get => beaglePath;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref beaglePath, value);
+                ResourceManager.beaglePath = value;
             }
         }
 
@@ -70,6 +82,20 @@ namespace sbid._VM
             }
             ProVerifPath = openFileName;
             ResourceManager.mainWindowVM.Tips = "设置ProVerif可执行文件位置，至：" + openFileName;
+        }
+
+
+        // 编辑Beagle可执行文件位置
+        private async void EditBeaglePath()
+        {
+            string openFileName = await GetOpenFileName_All();
+            if (string.IsNullOrEmpty(openFileName))
+            {
+                ResourceManager.mainWindowVM.Tips = "取消设置Beagle可执行文件位置";
+                return;
+            }
+            BeaglePath = openFileName;
+            ResourceManager.mainWindowVM.Tips = "设置Beagle可执行文件位置，至：" + openFileName;
         }
 
         #endregion

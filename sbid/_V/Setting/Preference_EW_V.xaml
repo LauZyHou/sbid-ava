@@ -23,7 +23,7 @@
   </Window.Styles>
 
   <ScrollViewer VerticalScrollBarVisibility="Auto">
-    <Grid ColumnDefinitions="5*,14*,30" RowDefinitions="40,40,40,40,15" Margin="10">
+    <Grid ColumnDefinitions="5*,14*,30" RowDefinitions="40,40,40,17,40,17" Margin="10">
       <!--运行平台-->
       <TextBlock Text="操作系统版本：" Grid.Column="0" Grid.Row="0"/>
       <TextBlock Text="{Binding PlatformStr}" Grid.Column="1" Grid.Row="0"/>
@@ -40,6 +40,14 @@
         <Image Source="/Assets/Icons/settings.png"/>
       </Button>
       <TextBlock Text="如果为ProVerif设置了系统变量PATH(文件名proverif)，则可以不设置此项" FontSize="15" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"
+                 TextAlignment="Center" Foreground="Gray" VerticalAlignment="Top"/>
+      <!--Beagle路径-->
+      <TextBlock Text="Beagle位置：" Grid.Column="0" Grid.Row="4"/>
+      <TextBox Name="beagle_TextBox" Text="{Binding BeaglePath}" Grid.Column="1" Grid.Row="4"/>
+      <Button Grid.Column="2" Grid.Row="4" Command="{Binding EditBeaglePath}" Width="30" Height="30">
+        <Image Source="/Assets/Icons/settings.png"/>
+      </Button>
+      <TextBlock Text="如果为Beagle设置了系统变量PATH(文件名beagle)，则可以不设置此项" FontSize="15" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3"
                  TextAlignment="Center" Foreground="Gray" VerticalAlignment="Top"/>
     </Grid>
   </ScrollViewer>

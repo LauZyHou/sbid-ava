@@ -1,4 +1,4 @@
-(* simple-reach.pv: 学习最简单的可达性质 *)
+(* simple-reach.pv: 最简单的可达性质 *)
 
 free c:channel.
 

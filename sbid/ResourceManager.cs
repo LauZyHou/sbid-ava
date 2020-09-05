@@ -27,6 +27,8 @@ namespace sbid
         public static string projectSavePath = null;
         // 维护ProVerif可执行文件位置（在首选项中编辑）
         public static string proVerifPath = null;
+        // 维护Beagle可执行文件位置（在首选项中编辑）
+        public static string beaglePath = null;
 
         #region 导出图片相关接口
 
