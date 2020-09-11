@@ -14,6 +14,23 @@ namespace sbid
         /// <returns>另一端的建模元素</returns>
         public static NetworkItem_VM getAnotherEndNetWorkItemVM(Connector_VM connector_VM)
         {
+            // 先获取另一端的锚点
+            Connector_VM anotherEndConnectorVM = getAnotherEndConnectorVM(connector_VM);
+            if (anotherEndConnectorVM is null)
+            {
+                return null;
+            }
+            // 再取出其所在的建模元素
+            return anotherEndConnectorVM.NetworkItemVM;
+        }
+
+        /// <summary>
+        /// 获取锚点(Connector_VM)所在连线(Connection_VM)的另一端的锚点(Connector_VM)
+        /// </summary>
+        /// <param name="connector_VM">锚点</param>
+        /// <returns>另一端的锚点</returns>
+        public static Connector_VM getAnotherEndConnectorVM(Connector_VM connector_VM)
+        {
             Connection_VM connection_VM = connector_VM.ConnectionVM;
             if (connection_VM is null)
             {
@@ -28,8 +45,9 @@ namespace sbid
             {
                 anotherEndConnectorVM = connection_VM.Source;
             }
-            return anotherEndConnectorVM.NetworkItemVM;
+            return anotherEndConnectorVM;
         }
+
 
         /// <summary>
         /// 删除指定面板上指定的建模元素

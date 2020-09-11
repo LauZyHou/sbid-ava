@@ -134,7 +134,25 @@ namespace sbid._VM
             // 移除[叶子攻击分析]结果列表
             attackTree_P_VM.LeafAttackWithRelationVMs.Clear();
 
-            // todo 判断是一棵树
+            // 判断是一棵树
+            bool isTree = true;
+            for (int i = 1; i <= 5; i++) // 跳过第一个，第一个是指向父节点的
+            {
+                NetworkItem_VM child = Utils.getAnotherEndNetWorkItemVM(this.ConnectorVMs[i]);
+                if (child != null)
+                {
+                    if (!dfs_check(child as AttackWithRelation_VM))
+                    {
+                        isTree = false;
+                        break;
+                    }
+                }
+            }
+            if (!isTree)
+            {
+                // 这里不用标Tip了，都在dfs_check里标过了，有两种不同的check出的错误信息
+                return;
+            }
 
             // 以此为根递归求值
             recursive_eval(this);
@@ -278,6 +296,41 @@ namespace sbid._VM
             // 在递归计算退栈时候就沿途把取值写入结点里
             rootNode.BeAttacked = val;
             return val;
+        }
+
+        /// <summary>
+        /// 攻击树结点DFS检查，检查会不会回到当前结点，从而知道有没有回路，还要检查边连边的问题
+        /// </summary>
+        /// <param name="rootNode"></param>
+        /// <returns></returns>
+        private bool dfs_check(AttackWithRelation_VM rootNode)
+        {
+            // 如果回到当前结点，说明检查不通过
+            // 这个条件要求调用方遍历每个当前结点的子结点调用
+            if (rootNode == this)
+            {
+                ResourceManager.mainWindowVM.Tips = "存在回路，请检查攻击树结构！";
+                return false;
+            }
+            // 遍历所有孩子结点判断
+            for (int i = 1; i <= 5; i++) // 跳过第一个，第一个是指向父节点的
+            {
+                Connector_VM childToConnectoVM = Utils.getAnotherEndConnectorVM(rootNode.ConnectorVMs[i]);
+                if (childToConnectoVM != null)
+                {
+                    AttackWithRelation_VM child = (AttackWithRelation_VM)childToConnectoVM.NetworkItemVM;
+                    if (childToConnectoVM != child.ConnectorVMs[0])
+                    {
+                        ResourceManager.mainWindowVM.Tips = "存在入口到入口的错误连线！";
+                        return false;
+                    }
+                    if (!dfs_check(child as AttackWithRelation_VM))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         #endregion
