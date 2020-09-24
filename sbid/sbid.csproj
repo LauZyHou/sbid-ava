@@ -3,6 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Platforms>AnyCPU;x86</Platforms>
+    <ApplicationIcon></ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
