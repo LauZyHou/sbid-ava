@@ -43,13 +43,29 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\sbid-setup-x64.msi"
+        "OutputFilename" = "8:Release\\ISADT-setup-x64.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -186,9 +202,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:sbid"
+        "ProductName" = "8:ISADT"
         "ProductCode" = "8:{70C3376A-A829-4016-8960-D3DAEA931791}"
-        "PackageCode" = "8:{FC87AF8F-2295-4B1D-A7BE-555D2AE565F5}"
+        "PackageCode" = "8:{DC7B4869-C551-41B8-8E8B-2889BF18B640}"
         "UpgradeCode" = "8:{0979886B-48EB-47AD-B3A7-140C550562B3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -199,11 +215,11 @@
         "Manufacturer" = "8:BuiltInSecurity"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:sbid内生安全建模工具"
+        "Title" = "8:ISADT内生安全建模工具"
         "Subject" = "8:"
         "ARPCONTACT" = "8:BuiltInSecurity"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:sbid内生安全建模工具"
+        "ARPCOMMENTS" = "8:ISADT内生安全建模工具"
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
@@ -310,7 +326,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1E736E822D4E4210B1BC06933BE3FD2D"
             {
-            "Name" = "8:sbid"
+            "Name" = "8:内生安全建模工具"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -324,7 +340,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_EB110076943E4ED69ADE03FAE1805616"
             {
-            "Name" = "8:sbid"
+            "Name" = "8:内生安全建模工具"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
