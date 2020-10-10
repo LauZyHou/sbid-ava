@@ -25,7 +25,7 @@ namespace sbid._V
 
         private void init_binding()
         {
-            ComboBox ctlRelation_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "ctlRelation_ComboBox");
+            ComboBox ctlRelation_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(ctlRelation_ComboBox));
             ctlRelation_ComboBox.Items = System.Enum.GetValues(typeof(CTLRelation));
         }
 

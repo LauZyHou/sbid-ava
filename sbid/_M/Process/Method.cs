@@ -133,6 +133,18 @@ namespace sbid._M
             symDecParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "key"));
             Method symDec = new Method(Type.TYPE_BYTE_VEC, "SymDec", symDecParams, Crypto.None);
             InnerMethods.Add(symDec);
+            // 公钥加密
+            ObservableCollection<Attribute> asymEncParams = new ObservableCollection<Attribute>();
+            asymEncParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
+            asymEncParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "pkey"));
+            Method asymEnc = new Method(Type.TYPE_BYTE_VEC, "AsymEnc", asymEncParams, Crypto.None);
+            InnerMethods.Add(asymEnc);
+            // 私钥解密
+            ObservableCollection<Attribute> asymDecParams = new ObservableCollection<Attribute>();
+            asymDecParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
+            asymDecParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "skey"));
+            Method asymDec = new Method(Type.TYPE_BYTE_VEC, "AsymDec", asymDecParams, Crypto.None);
+            InnerMethods.Add(asymDec);
             // 私钥签名
             ObservableCollection<Attribute> signParams = new ObservableCollection<Attribute>();
             signParams.Add(new Attribute(Type.TYPE_BYTE_VEC, "msg"));
@@ -156,7 +168,6 @@ namespace sbid._M
         public static readonly List<Crypto> Hash = new List<Crypto>() {
             Crypto.MD5, Crypto.SHA1, Crypto.SHA256
         };
-
 
         #endregion
     }

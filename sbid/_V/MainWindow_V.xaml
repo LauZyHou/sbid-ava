@@ -39,7 +39,7 @@
       </MenuItem>
       <MenuItem Header="操作">
         <MenuItem Header="性质验证" Command="{Binding PropertyVerify}"/>
-        <MenuItem Header="模拟运行" Command="{Binding SimulationRun}"/>
+        <MenuItem Header="模拟执行" Command="{Binding SimulationRun}"/>
         <MenuItem Header="测试调用ProVerif" Command="{Binding TestCallProVerif}"/>
       </MenuItem>
       <MenuItem Header="帮助">

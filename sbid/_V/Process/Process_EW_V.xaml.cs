@@ -794,6 +794,12 @@ namespace sbid._V
                     crypto_ComboBox.Items = Method.Sym;
                     crypto_ComboBox.SelectedItem = Method.Sym[0];
                     break;
+                // 非对称加解密
+                case "AsymEnc":
+                case "AsymDec":
+                    crypto_ComboBox.Items = Method.ASym;
+                    crypto_ComboBox.SelectedItem = Method.ASym[0];
+                    break;
                 // 签名和验证
                 case "Sign":
                 case "Verify":

@@ -66,8 +66,8 @@ namespace sbid._M
             // 构造TYPE_TIMER只读对象
             UserType ut = new UserType() { Name = "Timer" };
             //ut.Attributes.Add(new Attribute(TYPE_NUM, "time"));
-            ut.Methods.Add(new Method(TYPE_NUM, "time", new ObservableCollection<Attribute>()));
-            ut.Methods.Add(new Method(TYPE_NUM, "reset", new ObservableCollection<Attribute>()));
+            ut.Methods.Add(new Method(TYPE_NUM, "start", new ObservableCollection<Attribute>()));
+            ut.Methods.Add(new Method(TYPE_NUM, "timeout", new ObservableCollection<Attribute>()));
             TYPE_TIMER = ut;
         }
     }

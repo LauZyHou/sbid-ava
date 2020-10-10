@@ -18,10 +18,12 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
+            /*
             this.get_control_reference();
             this.get_process_names();
             this.init_evnet();
             this.draw_all();
+            */
         }
 
         private void InitializeComponent()

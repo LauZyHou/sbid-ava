@@ -5,6 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="352" Width="540" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.Preference_EW_V"
+        Icon="avares://sbid/Assets/Icons/settings.png"
         Title="首选项">
 
   <Design.DataContext>
