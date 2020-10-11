@@ -70,7 +70,7 @@ namespace sbid._V
         public async void ExportImage()
         {
             string path = await ResourceManager.GetSaveFileName("png");
-            ListBox panel = ControlExtensions.FindControl<ListBox>(this, "panel");
+            ItemsControl panel = ControlExtensions.FindControl<ItemsControl>(this, "panel");
             ResourceManager.RenderImage(path, panel);
         }
 

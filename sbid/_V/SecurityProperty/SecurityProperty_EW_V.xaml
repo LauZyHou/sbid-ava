@@ -54,7 +54,7 @@
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
-          <TextBlock Text="进程模板下的Attribute：" FontSize="17"/>
+          <TextBlock Text="进程模板下的属性：" FontSize="17"/>
           <ListBox Name="attribute_Con_ListBox" Height="82" Items="{Binding #process_Con_ListBox.SelectedItem.Attributes}"
                    SelectedItem="{Binding #confidential_ListBox.SelectedItem.Attribute, Mode=OneWay}">
             <ListBox.ItemTemplate>

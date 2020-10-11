@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Width="200" Height="205" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.AttackWithRelation_EW_V"
-        Title="编辑">
+        Title="编辑攻击结点">
   <Design.DataContext>
     <vm:AttackWithRelation_EW_VM/>
   </Design.DataContext>
