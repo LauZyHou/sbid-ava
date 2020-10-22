@@ -2,6 +2,8 @@
 using sbid._VM;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 
 namespace sbid
 {
@@ -80,6 +82,44 @@ namespace sbid
             }
             // 从面板中删除该建模元素
             sidePanel_VM.UserControlVMs.Remove(networkItem_VM);
+        }
+
+        /// <summary>
+        /// 执行一条命令，不重定向输出
+        /// </summary>
+        /// <param name="command_file">命令的实体文件</param>
+        /// <param name="command_param">命令的参数</param>
+        public static void runCommand(string command_file, string command_param = "")
+        {
+            // 检查一下要执行的命令实体是不是空
+            if (string.IsNullOrEmpty(command_file))
+            {
+                ResourceManager.mainWindowVM.Tips = "验证命令为空，无法验证";
+                return;
+            }
+            // 要执行的验证命令
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+                (
+                    command_file,
+                    command_param
+                )
+            {
+                RedirectStandardOutput = false
+            };
+            // 执行这条命令，执行过程中可能抛掷异常，直接显示异常信息
+            System.Diagnostics.Process process = null;
+            try
+            {
+                process = System.Diagnostics.Process.Start(processStartInfo);
+            }
+            catch (System.Exception ex)
+            {
+                ResourceManager.mainWindowVM.Tips = ex.ToString();
+            }
+            if (process is null)
+            {
+                return;
+            }
         }
     }
 }

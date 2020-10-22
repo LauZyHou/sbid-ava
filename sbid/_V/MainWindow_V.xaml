@@ -77,12 +77,21 @@
         <Image Source="avares://sbid/Assets/Icons/sequence_diagram.png" Width="30" Height="30"/>
       </Button>
       <TextBlock Text="        "/>
-      <Button Command="{Binding PropertyVerify}" ToolTip.Tip="性质验证">
+      <Button Command="{Binding JustVerify}" ToolTip.Tip="验证" Foreground="BlueViolet">
+        性质验证
+      </Button>
+      <Button Command="{Binding JustSimulate}" ToolTip.Tip="模拟执行" Foreground="BlueViolet">
+        模拟执行
+      </Button>
+      <Button Command="{Binding JustCodeGen}" ToolTip.Tip="可执行代码生成" Foreground="BlueViolet">
+        可执行代码生成
+      </Button>
+      <!--<Button Command="{Binding PropertyVerify}" ToolTip.Tip="性质验证">
         <Image Source="avares://sbid/Assets/Icons/verify.png" Width="30" Height="30"/>
       </Button>
       <Button Command="{Binding SimulationRun}" ToolTip.Tip="模拟执行">
         <Image Source="avares://sbid/Assets/Icons/simulation.png" Width="30" Height="30"/>
-      </Button>
+      </Button>-->
       <TextBlock Text="        "/>
       <!--<Button Command="{Binding SpecCheck}" IsEnabled="False">规范检查</Button>-->
       <Button Command="{Binding GenerateXml}" Foreground="DarkRed">后端XML</Button>

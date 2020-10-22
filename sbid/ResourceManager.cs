@@ -30,6 +30,22 @@ namespace sbid
         // 维护Beagle可执行文件位置（在首选项中编辑）
         public static string beaglePath = null;
 
+        // 【临时】Just验证命令，用于性质验证
+        public static string justVerifyCommmad_file = "java";
+        public static string justVerifyCommmad_param = "--version";
+        // 【临时】Just模拟执行代码生成命令，用于模拟执行
+        public static string justSimuGenCommand_file = "java";
+        public static string justSimuGenCommand_param = "--version";
+        // 【临时】Just编译命令，用于模拟执行
+        public static string justCompileCommand_file = "java";
+        public static string justCompileCommand_param = "--version";
+        // 【临时】Just执行命令，用于模拟执行
+        public static string justRunCommand_file = "java";
+        public static string justRunCommand_param = "--version";
+        // 【临时】Just可执行代码生成，用于可执行代码生成
+        public static string justExecGenCommand_file = "java";
+        public static string justExecGenCommand_param = "--version";
+
         #region 导出图片相关接口
 
         // 预保存文件：传入文件后缀(如sbid/xml/png)，返回文件路径

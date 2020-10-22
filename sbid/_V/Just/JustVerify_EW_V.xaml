@@ -1,0 +1,19 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        x:Class="sbid._V.JustVerify_EW_V" WindowStartupLocation="CenterOwner"
+        Title="性质验证">
+  <Design.DataContext>
+    <vm:JustVerify_EW_VM/>
+  </Design.DataContext>
+
+  <Grid RowDefinitions="2*, 20*">
+    <Button Grid.Row="0" Command="{Binding OnVerify}">验证当前协议模型</Button>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+      <TextBlock Text="{Binding VerifyResult, Mode=OneWay}" TextWrapping="Wrap"/>
+    </ScrollViewer>
+  </Grid>
+</Window>

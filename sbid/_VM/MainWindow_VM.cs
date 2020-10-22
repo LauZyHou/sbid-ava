@@ -347,6 +347,36 @@ namespace sbid._VM
             preference_EW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
+        // 【临时】【性质验证】
+        public void JustVerify()
+        {
+            JustVerify_EW_V justVerify_EW_V = new JustVerify_EW_V()
+            {
+                DataContext = new JustVerify_EW_VM()
+            };
+            justVerify_EW_V.ShowDialog(ResourceManager.mainWindowV);
+        }
+
+        // 【临时】【模拟执行】
+        public void JustSimulate()
+        {
+            JustSimulate_EW_V justSimulate_EW_V = new JustSimulate_EW_V()
+            {
+                DataContext = new JustSimulate_EW_VM()
+            };
+            justSimulate_EW_V.ShowDialog(ResourceManager.mainWindowV);
+        }
+
+        // 【临时】【可执行代码生成】
+        public void JustCodeGen()
+        {
+            Utils.runCommand
+                (
+                    ResourceManager.justExecGenCommand_file,
+                    ResourceManager.justExecGenCommand_param
+                );
+        }
+
         #endregion
 
         #region 私有

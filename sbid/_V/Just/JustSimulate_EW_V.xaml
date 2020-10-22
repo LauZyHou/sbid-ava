@@ -1,0 +1,18 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Width="300" Height="120"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        x:Class="sbid._V.JustSimulate_EW_V" WindowStartupLocation="CenterOwner"
+        Title="模拟执行">
+  <Design.DataContext>
+    <vm:JustSimulate_EW_VM/>
+  </Design.DataContext>
+
+  <StackPanel>
+    <Button Height="40" Command="{Binding OnGen}">生成</Button>
+    <Button Height="40" Command="{Binding OnCompile}">编译</Button>
+    <Button Height="40" Command="{Binding OnRun}">执行</Button>
+  </StackPanel>
+</Window>
