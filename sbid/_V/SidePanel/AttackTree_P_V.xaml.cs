@@ -254,8 +254,9 @@ namespace sbid._V
             // 清空[安全策略数据库]的绑定列表
             AttackTreePVM.SecurityPolicies.Clear();
 
+            // fixme
             // 读取策略数据库文件，解析为策略List
-            string jsonStr = File.ReadAllText("Assets/SecurityPolicy.json");
+            string jsonStr = File.ReadAllText("./Assets/SecurityPolicy.json");
             List<LabelsContentsPair> labelsContentsPairs = JsonSerializer.Deserialize<List<LabelsContentsPair>>(jsonStr);
 
             // 这里记录那些无法匹配的标签，用于快速判断一个标签是否能和选中项的Attack的文字匹配

@@ -350,6 +350,8 @@ namespace sbid._VM
         // 【临时】【性质验证】
         public void JustVerify()
         {
+            if (!checkAndGenProtocolXML())
+                return;
             JustVerify_EW_V justVerify_EW_V = new JustVerify_EW_V()
             {
                 DataContext = new JustVerify_EW_VM()
@@ -360,6 +362,8 @@ namespace sbid._VM
         // 【临时】【模拟执行】
         public void JustSimulate()
         {
+            if (!checkAndGenProtocolXML())
+                return;
             JustSimulate_EW_V justSimulate_EW_V = new JustSimulate_EW_V()
             {
                 DataContext = new JustSimulate_EW_VM()
@@ -370,16 +374,41 @@ namespace sbid._VM
         // 【临时】【可执行代码生成】
         public void JustCodeGen()
         {
-            Utils.runCommand
+            if (!checkAndGenProtocolXML())
+                return;
+            ResourceManager.mainWindowVM.Tips = "可执行代码生成中...";
+            bool res = Utils.runCommand
                 (
                     ResourceManager.justExecGenCommand_file,
                     ResourceManager.justExecGenCommand_param
                 );
+            if (res)
+            {
+                ResourceManager.mainWindowVM.Tips = "可执行代码生成完毕。";
+            }
         }
 
         #endregion
 
         #region 私有
+
+        // 检查当前是否有至少一个协议模型，如果有则生成后端XML文件
+        bool checkAndGenProtocolXML()
+        {
+            if (protocolVMs.Count == 0)
+            {
+                Tips = "至少打开或创建一个协议模型！";
+                return false;
+            }
+            // 【注意】目前是在编译或者安装后，必须在当前sbid可执行文件目录下创建如下的子目录和文件
+            string saveFileName = "./backxml/back.sbid";
+            bool succ = DoSave2(saveFileName);
+            if (succ)
+                Tips = "生成模型后端XML，至：" + saveFileName;
+            else
+                Tips = "[ERROR]后端XML生成失败！请确保" + saveFileName + "在可执行文件目录下是存在的，可以手动创建。";
+            return succ;
+        }
 
         // 预打开文件：返回文件路径
         private async Task<string> GetOpenFileName()

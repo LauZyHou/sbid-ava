@@ -1,5 +1,6 @@
 ﻿using sbid._M;
 using sbid._VM;
+using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -85,17 +86,18 @@ namespace sbid
         }
 
         /// <summary>
-        /// 执行一条命令，不重定向输出
+        /// 执行一条命令，不关心返回结果
         /// </summary>
-        /// <param name="command_file">命令的实体文件</param>
-        /// <param name="command_param">命令的参数</param>
-        public static void runCommand(string command_file, string command_param = "")
+        /// <param name="command_file">命令实体文件</param>
+        /// <param name="command_param">命令参数</param>
+        /// <returns>返回true表示命令执行成功，false表示命令执行失败</returns>
+        public static bool runCommand(string command_file, string command_param = "")
         {
             // 检查一下要执行的命令实体是不是空
             if (string.IsNullOrEmpty(command_file))
             {
                 ResourceManager.mainWindowVM.Tips = "验证命令为空，无法验证";
-                return;
+                return false;
             }
             // 要执行的验证命令
             ProcessStartInfo processStartInfo = new ProcessStartInfo
@@ -118,8 +120,10 @@ namespace sbid
             }
             if (process is null)
             {
-                return;
+                ResourceManager.mainWindowVM.Tips = "无法执行此命令";
+                return false;
             }
+            return true;
         }
     }
 }
