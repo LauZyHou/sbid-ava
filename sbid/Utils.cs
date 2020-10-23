@@ -91,7 +91,7 @@ namespace sbid
         /// <param name="command_file">命令实体文件</param>
         /// <param name="command_param">命令参数</param>
         /// <returns>返回true表示命令执行成功，false表示命令执行失败</returns>
-        public static bool runCommand(string command_file, string command_param = "")
+        public static bool runCommand(string command_file, string command_param)
         {
             // 检查一下要执行的命令实体是不是空
             if (string.IsNullOrEmpty(command_file))
@@ -108,7 +108,7 @@ namespace sbid
             {
                 RedirectStandardOutput = false
             };
-            // 执行这条命令，执行过程中可能抛掷异常，直接显示异常信息
+            // 执行这条命令，执行过程中可能捕获异常
             System.Diagnostics.Process process = null;
             try
             {
@@ -116,11 +116,11 @@ namespace sbid
             }
             catch (System.Exception ex)
             {
+                // 直接显示异常信息
                 ResourceManager.mainWindowVM.Tips = ex.ToString();
             }
             if (process is null)
             {
-                ResourceManager.mainWindowVM.Tips = "无法执行此命令";
                 return false;
             }
             return true;

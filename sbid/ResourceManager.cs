@@ -30,21 +30,23 @@ namespace sbid
         // 维护Beagle可执行文件位置（在首选项中编辑）
         public static string beaglePath = null;
 
-        // 【临时】Just验证命令，用于性质验证
-        public static string justVerifyCommmad_file = "java";
-        public static string justVerifyCommmad_param = "--version";
-        // 【临时】Just模拟执行代码生成命令，用于模拟执行
-        public static string justSimuGenCommand_file = "java";
-        public static string justSimuGenCommand_param = "--version";
-        // 【临时】Just编译命令，用于模拟执行
-        public static string justCompileCommand_file = "java";
-        public static string justCompileCommand_param = "--version";
-        // 【临时】Just执行命令，用于模拟执行
-        public static string justRunCommand_file = "java";
-        public static string justRunCommand_param = "--version";
-        // 【临时】Just可执行代码生成，用于可执行代码生成
-        public static string justExecGenCommand_file = "java";
-        public static string justExecGenCommand_param = "--version";
+        // 性质验证命令所在脚本
+        public static string justVerifyCommmad_file = "./resource/verify.sh";
+        public static string justVerifyCommmad_param = null;
+
+        // 模拟执行代码生成命令所在脚本
+        public static string justSimuGenCommand_file = "./resource/simu_gen.sh";
+        public static string justSimuGenCommand_param = null;
+        // 模拟执行代码编译命令所在脚本
+        public static string justCompileCommand_file = "./resource/simu_compile.sh";
+        public static string justCompileCommand_param = null;
+        // 模拟执行命令所在脚本
+        public static string justRunCommand_file = "./resource/simu_run.sh";
+        public static string justRunCommand_param = null;
+
+        // 可执行代码生成命令所在脚本
+        public static string justExecGenCommand_file = "./resource/exec_gen.sh";
+        public static string justExecGenCommand_param = null;
 
         /*
         【可变动资源】需要在编译后手动复制到输出目录，不论是Debug模式和Release模式
