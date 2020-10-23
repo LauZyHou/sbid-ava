@@ -17,7 +17,7 @@ namespace sbid._VM
         private void OnVerify()
         {
             // ProVerif待验证的pv文件路径
-            string proVerifFilePath = ResourceManager.RunPath + "/Assets/proverif.pv";
+            string proVerifFilePath = ResourceManager.RunPath + ResourceManager.test_proverif_pv;
             // ProVerif可执行文件位置，如果没有就用"proverif"代替，即期望用户配置了环境变量
             string proVerifPath = "proverif";
             if (!string.IsNullOrEmpty(ResourceManager.proVerifPath))

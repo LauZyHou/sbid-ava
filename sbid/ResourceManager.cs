@@ -46,6 +46,18 @@ namespace sbid
         public static string justExecGenCommand_file = "java";
         public static string justExecGenCommand_param = "--version";
 
+        /*
+        【可变动资源】需要在编译后手动复制到输出目录，不论是Debug模式和Release模式
+        所有的可变动资源不能设置成被VS管理的资源（即在解决方案资源管理器中不能存在）
+        否则将在“生成单个文件”时被尝试加进去，最终却会导致不可用
+        */
+        // 安全策略数据库文件。用于攻击树叶子攻击分析时得到安全策略提示
+        public static string security_policy_json = "./resource/SecurityPolicy.json";
+        // 生成后端XML文件时的索引文件。用于性质验证、模拟执行、代码生成
+        public static string back_xml_sbid = "./backxml/back.sbid";
+        // （临时）测试provrif文件
+        public static string test_proverif_pv = "/resource/proverif.pv";
+
         #region 导出图片相关接口
 
         // 预保存文件：传入文件后缀(如sbid/xml/png)，返回文件路径

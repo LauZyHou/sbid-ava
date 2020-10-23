@@ -401,12 +401,12 @@ namespace sbid._VM
                 return false;
             }
             // 【注意】目前是在编译或者安装后，必须在当前sbid可执行文件目录下创建如下的子目录和文件
-            string saveFileName = "./backxml/back.sbid";
-            bool succ = DoSave2(saveFileName);
+            string fpath = ResourceManager.back_xml_sbid;
+            bool succ = DoSave2(fpath);
             if (succ)
-                Tips = "生成模型后端XML，至：" + saveFileName;
-            else
-                Tips = "[ERROR]后端XML生成失败！请确保" + saveFileName + "在可执行文件目录下是存在的，可以手动创建。";
+                Tips = "生成模型后端XML，至：" + fpath;
+            // else
+            //     Tips = "[ERROR]后端XML生成失败！请确保" + saveFileName + "在可执行文件目录下是存在的，可以手动创建。";
             return succ;
         }
 
@@ -2767,7 +2767,16 @@ namespace sbid._VM
             string cleanName = fileName.Substring(0, fileName.Length - 5);
 
             // 写入".sbid"文件
-            XmlTextWriter xmlWriter = new XmlTextWriter(fileName, null);
+            XmlTextWriter xmlWriter = null;
+            try
+            {
+                xmlWriter = new XmlTextWriter(fileName, null);
+            }
+            catch (System.Exception e)
+            {
+                ResourceManager.mainWindowVM.Tips = e.Message;
+                return false;
+            }
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartElement("Project");
             string nowTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
