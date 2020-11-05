@@ -48,6 +48,8 @@ namespace sbid._M
             InnerFormulas.Add(new Formula("SymDec(SymEnc(m,k),k)=m"));
             // 公钥签名->私钥验证
             InnerFormulas.Add(new Formula("Verify(Sign(m,sk),pk)=True"));
+            // 非对称加密->非对称解密
+            InnerFormulas.Add(new Formula("AsymDec(AsymEnc(m,pk),sk)=m"));
         }
 
         #endregion
