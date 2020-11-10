@@ -35,18 +35,23 @@ namespace sbid
         public static string justVerifyCommmad_param = null;
 
         // 模拟执行代码生成命令所在脚本
-        public static string justSimuGenCommand_file = "./resource/simu_gen.bat";
+        public static string justSimuGenCommand_file = "./resource/simu_gen";
         public static string justSimuGenCommand_param = null;
         // 模拟执行代码编译命令所在脚本
-        public static string justCompileCommand_file = "./resource/simu_compile.bat";
+        public static string justCompileCommand_file = "./resource/simu_compile";
         public static string justCompileCommand_param = null;
         // 模拟执行命令所在脚本
-        public static string justRunCommand_file = "./resource/simu_run.bat";
+        public static string justRunCommand_file = "./resource/simu_run";
         public static string justRunCommand_param = null;
 
-        // 可执行代码生成命令所在脚本
-        public static string justExecGenCommand_file = "./resource/exec_gen.bat";
+        // 【11月10日作废】可执行代码生成命令所在脚本
+        public static string justExecGenCommand_file = "./resource/exec_gen";
         public static string justExecGenCommand_param = null;
+
+        // 代码生成：生成
+        public static string CodeGen_gen = "./resource/CodeGen_gen";
+        // 代码生成：生成、编译、执行
+        public static string CodeGen_gen_comp_run = "./resource/CodeGen_gen_comp_run";
 
         /*
         【可变动资源】需要在编译后手动复制到输出目录，不论是Debug模式和Release模式

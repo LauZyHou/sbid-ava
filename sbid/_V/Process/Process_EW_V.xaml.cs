@@ -490,7 +490,15 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "更新了自定Method：" + method;
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method
-            ((Process_EW_VM)DataContext).ZDParams = new ObservableCollection<Attribute>();
+            // ((Process_EW_VM)DataContext).ZDParams = new ObservableCollection<Attribute>();
+
+            // 【11月10日bugfix】更新完成后，将这个临时参数表复制一份保留
+            ObservableCollection<Attribute> tmp = new ObservableCollection<Attribute>();
+            foreach (Attribute attribute in ((Process_EW_VM)DataContext).ZDParams)
+            {
+                tmp.Add(new Attribute(attribute));
+            }
+            ((Process_EW_VM)DataContext).ZDParams = tmp;
         }
 
         public void Delete_ZDMethod()
@@ -671,7 +679,15 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "添加了CommMethod：" + commMethod.ShowString;
 
             // 添加完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的CommMethod
-            ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
+            // ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
+
+            // 【11月10日bugfix】更新完成后，将这个临时参数表复制一份保留
+            ObservableCollection<Attribute> tmp = new ObservableCollection<Attribute>();
+            foreach (Attribute attribute in ((Process_EW_VM)DataContext).CommParams)
+            {
+                tmp.Add(new Attribute(attribute));
+            }
+            ((Process_EW_VM)DataContext).CommParams = tmp;
         }
 
         public void Update_CommMethod()

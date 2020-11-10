@@ -374,6 +374,7 @@ namespace sbid._VM
         // 【临时】【可执行代码生成】
         public void JustCodeGen()
         {
+            /*
             if (!checkAndGenProtocolXML())
                 return;
             ResourceManager.mainWindowVM.Tips = "可执行代码生成中...";
@@ -386,6 +387,12 @@ namespace sbid._VM
             {
                 ResourceManager.mainWindowVM.Tips = "可执行代码生成完毕。";
             }
+            */
+            CodeGeneration_SW_V codeGeneration_SW_V = new CodeGeneration_SW_V()
+            {
+                DataContext = new CodeGeneration_SW_VM()
+            };
+            codeGeneration_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
         #endregion

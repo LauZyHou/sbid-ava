@@ -357,7 +357,15 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "更新了自定Method：" + method;
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的Method
-            ((UserType_EW_VM)DataContext).Params = new ObservableCollection<Attribute>();
+            // ((UserType_EW_VM)DataContext).Params = new ObservableCollection<Attribute>();
+
+            // 【11月10日bugfix】更新完成后，将这个临时参数表复制一份保留
+            ObservableCollection<Attribute> tmp = new ObservableCollection<Attribute>();
+            foreach (Attribute attribute in ((UserType_EW_VM)DataContext).Params)
+            {
+                tmp.Add(new Attribute(attribute));
+            }
+            ((UserType_EW_VM)DataContext).Params = tmp;
         }
 
         public void Delete_Method()

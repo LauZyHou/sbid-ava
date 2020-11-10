@@ -1,0 +1,29 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="120" Width="500" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.CodeGeneration_SW_V"
+        Title="代码生成" CanResize="False">
+  <Design.DataContext>
+    <vm:CodeGeneration_SW_VM/>
+  </Design.DataContext>
+
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="18"/>
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="1*,1*,1*" Margin="10">
+    <Grid Grid.Row="0" ColumnDefinitions="4*,6*">
+      <TextBlock Grid.Column="0" Text="生成的编程语言类型：" VerticalAlignment="Center"/>
+      <ComboBox Name="language_ComboBox" Grid.Column="1"/>
+    </Grid>
+    <Grid Grid.Row="2" ColumnDefinitions="3*,1*,3*">
+      <Button Grid.Column="0" Command="{Binding $parent[Window].CodeGen_gen}">生成</Button>
+      <Button Grid.Column="2" Command="{Binding $parent[Window].CodeGen_gen_comp_run}">生成并运行</Button>
+    </Grid>
+  </Grid>
+</Window>

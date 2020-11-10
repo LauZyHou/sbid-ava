@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace sbid
 {
@@ -96,8 +97,18 @@ namespace sbid
             // 检查一下要执行的命令实体是不是空
             if (string.IsNullOrEmpty(command_file))
             {
-                ResourceManager.mainWindowVM.Tips = "验证命令为空，无法验证";
+                ResourceManager.mainWindowVM.Tips = "待执行命令为空，无法执行";
                 return false;
+            }
+            // 自动识别，根据操作系统的不同，调用不同的后缀名脚本
+            // 【fixme】需要注意有些脚本没有调用这个函数，就不能去掉后缀名
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                command_file += ".bat";
+            }
+            else
+            {
+                command_file += ".sh";
             }
             // 要执行的验证命令
             ProcessStartInfo processStartInfo = new ProcessStartInfo

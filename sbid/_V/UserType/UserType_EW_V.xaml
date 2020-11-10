@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="352" Width="540" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.UserType_EW_V"
-        Title="编辑自定义类型">
+        Title="编辑自定义类型"> 
 
   <Design.DataContext>
     <vm:UserType_EW_VM/>
