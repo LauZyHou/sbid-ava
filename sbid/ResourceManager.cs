@@ -31,7 +31,7 @@ namespace sbid
         public static string beaglePath = null;
 
         // 性质验证命令所在脚本
-        public static string justVerifyCommmad_file = "./resource/verify.bat";
+        public static string justVerifyCommmad_file = "./resource/verify";
         public static string justVerifyCommmad_param = null;
 
         // 模拟执行代码生成命令所在脚本

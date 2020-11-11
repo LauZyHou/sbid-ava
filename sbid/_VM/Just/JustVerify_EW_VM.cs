@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace sbid._VM
 {
@@ -16,16 +17,27 @@ namespace sbid._VM
         // 按下【验证当前协议模型】按钮
         private void OnVerify()
         {
+            string command_file = ResourceManager.justVerifyCommmad_file;
             // 检查一下验证命令是不是空
-            if (string.IsNullOrEmpty(ResourceManager.justVerifyCommmad_file))
+            if (string.IsNullOrEmpty(command_file))
             {
                 ResourceManager.mainWindowVM.Tips = "验证命令为空，无法验证";
                 return;
             }
+            // 自动识别，根据操作系统的不同，调用不同的后缀名脚本
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                command_file += ".bat";
+            }
+            else
+            {
+                command_file += ".sh";
+            }
+
             // 要执行的验证命令
             ProcessStartInfo processStartInfo = new ProcessStartInfo
                 (
-                    ResourceManager.justVerifyCommmad_file, 
+                    command_file,
                     ResourceManager.justVerifyCommmad_param
                 )
             {

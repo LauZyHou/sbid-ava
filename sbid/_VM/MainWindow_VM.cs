@@ -374,9 +374,9 @@ namespace sbid._VM
         // 【临时】【可执行代码生成】
         public void JustCodeGen()
         {
-            /*
             if (!checkAndGenProtocolXML())
                 return;
+            /*
             ResourceManager.mainWindowVM.Tips = "可执行代码生成中...";
             bool res = Utils.runCommand
                 (

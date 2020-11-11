@@ -38,9 +38,12 @@
         <MenuItem Header="新序列图(Sequence Diagram)" Command="{Binding AddSequenceDiagram}"/>
       </MenuItem>
       <MenuItem Header="操作">
-        <MenuItem Header="性质验证" Command="{Binding PropertyVerify}"/>
+        <!--<MenuItem Header="性质验证" Command="{Binding PropertyVerify}"/>
         <MenuItem Header="模拟执行" Command="{Binding SimulationRun}"/>
-        <MenuItem Header="测试调用ProVerif" Command="{Binding TestCallProVerif}"/>
+        <MenuItem Header="测试调用ProVerif" Command="{Binding TestCallProVerif}"/>-->
+        <MenuItem Header="性质验证" Command="{Binding JustVerify}"/>
+        <MenuItem Header="模拟执行" Command="{Binding JustSimulate}"/>
+        <MenuItem Header="可执行代码生成" Command="{Binding JustCodeGen}"/>
       </MenuItem>
       <MenuItem Header="帮助">
         <MenuItem Header="使用手册" IsEnabled="False"/>

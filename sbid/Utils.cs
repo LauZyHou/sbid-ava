@@ -101,7 +101,6 @@ namespace sbid
                 return false;
             }
             // 自动识别，根据操作系统的不同，调用不同的后缀名脚本
-            // 【fixme】需要注意有些脚本没有调用这个函数，就不能去掉后缀名
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 command_file += ".bat";

@@ -57,7 +57,7 @@ namespace sbid._V
             }
             if (platformConflict)
             {
-                ResourceManager.mainWindowVM.Tips = "注意，程序当前所在的操作系统无法运行选中的目标平台的代码，您可单独生成后到目标平台上编译运行";
+                ResourceManager.mainWindowVM.Tips = "无效的操作！程序当前所在的操作系统无法运行选中的目标平台的代码，您可单独生成后到目标平台上编译运行";
                 return;
             }
 
