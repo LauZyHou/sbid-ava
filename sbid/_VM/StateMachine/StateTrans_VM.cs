@@ -65,75 +65,135 @@ namespace sbid._VM
         // 打开编辑窗口
         public void EditStateTrans()
         {
-            // 从所在的ProcessToSM面板取得当前状态机所在的进程模板
-            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
-
-            // 窗体VM
-            StateTrans_EW_VM stateTrans_EW_VM = new StateTrans_EW_VM()
+            // 【注意】区分“状态机”和“访问控制”
+            SidePanel_VM sidePanel_VM = ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            if (sidePanel_VM is ProcessToSM_P_VM) // “状态机”
             {
-                StateTrans = stateTrans,
-                Process = processToSM_P_VM.Process
-            };
+                // 从所在的ProcessToSM面板取得当前状态机所在的进程模板
+                ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
 
-            // 从进程模板生成属性导航
-            foreach (Attribute attribute in processToSM_P_VM.Process.Attributes)
-            {
-                Nav nav;
-                if (attribute.Type is UserType) // 引用类型
+                // 窗体VM
+                StateTrans_EW_VM stateTrans_EW_VM = new StateTrans_EW_VM()
                 {
-                    nav = ReferenceNav.build(attribute, null);
-                }
-                else // 值类型
+                    StateTrans = stateTrans,
+                    Process = processToSM_P_VM.Process
+                };
+
+                // 从进程模板生成属性导航
+                foreach (Attribute attribute in processToSM_P_VM.Process.Attributes)
                 {
-                    nav = new ValueNav(attribute, null);
+                    Nav nav;
+                    if (attribute.Type is UserType) // 引用类型
+                    {
+                        nav = ReferenceNav.build(attribute, null);
+                    }
+                    else // 值类型
+                    {
+                        nav = new ValueNav(attribute, null);
+                    }
+                    stateTrans_EW_VM.Properties.Add(nav);
                 }
-                stateTrans_EW_VM.Properties.Add(nav);
+
+                // 窗体V
+                StateTrans_EW_V stateTransEWV = new StateTrans_EW_V()
+                {
+                    DataContext = stateTrans_EW_VM
+                };
+
+                // 将所有的Type传入，作为原子命题编辑窗口中属性导航器的可选进程
+                foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
+                {
+                    if (item is UserType_VM)
+                    {
+                        UserType_VM userType_VM = (UserType_VM)item;
+                        ((StateTrans_EW_VM)stateTransEWV.DataContext).Types.Add(userType_VM.Type);
+                    }
+                }
+
+                stateTransEWV.ShowDialog(ResourceManager.mainWindowV);
+                ResourceManager.mainWindowVM.Tips = "打开了转移关系的编辑窗体";
             }
-
-            // 窗体V
-            StateTrans_EW_V stateTransEWV = new StateTrans_EW_V()
+            else if (sidePanel_VM is AccessControl_P_VM) // “访问控制”
             {
-                DataContext = stateTrans_EW_VM
-            };
-
-            // 将所有的Type传入，作为原子命题编辑窗口中属性导航器的可选进程
-            foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
-            {
-                if (item is UserType_VM)
+                // 窗体VM
+                StateTrans_EW_VM stateTrans_EW_VM = new StateTrans_EW_VM()
                 {
-                    UserType_VM userType_VM = (UserType_VM)item;
-                    ((StateTrans_EW_VM)stateTransEWV.DataContext).Types.Add(userType_VM.Type);
-                }
-            }
+                    StateTrans = stateTrans,
+                    Process = null
+                };
 
-            stateTransEWV.ShowDialog(ResourceManager.mainWindowV);
-            ResourceManager.mainWindowVM.Tips = "打开了转移关系的编辑窗体";
+                // 窗体V
+                StateTrans_EW_V stateTransEWV = new StateTrans_EW_V()
+                {
+                    DataContext = stateTrans_EW_VM
+                };
+
+                // 将所有的Type传入，作为原子命题编辑窗口中属性导航器的可选进程
+                foreach (ViewModelBase item in ResourceManager.mainWindowVM.SelectedItem.PanelVMs[0].SidePanelVMs[0].UserControlVMs)
+                {
+                    if (item is UserType_VM)
+                    {
+                        UserType_VM userType_VM = (UserType_VM)item;
+                        ((StateTrans_EW_VM)stateTransEWV.DataContext).Types.Add(userType_VM.Type);
+                    }
+                }
+
+                stateTransEWV.ShowDialog(ResourceManager.mainWindowV);
+                ResourceManager.mainWindowVM.Tips = "打开了转移关系的编辑窗体";
+            }
         }
 
         // 删除这个StateTrans
         public void DeleteStateTrans()
         {
-            // 获取当前"进程模板-状态机"侧栏面板
-            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
-            // 获取当前的状态机面板
-            StateMachine_P_VM stateMachine_P_VM = processToSM_P_VM.SelectedItem;
-            // 删除状态上所有连线，并同时维护面板的活动锚点
-            foreach (Connector_VM connector_VM in ConnectorVMs)
+            // 【注意】区分“状态机”和“访问控制”
+            SidePanel_VM sidePanel_VM = ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            if (sidePanel_VM is ProcessToSM_P_VM) // “状态机”
             {
-                // 如果活动锚点在这个要删除的StateTrans上就会假死，所以要判断并清除活动锚点
-                if (connector_VM == stateMachine_P_VM.ActiveConnector)
-                    stateMachine_P_VM.ActiveConnector = null;
-                // 清除该锚点上的连线，这里直接调用这个方法，即和用户手动点掉连线共享一样的行为
-                if (connector_VM.ConnectionVM != null)
+                // 获取当前"进程模板-状态机"侧栏面板
+                ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)sidePanel_VM;
+                // 获取当前的状态机面板
+                StateMachine_P_VM stateMachine_P_VM = processToSM_P_VM.SelectedItem;
+                // 删除状态上所有连线，并同时维护面板的活动锚点
+                foreach (Connector_VM connector_VM in ConnectorVMs)
                 {
-                    stateMachine_P_VM.BreakTransitionVM(connector_VM);
+                    // 如果活动锚点在这个要删除的StateTrans上就会假死，所以要判断并清除活动锚点
+                    if (connector_VM == stateMachine_P_VM.ActiveConnector)
+                        stateMachine_P_VM.ActiveConnector = null;
+                    // 清除该锚点上的连线，这里直接调用这个方法，即和用户手动点掉连线共享一样的行为
+                    if (connector_VM.ConnectionVM != null)
+                    {
+                        stateMachine_P_VM.BreakTransitionVM(connector_VM);
+                    }
                 }
+
+                // 从当前状态机面板删除这个StateTrans
+                stateMachine_P_VM.UserControlVMs.Remove(this);
+
+                ResourceManager.mainWindowVM.Tips = "已经删除状态转移";
             }
+            else if (sidePanel_VM is AccessControl_P_VM) // “访问控制”
+            {
+                // 获取当前的访问控制面板
+                AccessControl_P_VM accessControl_P_VM = (AccessControl_P_VM)sidePanel_VM;
+                // 删除状态上所有连线，并同时维护面板的活动锚点
+                foreach (Connector_VM connector_VM in ConnectorVMs)
+                {
+                    // 如果活动锚点在这个要删除的StateTrans上就会假死，所以要判断并清除活动锚点
+                    if (connector_VM == accessControl_P_VM.ActiveConnector)
+                        accessControl_P_VM.ActiveConnector = null;
+                    // 清除该锚点上的连线，这里直接调用这个方法，即和用户手动点掉连线共享一样的行为
+                    if (connector_VM.ConnectionVM != null)
+                    {
+                        accessControl_P_VM.BreakTransitionVM(connector_VM);
+                    }
+                }
 
-            // 从当前状态机面板删除这个StateTrans
-            stateMachine_P_VM.UserControlVMs.Remove(this);
+                // 从当前访问控制面板删除这个StateTrans
+                accessControl_P_VM.UserControlVMs.Remove(this);
 
-            ResourceManager.mainWindowVM.Tips = "已经删除状态转移";
+                ResourceManager.mainWindowVM.Tips = "已经删除状态转移";
+            }
         }
 
         #endregion

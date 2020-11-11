@@ -48,6 +48,9 @@ namespace sbid._VM
             //sequenceDiagramPVM.SelectedItem = sequenceDiagramPVM.SidePanelVMs[0];
             panelVMs.Add(sequenceDiagramPVM);
 
+            Panel_VM accessControlPVM = new Panel_VM("访问控制图");
+            panelVMs.Add(accessControlPVM);
+
             // 设置本协议的默认选中项为第一项"概览"
             selectedItem = panelVMs[0];
         }

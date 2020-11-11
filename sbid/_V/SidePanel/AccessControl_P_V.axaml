@@ -1,0 +1,66 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+             xmlns:v="clr-namespace:sbid._V;assembly=sbid"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="sbid._V.AccessControl_P_V">
+  <Design.DataContext>
+    <vm:AccessControl_P_VM/>
+  </Design.DataContext>
+
+  <!--从ItemsControl改用ListBox，能将切换TabItem时的渲染加速到之前的三倍-->
+  <UserControl.Styles>
+    <!--ItemsControl的样式-->
+    <Style Selector="ListBox#panel">
+      <!--使用Canvas作面板-->
+      <Setter Property="ItemsPanel">
+        <Setter.Value>
+          <ItemsPanelTemplate>
+            <!--这里需要为Canvas设置颜色才能在按下时相应鼠标事件-->
+            <Canvas Background="#EEEEEE" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <!--右键菜单行为-->
+              <Canvas.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="创建普通状态结点" Command="{Binding $parent[UserControl].CreateStateVM}"/>
+                  <MenuItem Header="创建终止状态结点" Command="{Binding $parent[UserControl].CreateFinalStateVM}"/>
+                  <MenuItem Header="创建转移关系结点" Command="{Binding $parent[UserControl].CreateStateTransVM}}"/>
+                  <!--<MenuItem Header="*创建控制点" Command="{Binding $parent[UserControl].CreateControlPointVMTest}}"/>-->
+                </ContextMenu>
+              </Canvas.ContextMenu>
+            </Canvas>
+          </ItemsPanelTemplate>
+        </Setter.Value>
+      </Setter>
+      <!--里面放控件,即xxx_VM-->
+      <Setter Property="ItemTemplate">
+        <Setter.Value>
+          <DataTemplate DataType="vm:ViewModelBase">
+            <ContentControl Content="{Binding .}"/>
+          </DataTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!--Avalonia的ItemsControl中没有ItemContainerStyle,用选择器+样式来绑定Canvas.Left等附加属性-->
+    <!--ItemsControl > ContentPresenter-->
+    <Style Selector="ListBox#panel ListBoxItem">
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Canvas.Left" Value="{Binding X}"/>
+      <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+    </Style>
+    <Style Selector="ListBox#panel ListBoxItem > ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="IsHitTestVisible" Value="{Binding IsNetWorkItemVM}"/>
+    </Style>
+  </UserControl.Styles>
+
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+      <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
+    </StackPanel>
+    <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <ListBox Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

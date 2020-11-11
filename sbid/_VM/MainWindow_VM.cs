@@ -131,6 +131,20 @@ namespace sbid._VM
             selectedItem.PanelVMs[5].SelectedItem = pvm;
         }
 
+        // 添加访问控制图
+        public void AddAccessControl()
+        {
+            if (selectedItem == null)
+                return;
+
+            selectedItem.SelectedItem = selectedItem.PanelVMs[6];
+
+            AccessControl_P_VM pvm = new AccessControl_P_VM();
+            pvm.init_data();
+            selectedItem.PanelVMs[6].SidePanelVMs.Add(pvm);
+            selectedItem.PanelVMs[6].SelectedItem = pvm;
+        }
+
         // 按下【保存】按钮
         public async void SaveAllVM()
         {

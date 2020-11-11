@@ -112,72 +112,100 @@ namespace sbid._VM
         // 对状态进行精化(跳转到精化的状态机面板)
         public void RefineStateVM()
         {
-            // 标记当前状态"被精化"，以显示蓝色标识
-            state.HaveRefine = true;
-            // 获取当前"进程模板-状态机"侧栏面板
-            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
-            // 判断是否已经精化过，如果精化过直接跳到面板
-            foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
+            // 【注意】区分“状态机”和“访问控制”
+            SidePanel_VM sidePanel_VM = ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            if (sidePanel_VM is ProcessToSM_P_VM) // “状态机”
             {
-                if (pvm.State == state)
+                // 标记当前状态"被精化"，以显示蓝色标识
+                state.HaveRefine = true;
+                // 获取当前"进程模板-状态机"侧栏面板
+                ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)sidePanel_VM;
+                // 判断是否已经精化过，如果精化过直接跳到面板
+                foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
                 {
-                    processToSM_P_VM.SelectedItem = pvm;
-                    return;
+                    if (pvm.State == state)
+                    {
+                        processToSM_P_VM.SelectedItem = pvm;
+                        return;
+                    }
                 }
+                // 否则，创建、初始化并跳转
+                StateMachine_P_VM stateMachine_P_VM = new StateMachine_P_VM(state);
+                stateMachine_P_VM.init_data();
+                processToSM_P_VM.StateMachinePVMs.Add(stateMachine_P_VM);
+                processToSM_P_VM.SelectedItem = stateMachine_P_VM;
             }
-            // 否则，创建、初始化并跳转
-            StateMachine_P_VM stateMachine_P_VM = new StateMachine_P_VM(state);
-            stateMachine_P_VM.init_data();
-            processToSM_P_VM.StateMachinePVMs.Add(stateMachine_P_VM);
-            processToSM_P_VM.SelectedItem = stateMachine_P_VM;
+            else if (sidePanel_VM is AccessControl_P_VM) // “访问控制”
+            {
+                ResourceManager.mainWindowVM.Tips = "无效的操作。访问控制图中，状态不能被精化";
+                return;
+            }
         }
 
         // 删除状态，级联删除对应内容
         public void DeleteStateVM()
         {
-            // 获取当前"进程模板-状态机"侧栏面板
-            ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
-            // 获取当前的状态机面板
-            StateMachine_P_VM stateMachine_P_VM = processToSM_P_VM.SelectedItem;
-            // 删除状态上所有连线，并同时维护面板的活动锚点
-            foreach (Connector_VM connector_VM in ConnectorVMs)
+            // 【注意】区分“状态机”和“访问控制”
+            SidePanel_VM sidePanel_VM = ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            if (sidePanel_VM is ProcessToSM_P_VM) // “状态机”
             {
-                // 如果活动锚点在这个要删除的状态上就会假死，所以要判断并清除活动锚点
-                if (connector_VM == stateMachine_P_VM.ActiveConnector)
-                    stateMachine_P_VM.ActiveConnector = null;
-                // 清除该锚点上的连线，这里直接调用这个方法，即和用户手动点掉连线共享一样的行为
-                if (connector_VM.ConnectionVM != null)
+                // 获取当前"进程模板-状态机"侧栏面板
+                ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)sidePanel_VM;
+                // 获取当前的状态机面板
+                StateMachine_P_VM stateMachine_P_VM = processToSM_P_VM.SelectedItem;
+                // 删除状态上所有连线，并同时维护面板的活动锚点
+                foreach (Connector_VM connector_VM in ConnectorVMs)
                 {
-                    stateMachine_P_VM.BreakTransitionVM(connector_VM);
+                    // 如果活动锚点在这个要删除的状态上就会假死，所以要判断并清除活动锚点
+                    if (connector_VM == stateMachine_P_VM.ActiveConnector)
+                        stateMachine_P_VM.ActiveConnector = null;
+                    // 清除该锚点上的连线，这里直接调用这个方法，即和用户手动点掉连线共享一样的行为
+                    if (connector_VM.ConnectionVM != null)
+                    {
+                        stateMachine_P_VM.BreakTransitionVM(connector_VM);
+                    }
                 }
-                /*
-                Connection_VM connection_VM = connector_VM.ConnectionVM;
-                if (connection_VM != null)
+
+                // 判断并删除依赖此State的认证性/完整性/可用性
+                JudgeAndDeleteProperty();
+
+                // 删除对应状态机面板，以及递归删除其中的状态对应的状态机面板
+                foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
                 {
-                    connection_VM.Source.ConnectionVM = null;
-                    connection_VM.Dest.ConnectionVM = null;
-                    stateMachine_P_VM.UserControlVMs.Remove(connection_VM);
+                    if (pvm.State == state)
+                    {
+                        DeleteStateMachinePVMCascade(pvm);
+                        break; // 每个状态最多精化一次，所以找到一个面板删除完就可以break了
+                    }
                 }
-                */
+
+                // 从当前状态机面板删除这个状态
+                stateMachine_P_VM.UserControlVMs.Remove(this);
+
+                ResourceManager.mainWindowVM.Tips = "已经删除状态" + state.Name + "，并级联删除了所有依赖于此状态的内容";
             }
-
-            // 判断并删除依赖此State的认证性/完整性/可用性
-            JudgeAndDeleteProperty();
-
-            // 删除对应状态机面板，以及递归删除其中的状态对应的状态机面板
-            foreach (StateMachine_P_VM pvm in processToSM_P_VM.StateMachinePVMs)
+            else if (sidePanel_VM is AccessControl_P_VM) // “访问控制”
             {
-                if (pvm.State == state)
+                // 获取当前的访问控制面板
+                AccessControl_P_VM accessControl_P_VM = (AccessControl_P_VM)sidePanel_VM;
+                // 删除状态上所有连线，并同时维护面板的活动锚点
+                foreach (Connector_VM connector_VM in ConnectorVMs)
                 {
-                    DeleteStateMachinePVMCascade(pvm);
-                    break; // 每个状态最多精化一次，所以找到一个面板删除完就可以break了
+                    // 如果活动锚点在这个要删除的状态上就会假死，所以要判断并清除活动锚点
+                    if (connector_VM == accessControl_P_VM.ActiveConnector)
+                        accessControl_P_VM.ActiveConnector = null;
+                    // 清除该锚点上的连线，这里直接调用这个方法，即和用户手动点掉连线共享一样的行为
+                    if (connector_VM.ConnectionVM != null)
+                    {
+                        accessControl_P_VM.BreakTransitionVM(connector_VM);
+                    }
                 }
+
+                // 从当前访问控制面板删除这个状态
+                accessControl_P_VM.UserControlVMs.Remove(this);
+
+                ResourceManager.mainWindowVM.Tips = "已经删除状态" + state.Name;
             }
-
-            // 从当前状态机面板删除这个状态
-            stateMachine_P_VM.UserControlVMs.Remove(this);
-
-            ResourceManager.mainWindowVM.Tips = "已经删除状态" + state.Name + "，并级联删除了所有依赖于此状态的内容";
         }
 
         #endregion

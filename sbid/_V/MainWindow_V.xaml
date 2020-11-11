@@ -36,6 +36,7 @@
         <MenuItem Header="新攻击树(AttackTree)" Command="{Binding AddAttackTree}"/>
         <MenuItem Header="新CTL语法树(CTL AST)" Command="{Binding AddCTLTree}"/>
         <MenuItem Header="新序列图(Sequence Diagram)" Command="{Binding AddSequenceDiagram}"/>
+        <MenuItem Header="新访问控制图(Access Control)" Command="{Binding AddAccessControl}"/>
       </MenuItem>
       <MenuItem Header="操作">
         <!--<MenuItem Header="性质验证" Command="{Binding PropertyVerify}"/>
@@ -43,6 +44,8 @@
         <MenuItem Header="测试调用ProVerif" Command="{Binding TestCallProVerif}"/>-->
         <MenuItem Header="性质验证" Command="{Binding JustVerify}"/>
         <MenuItem Header="模拟执行" Command="{Binding JustSimulate}"/>
+        <MenuItem Header="代码框架生成" Command="{Binding JustFrameGen}"/>
+        <MenuItem Header="程序精化" Command="{Binding JustCodeRefine}"/>
         <MenuItem Header="可执行代码生成" Command="{Binding JustCodeGen}"/>
       </MenuItem>
       <MenuItem Header="帮助">
@@ -78,6 +81,9 @@
       </Button>
       <Button Command="{Binding AddSequenceDiagram}" ToolTip.Tip="添加序列图">
         <Image Source="avares://sbid/Assets/Icons/sequence_diagram.png" Width="30" Height="30"/>
+      </Button>
+      <Button Command="{Binding AddAccessControl}" ToolTip.Tip="添加访问控制图">
+        <Image Source="avares://sbid/Assets/Icons/access_control.png" Width="30" Height="30"/>
       </Button>
       <TextBlock Text="        "/>
       <Button Command="{Binding JustVerify}" ToolTip.Tip="性质验证">
