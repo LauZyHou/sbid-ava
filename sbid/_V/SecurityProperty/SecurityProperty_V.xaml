@@ -9,6 +9,12 @@
     <vm:SecurityProperty_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.Resources>
     <SolidColorBrush x:Key="MyColor" Color="#80E0E6" />
   </UserControl.Resources>
@@ -20,7 +26,7 @@
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
     <TextBlock Grid.Row="2" Text=" 机密性:"/>
-    <ListBox Grid.Row="3" Items="{Binding SecurityProperty.Confidentials}" IsEnabled="False"
+    <ListBox Grid.Row="3" Items="{Binding SecurityProperty.Confidentials}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -37,7 +43,7 @@
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
     <TextBlock Grid.Row="5" Text=" 认证性:"/>
-    <ListBox Grid.Row="6" Items="{Binding SecurityProperty.Authenticities}" IsEnabled="False"
+    <ListBox Grid.Row="6" Items="{Binding SecurityProperty.Authenticities}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -60,7 +66,7 @@
     </ListBox>
     <TextBlock Grid.Row="7" Background="Black"/>
     <TextBlock Grid.Row="8" Text=" 完整性:"/>
-    <ListBox Grid.Row="9" Items="{Binding SecurityProperty.Integrities}" IsEnabled="False"
+    <ListBox Grid.Row="9" Items="{Binding SecurityProperty.Integrities}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -81,7 +87,7 @@
     </ListBox>
     <TextBlock Grid.Row="10" Background="Black"/>
     <TextBlock Grid.Row="11" Text=" 可用性:"/>
-    <ListBox Grid.Row="12" Items="{Binding SecurityProperty.Availabilities}" IsEnabled="False"
+    <ListBox Grid.Row="12" Items="{Binding SecurityProperty.Availabilities}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

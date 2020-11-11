@@ -80,19 +80,19 @@
         <Image Source="avares://sbid/Assets/Icons/sequence_diagram.png" Width="30" Height="30"/>
       </Button>
       <TextBlock Text="        "/>
-      <Button Command="{Binding JustVerify}" ToolTip.Tip="验证" Foreground="BlueViolet">
+      <Button Command="{Binding JustVerify}" ToolTip.Tip="性质验证">
         性质验证
       </Button>
-      <Button Command="{Binding JustSimulate}" ToolTip.Tip="模拟执行" Foreground="BlueViolet">
+      <Button Command="{Binding JustSimulate}" ToolTip.Tip="模拟执行">
         模拟执行
       </Button>
-      <Button Command="{Binding JustFrameGen}" ToolTip.Tip="代码框架生成" Foreground="BlueViolet">
+      <Button Command="{Binding JustFrameGen}" ToolTip.Tip="代码框架生成">
         代码框架生成
       </Button>
-      <Button Command="{Binding JustCodeRefine}" ToolTip.Tip="程序精化" Foreground="BlueViolet">
+      <Button Command="{Binding JustCodeRefine}" ToolTip.Tip="程序精化">
         程序精化
       </Button>
-      <Button Command="{Binding JustCodeGen}" ToolTip.Tip="可执行代码生成" Foreground="BlueViolet">
+      <Button Command="{Binding JustCodeGen}" ToolTip.Tip="可执行代码生成">
         可执行代码生成
       </Button>
       <!--<Button Command="{Binding PropertyVerify}" ToolTip.Tip="性质验证">

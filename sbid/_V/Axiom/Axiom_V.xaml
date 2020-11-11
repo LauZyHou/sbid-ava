@@ -9,6 +9,12 @@
     <vm:Axiom_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.Resources>
     <SolidColorBrush x:Key="MyColor" Color="#FFBBCC" />
   </UserControl.Resources>
@@ -20,7 +26,7 @@
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
     <TextBlock Grid.Row="2" Text=" 方法:"/>
-    <ListBox Grid.Row="3" Items="{Binding Axiom.ProcessMethods}" IsEnabled="False"
+    <ListBox Grid.Row="3" Items="{Binding Axiom.ProcessMethods}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -38,7 +44,7 @@
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
     <TextBlock Grid.Row="5" Text=" 公式:"/>
-    <ListBox Grid.Row="6" Items="{Binding Axiom.Formulas}" IsEnabled="False"
+    <ListBox Grid.Row="6" Items="{Binding Axiom.Formulas}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

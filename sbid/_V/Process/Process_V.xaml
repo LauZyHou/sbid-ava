@@ -9,6 +9,12 @@
     <vm:Process_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.Resources>
     <SolidColorBrush x:Key="MyColor" Color="#FFDD99" />
   </UserControl.Resources>
@@ -20,7 +26,7 @@
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
     <TextBlock Grid.Row="2" Text=" 属性:"/>
-    <ListBox Grid.Row="3" Items="{Binding Process.Attributes}" IsEnabled="False"
+    <ListBox Grid.Row="3" Items="{Binding Process.Attributes}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -44,7 +50,7 @@
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
     <TextBlock Grid.Row="5" Text=" 方法:"/>
-    <ListBox Grid.Row="6" Items="{Binding Process.Methods}" IsEnabled="False"
+    <ListBox Grid.Row="6" Items="{Binding Process.Methods}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -63,7 +69,7 @@
     </ListBox>
     <TextBlock Grid.Row="7" Background="Black"/>
     <TextBlock Grid.Row="8" Text=" 通信方法:"/>
-    <ListBox Grid.Row="9" Items="{Binding Process.CommMethods}" IsEnabled="False"
+    <ListBox Grid.Row="9" Items="{Binding Process.CommMethods}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

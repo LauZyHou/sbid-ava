@@ -34,13 +34,13 @@ namespace sbid
         public static string justVerifyCommmad_file = "./resource/verify";
         public static string justVerifyCommmad_param = null;
 
-        // 模拟执行代码生成命令所在脚本
+        // 【11月10日作废】模拟执行代码生成命令所在脚本
         public static string justSimuGenCommand_file = "./resource/simu_gen";
         public static string justSimuGenCommand_param = null;
-        // 模拟执行代码编译命令所在脚本
+        // 【11月10日作废】模拟执行代码编译命令所在脚本
         public static string justCompileCommand_file = "./resource/simu_compile";
         public static string justCompileCommand_param = null;
-        // 模拟执行命令所在脚本
+        // 【11月10日作废】模拟执行命令所在脚本
         public static string justRunCommand_file = "./resource/simu_run";
         public static string justRunCommand_param = null;
 
@@ -69,7 +69,8 @@ namespace sbid
         // 安全策略数据库文件。用于攻击树叶子攻击分析时得到安全策略提示
         public static string security_policy_json = "./resource/SecurityPolicy.json";
         // 生成后端XML文件时的索引文件。用于性质验证、模拟执行、代码生成
-        public static string back_xml_sbid = "./backxml/back.sbid";
+        public static string back_xml_sbid = "./backxml/back.sbid"; // 用于DoSave2【11月11作废】
+        public static string back_xml = "./backxml/current.xml"; // 用于ExportBackXML【11月11启用】
         // （临时）测试provrif文件
         public static string test_proverif_pv = "/resource/proverif.pv";
 
@@ -115,6 +116,13 @@ namespace sbid
                 panelChildren.MoveNext();
                 ScrollContentPresenter scrollContentPresenter = (ScrollContentPresenter)panelChildren.Current;
                 panelChildren = scrollContentPresenter.GetVisualChildren().GetEnumerator();
+                panelChildren.MoveNext();
+            }
+            // ItemsControl > Border > ItemsPresenter
+            else
+            {
+                Border border = (Border)panelChildren.Current;
+                panelChildren = border.GetVisualChildren().GetEnumerator();
                 panelChildren.MoveNext();
             }
             ItemsPresenter itemsPresenter = (ItemsPresenter)panelChildren.Current;

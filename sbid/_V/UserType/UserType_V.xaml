@@ -9,6 +9,12 @@
     <vm:UserType_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.Resources>
     <SolidColorBrush x:Key="MyColor" Color="#AADDFF" />
   </UserControl.Resources>
@@ -25,7 +31,7 @@
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
     <TextBlock Grid.Row="2" Text=" 属性:" IsVisible="{Binding !Type.Basic}"/>
-    <ListBox Grid.Row="3" Items="{Binding Type.Attributes}" IsEnabled="False" IsVisible="{Binding !Type.Basic}"
+    <ListBox Grid.Row="3" Items="{Binding Type.Attributes}" IsEnabled="True" IsVisible="{Binding !Type.Basic}"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -50,7 +56,7 @@
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black" IsVisible="{Binding !Type.Basic}"/>
     <TextBlock Grid.Row="5" Text=" 方法:" IsVisible="{Binding !Type.Basic}"/>
-    <ListBox Grid.Row="6" Items="{Binding Type.Methods}" IsEnabled="False" IsVisible="{Binding !Type.Basic}"
+    <ListBox Grid.Row="6" Items="{Binding Type.Methods}" IsEnabled="True" IsVisible="{Binding !Type.Basic}"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

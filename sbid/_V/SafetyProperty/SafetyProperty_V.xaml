@@ -9,6 +9,12 @@
     <vm:SafetyProperty_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.Resources>
     <SolidColorBrush x:Key="MyColor" Color="#C8B4EF" />
   </UserControl.Resources>
@@ -20,7 +26,7 @@
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black"/>
     <TextBlock Grid.Row="2" Text=" CTL:"/>
-    <ListBox Grid.Row="3" Items="{Binding SafetyProperty.CTLs}" IsEnabled="False"
+    <ListBox Grid.Row="3" Items="{Binding SafetyProperty.CTLs}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -30,7 +36,7 @@
     </ListBox>
     <TextBlock Grid.Row="4" Background="Black"/>
     <TextBlock Grid.Row="5" Text=" 不变性:"/>
-    <ListBox Grid.Row="6" Items="{Binding SafetyProperty.Invariants}" IsEnabled="False"
+    <ListBox Grid.Row="6" Items="{Binding SafetyProperty.Invariants}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

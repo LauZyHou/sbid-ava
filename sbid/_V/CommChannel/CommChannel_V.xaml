@@ -9,6 +9,12 @@
     <vm:CommChannel_VM/>
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.Resources>
     <SolidColorBrush x:Key="MyColor" Color="#99BBFF" />
   </UserControl.Resources>
@@ -19,7 +25,7 @@
       <TextBlock Text="{Binding CommChannel.Name}"/>
     </StackPanel>
     <TextBlock Grid.Row="1" Background="Black" HorizontalAlignment="Stretch"/>
-    <ListBox Grid.Row="2" Items="{Binding CommChannel.CommMethodPairs}" IsEnabled="False"
+    <ListBox Grid.Row="2" Items="{Binding CommChannel.CommMethodPairs}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
       <ListBox.ItemTemplate>
         <DataTemplate>

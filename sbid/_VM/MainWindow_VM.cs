@@ -179,21 +179,10 @@ namespace sbid._VM
             // 这里改成在返回false时提示具体的错误
         }
 
-        // 按下【生成XML】按钮
-        public async void GenerateXml()
+        // 按下【后端XML】按钮
+        public void GenerateXml()
         {
-            string saveFileName = await GetSaveFileName();
-            if (string.IsNullOrEmpty(saveFileName))
-            {
-                Tips = "取消生成XML";
-                return;
-            }
-            // 执行生成XML逻辑，这一套是生成验证用的XML，不能用来返回模型文件
-            bool succ = DoSave2(saveFileName);
-            if (succ)
-                Tips = "生成XML，至：" + saveFileName;
-            else
-                Tips = "[ERROR]XML生成失败！";
+            Utils.ExportBackXML();
         }
 
         // 按下【规范检查】按钮
@@ -438,19 +427,13 @@ namespace sbid._VM
         // 检查当前是否有至少一个协议模型，如果有则生成后端XML文件
         bool checkAndGenProtocolXML()
         {
-            if (protocolVMs.Count == 0)
+            if (protocolVMs.Count == 0 || selectedItem is null)
             {
                 Tips = "至少打开或创建一个协议模型！";
                 return false;
             }
-            // 【注意】目前是在编译或者安装后，必须在当前sbid可执行文件目录下创建如下的子目录和文件
-            string fpath = ResourceManager.back_xml_sbid;
-            bool succ = DoSave2(fpath);
-            if (succ)
-                Tips = "生成模型后端XML，至：" + fpath;
-            // else
-            //     Tips = "[ERROR]后端XML生成失败！请确保" + saveFileName + "在可执行文件目录下是存在的，可以手动创建。";
-            return succ;
+            Utils.ExportBackXML();
+            return true;
         }
 
         // 预打开文件：返回文件路径
@@ -2803,6 +2786,7 @@ namespace sbid._VM
             selectedItem = null;
         }
 
+        // 【11月1作废】
         // 生成验证用的XML文件，类似于DoSave的行为，但是XML文件规则不同
         private bool DoSave2(string fileName)
         {

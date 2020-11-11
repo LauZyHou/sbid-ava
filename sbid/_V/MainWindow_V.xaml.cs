@@ -14,7 +14,7 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
-            init_binding();
+            this.init_binding();
             // 把自己挂到全局资源上
             ResourceManager.mainWindowV = this;
         }
@@ -24,7 +24,7 @@ namespace sbid._V
             AvaloniaXamlLoader.Load(this);
         }
 
-        #region 辅助构造
+        #region 私有
 
         // 初始化.cs文件中的数据绑定,一些不方便在xaml中绑定的部分在这里绑定
         private void init_binding()
