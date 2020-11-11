@@ -18,6 +18,7 @@ namespace sbid._VM
         private void OnVerify()
         {
             string command_file = ResourceManager.Verify_verify;
+            string command_param = null;
             // 检查一下验证命令是不是空
             if (string.IsNullOrEmpty(command_file))
             {
@@ -31,14 +32,15 @@ namespace sbid._VM
             }
             else
             {
-                command_file += ".sh";
+                command_param = command_file + ".sh";
+                command_file = "bash";
             }
 
             // 要执行的验证命令
             ProcessStartInfo processStartInfo = new ProcessStartInfo
                 (
                     command_file,
-                    ResourceManager.justVerifyCommmad_param
+                    command_param
                 )
             {
                 RedirectStandardOutput = true
@@ -70,7 +72,7 @@ namespace sbid._VM
                     process.Kill();
                 }
             }
-            ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file;
+            ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file + " " + command_param;
         }
 
         #endregion

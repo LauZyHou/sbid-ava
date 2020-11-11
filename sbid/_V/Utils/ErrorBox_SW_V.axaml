@@ -1,0 +1,23 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="200" Width="250" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.ErrorBox_SW_V" CanResize="False"
+        Title="错误" Icon="avares://sbid/Assets/Icons/error.png">
+
+  <Design.DataContext>
+    <vm:ErrorBox_SW_VM/>
+  </Design.DataContext>
+
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="16"/>
+    </Style>
+  </Window.Styles>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="10">
+    <TextBlock Text="{Binding Content, Mode=OneWay}" TextWrapping="Wrap"/>
+  </ScrollViewer>
+</Window>

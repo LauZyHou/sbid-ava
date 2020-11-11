@@ -41,10 +41,10 @@ namespace sbid._V
             }
         }
 
-        // 代码生成：生成、编译、执行
-        public void CodeGen_gen_comp_run()
+        // 代码生成：编译
+        public void CodeGen_comp()
         {
-            // 判断一下当前平台是不是和选中的平台是冲突的，如果是冲突的，没办法在生成和编译后立即执行
+            // 判断一下当前平台是不是和选中的平台是冲突的，如果是冲突的，没办法编译
             bool platformConflict = false;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // 当前运行在Windows
             {
@@ -56,12 +56,44 @@ namespace sbid._V
             }
             if (platformConflict)
             {
-                ResourceManager.mainWindowVM.Tips = "无效的操作。程序当前所在的操作系统无法运行选中的目标平台的代码，您可单独生成后到目标平台上编译运行";
+                ResourceManager.mainWindowVM.Tips = "无效的操作。程序当前所在的操作系统无法编译选中的目标平台的代码";
                 return;
             }
 
             // 这里拼上 "_" + 选中的编程语言类型 + "_" + 选中的代码执行平台
-            string command_file = ResourceManager.CodeGen_gen_comp_run + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem;
+            string command_file = ResourceManager.CodeGen_comp + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem;
+            bool res = Utils.runCommand
+                (
+                    command_file,
+                    null
+                );
+            if (res)
+            {
+                ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file;
+            }
+        }
+
+        // 代码生成：运行
+        public void CodeGen_run()
+        {
+            // 判断一下当前平台是不是和选中的平台是冲突的，如果是冲突的，没办法运行
+            bool platformConflict = false;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // 当前运行在Windows
+            {
+                platformConflict = platform_ComboBox.SelectedItem is ProgramPlatform.Unix;
+            }
+            else // 当前运行在Linux / OSX
+            {
+                platformConflict = platform_ComboBox.SelectedItem is ProgramPlatform.Windows;
+            }
+            if (platformConflict)
+            {
+                ResourceManager.mainWindowVM.Tips = "无效的操作。程序当前所在的操作系统无法运行选中的目标平台的代码";
+                return;
+            }
+
+            // 这里拼上 "_" + 选中的编程语言类型 + "_" + 选中的代码执行平台
+            string command_file = ResourceManager.CodeGen_run + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem;
             bool res = Utils.runCommand
                 (
                     command_file,

@@ -48,6 +48,8 @@ namespace sbid
         public static string justExecGenCommand_file = "./resource/exec_gen";
         public static string justExecGenCommand_param = null;
 
+        // 语法检查：检查
+        public static string Check_check = "./resource/Check/check";
         // 性质验证：验证
         public static string Verify_verify = "./resource/Verify/verify";
         // 模拟执行：执行
@@ -58,8 +60,10 @@ namespace sbid
         public static string CodeRefine_refine = "./resource/CodeRefine/refine";
         // 可执行代码生成：生成
         public static string CodeGen_gen = "./resource/CodeGen/gen";
-        // 可执行代码生成：生成、编译、执行
-        public static string CodeGen_gen_comp_run = "./resource/CodeGen/gen_comp_run";
+        // 可执行代码生成：编译
+        public static string CodeGen_comp = "./resource/CodeGen/comp";
+        // 可执行代码生成：运行
+        public static string CodeGen_run = "./resource/CodeGen/run";
 
         /*
         【可变动资源】需要在编译后手动复制到输出目录，不论是Debug模式和Release模式

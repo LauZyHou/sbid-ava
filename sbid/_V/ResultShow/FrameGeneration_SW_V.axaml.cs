@@ -28,7 +28,7 @@ namespace sbid._V
         public void FrameGen()
         {
             // 这里拼上 "_" + 选中的编程语言类型 + "_" + 选中的代码执行平台
-            string command_file = ResourceManager.FrameGen_gen + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem; ;
+            string command_file = ResourceManager.FrameGen_gen + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem;
             bool res = Utils.runCommand
                 (
                     command_file,

@@ -105,7 +105,11 @@ namespace sbid
             }
             else
             {
-                command_file += ".sh";
+                if (string.IsNullOrEmpty(command_param))
+                {
+                    command_param = command_file + ".sh";
+                    command_file = "bash";
+                }
             }
             // 要执行的验证命令
             ProcessStartInfo processStartInfo = new ProcessStartInfo

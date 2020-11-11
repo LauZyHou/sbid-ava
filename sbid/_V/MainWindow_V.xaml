@@ -42,6 +42,7 @@
         <!--<MenuItem Header="性质验证" Command="{Binding PropertyVerify}"/>
         <MenuItem Header="模拟执行" Command="{Binding SimulationRun}"/>
         <MenuItem Header="测试调用ProVerif" Command="{Binding TestCallProVerif}"/>-->
+        <MenuItem Header="语法检查" Command="{Binding GrammarCheck}"/>
         <MenuItem Header="性质验证" Command="{Binding JustVerify}"/>
         <MenuItem Header="模拟执行" Command="{Binding JustSimulate}"/>
         <MenuItem Header="代码框架生成" Command="{Binding JustFrameGen}"/>
@@ -86,6 +87,10 @@
         <Image Source="avares://sbid/Assets/Icons/access_control.png" Width="30" Height="30"/>
       </Button>
       <TextBlock Text="        "/>
+      <Button Command="{Binding GrammarCheck}" ToolTip.Tip="语法检查" Foreground="DarkGreen">
+        语法检查
+      </Button>
+      <TextBlock Text="        "/>
       <Button Command="{Binding JustVerify}" ToolTip.Tip="性质验证">
         性质验证
       </Button>
@@ -107,9 +112,9 @@
       <Button Command="{Binding SimulationRun}" ToolTip.Tip="模拟执行">
         <Image Source="avares://sbid/Assets/Icons/simulation.png" Width="30" Height="30"/>
       </Button>-->
-      <TextBlock Text="        "/>
+      <!--<TextBlock Text="        "/>-->
       <!--<Button Command="{Binding SpecCheck}" IsEnabled="False">规范检查</Button>-->
-      <Button Command="{Binding GenerateXml}" Foreground="DarkRed">后端XML</Button>
+      <!--<Button Command="{Binding GenerateXml}" Foreground="DarkRed">后端XML</Button>-->
       <TextBlock Text="  "/>
       <TextBlock Text=" 锚点/控制点可见：" FontSize="13" VerticalAlignment="Center"/>
       <CheckBox Name="connectorVisible_CheckBox" IsChecked="{Binding ConnectorVisible, Mode=TwoWay}" IsThreeState="False"/>

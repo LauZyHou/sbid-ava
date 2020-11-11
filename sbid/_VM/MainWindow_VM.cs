@@ -199,7 +199,7 @@ namespace sbid._VM
             Utils.ExportBackXML();
         }
 
-        // 按下【规范检查】按钮
+        // 【作废】【规范检查】
         public void SpecCheck()
         {
             if (selectedItem == null)
@@ -308,7 +308,7 @@ namespace sbid._VM
             #endregion
         }
 
-        // 按下【性质验证】按钮
+        // 【作废】【性质验证】
         public void PropertyVerify()
         {
             // todo 调用后端
@@ -319,7 +319,7 @@ namespace sbid._VM
             propertyVerify_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 按下【模拟运行】按钮
+        // 【作废】【模拟运行】
         public void SimulationRun()
         {
             // todo 调用后端
@@ -330,7 +330,7 @@ namespace sbid._VM
             simulationRun_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 按下【测试ProVerif】按钮
+        // 【作废】【测试ProVerif】
         public void TestCallProVerif()
         {
             UseProVerif_EW_V useProVerif_EW_V = new UseProVerif_EW_V()
@@ -350,10 +350,88 @@ namespace sbid._VM
             preference_EW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 【性质验证】
-        public void JustVerify()
+        /// <summary>
+        /// 按下【语法检查】按钮
+        /// 如果命令行输出结果中有#true#，表示检查通过，否则弹窗原样输出
+        /// </summary>
+        /// <returns>语法检查是否通过</returns>
+        public bool GrammarCheck()
         {
             if (!checkAndGenProtocolXML())
+                return false;
+            string command_file = ResourceManager.Check_check;
+            string command_param = null;
+            // 自动识别，根据操作系统的不同，调用不同的后缀名脚本
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                command_file += ".bat";
+            }
+            else
+            {
+                command_param = command_file + ".sh";
+                command_file = "bash";
+            }
+            // 要执行的语法检查命令
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo
+                (
+                    command_file,
+                    command_param
+                )
+            {
+                RedirectStandardOutput = true
+            };
+            // 执行这条命令，执行过程中可能抛掷异常，直接显示异常信息
+            System.Diagnostics.Process process = null;
+            try
+            {
+                process = System.Diagnostics.Process.Start(processStartInfo);
+            }
+            catch (System.Exception ex)
+            {
+                ResourceManager.mainWindowVM.Tips = ex.ToString();
+            }
+            if (process is null)
+            {
+                return false;
+            }
+            // 读取并写入结果
+            string res = "";
+            using (System.IO.StreamReader streamReader = process.StandardOutput)
+            {
+                if (!streamReader.EndOfStream)
+                {
+                    res = streamReader.ReadToEnd();
+                }
+
+                if (!process.HasExited)
+                {
+                    process.Kill();
+                }
+            }
+            // 检查返回的结果res，如果有#true#就是检查通过
+            if (res.Contains("#true#"))
+            {
+                Tips = "语法检查通过。";
+                return true;
+            }
+            // 语法检查不通过，要打开窗口输出结果
+            else
+            {
+                ErrorBox_SW_V errorBox_SW_V = new ErrorBox_SW_V()
+                {
+                    DataContext = new ErrorBox_SW_VM()
+                };
+                errorBox_SW_V.ShowDialog(ResourceManager.mainWindowV);
+                ((ErrorBox_SW_VM)errorBox_SW_V.DataContext).Content = "【语法检查不通过】" + res;
+                Tips = "语法检查不通过！";
+                return false;
+            }
+        }
+
+        // 按下【性质验证】按钮
+        public void JustVerify()
+        {
+            if (!GrammarCheck())
                 return;
             JustVerify_EW_V justVerify_EW_V = new JustVerify_EW_V()
             {
@@ -362,10 +440,10 @@ namespace sbid._VM
             justVerify_EW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 【模拟执行】
+        // 按下【模拟执行】按钮
         public void JustSimulate()
         {
-            if (!checkAndGenProtocolXML())
+            if (!GrammarCheck())
                 return;
             /*
             JustSimulate_EW_V justSimulate_EW_V = new JustSimulate_EW_V()
@@ -386,10 +464,10 @@ namespace sbid._VM
             }
         }
 
-        // 【代码框架生成】
+        // 按下【代码框架生成】按钮
         public void JustFrameGen()
         {
-            if (!checkAndGenProtocolXML())
+            if (!GrammarCheck())
                 return;
             FrameGeneration_SW_V frameGeneration_SW_V = new FrameGeneration_SW_V()
             {
@@ -398,10 +476,10 @@ namespace sbid._VM
             frameGeneration_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 【程序精化】
+        // 按下【程序精化】按钮
         public void JustCodeRefine()
         {
-            if (!checkAndGenProtocolXML())
+            if (!GrammarCheck())
                 return;
             CodeRefine_SW_V codeRefine_SW_V = new CodeRefine_SW_V()
             {
@@ -410,10 +488,10 @@ namespace sbid._VM
             codeRefine_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 【临时】【可执行代码生成】
+        // 按下【可执行代码生成】按钮
         public void JustCodeGen()
         {
-            if (!checkAndGenProtocolXML())
+            if (!GrammarCheck())
                 return;
             /*
             ResourceManager.mainWindowVM.Tips = "可执行代码生成中...";
