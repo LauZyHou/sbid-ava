@@ -28,7 +28,6 @@ namespace sbid._V
         // 代码生成：生成
         public void CodeGen_gen()
         {
-            ResourceManager.mainWindowVM.Tips = "生成中...";
             // 这里拼上 "_" + 选中的编程语言类型 + "_" + 选中的代码执行平台
             string command_file = ResourceManager.CodeGen_gen + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem;
             bool res = Utils.runCommand
@@ -61,7 +60,6 @@ namespace sbid._V
                 return;
             }
 
-            ResourceManager.mainWindowVM.Tips = "生成、编译、执行中...";
             // 这里拼上 "_" + 选中的编程语言类型 + "_" + 选中的代码执行平台
             string command_file = ResourceManager.CodeGen_gen_comp_run + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem;
             bool res = Utils.runCommand

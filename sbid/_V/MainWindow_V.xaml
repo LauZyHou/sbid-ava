@@ -86,6 +86,12 @@
       <Button Command="{Binding JustSimulate}" ToolTip.Tip="模拟执行" Foreground="BlueViolet">
         模拟执行
       </Button>
+      <Button Command="{Binding JustFrameGen}" ToolTip.Tip="代码框架生成" Foreground="BlueViolet">
+        代码框架生成
+      </Button>
+      <Button Command="{Binding JustCodeRefine}" ToolTip.Tip="程序精化" Foreground="BlueViolet">
+        程序精化
+      </Button>
       <Button Command="{Binding JustCodeGen}" ToolTip.Tip="可执行代码生成" Foreground="BlueViolet">
         可执行代码生成
       </Button>

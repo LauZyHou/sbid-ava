@@ -347,7 +347,7 @@ namespace sbid._VM
             preference_EW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 【临时】【性质验证】
+        // 【性质验证】
         public void JustVerify()
         {
             if (!checkAndGenProtocolXML())
@@ -359,16 +359,52 @@ namespace sbid._VM
             justVerify_EW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        // 【临时】【模拟执行】
+        // 【模拟执行】
         public void JustSimulate()
         {
             if (!checkAndGenProtocolXML())
                 return;
+            /*
             JustSimulate_EW_V justSimulate_EW_V = new JustSimulate_EW_V()
             {
                 DataContext = new JustSimulate_EW_VM()
             };
             justSimulate_EW_V.ShowDialog(ResourceManager.mainWindowV);
+            */
+            string command_file = ResourceManager.Simu_simu;
+            bool res = Utils.runCommand
+                (
+                    command_file,
+                    null
+                );
+            if (res)
+            {
+                ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file;
+            }
+        }
+
+        // 【代码框架生成】
+        public void JustFrameGen()
+        {
+            if (!checkAndGenProtocolXML())
+                return;
+            FrameGeneration_SW_V frameGeneration_SW_V = new FrameGeneration_SW_V()
+            {
+                DataContext = new FrameGeneration_SW_VM()
+            };
+            frameGeneration_SW_V.ShowDialog(ResourceManager.mainWindowV);
+        }
+
+        // 【程序精化】
+        public void JustCodeRefine()
+        {
+            if (!checkAndGenProtocolXML())
+                return;
+            CodeRefine_SW_V codeRefine_SW_V = new CodeRefine_SW_V()
+            {
+                DataContext = new CodeRefine_SW_VM()
+            };
+            codeRefine_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
         // 【临时】【可执行代码生成】

@@ -1,0 +1,30 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
+        Height="160" Width="500" WindowStartupLocation="CenterOwner"
+        x:Class="sbid._V.CodeRefine_SW_V"
+        Title="程序精化">
+  <Design.DataContext>
+    <vm:CodeGeneration_SW_VM/>
+  </Design.DataContext>
+
+  <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="18"/>
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="1*,1*,1*,1*" Margin="10">
+    <Grid Grid.Row="0" ColumnDefinitions="4*,6*">
+      <TextBlock Grid.Column="0" Text="程序的编程语言类型：" VerticalAlignment="Center"/>
+      <ComboBox Name="language_ComboBox" Grid.Column="1"/>
+    </Grid>
+    <Grid Grid.Row="1" ColumnDefinitions="4*,6*">
+      <TextBlock Grid.Column="0" Text="程序运行时操作系统：" VerticalAlignment="Center"/>
+      <ComboBox Name="platform_ComboBox" Grid.Column="1"/>
+    </Grid>
+    <Button Grid.Row="3" Command="{Binding $parent[Window].CodeRefine}">程序精化</Button>
+  </Grid>
+</Window>

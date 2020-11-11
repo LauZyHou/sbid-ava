@@ -17,7 +17,7 @@ namespace sbid._VM
         // 按下【验证当前协议模型】按钮
         private void OnVerify()
         {
-            string command_file = ResourceManager.justVerifyCommmad_file;
+            string command_file = ResourceManager.Verify_verify;
             // 检查一下验证命令是不是空
             if (string.IsNullOrEmpty(command_file))
             {
@@ -43,7 +43,6 @@ namespace sbid._VM
             {
                 RedirectStandardOutput = true
             };
-            ResourceManager.mainWindowVM.Tips = "开始验证...";
             // 执行这条命令，执行过程中可能抛掷异常，直接显示异常信息
             Process process = null;
             try
@@ -71,7 +70,7 @@ namespace sbid._VM
                     process.Kill();
                 }
             }
-            ResourceManager.mainWindowVM.Tips = "验证完成";
+            ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file;
         }
 
         #endregion
