@@ -2791,7 +2791,7 @@ namespace sbid._VM
             Protocol_VM._id = Process._id = Axiom._id = InitialKnowledge._id
                 = Attribute._id = SafetyProperty._id = SecurityProperty._id
                 = Connector_VM._id = CommMethod._id = CommChannel._id
-                = SequenceDiagram_P_VM._id = TopoGraph_P_VM._id = CTLTree_P_VM._id
+                = SequenceDiagram_P_VM._id = TopoGraph_P_VM._id = CTLTree_P_VM._id = AccessControl_P_VM._id
                 = AttackTree_P_VM._id = TopoNode._id = CommMethodPair._id = AttackWithRelation_VM._id = 0;
             // 特别注意，对于带有静态创建的内置对象的类型，_id要置为内置对象的数目
             Type._id = 6;

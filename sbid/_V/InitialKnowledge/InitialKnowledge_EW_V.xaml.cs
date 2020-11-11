@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.Collections.ObjectModel;
 
 namespace sbid._V
 {
@@ -47,6 +48,7 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定Process！";
                 return;
             }
+            Process process = (Process)process_ListBox.SelectedItem;
 
             ListBox attribute_ListBox = ControlExtensions.FindControl<ListBox>(this, "attribute_ListBox");
             if (attribute_ListBox.SelectedItem == null)
@@ -54,9 +56,21 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定Attribute！";
                 return;
             }
+            Attribute attribute = (Attribute)attribute_ListBox.SelectedItem;
 
-            Knowledge knowledge = new Knowledge((Process)process_ListBox.SelectedItem, (Attribute)attribute_ListBox.SelectedItem);
-            ((InitialKnowledge_EW_VM)DataContext).InitialKnowledge.Knowledges.Add(knowledge);
+            ObservableCollection<Knowledge> knowledges = ((InitialKnowledge_EW_VM)DataContext).InitialKnowledge.Knowledges;
+            // 判重
+            foreach (Knowledge know in knowledges)
+            {
+                if (know.Process == process && know.Attribute == attribute)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该单知识已经存在";
+                    return;
+                }
+            }
+
+            Knowledge knowledge = new Knowledge(process, attribute);
+            knowledges.Add(knowledge);
             ResourceManager.mainWindowVM.Tips = "添加了Knowledge：" + knowledge;
         }
 
@@ -68,6 +82,7 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定要修改的Knowledge！";
                 return;
             }
+            Knowledge knowledge = (Knowledge)knowledge_ListBox.SelectedItem;
 
             ListBox process_ListBox = ControlExtensions.FindControl<ListBox>(this, "process_ListBox");
             if (process_ListBox.SelectedItem == null)
@@ -75,6 +90,7 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定Process！";
                 return;
             }
+            Process process = (Process)process_ListBox.SelectedItem;
 
             ListBox attribute_ListBox = ControlExtensions.FindControl<ListBox>(this, "attribute_ListBox");
             if (attribute_ListBox.SelectedItem == null)
@@ -82,10 +98,21 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定Attribute！";
                 return;
             }
+            Attribute attribute = (Attribute)attribute_ListBox.SelectedItem;
 
-            Knowledge knowledge = (Knowledge)knowledge_ListBox.SelectedItem;
-            knowledge.Process = (Process)process_ListBox.SelectedItem;
-            knowledge.Attribute = (Attribute)attribute_ListBox.SelectedItem;
+            ObservableCollection<Knowledge> knowledges = ((InitialKnowledge_EW_VM)DataContext).InitialKnowledge.Knowledges;
+            // 判重
+            foreach (Knowledge know in knowledges)
+            {
+                if (know.Process == process && know.Attribute == attribute)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该单知识已经存在";
+                    return;
+                }
+            }
+
+            knowledge.Process = process;
+            knowledge.Attribute = attribute;
             ResourceManager.mainWindowVM.Tips = "修改了Knowledge：" + knowledge;
         }
 
@@ -110,66 +137,113 @@ namespace sbid._V
                 ResourceManager.mainWindowVM.Tips = "需要选定PubProcess！";
                 return;
             }
+            Process pubProcess = (Process)pubProcess_ComboBox.SelectedItem;
+
             if (pubKey_ComboBox.SelectedItem == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定PubKey！";
                 return;
             }
+            Attribute pubKey = (Attribute)pubKey_ComboBox.SelectedItem;
+
             if (secProcess_ComboBox.SelectedItem == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定SecProcess！";
                 return;
             }
+            Process secProcess = (Process)secProcess_ComboBox.SelectedItem;
+
             if (secKey_ComboBox.SelectedItem == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定SecKey！";
                 return;
             }
+            Attribute secKey = (Attribute)secKey_ComboBox.SelectedItem;
+
+            ObservableCollection<KeyPair> keyPairs = VM.InitialKnowledge.KeyPairs;
+            // 判重
+            foreach (KeyPair kp in keyPairs)
+            {
+                if (
+                    kp.PubProcess == pubProcess &&
+                    kp.PubKey == pubKey && 
+                    kp.SecProcess == secProcess &&
+                    kp.SecKey == secKey
+                    )
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该公私钥对已经存在";
+                    return;
+                }
+            }
 
             KeyPair keyPair = new KeyPair(
-                (Process)pubProcess_ComboBox.SelectedItem,
-                (Attribute)pubKey_ComboBox.SelectedItem,
-                (Process)secProcess_ComboBox.SelectedItem,
-                (Attribute)secKey_ComboBox.SelectedItem
+                pubProcess,
+                pubKey,
+                secProcess,
+                secKey
             );
-            VM.InitialKnowledge.KeyPairs.Add(keyPair);
+            keyPairs.Add(keyPair);
             ResourceManager.mainWindowVM.Tips = "添加了KeyPair：" + keyPair;
         }
 
 
         public void Update_KeyPair()
         {
-            if (pubProcess_ComboBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定PubProcess！";
-                return;
-            }
-            if (pubKey_ComboBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定PubKey！";
-                return;
-            }
-            if (secProcess_ComboBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定SecProcess！";
-                return;
-            }
-            if (secKey_ComboBox.SelectedItem == null)
-            {
-                ResourceManager.mainWindowVM.Tips = "需要选定SecKey！";
-                return;
-            }
             if (keyPair_ListBox.SelectedItem == null)
             {
                 ResourceManager.mainWindowVM.Tips = "需要选定要修改的KeyPair！";
                 return;
             }
-
             KeyPair keyPair = (KeyPair)keyPair_ListBox.SelectedItem;
-            keyPair.PubProcess = (Process)pubProcess_ComboBox.SelectedItem;
-            keyPair.PubKey = (Attribute)pubKey_ComboBox.SelectedItem;
-            keyPair.SecProcess = (Process)secProcess_ComboBox.SelectedItem;
-            keyPair.SecKey = (Attribute)secKey_ComboBox.SelectedItem;
+
+            if (pubProcess_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定PubProcess！";
+                return;
+            }
+            Process pubProcess = (Process)pubProcess_ComboBox.SelectedItem;
+
+            if (pubKey_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定PubKey！";
+                return;
+            }
+            Attribute pubKey = (Attribute)pubKey_ComboBox.SelectedItem;
+
+            if (secProcess_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定SecProcess！";
+                return;
+            }
+            Process secProcess = (Process)secProcess_ComboBox.SelectedItem;
+
+            if (secKey_ComboBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定SecKey！";
+                return;
+            }
+            Attribute secKey = (Attribute)secKey_ComboBox.SelectedItem;
+
+            ObservableCollection<KeyPair> keyPairs = VM.InitialKnowledge.KeyPairs;
+            // 判重
+            foreach (KeyPair kp in keyPairs)
+            {
+                if (
+                    kp.PubProcess == pubProcess &&
+                    kp.PubKey == pubKey &&
+                    kp.SecProcess == secProcess &&
+                    kp.SecKey == secKey
+                    )
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该公私钥对已经存在";
+                    return;
+                }
+            }
+
+            keyPair.PubProcess = pubProcess;
+            keyPair.PubKey = pubKey;
+            keyPair.SecProcess = secProcess;
+            keyPair.SecKey = secKey;
             ResourceManager.mainWindowVM.Tips = "修改了KeyPair：" + keyPair;
         }
 
@@ -181,7 +255,6 @@ namespace sbid._V
         }
 
         #endregion
-
 
         #region 资源引用
 

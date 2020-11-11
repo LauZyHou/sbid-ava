@@ -48,10 +48,10 @@
         <MenuItem Header="程序精化" Command="{Binding JustCodeRefine}"/>
         <MenuItem Header="可执行代码生成" Command="{Binding JustCodeGen}"/>
       </MenuItem>
-      <MenuItem Header="帮助">
+      <!--<MenuItem Header="帮助">
         <MenuItem Header="使用手册" IsEnabled="False"/>
         <MenuItem Header="关于ISADT" IsEnabled="False"/>
-      </MenuItem>
+      </MenuItem>-->
       <MenuItem Header="设置">
         <MenuItem Header="首选项" Command="{Binding Preference}"/>
       </MenuItem>

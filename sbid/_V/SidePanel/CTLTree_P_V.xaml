@@ -55,6 +55,7 @@
 
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+      <Button Command="{Binding $parent[UserControl].ExportImage}">导出图片</Button>
       <TextBlock Text=" 生成的CTL公式：" FontSize="17"/>
       <TextBox Text="{Binding CTLFormula.Content}" FontSize="17" Background="WhiteSmoke" Padding="10,0"/>
     </StackPanel>

@@ -44,8 +44,19 @@ namespace sbid._V
             }
             Method method = (Method)method_ListBox.SelectedItem;
 
+            ObservableCollection<ProcessMethod> processMethods = ((Axiom_EW_VM)DataContext).Axiom.ProcessMethods;
+            // 判重
+            foreach (ProcessMethod pm in processMethods)
+            {
+                if (pm.Process == process && pm.Method == method)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该进程方法已经添加过";
+                    return;
+                }
+            }
+
             ProcessMethod processMethod = new ProcessMethod(process, method);
-            ((Axiom_EW_VM)DataContext).Axiom.ProcessMethods.Add(processMethod);
+            processMethods.Add(processMethod);
             ResourceManager.mainWindowVM.Tips = "添加了ProcessMethod：" + processMethod;
         }
 
@@ -75,6 +86,17 @@ namespace sbid._V
             }
             Method method = (Method)method_ListBox.SelectedItem;
 
+            ObservableCollection<ProcessMethod> processMethods = ((Axiom_EW_VM)DataContext).Axiom.ProcessMethods;
+            // 判重
+            foreach (ProcessMethod pm in processMethods)
+            {
+                if (pm.Process == process && pm.Method == method)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该进程方法已经添加过";
+                    return;
+                }
+            }
+
             processMethod.Process = process;
             processMethod.Method = method;
             ResourceManager.mainWindowVM.Tips = "更新了ProcessMethod：" + processMethod;
@@ -102,8 +124,19 @@ namespace sbid._V
                 return;
             }
 
+            ObservableCollection<Formula> formulas = ((Axiom_EW_VM)DataContext).Axiom.Formulas;
+            // 判重
+            foreach (Formula formu in formulas)
+            {
+                if (formu.Content == axiom_TextBox.Text)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该公理公式已经添加过";
+                    return;
+                }
+            }
+
             Formula formula = new Formula(axiom_TextBox.Text);
-            ((Axiom_EW_VM)DataContext).Axiom.Formulas.Add(formula);
+            formulas.Add(formula);
             ResourceManager.mainWindowVM.Tips = "添加了公理公式：" + formula.Content;
         }
 
@@ -121,6 +154,17 @@ namespace sbid._V
             {
                 ResourceManager.mainWindowVM.Tips = "需要给出修改后的公理公式！";
                 return;
+            }
+
+            ObservableCollection<Formula> formulas = ((Axiom_EW_VM)DataContext).Axiom.Formulas;
+            // 判重
+            foreach (Formula formu in formulas)
+            {
+                if (formu.Content == axiom_TextBox.Text)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该公理公式已经添加过";
+                    return;
+                }
             }
 
             Formula formula = (Formula)axiom_ListBox.SelectedItem;

@@ -5,6 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="160" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.CodeRefine_SW_V"
+        Icon="avares://sbid/Assets/Icons/code.png"
         Title="程序精化">
   <Design.DataContext>
     <vm:CodeGeneration_SW_VM/>

@@ -32,7 +32,7 @@
       <Button Grid.Column="2" Grid.Row="1" Command="{Binding EditProjectSavePath}" Width="30" Height="30">
         <Image Source="/Assets/Icons/settings.png"/>
       </Button>
-      <TextBlock Text="ProVerif位置：" Grid.Column="0" Grid.Row="2"/>
+      <!--<TextBlock Text="ProVerif位置：" Grid.Column="0" Grid.Row="2"/>
       <TextBox Name="proVerif_TextBox" Text="{Binding ProVerifPath}" Grid.Column="1" Grid.Row="2"/>
       <Button Grid.Column="2" Grid.Row="2" Command="{Binding EditProVerifPath}" Width="30" Height="30">
         <Image Source="/Assets/Icons/settings.png"/>
@@ -45,7 +45,7 @@
         <Image Source="/Assets/Icons/settings.png"/>
       </Button>
       <TextBlock Text="如果为Beagle设置了系统变量PATH(文件名beagle)，则可以不设置此项" FontSize="15" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3"
-                 TextAlignment="Center" Foreground="Gray" VerticalAlignment="Top"/>
+                 TextAlignment="Center" Foreground="Gray" VerticalAlignment="Top"/>-->
     </Grid>
   </ScrollViewer>
 

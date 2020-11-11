@@ -5,7 +5,8 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="160" Width="500" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.CodeGeneration_SW_V"
-        Title="代码生成" CanResize="False">
+        Icon="avares://sbid/Assets/Icons/code.png"
+        Title="可执行代码生成" CanResize="False">
   <Design.DataContext>
     <vm:CodeGeneration_SW_VM/>
   </Design.DataContext>

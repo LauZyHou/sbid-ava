@@ -69,10 +69,26 @@ namespace sbid._V
                 return;
             }
 
+            ObservableCollection<CommMethodPair> commMethodPairs = VM.CommChannel.CommMethodPairs;
+            // 判重
+            foreach (CommMethodPair cmp in commMethodPairs)
+            {
+                if (
+                    cmp.ProcessA == processA && 
+                    cmp.ProcessB == processB && 
+                    cmp.CommMethodA == commMethodA &&
+                    cmp.CommMethodB == commMethodB
+                    )
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该通信方法序对已经添加过";
+                    return;
+                }
+            }
+
             bool privacy = privacy_CheckBox.IsChecked == null ? false : (bool)privacy_CheckBox.IsChecked;
 
             CommMethodPair commMethodPair = new CommMethodPair(processA, commMethodA, processB, commMethodB, privacy);
-            VM.CommChannel.CommMethodPairs.Add(commMethodPair);
+            commMethodPairs.Add(commMethodPair);
             ResourceManager.mainWindowVM.Tips = "已添加成员：" + commMethodPair;
         }
 
@@ -80,7 +96,7 @@ namespace sbid._V
         {
             if (commMethodPair_ListBox.SelectedItem == null)
             {
-                ResourceManager.mainWindowVM.Tips = "需要在域内成员列表中选定要修改的成员！";
+                ResourceManager.mainWindowVM.Tips = "需要在通信方法序对列表中选定要修改的成员！";
                 return;
             }
 
@@ -122,6 +138,22 @@ namespace sbid._V
                 return;
             }
 
+            ObservableCollection<CommMethodPair> commMethodPairs = VM.CommChannel.CommMethodPairs;
+            // 判重
+            foreach (CommMethodPair cmp in commMethodPairs)
+            {
+                if (
+                    cmp.ProcessA == processA &&
+                    cmp.ProcessB == processB &&
+                    cmp.CommMethodA == commMethodA &&
+                    cmp.CommMethodB == commMethodB
+                    )
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该通信方法序对已经添加过";
+                    return;
+                }
+            }
+
             bool privacy = privacy_CheckBox.IsChecked == null ? false : (bool)privacy_CheckBox.IsChecked;
 
             CommMethodPair commMethodPair = (CommMethodPair)commMethodPair_ListBox.SelectedItem;
@@ -137,7 +169,7 @@ namespace sbid._V
         {
             if (commMethodPair_ListBox.SelectedItem == null)
             {
-                ResourceManager.mainWindowVM.Tips = "需要在域内成员列表中选定要删除的成员！";
+                ResourceManager.mainWindowVM.Tips = "需要在通信方法序对列表中选定要删除的成员！";
                 return;
             }
 

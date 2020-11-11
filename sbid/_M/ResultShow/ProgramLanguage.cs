@@ -6,6 +6,6 @@ namespace sbid._M
 {
     public enum ProgramLanguage
     {
-        C, Cpp, Java
+        C, Cpp
     }
 }

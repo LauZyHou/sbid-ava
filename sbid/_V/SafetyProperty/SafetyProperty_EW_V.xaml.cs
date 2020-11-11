@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.Collections.ObjectModel;
 
 namespace sbid._V
 {
@@ -33,8 +34,19 @@ namespace sbid._V
                 return;
             }
 
+            ObservableCollection<Formula> ctls = VM.SafetyProperty.CTLs;
+            // 判重
+            foreach (Formula formu in ctls)
+            {
+                if (formu.Content == ctl_TextBox.Text)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该条CTL公式已经存在";
+                    return;
+                }
+            }
+
             Formula formula = new Formula(ctl_TextBox.Text);
-            VM.SafetyProperty.CTLs.Add(formula);
+            ctls.Add(formula);
             ResourceManager.mainWindowVM.Tips = "添加了CTL公式：" + formula.Content;
         }
 
@@ -50,6 +62,17 @@ namespace sbid._V
             {
                 ResourceManager.mainWindowVM.Tips = "需要给出修改后的CTL公式！";
                 return;
+            }
+
+            ObservableCollection<Formula> ctls = VM.SafetyProperty.CTLs;
+            // 判重
+            foreach (Formula formu in ctls)
+            {
+                if (formu.Content == ctl_TextBox.Text)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该条CTL公式已经存在";
+                    return;
+                }
             }
 
             Formula formula = (Formula)ctl_ListBox.SelectedItem;
@@ -79,8 +102,19 @@ namespace sbid._V
                 return;
             }
 
+            ObservableCollection<Formula> invariants = VM.SafetyProperty.Invariants;
+            // 判重
+            foreach (Formula formu in invariants)
+            {
+                if (formu.Content == invariant_TextBox.Text)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该条不变性公式已经存在";
+                    return;
+                }
+            }
+
             Formula invariant = new Formula(invariant_TextBox.Text);
-            VM.SafetyProperty.Invariants.Add(invariant);
+            invariants.Add(invariant);
             ResourceManager.mainWindowVM.Tips = "添加了不变性条件：" + invariant.Content;
         }
 
@@ -96,6 +130,17 @@ namespace sbid._V
             {
                 ResourceManager.mainWindowVM.Tips = "需要给出修改后的的不变性条件！";
                 return;
+            }
+
+            ObservableCollection<Formula> invariants = VM.SafetyProperty.Invariants;
+            // 判重
+            foreach (Formula formu in invariants)
+            {
+                if (formu.Content == invariant_TextBox.Text)
+                {
+                    ResourceManager.mainWindowVM.Tips = "无效的操作。该条不变性公式已经存在";
+                    return;
+                }
             }
 
             Formula invariant = (Formula)invariant_ListBox.SelectedItem;

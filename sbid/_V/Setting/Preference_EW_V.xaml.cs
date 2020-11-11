@@ -41,8 +41,8 @@ namespace sbid._V
             {
                 if (value.Width > 200)
                     this.project_TextBox.MaxWidth =
-                    this.proVerif_TextBox.MaxWidth =
-                    this.beagle_TextBox.MaxWidth =
+                    //this.proVerif_TextBox.MaxWidth =
+                    //this.beagle_TextBox.MaxWidth =
                     value.Width - 200;
             });
         }
@@ -52,13 +52,14 @@ namespace sbid._V
 
         #region 资源引用
 
-        private TextBox project_TextBox, proVerif_TextBox, beagle_TextBox;
+        private TextBox project_TextBox;
+        //private TextBox proVerif_TextBox, beagle_TextBox;
 
         private void get_control_reference()
         {
             project_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(project_TextBox));
-            proVerif_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(proVerif_TextBox));
-            beagle_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(beagle_TextBox));
+            //proVerif_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(proVerif_TextBox));
+            //beagle_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(beagle_TextBox));
         }
 
         #endregion
