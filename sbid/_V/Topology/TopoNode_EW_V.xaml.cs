@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.ComponentModel;
 
 namespace sbid._V
 {
@@ -18,6 +19,8 @@ namespace sbid._V
             init_binding();
             // 初始化.cs文件中的事件处理
             init_event();
+            // 窗口关闭事件
+            this.Closing += close_event;
         }
 
         private void InitializeComponent()
@@ -63,6 +66,13 @@ namespace sbid._V
                 TopoNodeEWVM.TopoNode.Properties.Add(instance);
             }
             ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.RefName + "]，例化对象已重新生成";
+        }
+
+        // 关闭窗体
+        private void close_event(object sender, CancelEventArgs e)
+        {
+            TopoGraph_P_VM topoGraph_P_VM = (TopoGraph_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            topoGraph_P_VM.PanelEnabled = true;
         }
 
         #endregion

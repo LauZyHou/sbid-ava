@@ -74,6 +74,10 @@ namespace sbid._VM
             };
             ctlRelationEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了Logic关系结点的编辑窗体";
+
+            // 【bugfix】打开后，禁用当前窗体
+            CTLTree_P_VM ctlTree_P_VM = (CTLTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            ctlTree_P_VM.PanelEnabled = false;
         }
 
         // 计算CTL公式

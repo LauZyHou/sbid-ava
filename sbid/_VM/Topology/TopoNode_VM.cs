@@ -60,6 +60,10 @@ namespace sbid._VM
 
             topoNodeEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了拓扑结点：" + topoNode.Name + "的编辑窗体";
+
+            // 【bugfix】打开后，禁用当前窗体
+            TopoGraph_P_VM topoGraph_P_VM = (TopoGraph_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            topoGraph_P_VM.PanelEnabled = false;
         }
 
         // 删除当前拓扑结点

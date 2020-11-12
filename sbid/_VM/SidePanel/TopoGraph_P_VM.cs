@@ -13,6 +13,7 @@ namespace sbid._VM
         private TopoNodeShape topoNodeShape = TopoNodeShape.Circle;
         private TopoLinkType topoLinkType = TopoLinkType.OneWay;
         private bool connectorVisible = true;
+        private bool panelEnabled = true;
 
         // 默认构造时使用默认名称
         public TopoGraph_P_VM()
@@ -29,7 +30,8 @@ namespace sbid._VM
         public TopoLinkType TopoLinkType { get => topoLinkType; set => this.RaiseAndSetIfChanged(ref topoLinkType, value); }
         // 锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
-
+        // 面板是否可用
+        public bool PanelEnabled { get => panelEnabled; set => this.RaiseAndSetIfChanged(ref panelEnabled, value); }
 
         #region 拓扑图上的VM操作接口（旧）
         /*
@@ -86,6 +88,12 @@ namespace sbid._VM
         // 创建拓扑图连线关系（此函数在"_V"下的"TopoConnector_V"中调用）
         public void CreateTopoLinkVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
+            if (connectorVM1.NetworkItemVM == connectorVM2.NetworkItemVM)
+            {
+                ResourceManager.mainWindowVM.Tips = "不合法的连线！";
+                return;
+            }
+
             TopoEdge_VM topoEdge_VM = new TopoEdge_VM()
             {
                 Source = connectorVM1,
@@ -97,6 +105,8 @@ namespace sbid._VM
             connectorVM2.ConnectionVM = topoEdge_VM;
 
             UserControlVMs.Add(topoEdge_VM);
+
+            ResourceManager.mainWindowVM.Tips = "创建了新的拓扑图连接关系";
         }
 
         // 删除图上连线关系

@@ -78,7 +78,6 @@ namespace sbid._V
                     // 清除活动锚点
                     nowSMPVM.ActiveConnector.IsActive = false;
                     nowSMPVM.ActiveConnector = null;
-                    ResourceManager.mainWindowVM.Tips = "创建了新的状态转移关系";
                 }
 
                 e.Handled = true;

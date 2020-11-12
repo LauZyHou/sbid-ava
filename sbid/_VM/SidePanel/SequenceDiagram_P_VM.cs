@@ -12,6 +12,7 @@ namespace sbid._VM
         private Connector_VM activeConnector;
         private SeqMessage seqMessage = SeqMessage.SyncMessage;
         private bool connectorVisible = true;
+        private bool panelEnabled = true;
 
         // 默认构造时使用默认名称
         public SequenceDiagram_P_VM()
@@ -26,6 +27,8 @@ namespace sbid._VM
         public SeqMessage SeqMessage { get => seqMessage; set => this.RaiseAndSetIfChanged(ref seqMessage, value); }
         // 锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
+        // 面板是否可用
+        public bool PanelEnabled { get => panelEnabled; set => this.RaiseAndSetIfChanged(ref panelEnabled, value); }
 
         #region 按钮命令
 

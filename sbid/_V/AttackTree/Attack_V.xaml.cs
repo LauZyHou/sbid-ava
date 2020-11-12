@@ -12,7 +12,7 @@ namespace sbid._V
         {
             this.InitializeComponent();
 
-            init_event();
+            this.init_event();
         }
 
         private void InitializeComponent()

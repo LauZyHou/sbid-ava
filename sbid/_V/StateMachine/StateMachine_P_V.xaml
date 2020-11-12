@@ -63,7 +63,7 @@
       <ComboBox Items="{Binding ControlPointNums}" SelectedItem="{Binding ControlPointNum, Mode=TwoWay}" Width="50" Background="WhiteSmoke"/>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ListBox Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+      <ListBox Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000" IsHitTestVisible="{Binding PanelEnabled}"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>

@@ -171,6 +171,29 @@ namespace sbid._VM
                 Tips = "[ERROR]项目保存失败！";
         }
 
+        /// <summary>
+        /// 按下“另存为”按钮
+        /// </summary>
+        public async void ExtraSaveAllVM()
+        {
+            string saveFileName = await GetSaveFileName();
+            if (string.IsNullOrEmpty(saveFileName))
+            {
+                Tips = "取消保存项目";
+                return;
+            }
+            // 执行保存逻辑
+            bool succ = DoSave(saveFileName);
+            if (succ)
+            {
+                Tips = "项目另存，至：" + saveFileName;
+                // 记录保存位置，下次可以直接保存
+                ResourceManager.projectSavePath = saveFileName;
+            }
+            else
+                Tips = "[ERROR]项目另存失败！";
+        }
+
         // 按下【载入】按钮
         public async void ReloadAllVM()
         {

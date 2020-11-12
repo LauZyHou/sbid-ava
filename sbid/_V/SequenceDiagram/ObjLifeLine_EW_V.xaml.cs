@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.ComponentModel;
 
 namespace sbid._V
 {
@@ -15,7 +16,8 @@ namespace sbid._V
             this.AttachDevTools();
 #endif
             // 初始化.cs文件中的事件处理
-            init_event();
+            this.init_event();
+            this.Closing += close_event;
         }
 
         private void InitializeComponent()
@@ -51,6 +53,13 @@ namespace sbid._V
             }
             // 提示
             ResourceManager.mainWindowVM.Tips = "进程模板被修改为[" + process.RefName + "]，旧的消息通信已清除";
+        }
+
+        // 关闭窗体
+        private void close_event(object sender, CancelEventArgs e)
+        {
+            SequenceDiagram_P_VM seqDiagramP_VM = (SequenceDiagram_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            seqDiagramP_VM.PanelEnabled = true;
         }
 
         #endregion

@@ -50,7 +50,6 @@
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="IsHitTestVisible" Value="{Binding IsNetWorkItemVM}"/>
     </Style>
-
   </UserControl.Styles>
 
   <DockPanel>
@@ -60,7 +59,7 @@
       <TextBox Text="{Binding CTLFormula.Content}" FontSize="17" Background="WhiteSmoke" Padding="10,0"/>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ListBox Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+      <ListBox Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000" IsHitTestVisible="{Binding PanelEnabled}"/>
     </ScrollViewer>
   </DockPanel>
  

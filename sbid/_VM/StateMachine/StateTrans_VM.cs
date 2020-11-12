@@ -70,7 +70,7 @@ namespace sbid._VM
             if (sidePanel_VM is ProcessToSM_P_VM) // “状态机”
             {
                 // 从所在的ProcessToSM面板取得当前状态机所在的进程模板
-                ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)ResourceManager.mainWindowVM.SelectedItem.PanelVMs[1].SelectedItem;
+                ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)sidePanel_VM;
 
                 // 窗体VM
                 StateTrans_EW_VM stateTrans_EW_VM = new StateTrans_EW_VM()
@@ -112,6 +112,10 @@ namespace sbid._VM
 
                 stateTransEWV.ShowDialog(ResourceManager.mainWindowV);
                 ResourceManager.mainWindowVM.Tips = "打开了转移关系的编辑窗体";
+
+                // 【bugfix】打开后，禁用当前窗体
+                StateMachine_P_VM stateMachineP_VM = processToSM_P_VM.SelectedItem;
+                stateMachineP_VM.PanelEnabled = false;
             }
             else if (sidePanel_VM is AccessControl_P_VM) // “访问控制”
             {
@@ -140,6 +144,10 @@ namespace sbid._VM
 
                 stateTransEWV.ShowDialog(ResourceManager.mainWindowV);
                 ResourceManager.mainWindowVM.Tips = "打开了转移关系的编辑窗体";
+
+                // 【bugfix】打开后，禁用当前窗体
+                AccessControl_P_VM accessControl_P_VM = (AccessControl_P_VM)sidePanel_VM;
+                accessControl_P_VM.PanelEnabled = false;
             }
         }
 

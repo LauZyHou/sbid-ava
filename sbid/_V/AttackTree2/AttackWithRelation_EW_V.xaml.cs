@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.ComponentModel;
 
 namespace sbid._V
 {
@@ -14,13 +15,25 @@ namespace sbid._V
 #if DEBUG
             this.AttachDevTools();
 #endif
-            get_control_reference();
+            this.get_control_reference();
+            this.Closing += close_event;
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        #region 辅助构造
+
+        // 关闭窗体
+        private void close_event(object sender, CancelEventArgs e)
+        {
+            AttackTree_P_VM atkTree_P_VM = (AttackTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            atkTree_P_VM.PanelEnabled = true;
+        }
+
+        #endregion
 
         #region 按钮命令
 

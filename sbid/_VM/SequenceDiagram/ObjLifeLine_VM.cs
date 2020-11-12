@@ -85,6 +85,10 @@ namespace sbid._VM
 
             objLifeLineEWV.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了对象-生命线的编辑窗体";
+
+            // 【bugfix】打开后，禁用当前窗体
+            SequenceDiagram_P_VM seqDiagramP_VM = (SequenceDiagram_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            seqDiagramP_VM.PanelEnabled = false;
         }
 
         // 删除当前的对象-生命线

@@ -68,11 +68,7 @@ namespace sbid._V
                     command_file,
                     null
                 );
-            if (res.Contains("#true#"))
-            {
-                ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file + "，编译成功。";
-            }
-            else
+            if (res.Contains("error"))
             {
                 ErrorBox_SW_V errorBox_SW_V = new ErrorBox_SW_V()
                 {
@@ -81,6 +77,10 @@ namespace sbid._V
                 errorBox_SW_V.ShowDialog(ResourceManager.mainWindowV);
                 ((ErrorBox_SW_VM)errorBox_SW_V.DataContext).Content = "【编译不成功】" + res;
                 ResourceManager.mainWindowVM.Tips = "编译不成功！";
+            }
+            else
+            {
+                ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file + "，编译成功。";
             }
         }
 
@@ -133,9 +133,9 @@ namespace sbid._V
         private void init_bindings()
         {
             language_ComboBox.Items = System.Enum.GetValues(typeof(ProgramLanguage));
-            language_ComboBox.SelectedItem = ProgramLanguage.C;
+            language_ComboBox.SelectedItem = ProgramLanguage.Cpp;
             platform_ComboBox.Items = System.Enum.GetValues(typeof(ProgramPlatform));
-            platform_ComboBox.SelectedItem = ProgramPlatform.Windows;
+            platform_ComboBox.SelectedItem = ProgramPlatform.Unix;
         }
 
         #endregion

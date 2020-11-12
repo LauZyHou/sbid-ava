@@ -14,18 +14,19 @@ namespace sbid._VM
         private Connector_VM activeConnector;
         private ObservableCollection<int> controlPointNums = new ObservableCollection<int>();
         private int controlPointNum = 0;
+        private bool panelEnabled = true;
 
         // 无参构造只是给xaml中的Design用
         public StateMachine_P_VM()
         {
-            init_control_point_nums();
+            this.init_control_point_nums();
         }
 
         // 状态机构造时，传入其所精化的状态
         public StateMachine_P_VM(State state)
         {
             this.state = state;
-            init_control_point_nums();
+            this.init_control_point_nums();
         }
 
         // 精化的状态
@@ -36,7 +37,8 @@ namespace sbid._VM
         public ObservableCollection<int> ControlPointNums { get => controlPointNums; }
         // 控制点数目
         public int ControlPointNum { get => controlPointNum; set => this.RaiseAndSetIfChanged(ref controlPointNum, value); }
-
+        // 面板是否可用
+        public bool PanelEnabled { get => panelEnabled; set => this.RaiseAndSetIfChanged(ref panelEnabled, value); }
 
         #region 对外的初始化调用(在用户创建时需要调用，在从项目文件读取时不可调用)
 
@@ -97,7 +99,13 @@ namespace sbid._VM
         // 创建转移关系
         public bool CreateTransitionVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
-            // 【bugfix】判断这条连线会不会不符合状态机规范，只要考虑StateTrans_VM
+            // 判断，同一个结点不能有自环
+            if (connectorVM1.NetworkItemVM == connectorVM2.NetworkItemVM)
+            {
+                ResourceManager.mainWindowVM.Tips = "不合法的连线！";
+                return false;
+            }
+            // 判断，一个StateTrans_VM只能有一个入边和一个出边
             if (connectorVM1.NetworkItemVM is StateTrans_VM) // 检查源锚点
             {
                 StateTrans_VM stateTrans_VM = (StateTrans_VM)connectorVM1.NetworkItemVM;

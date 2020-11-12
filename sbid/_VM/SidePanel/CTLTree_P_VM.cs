@@ -1,4 +1,5 @@
-﻿using sbid._M;
+﻿using ReactiveUI;
+using sbid._M;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,7 @@ namespace sbid._VM
         public static int _id = 0;
         private Connector_VM activeConnector;
         private Formula cTLFormula = new Formula("");
+        private bool panelEnabled = true;
 
         // 默认构造时使用默认名称
         public CTLTree_P_VM()
@@ -22,6 +24,9 @@ namespace sbid._VM
         public Connector_VM ActiveConnector { get => activeConnector; set => activeConnector = value; }
 
         public Formula CTLFormula { get => cTLFormula; }
+
+        // 面板是否可用
+        public bool PanelEnabled { get => panelEnabled; set => this.RaiseAndSetIfChanged(ref panelEnabled, value); }
 
         #region CTL树上的VM操作接口
 

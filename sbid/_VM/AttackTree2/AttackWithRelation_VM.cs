@@ -113,6 +113,10 @@ namespace sbid._VM
             };
             attackWithRelation_EW_V.ShowDialog(ResourceManager.mainWindowV);
             ResourceManager.mainWindowVM.Tips = "打开了攻击树结点：" + attackWithRelation.Description + "的编辑窗体";
+
+            // 【bugfix】打开后，禁用当前窗体
+            AttackTree_P_VM atkTree_P_VM = (AttackTree_P_VM)ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            atkTree_P_VM.PanelEnabled = false;
         }
 
         // 反转结点取值

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
+using System.ComponentModel;
 
 namespace sbid._V
 {
@@ -15,12 +16,35 @@ namespace sbid._V
             this.AttachDevTools();
 #endif
             this.get_control_reference();
+            this.Closing += close_event;
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        #region 事件
+
+        // 关闭窗体
+        private void close_event(object sender, CancelEventArgs e)
+        {
+            // 【注意】区分“状态机”和“访问控制”
+            SidePanel_VM sidePanel_VM = ResourceManager.mainWindowVM.SelectedItem.SelectedItem.SelectedItem;
+            if (sidePanel_VM is ProcessToSM_P_VM) // “状态机”
+            {
+                ProcessToSM_P_VM processToSM_P_VM = (ProcessToSM_P_VM)sidePanel_VM;
+                StateMachine_P_VM stateMachineP_VM = processToSM_P_VM.SelectedItem;
+                stateMachineP_VM.PanelEnabled = true;
+            }
+            else if (sidePanel_VM is AccessControl_P_VM) // “访问控制”
+            {
+                AccessControl_P_VM accessControl_P_VM = (AccessControl_P_VM)sidePanel_VM;
+                accessControl_P_VM.PanelEnabled = true;
+            }
+        }
+
+        #endregion
 
         #region 按钮命令（核心功能）
 

@@ -44,7 +44,6 @@ namespace sbid._V
                 // 清除活动锚点
                 nowATPVM.ActiveConnector.IsActive = false;
                 nowATPVM.ActiveConnector = null;
-                ResourceManager.mainWindowVM.Tips = "创建了新的树上连线";
             }
 
             e.Handled = true;

@@ -17,6 +17,7 @@ namespace sbid._VM
         private ObservableCollection<AttackWithRelation_VM> leafAttackWithRelationVMs = new ObservableCollection<AttackWithRelation_VM>();
         private ObservableCollection<string> securityPolicies = new ObservableCollection<string>();
         private bool connectorVisible = true;
+        private bool panelEnabled = true;
 
         // 默认构造时使用默认名称
         public AttackTree_P_VM()
@@ -43,6 +44,9 @@ namespace sbid._VM
 
         // 【作废】锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
+
+        // 面板是否可用
+        public bool PanelEnabled { get => panelEnabled; set => this.RaiseAndSetIfChanged(ref panelEnabled, value); }
 
         #region 按钮命令（作废）
 
@@ -110,6 +114,12 @@ namespace sbid._VM
         // 创建树上连线关系（新，适合于AttackTree2目录的无箭头连线）
         public void CreateArrowVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
+            if (connectorVM1.NetworkItemVM == connectorVM2.NetworkItemVM)
+            {
+                ResourceManager.mainWindowVM.Tips = "不合法的连线！";
+                return;
+            }
+
             Connection_VM connection_VM = new Connection_VM();
 
             connection_VM.Source = connectorVM1;
@@ -120,6 +130,8 @@ namespace sbid._VM
             connectorVM2.ConnectionVM = connection_VM;
 
             UserControlVMs.Add(connection_VM);
+
+            ResourceManager.mainWindowVM.Tips = "创建了新的树上连线";
         }
 
         // 删除树上连线关系

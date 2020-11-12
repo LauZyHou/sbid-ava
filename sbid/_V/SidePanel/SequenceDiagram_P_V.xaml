@@ -72,7 +72,7 @@
       <ComboBox Name="seqMessage_ComboBox" Width="140" Background="WhiteSmoke" SelectedItem="{Binding SeqMessage, Mode=TwoWay}"/>
     </StackPanel>
     <ScrollViewer DockPanel.Dock="Bottom" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000"/>
+      <ItemsControl Name="panel" Items="{Binding UserControlVMs}" Height="1000" Width="2000" IsHitTestVisible="{Binding PanelEnabled}"/>
     </ScrollViewer>
   </DockPanel>
 </UserControl>

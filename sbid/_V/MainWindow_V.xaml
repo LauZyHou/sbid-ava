@@ -26,7 +26,8 @@
     <Menu Name="menu" Grid.Row="0" MinHeight="23" Background="LightGray">
       <MenuItem Header="文件">
         <MenuItem Header="新协议" Command="{Binding AddProtocol}"/>
-        <MenuItem Header="保存" Command="{Binding SaveAllVM}"/>
+        <MenuItem Header="保存" Command="{Binding SaveAllVM}" HotKey="Ctrl+S"/>
+        <MenuItem Header="另存为" Command="{Binding ExtraSaveAllVM}"/>
         <MenuItem Header="载入" Command="{Binding ReloadAllVM}"/>
         <!--<MenuItem Header="另存为"/>-->
       </MenuItem>
