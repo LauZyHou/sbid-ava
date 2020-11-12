@@ -112,9 +112,8 @@
       <Button Command="{Binding SimulationRun}" ToolTip.Tip="模拟执行">
         <Image Source="avares://sbid/Assets/Icons/simulation.png" Width="30" Height="30"/>
       </Button>-->
-      <!--<TextBlock Text="        "/>-->
-      <!--<Button Command="{Binding SpecCheck}" IsEnabled="False">规范检查</Button>-->
-      <!--<Button Command="{Binding GenerateXml}" Foreground="DarkRed">后端XML</Button>-->
+      <TextBlock Text="        "/>
+      <Button Command="{Binding GenerateXml}" Foreground="DarkRed">后端XML</Button>
       <TextBlock Text="  "/>
       <TextBlock Text=" 锚点/控制点可见：" FontSize="13" VerticalAlignment="Center"/>
       <CheckBox Name="connectorVisible_CheckBox" IsChecked="{Binding ConnectorVisible, Mode=TwoWay}" IsThreeState="False"/>

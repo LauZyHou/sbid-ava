@@ -139,6 +139,63 @@ namespace sbid
         }
 
         /// <summary>
+        /// 执行一条命令，返回命令行返回的字符串
+        /// </summary>
+        /// <param name="command_file">命令实体文件</param>
+        /// <param name="command_param">命令参数</param>
+        /// <returns></returns>
+        public static string runCommandWithRes(string command_file, string command_param)
+        {
+            // 自动识别，根据操作系统的不同，调用不同的后缀名脚本
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                command_file += ".bat";
+            }
+            else if (string.IsNullOrEmpty(command_param))
+            {
+                command_param = command_file + ".sh";
+                command_file = "bash";
+            }
+            // 要执行的语法检查命令
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+                (
+                    command_file,
+                    command_param
+                )
+            {
+                RedirectStandardOutput = true
+            };
+            // 执行这条命令，执行过程中可能抛掷异常，直接显示异常信息
+            System.Diagnostics.Process process = null;
+            try
+            {
+                process = System.Diagnostics.Process.Start(processStartInfo);
+            }
+            catch (System.Exception ex)
+            {
+                ResourceManager.mainWindowVM.Tips = ex.ToString();
+            }
+            if (process is null)
+            {
+                return "[ERROR]process is null，见函数Utils.runCommandWithRes";
+            }
+            // 读取并写入结果
+            string res = "";
+            using (System.IO.StreamReader streamReader = process.StandardOutput)
+            {
+                if (!streamReader.EndOfStream)
+                {
+                    res = streamReader.ReadToEnd();
+                }
+                if (!process.HasExited)
+                {
+                    process.Kill();
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
         /// 对于当前协议，生成后端验证和代码生成用的XML文件
         /// </summary>
         public static void ExportBackXML()

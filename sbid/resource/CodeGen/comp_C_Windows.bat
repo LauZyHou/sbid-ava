@@ -1,2 +1,1 @@
-ping www.baidu.com
-pause
+ping www.baidu.com -n 1

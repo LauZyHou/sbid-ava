@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using sbid._M;
+using sbid._VM;
 using System.Runtime.InteropServices;
 
 namespace sbid._V
@@ -62,14 +63,24 @@ namespace sbid._V
 
             // 这里拼上 "_" + 选中的编程语言类型 + "_" + 选中的代码执行平台
             string command_file = ResourceManager.CodeGen_comp + "_" + language_ComboBox.SelectedItem + "_" + platform_ComboBox.SelectedItem;
-            bool res = Utils.runCommand
+            string res = Utils.runCommandWithRes
                 (
                     command_file,
                     null
                 );
-            if (res)
+            if (res.Contains("#true#"))
             {
-                ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file;
+                ResourceManager.mainWindowVM.Tips = "启动了脚本：" + command_file + "，编译成功。";
+            }
+            else
+            {
+                ErrorBox_SW_V errorBox_SW_V = new ErrorBox_SW_V()
+                {
+                    DataContext = new ErrorBox_SW_VM()
+                };
+                errorBox_SW_V.ShowDialog(ResourceManager.mainWindowV);
+                ((ErrorBox_SW_VM)errorBox_SW_V.DataContext).Content = "【编译不成功】" + res;
+                ResourceManager.mainWindowVM.Tips = "编译不成功！";
             }
         }
 

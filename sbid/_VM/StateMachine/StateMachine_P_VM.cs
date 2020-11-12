@@ -95,8 +95,42 @@ namespace sbid._VM
         #region 状态机上的VM操作接口（新）
 
         // 创建转移关系
-        public void CreateTransitionVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
+        public bool CreateTransitionVM(Connector_VM connectorVM1, Connector_VM connectorVM2)
         {
+            // 【bugfix】判断这条连线会不会不符合状态机规范，只要考虑StateTrans_VM
+            if (connectorVM1.NetworkItemVM is StateTrans_VM) // 检查源锚点
+            {
+                StateTrans_VM stateTrans_VM = (StateTrans_VM)connectorVM1.NetworkItemVM;
+                foreach (Connector_VM connector_VM in stateTrans_VM.ConnectorVMs)
+                {
+                    if (connector_VM != connectorVM1 && connector_VM.ConnectionVM != null)
+                    {
+                        Connection_VM connection_VM = connector_VM.ConnectionVM;
+                        if (connection_VM.Source == connector_VM)
+                        {
+                            ResourceManager.mainWindowVM.Tips = "不合法的连线！";
+                            return false;
+                        }
+                    }
+                }
+            }
+            if (connectorVM2.NetworkItemVM is StateTrans_VM) // 检查目标锚点
+            {
+                StateTrans_VM stateTrans_VM = (StateTrans_VM)connectorVM2.NetworkItemVM;
+                foreach (Connector_VM connector_VM in stateTrans_VM.ConnectorVMs)
+                {
+                    if (connector_VM != connectorVM2 && connector_VM.ConnectionVM != null)
+                    {
+                        Connection_VM connection_VM = connector_VM.ConnectionVM;
+                        if (connection_VM.Dest == connector_VM)
+                        {
+                            ResourceManager.mainWindowVM.Tips = "不合法的连线！";
+                            return false;
+                        }
+                    }
+                }
+            }
+
             // 控制点X/Y方向间距
             double deltaX = (connectorVM2.Pos.X - connectorVM1.Pos.X) / (controlPointNum + 1);
             double deltaY = (connectorVM2.Pos.Y - connectorVM1.Pos.Y) / (controlPointNum + 1);
@@ -116,6 +150,9 @@ namespace sbid._VM
             }
             // 然后再连接一个箭头到c2即可
             linkByArrow(nowConnector, connectorVM2);
+
+            ResourceManager.mainWindowVM.Tips = "创建了新的状态转移关系";
+            return true;
         }
 
         // 删除锚点上的转移关系
