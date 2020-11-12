@@ -31,6 +31,7 @@
                   <MenuItem Header="创建信道模板" Command="{Binding $parent[UserControl].CreateCommChannelVM}"/>
                   <MenuItem Header="从类库获取..">
                     <MenuItem Header="集合类" Command="{Binding $parent[UserControl].Fetch_IntSet_UserTypeVM}"/>
+                    <MenuItem Header="字典类" Command="{Binding $parent[UserControl].Fetch_IntMap_UserTypeVM}"/>
                   </MenuItem>  
               </ContextMenu>
               </Canvas.ContextMenu>

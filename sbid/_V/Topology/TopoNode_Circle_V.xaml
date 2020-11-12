@@ -10,7 +10,7 @@
     <vm:TopoNode_Circle_VM/>
   </Design.DataContext>
 
-  <Grid Width="56" Height="56">
+  <Grid Width="56" Height="56" ToolTip.Tip="{Binding TopoNode.Name}">
     <Ellipse Fill="{Binding TopoNode.Color}" Stroke="Black" StrokeThickness="2"/>
     <Grid Margin="0" RowDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,2"
           ColumnDefinitions="2,2.8*,1,7*,1,7*,1,2.8*,2">

@@ -5,7 +5,7 @@
              xmlns:v="clr-namespace:sbid._V;assembly=sbid"
              Height="82" Width="130"
              x:Class="sbid._V.State_V">
-  <Grid Width="120" Height="70">
+  <Grid Width="120" Height="70" ToolTip.Tip="{Binding State.Name}">
     <!--<Rectangle Stroke="Black" Fill="White" StrokeThickness="2"/>-->
     <Ellipse Stroke="Black" Fill="White" StrokeThickness="2"/>
     <Grid Margin="-1,-3" ColumnDefinitions="1*,2*,6*,6*,8*,6*,6*,2*,1*" RowDefinitions="1*,1*,2*,3*,3*,3*,2*,1*,1*">

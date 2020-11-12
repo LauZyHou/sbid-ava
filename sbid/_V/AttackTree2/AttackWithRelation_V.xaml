@@ -10,7 +10,7 @@
     <vm:AttackWithRelation_VM/>
   </Design.DataContext>
 
-  <Grid Width="100" Height="80" RowDefinitions="5*,2*,2">
+  <Grid Width="100" Height="80" RowDefinitions="5*,2*,2" ToolTip.Tip="{Binding AttackWithRelation.Description}">
     <Grid Grid.Row="0">
       <Rectangle Stroke="Black" Fill="{Binding NodeColor}" StrokeThickness="2"/>
       <!--右上角锁头图形-->

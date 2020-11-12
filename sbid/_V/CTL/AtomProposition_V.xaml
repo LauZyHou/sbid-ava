@@ -10,7 +10,7 @@
     <vm:AtomProposition_VM/>
   </Design.DataContext>
 
-  <Grid Width="100" Height="50">
+  <Grid Width="100" Height="50" ToolTip.Tip="{Binding AtomProposition.RefName.Content}">
     <Rectangle Stroke="Black" Fill="WhiteSmoke" StrokeThickness="2"/>
     <Grid Margin="-11,-7" ColumnDefinitions="1*,1*,1*,1*,1*" RowDefinitions="1*,1*,1*,1*">
       <TextBlock Text="{Binding AtomProposition.RefName.Content}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2"

@@ -181,6 +181,61 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "从类库获取了集合类：" + userTypeVM.Type.Name;
         }
 
+        // 从类库获取字典类
+        public void Fetch_IntMap_UserTypeVM()
+        {
+            UserType_VM userTypeVM = new UserType_VM() { X = mousePos.X, Y = mousePos.Y };
+
+            // 确保UserType没有重名，检查有重名时就后面加下划线
+            UserType userType = (UserType)userTypeVM.Type;
+            userType.Name = "IntMap";
+            while (Checker.UserType_Name_Repeat(userType, userType.Name))
+            {
+                userType.Name += "_";
+            }
+
+            userType.Attributes.Add(new Attribute(Type.TYPE_INT, "key", true));
+            userType.Attributes.Add(new Attribute(Type.TYPE_INT, "val", true));
+
+            Method sizeMethod = new Method(
+                    Type.TYPE_INT,
+                    "size",
+                    new ObservableCollection<Attribute>()
+            );
+            userType.Methods.Add(sizeMethod);
+
+            ObservableCollection<Attribute> containsKeyParams = new ObservableCollection<Attribute>();
+            containsKeyParams.Add(new Attribute(Type.TYPE_INT, "k"));
+            Method containsKeyMethod = new Method(
+                    Type.TYPE_BOOL,
+                    "containsKey",
+                    containsKeyParams
+            );
+            userType.Methods.Add(containsKeyMethod);
+
+            ObservableCollection<Attribute> setParams = new ObservableCollection<Attribute>();
+            setParams.Add(new Attribute(Type.TYPE_INT, "k"));
+            setParams.Add(new Attribute(Type.TYPE_INT, "v"));
+            Method setMethod = new Method(
+                Type.TYPE_BOOL,
+                "set",
+                setParams
+            );
+            userType.Methods.Add(setMethod);
+
+            ObservableCollection<Attribute> removeParams = new ObservableCollection<Attribute>();
+            removeParams.Add(new Attribute(Type.TYPE_INT, "k"));
+            Method removeMethod = new Method(
+                Type.TYPE_BOOL,
+                "remove",
+                removeParams
+            );
+            userType.Methods.Add(removeMethod);
+
+            VM.UserControlVMs.Add(userTypeVM);
+            ResourceManager.mainWindowVM.Tips = "从类库获取了字典类：" + userTypeVM.Type.Name;
+        }
+
         #endregion
 
         #region 按钮命令

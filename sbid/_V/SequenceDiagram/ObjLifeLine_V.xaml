@@ -11,7 +11,7 @@
   </Design.DataContext>
 
   <StackPanel>
-    <Grid Width="140" Height="30" Background="Black">
+    <Grid Width="140" Height="30" Background="Black" ToolTip.Tip="{Binding SeqObject.Process.RefName.Content}">
       <TextBlock Width="136" Height="26" HorizontalAlignment="Center" VerticalAlignment="Center"
                  Text="{Binding SeqObject.Process.RefName.Content}" TextAlignment="Center" FontSize="17" Background="White">
         <TextBlock.ContextMenu>
