@@ -50,8 +50,10 @@ namespace sbid
 
         // 语法检查：检查
         public static string Check_check = "./resource/Check/check";
-        // 性质验证：验证
-        public static string Verify_verify = "./resource/Verify/verify";
+        // 性质验证：验证功能安全性质
+        public static string Verify_safety = "./resource/Verify/safety";
+        // 性质验证：验证信息安全性质
+        public static string Verify_security = "./resource/Verify/security";
         // 模拟执行：执行
         public static string Simu_simu = "./resource/Simu/simu";
         // 代码框架生成：生成

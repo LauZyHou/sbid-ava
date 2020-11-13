@@ -11,9 +11,10 @@
     <vm:JustVerify_EW_VM/>
   </Design.DataContext>
 
-  <Grid RowDefinitions="2*, 20*">
-    <Button Grid.Row="0" Command="{Binding OnVerify}">验证当前协议模型</Button>
-    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+  <Grid RowDefinitions="2*, 2*, 20*">
+    <Button Grid.Row="0" Command="{Binding VerifySafety}">验证功能安全性质</Button>
+    <Button Grid.Row="1" Command="{Binding VerifySecurity}">验证信息安全性质</Button>
+    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
       <TextBlock Text="{Binding VerifyResult, Mode=OneWay}" TextWrapping="Wrap"/>
     </ScrollViewer>
   </Grid>
