@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:sbid._VM;assembly=sbid"
         Height="352" Width="540" WindowStartupLocation="CenterOwner"
         x:Class="sbid._V.UserType_EW_V"
-        Title="编辑自定义类型"> 
+        Title="编辑自定义类型">
 
   <Design.DataContext>
     <vm:UserType_EW_VM/>
@@ -77,8 +77,10 @@
           <TextBlock Text="变量名称：" FontSize="17"/>
           <TextBox Name="attrId_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Identifier, Mode=OneWay}"/>
           <StackPanel Orientation="Horizontal" Margin="0,5">
-            <TextBlock Text="是否是数组：" FontSize="17"/>
+            <TextBlock Text="是否是数组：" FontSize="16" VerticalAlignment="Center"/>
             <CheckBox Name="attr_IsArray_CheckBox" IsChecked="{Binding #attr_ListBox.SelectedItem.IsArray, Mode=OneWay}" IsThreeState="False"/>
+            <TextBlock Text=" 字段长度：" FontSize="16" VerticalAlignment="Center" IsVisible="{Binding UserType.HaveAttrLen}"/>
+            <TextBox Name="attr_Len_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Len, Mode=OneWay}" IsVisible="{Binding UserType.HaveAttrLen}" Width="42" Padding="0,2"/>
           </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Classes="ButtonGroup">
             <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
@@ -89,7 +91,8 @@
         <ListBox Grid.Column="1" Margin="10,0" Name="attr_ListBox" Items="{Binding UserType.Attributes}">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <!--使用多源绑定--><!--
+              <!--使用多源绑定-->
+              <!--
               <TextBlock>
                 <TextBlock.Text>
                   <MultiBinding StringFormat=" {0} {1};">
@@ -103,6 +106,8 @@
                 <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
                 <TextBlock Text=" "/>
                 <TextBlock Text="{Binding Identifier}"/>
+                <TextBlock Text=" #" IsVisible="{Binding $parent[Window].DataContext.UserType.HaveAttrLen}"/>
+                <TextBlock Text="{Binding Len}" IsVisible="{Binding $parent[Window].DataContext.UserType.HaveAttrLen}"/>
               </StackPanel>
             </DataTemplate>
           </ListBox.ItemTemplate>

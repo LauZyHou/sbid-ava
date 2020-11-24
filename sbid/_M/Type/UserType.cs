@@ -32,7 +32,22 @@ namespace sbid._M
             set
             {
                 this.RaiseAndSetIfChanged(ref parent, value);
-                this.RaisePropertyChanged("Extend");
+                this.RaisePropertyChanged("Extend"); // ？
+                // 继承关系变化时，总是清除字段长度的取值
+                foreach (Attribute attribute in attributes)
+                {
+                    attribute.Len = "";
+                }
+                // 通过这里通知属性变化，来让前端的字段长度部分显示/不显示
+                this.RaisePropertyChanged(nameof(HaveAttrLen));
+            }
+        }
+        // 这个数据类型的各个字段是否有字段长度（仅用于前端是否显示）
+        public bool HaveAttrLen
+        {
+            get {
+                // 判断是不是继承ByteVec，如果是，就有字段长度
+                return parent == Type.TYPE_BYTE_VEC;
             }
         }
 

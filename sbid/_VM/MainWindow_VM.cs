@@ -1856,6 +1856,9 @@ namespace sbid._VM
                                             int id = int.Parse(attrElement.GetAttribute("id"));
                                             string identifier = attrElement.GetAttribute("identifier");
                                             bool isArray = bool.Parse(attrElement.GetAttribute("isArray"));
+                                            // 兼容没有len的模型
+                                            string len = attrElement.GetAttribute("len");
+                                            if (len == null) { len = ""; }
                                             if (!typeDict.ContainsKey(typeRef))
                                             {
                                                 Tips = "[解析UserType_VM时出错]无法找到Attribute的类型！";
@@ -1863,6 +1866,7 @@ namespace sbid._VM
                                                 return false;
                                             }
                                             Attribute attribute = new Attribute(typeDict[typeRef], identifier, isArray);
+                                            attribute.Len = len;
                                             attribute.Id = id;
                                             userType.Attributes.Add(attribute);
                                             break;

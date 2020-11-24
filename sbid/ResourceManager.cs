@@ -149,6 +149,7 @@ namespace sbid
             xmlWriter.WriteAttributeString("type_ref", attr.Type.Id.ToString());
             xmlWriter.WriteAttributeString("identifier", attr.Identifier);
             xmlWriter.WriteAttributeString("isArray", attr.IsArray.ToString());
+            xmlWriter.WriteAttributeString("len", attr.Len);
             xmlWriter.WriteAttributeString("id", attr.Id.ToString());
         }
 
@@ -237,6 +238,7 @@ namespace sbid
             xmlWriter.WriteAttributeString("type", attr.Type.Name);
             xmlWriter.WriteAttributeString("identifier", attr.Identifier);
             xmlWriter.WriteAttributeString("isArray", attr.IsArray.ToString());
+            xmlWriter.WriteAttributeString("len", attr.Len);
             // xmlWriter.WriteAttributeString("id", attr.Id.ToString());
         }
 

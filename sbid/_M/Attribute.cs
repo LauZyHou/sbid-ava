@@ -13,6 +13,7 @@ namespace sbid._M
         private string identifier;
         private bool isArray;
         private int id;
+        private string len = "";
 
         public Attribute(Type type, string identifier, bool isArray = false, bool isTemp = false)
         {
@@ -28,7 +29,7 @@ namespace sbid._M
                 this.id = _id;
             }
         }
-        
+
         public Attribute(Attribute attribute)
         {
             this.type = attribute.type;
@@ -41,6 +42,7 @@ namespace sbid._M
         public Type Type { get => type; set => this.RaiseAndSetIfChanged(ref type, value); }
         public string Identifier { get => identifier; set => this.RaiseAndSetIfChanged(ref identifier, value); }
         public bool IsArray { get => isArray; set => this.RaiseAndSetIfChanged(ref isArray, value); }
+        public string Len { get => len; set => this.RaiseAndSetIfChanged(ref len, value); }
         public int Id
         {
             get => id;

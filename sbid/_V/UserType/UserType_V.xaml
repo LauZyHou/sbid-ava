@@ -50,6 +50,8 @@
             <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
             <TextBlock Text=" "/>
             <TextBlock Text="{Binding Identifier}"/>
+            <TextBlock Text=" #" IsVisible="{Binding $parent[UserControl].DataContext.Type.HaveAttrLen}"/>
+            <TextBlock Text="{Binding Len}" IsVisible="{Binding $parent[UserControl].DataContext.Type.HaveAttrLen}"/>
           </StackPanel>
         </DataTemplate>
       </ListBox.ItemTemplate>

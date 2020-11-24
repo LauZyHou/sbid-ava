@@ -118,6 +118,7 @@ namespace sbid._V
                 attrId_TextBox.Text,
                 (bool)attr_IsArray_CheckBox.IsChecked
             );
+            attribute.Len = attr_Len_TextBox.Text; // 字段长度
             VM.UserType.Attributes.Add(attribute);
             ResourceManager.mainWindowVM.Tips = "为自定义类型[" + ((UserType_EW_VM)DataContext).UserType.Name + "]添加了成员变量：" + attribute;
         }
@@ -162,6 +163,7 @@ namespace sbid._V
             attribute.Type = (sbid._M.Type)type_ListBox.SelectedItem;
             attribute.Identifier = attrId_TextBox.Text;
             attribute.IsArray = (bool)attr_IsArray_CheckBox.IsChecked;
+            attribute.Len = attr_Len_TextBox.Text; // 字段长度
             ResourceManager.mainWindowVM.Tips = "为自定义类型[" + ((UserType_EW_VM)DataContext).UserType.Name + "]更新了成员变量：" + attribute;
         }
 
@@ -449,13 +451,14 @@ namespace sbid._V
 
         #region 资源引用
 
-        private TextBox name_TextBox;
+        private TextBox name_TextBox, attr_Len_TextBox;
         private CheckBox attr_IsArray_CheckBox, method_param_IsArray_CheckBox;
 
         // 获取控件引用
         private void get_control_reference()
         {
             name_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(name_TextBox));
+            attr_Len_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(attr_Len_TextBox));
             attr_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(attr_IsArray_CheckBox));
             method_param_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(method_param_IsArray_CheckBox));
             attr_IsArray_CheckBox.IsChecked = method_param_IsArray_CheckBox.IsChecked = false;
