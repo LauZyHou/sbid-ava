@@ -21,6 +21,7 @@ namespace sbid._VM
             double deltaY = 30;
             int count = 0;
 
+            // 内置的基本数据类型
             UserControlVMs.Add(
                 new UserType_VM(Type.TYPE_INT)
                 {
@@ -45,7 +46,7 @@ namespace sbid._VM
                     X = baseX,
                     Y = baseY + (count++) * deltaY
                 });
-            // 这里额外添加Timer类和ByteVec类，但它们不是内置类型
+            // 内置的复合数据类型
             UserControlVMs.Add(
                 new UserType_VM(Type.TYPE_BYTE_VEC)
                 {
@@ -57,6 +58,12 @@ namespace sbid._VM
                 {
                     X = baseX + 160,
                     Y = baseY + deltaY + 10
+                });
+            UserControlVMs.Add(
+                new UserType_VM(Type.TYPE_MESSAGE)
+                {
+                    X = baseX + 320,
+                    Y = baseY
                 });
         }
 

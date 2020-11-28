@@ -69,6 +69,10 @@ namespace sbid._V
             // 绑定内置Method列表选中项变化的处理方法
             ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
             innerMethod_ListBox.SelectionChanged += innerMethod_ListBox_Changed;
+
+            // 绑定CommMethod的CommWay选中项变化的处理方法
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
+            commWay_ComboBox.SelectionChanged += commWay_ComboBox_Changed;
         }
 
         #endregion
@@ -655,6 +659,13 @@ namespace sbid._V
                 return;
             }
 
+            // 类型号
+            TextBox typeId_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(typeId_TextBox));
+            if (typeId_TextBox.Text == null)
+            {
+                typeId_TextBox.Text = "";
+            }
+
             if (Checker.Process_Contain_PropName(VM.Process, commMethodName_TextBox.Text))
             {
                 ResourceManager.mainWindowVM.Tips = "标识符重复！";
@@ -674,6 +685,7 @@ namespace sbid._V
                 (InOut)inout_ComboBox.SelectedItem,
                 (CommWay)commWay_ComboBox.SelectedItem
             );
+            commMethod.TypeId = typeId_TextBox.Text; // 类型号
 
             ((Process_EW_VM)DataContext).Process.CommMethods.Add(commMethod);
             ResourceManager.mainWindowVM.Tips = "添加了CommMethod：" + commMethod.ShowString;
@@ -735,10 +747,18 @@ namespace sbid._V
                 return;
             }
 
+            // 类型号
+            TextBox typeId_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(typeId_TextBox));
+            if (typeId_TextBox.Text == null)
+            {
+                typeId_TextBox.Text = "";
+            }
+
             commMethod.Name = commMethodName_TextBox.Text;
             commMethod.Parameters = parameters;
             commMethod.InOutSuffix = (InOut)inout_ComboBox.SelectedItem;
             commMethod.CommWay = (CommWay)commWay_ComboBox.SelectedItem;
+            commMethod.TypeId = typeId_TextBox.Text; // 类型号
             ResourceManager.mainWindowVM.Tips = "更新了CommMethod：" + commMethod.ShowString;
 
             // 更新完成后,要将临时参数列表拿掉,这样再向临时参数列表中添加/更新内容也不会影响刚刚添加的CommMethod
@@ -826,6 +846,14 @@ namespace sbid._V
                 default:
                     break;
             }
+        }
+
+        // CommMethod的CommWay选中项变化的处理
+        private void commWay_ComboBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            // 重新算一下选中的是不是NativeEthernetFrame，写入到VM的字段里去
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
+            VM.IsNativeEthernetFrame = (CommWay)commWay_ComboBox.SelectedItem == CommWay.NativeEthernetFrame;
         }
 
         #endregion

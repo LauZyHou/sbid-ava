@@ -631,7 +631,7 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("basic", "true");
                             // 注意，基本类型在创建类图时就创建了，所以要
                         }
-                        else if (vm.Type == Type.TYPE_BYTE_VEC || vm.Type == Type.TYPE_TIMER) // 内置的复合类型
+                        else if (vm.Type == Type.TYPE_BYTE_VEC || vm.Type == Type.TYPE_TIMER || vm.Type == Type.TYPE_MESSAGE) // 内置的复合类型
                         {
                             xmlWriter.WriteAttributeString("basic", "middle");
                         }
@@ -643,6 +643,8 @@ namespace sbid._VM
                                 xmlWriter.WriteAttributeString("parent_ref", userType.Parent.Id.ToString());
                             else // 无继承关系
                                 xmlWriter.WriteAttributeString("parent_ref", "-1");
+                            xmlWriter.WriteAttributeString("msgType", userType.MsgType); // 报文类型
+                            xmlWriter.WriteAttributeString("signLen", userType.SignLen); // 签名字段长度
                             foreach (Attribute attr in userType.Attributes)
                             {
                                 xmlWriter.WriteStartElement("Attribute");
@@ -705,6 +707,7 @@ namespace sbid._VM
                             xmlWriter.WriteAttributeString("inOutSuffix", commMethod.InOutSuffix.ToString());
                             xmlWriter.WriteAttributeString("commWay", commMethod.CommWay.ToString());
                             xmlWriter.WriteAttributeString("id", commMethod.Id.ToString());
+                            xmlWriter.WriteAttributeString("typeId", commMethod.TypeId); // 类型号
                             foreach (Attribute attr in commMethod.Parameters)
                             {
                                 xmlWriter.WriteStartElement("Parameter");
@@ -1515,13 +1518,28 @@ namespace sbid._VM
                                             ((UserType_VM)userControl_VM).Type.Id = id;
                                             typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
                                             break;
+                                        case "Message":
+                                            userControl_VM = new UserType_VM(Type.TYPE_MESSAGE);
+                                            ((UserType_VM)userControl_VM).Type.Id = id;
+                                            typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
+                                            break;
                                     }
                                     break;
                                 case "false": // 用户自定义复合类型
                                     userControl_VM = new UserType_VM();
-                                    ((UserType_VM)userControl_VM).Type.Id = id;
-                                    typeDict[id] = ((UserType_VM)userControl_VM).Type; // 写入字典
-                                    ((UserType_VM)userControl_VM).Type.Name = element.GetAttribute("name");
+                                    UserType userType = (UserType)((UserType_VM)userControl_VM).Type;
+                                    userType.Id = id;
+                                    typeDict[id] = userType; // 写入字典
+                                    // 类型名称
+                                    userType.Name = element.GetAttribute("name");
+                                    // 报文类型
+                                    string msgType = element.GetAttribute("msgType");
+                                    if (msgType == null) { msgType = ""; }
+                                    userType.MsgType = msgType;
+                                    // 签名字段长度
+                                    string signLen = element.GetAttribute("signLen");
+                                    if (signLen == null) { signLen = ""; }
+                                    userType.SignLen = signLen;
                                     // Parent引用放到第二次扫描中取出，因为在这里引用的UserType未必已经创建好了
                                     break;
                             }
@@ -1970,6 +1988,7 @@ namespace sbid._VM
                                     case "CommMethod":
                                         id = int.Parse(pcElement.GetAttribute("id"));
                                         name = pcElement.GetAttribute("name");
+                                        string typeId = pcElement.GetAttribute("typeId"); // 类型号
                                         InOut inOutSuffix = (InOut)System.Enum.Parse(typeof(InOut), pcElement.GetAttribute("inOutSuffix"));
                                         CommWay commWay = (CommWay)System.Enum.Parse(typeof(CommWay), pcElement.GetAttribute("commWay"));
                                         parameters = new ObservableCollection<Attribute>();
@@ -1992,6 +2011,7 @@ namespace sbid._VM
                                         }
                                         CommMethod commMethod = new CommMethod(name, parameters, inOutSuffix, commWay);
                                         commMethod.Id = id;
+                                        commMethod.TypeId = typeId; // 类型号
                                         process.CommMethods.Add(commMethod);
                                         break;
                                 }
@@ -3130,7 +3150,7 @@ namespace sbid._VM
                 = SequenceDiagram_P_VM._id = TopoGraph_P_VM._id = CTLTree_P_VM._id = AccessControl_P_VM._id
                 = AttackTree_P_VM._id = TopoNode._id = CommMethodPair._id = AttackWithRelation_VM._id = 0;
             // 特别注意，对于带有静态创建的内置对象的类型，_id要置为内置对象的数目
-            Type._id = 6;
+            Type._id = 7;
             State._id = 1;
             Method._id = 4;
             selectedItem = null;

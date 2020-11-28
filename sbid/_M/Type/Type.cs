@@ -60,7 +60,9 @@ namespace sbid._M
         public static readonly Type TYPE_BYTE = new Type("byte");
         // 非基本类型，但也是写死的
         public static readonly Type TYPE_BYTE_VEC = new UserType() { Name = "ByteVec" };
-        public static readonly Type TYPE_TIMER; // 在下面静态构造中传入对象
+        // 在下面静态构造中传入对象
+        public static readonly Type TYPE_TIMER;
+        public static readonly Type TYPE_MESSAGE;
 
         static Type() {
             // 构造TYPE_TIMER只读对象
@@ -69,6 +71,10 @@ namespace sbid._M
             ut.Methods.Add(new Method(TYPE_NUM, "start", new ObservableCollection<Attribute>()));
             ut.Methods.Add(new Method(TYPE_NUM, "timeout", new ObservableCollection<Attribute>()));
             TYPE_TIMER = ut;
+            // 构造TYPE_MESSAGE只读对象
+            ut = new UserType() { Name = "Message" };
+            ut.Parent = (UserType)TYPE_BYTE_VEC;
+            TYPE_MESSAGE = ut;
         }
     }
 }

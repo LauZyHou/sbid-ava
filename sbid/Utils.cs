@@ -239,7 +239,7 @@ namespace sbid
                         xmlWriter.WriteAttributeString("basic", "true");
                         // 注意，基本类型在创建类图时就创建了，所以要
                     }
-                    else if (vm.Type == Type.TYPE_BYTE_VEC || vm.Type == Type.TYPE_TIMER) // 内置的复合类型
+                    else if (vm.Type == Type.TYPE_BYTE_VEC || vm.Type == Type.TYPE_TIMER || vm.Type == Type.TYPE_MESSAGE) // 内置的复合类型
                     {
                         xmlWriter.WriteAttributeString("basic", "middle");
                     }
@@ -251,6 +251,8 @@ namespace sbid
                             xmlWriter.WriteAttributeString("parent", userType.Parent.Name);
                         else // 无继承关系
                             xmlWriter.WriteAttributeString("parent", "");
+                        xmlWriter.WriteAttributeString("msgType", userType.MsgType); // 报文类型
+                        xmlWriter.WriteAttributeString("signLen", userType.SignLen); // 签名字段长度
                         foreach (Attribute attr in userType.Attributes)
                         {
                             xmlWriter.WriteStartElement("Attribute");
@@ -311,6 +313,7 @@ namespace sbid
                         xmlWriter.WriteAttributeString("inOutSuffix", commMethod.InOutSuffix.ToString());
                         xmlWriter.WriteAttributeString("commWay", commMethod.CommWay.ToString());
                         // xmlWriter.WriteAttributeString("id", commMethod.Id.ToString());
+                        xmlWriter.WriteAttributeString("typeId", commMethod.TypeId); // 类型号
                         foreach (Attribute attr in commMethod.Parameters)
                         {
                             xmlWriter.WriteStartElement("Parameter");

@@ -60,6 +60,14 @@
           <Button Margin="10,0,0,0" Command="{Binding $parent[Window].Set_Parent}">写入</Button>
           <Button Margin="10,0,0,0" Command="{Binding Clear_Parent}">清除继承</Button>
         </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" IsVisible="{Binding UserType.IsExtendMessage}">
+          <TextBlock Text="报文类型：" FontSize="18"/>
+          <TextBox Text="{Binding UserType.MsgType, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" IsVisible="{Binding UserType.IsExtendMessage}">
+          <TextBlock Text="签名字段长度：" FontSize="18"/>
+          <TextBox Text="{Binding UserType.SignLen, Mode=TwoWay}"/>
+        </StackPanel>
       </StackPanel>
     </TabItem>
     <TabItem Header="属性">
@@ -79,8 +87,8 @@
           <StackPanel Orientation="Horizontal" Margin="0,5">
             <TextBlock Text="是否是数组：" FontSize="16" VerticalAlignment="Center"/>
             <CheckBox Name="attr_IsArray_CheckBox" IsChecked="{Binding #attr_ListBox.SelectedItem.IsArray, Mode=OneWay}" IsThreeState="False"/>
-            <TextBlock Text=" 字段长度：" FontSize="16" VerticalAlignment="Center" IsVisible="{Binding UserType.HaveAttrLen}"/>
-            <TextBox Name="attr_Len_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Len, Mode=OneWay}" IsVisible="{Binding UserType.HaveAttrLen}" Width="42" Padding="0,2"/>
+            <TextBlock Text=" 字段长度：" FontSize="16" VerticalAlignment="Center" IsVisible="{Binding UserType.IsExtendByteVec}"/>
+            <TextBox Name="attr_Len_TextBox" Text="{Binding #attr_ListBox.SelectedItem.Len, Mode=OneWay}" IsVisible="{Binding UserType.IsExtendByteVec}" Width="42" Padding="0,2"/>
           </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Classes="ButtonGroup">
             <Button Command="{Binding $parent[Window].Add_Attribute}">添加</Button>
@@ -106,8 +114,8 @@
                 <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
                 <TextBlock Text=" "/>
                 <TextBlock Text="{Binding Identifier}"/>
-                <TextBlock Text=" #" IsVisible="{Binding $parent[Window].DataContext.UserType.HaveAttrLen}"/>
-                <TextBlock Text="{Binding Len}" IsVisible="{Binding $parent[Window].DataContext.UserType.HaveAttrLen}"/>
+                <TextBlock Text=" #" IsVisible="{Binding $parent[Window].DataContext.UserType.IsExtendByteVec}"/>
+                <TextBlock Text="{Binding Len}" IsVisible="{Binding $parent[Window].DataContext.UserType.IsExtendByteVec}"/>
               </StackPanel>
             </DataTemplate>
           </ListBox.ItemTemplate>

@@ -27,6 +27,7 @@ namespace sbid._M
         private InOut inOutSuffix;
         private CommWay commWay;
         private int id;
+        private string typeId = "";
 
         public CommMethod(string name, ObservableCollection<Attribute> parameters,
                           InOut inOutSuffix, CommWay commWay)
@@ -55,6 +56,11 @@ namespace sbid._M
         public InOut InOutSuffix { get => inOutSuffix; set => this.RaiseAndSetIfChanged(ref inOutSuffix, value); }
         // 通信方式(必选)
         public CommWay CommWay { get => commWay; set => this.RaiseAndSetIfChanged(ref commWay, value); }
+
+        // 【仅用于原生以太网帧】
+        // 类型号
+        public string TypeId { get => typeId; set => this.RaiseAndSetIfChanged(ref typeId, value); }
+
         public int Id
         {
             get => id;

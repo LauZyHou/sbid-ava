@@ -209,7 +209,11 @@
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <TextBlock Text="通信方式：" FontSize="17"/>
-          <ComboBox Name="commWay_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.CommWay, Mode=OneWay}"/>
+          <StackPanel Orientation="Horizontal">
+            <ComboBox Name="commWay_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.CommWay, Mode=OneWay}"/>
+            <TextBlock Text=" 类型号：" FontSize="17" IsVisible="{Binding IsNativeEthernetFrame}"/>
+            <TextBox Name="typeId_TextBox" Text="{Binding #commMethod_ListBox.SelectedItem.TypeId, Mode=OneWay}" IsVisible="{Binding IsNativeEthernetFrame}" Width="48"/>
+          </StackPanel>
           <TextBlock Text="输入/输出：" FontSize="17"/>
           <ComboBox Name="inout_ComboBox" SelectedItem="{Binding #commMethod_ListBox.SelectedItem.InOutSuffix, Mode=OneWay}"/>
           <TextBlock Text="方法名称：" FontSize="17"/>
