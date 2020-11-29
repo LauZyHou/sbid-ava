@@ -1,4 +1,7 @@
-﻿using sbid._M;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Interactivity;
+using sbid._M;
 using sbid._VM;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -9,6 +12,22 @@ namespace sbid
 {
     public class Utils
     {
+        /// <summary>
+        /// 当ListBox上发生点击时，如果点击的不是ListBox中的一项，就清除选中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static void ListBox_Tapped(object sender, RoutedEventArgs e)
+        {
+            ResourceManager.mainWindowVM.Tips = e.Source.ToString();
+            ListBox listBox = (ListBox)sender;
+            // 如果点击的位置不是TextBlock（点到文字上）或者ContentPresenter非ScrollContentPresenter（点到选项里没有文字的部分），就取消选中
+            if (!(e.Source is TextBlock || e.Source is ContentPresenter && !(e.Source is ScrollContentPresenter)))
+            {
+                listBox.SelectedItem = null; // 会触发对应的SelectionChanged
+            }
+        }
+
         /// <summary>
         /// 获取锚点(Connector_VM)所在连线(Connection_VM)的另一端的建模元素(NetworkItem_VM)
         /// </summary>

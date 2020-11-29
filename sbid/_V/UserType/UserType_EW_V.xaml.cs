@@ -31,8 +31,10 @@ namespace sbid._V
         private void init_event()
         {
             // 绑定Method右侧列表选中项变化的处理方法
-            ListBox method_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ListBox");
+            ListBox method_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(method_ListBox));
             method_ListBox.SelectionChanged += method_ListBox_Changed;
+            // 点击事件
+            method_ListBox.Tapped += Utils.ListBox_Tapped;
         }
 
         #endregion
@@ -416,6 +418,11 @@ namespace sbid._V
             // 将右侧选中项的参数列表拷贝到param_ListBox绑定的Params里
             ListBox method_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ListBox");
             ((UserType_EW_VM)DataContext).Params = new ObservableCollection<Attribute>();
+            if (method_ListBox.SelectedItem is null)
+            {
+                ResourceManager.mainWindowVM.Tips = "取消选中";
+                return;
+            }
             foreach (Attribute attribute in ((Method)method_ListBox.SelectedItem).Parameters)
             {
                 ((UserType_EW_VM)DataContext).Params.Add(new Attribute(attribute));

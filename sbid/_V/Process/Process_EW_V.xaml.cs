@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using sbid._M;
 using sbid._VM;
@@ -59,19 +60,25 @@ namespace sbid._V
         private void init_event()
         {
             // 绑定自定Method右侧列表选中项变化的处理方法
-            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
+            ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(method_ZD_ListBox));
             method_ZD_ListBox.SelectionChanged += method_ZD_ListBox_Changed;
+            // 发生点击的处理方法
+            method_ZD_ListBox.Tapped += Utils.ListBox_Tapped;
 
             // 绑定CommMethod右侧列表选中项变化的处理方法
-            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
+            ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(commMethod_ListBox));
             commMethod_ListBox.SelectionChanged += commMethod_ListBox_Changed;
+            // 发生点击的处理方法
+            commMethod_ListBox.Tapped += Utils.ListBox_Tapped;
 
             // 绑定内置Method列表选中项变化的处理方法
-            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
+            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(innerMethod_ListBox));
             innerMethod_ListBox.SelectionChanged += innerMethod_ListBox_Changed;
+            // 发生点击的处理方法
+            innerMethod_ListBox.Tapped += Utils.ListBox_Tapped;
 
             // 绑定CommMethod的CommWay选中项变化的处理方法
-            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(commWay_ComboBox));
             commWay_ComboBox.SelectionChanged += commWay_ComboBox_Changed;
         }
 
@@ -789,6 +796,11 @@ namespace sbid._V
             // 将右侧选中项的参数列表拷贝到param_ZD_ListBox绑定的ZDParams里
             ListBox method_ZD_ListBox = ControlExtensions.FindControl<ListBox>(this, "method_ZD_ListBox");
             ((Process_EW_VM)DataContext).ZDParams = new ObservableCollection<Attribute>();
+            if (method_ZD_ListBox.SelectedItem is null)
+            {
+                ResourceManager.mainWindowVM.Tips = "取消选中";
+                return;
+            }
             foreach (Attribute attribute in ((Method)method_ZD_ListBox.SelectedItem).Parameters)
             {
                 ((Process_EW_VM)DataContext).ZDParams.Add(new Attribute(attribute));
@@ -802,6 +814,11 @@ namespace sbid._V
             // 将右侧选中项的参数列表拷贝到param_Comm_ListBox绑定的CommParams里
             ListBox commMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "commMethod_ListBox");
             ((Process_EW_VM)DataContext).CommParams = new ObservableCollection<Attribute>();
+            if (commMethod_ListBox.SelectedItem is null)
+            {
+                ResourceManager.mainWindowVM.Tips = "取消选中";
+                return;
+            }
             foreach (Attribute attribute in ((CommMethod)commMethod_ListBox.SelectedItem).Parameters)
             {
                 ((Process_EW_VM)DataContext).CommParams.Add(new Attribute(attribute));
@@ -813,9 +830,9 @@ namespace sbid._V
         private void innerMethod_ListBox_Changed(object sender, SelectionChangedEventArgs e)
         {
             // 根据不同内置Method应允许不同的算法
-            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
-            ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "crypto_ComboBox");
-            if (innerMethod_ListBox.SelectedItem == null) // 变成没有选中时，恢复全列表
+            ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(innerMethod_ListBox));
+            ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(crypto_ComboBox));
+            if (innerMethod_ListBox.SelectedItem is null) // 变成没有选中时，恢复全列表
             {
                 crypto_ComboBox.Items = System.Enum.GetValues(typeof(Crypto));
                 crypto_ComboBox.SelectedItem = Crypto.None;
