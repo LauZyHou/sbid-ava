@@ -39,7 +39,7 @@ namespace sbid._V
             ListBox innerMethod_ListBox = ControlExtensions.FindControl<ListBox>(this, "innerMethod_ListBox");
             innerMethod_ListBox.Items = Method.InnerMethods;
 
-            // 绑定Method的加密算法枚举
+            // 绑定内置Method的加密算法枚举
             ComboBox crypto_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "crypto_ComboBox");
             crypto_ComboBox.Items = System.Enum.GetValues(typeof(Crypto));
             crypto_ComboBox.SelectedItem = Crypto.None;
@@ -851,9 +851,13 @@ namespace sbid._V
         // CommMethod的CommWay选中项变化的处理
         private void commWay_ComboBox_Changed(object sender, SelectionChangedEventArgs e)
         {
+            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, nameof(commWay_ComboBox));
+            // [bugfix]如果删除了选中的CommMethod，因为CommWay绑定了选中项，所以删除时会导致commWay_ComboBox的选中项变成null
+            // 这里判断一下，如果变成null了，就设置成默认值
+            if (commWay_ComboBox.SelectedItem is null)
+                commWay_ComboBox.SelectedItem = CommWay.NativeEthernetFrame;
             // 重新算一下选中的是不是NativeEthernetFrame，写入到VM的字段里去
-            ComboBox commWay_ComboBox = ControlExtensions.FindControl<ComboBox>(this, "commWay_ComboBox");
-            VM.IsNativeEthernetFrame = (CommWay)commWay_ComboBox.SelectedItem == CommWay.NativeEthernetFrame;
+            VM.IsNativeEthernetFrame = commWay_ComboBox.SelectedItem is CommWay.NativeEthernetFrame;
         }
 
         #endregion
@@ -919,6 +923,7 @@ namespace sbid._V
         private void get_control_reference()
         {
             refName_TextBox = ControlExtensions.FindControl<TextBox>(this, nameof(refName_TextBox));
+
             attr_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(attr_IsArray_CheckBox));
             param_ZD_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(param_ZD_IsArray_CheckBox));
             param_Comm_IsArray_CheckBox = ControlExtensions.FindControl<CheckBox>(this, nameof(param_Comm_IsArray_CheckBox));

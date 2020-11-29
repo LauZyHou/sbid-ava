@@ -14,7 +14,7 @@ namespace sbid._M
         // 对称加密算法
         AES, DES,
         // 非对称加密算法 
-        RSA, ECC,
+        RSA, ECC, IBE,
         // 哈希签名算法
         MD5, SHA1, SHA256
     }
@@ -163,7 +163,7 @@ namespace sbid._M
             Crypto.AES, Crypto.DES
         };
         public static readonly List<Crypto> ASym = new List<Crypto>() {
-            Crypto.RSA, Crypto.ECC
+            Crypto.RSA, Crypto.ECC, Crypto.IBE
         };
         public static readonly List<Crypto> Hash = new List<Crypto>() {
             Crypto.MD5, Crypto.SHA1, Crypto.SHA256
