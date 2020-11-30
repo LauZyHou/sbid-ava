@@ -19,7 +19,8 @@
     <SolidColorBrush x:Key="MyColor" Color="#80E0E6" />
   </UserControl.Resources>
 
-  <Grid RowDefinitions="20,1,15,*,1,15,*,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
+  <!--RowDefinitions="20,1,15,*,1,15,*,1,15,*,1,15,*"-->
+  <Grid RowDefinitions="20,1,15,*,0,0,0,1,15,*,1,15,*" Background="{StaticResource MyColor}" MinWidth="160" MinHeight="120">
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <TextBlock Text=" 信息安全性质 " FontWeight="Bold"/>
       <TextBlock Text="{Binding SecurityProperty.Name}"/>
@@ -41,7 +42,7 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-    <TextBlock Grid.Row="4" Background="Black"/>
+    <!--<TextBlock Grid.Row="4" Background="Black"/>
     <TextBlock Grid.Row="5" Text=" 认证性:"/>
     <ListBox Grid.Row="6" Items="{Binding SecurityProperty.Authenticities}" IsEnabled="True"
              Background="{StaticResource MyColor}" BorderBrush="{StaticResource MyColor}">
@@ -63,7 +64,7 @@
           </TextBlock>
         </DataTemplate>
       </ListBox.ItemTemplate>
-    </ListBox>
+    </ListBox>-->
     <TextBlock Grid.Row="7" Background="Black"/>
     <TextBlock Grid.Row="8" Text=" 完整性:"/>
     <ListBox Grid.Row="9" Items="{Binding SecurityProperty.Integrities}" IsEnabled="True"

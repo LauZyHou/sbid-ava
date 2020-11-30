@@ -55,6 +55,27 @@ namespace sbid._VM
                 ResourceManager.beaglePath = value;
             }
         }
+        // 开发者模式
+        public bool? DevMode
+        {
+            get
+            {
+                return ResourceManager.devMode;
+            }
+            set
+            {
+                bool val = (bool)value;
+                if (val)
+                {
+                    ResourceManager.mainWindowVM.Tips = "打开开发者模式";
+                }
+                else
+                {
+                    ResourceManager.mainWindowVM.Tips = "关闭开发者模式";
+                }
+                ResourceManager.devMode = val;
+            }
+        }
 
         #region 按钮命令
 

@@ -23,6 +23,9 @@ namespace sbid._V
 
         #region 按钮命令
 
+        /// <summary>
+        /// 状态编辑时点击确认
+        /// </summary>
         public void Update_Name()
         {
             if (name_TextBox.Text == null || name_TextBox.Text.Length == 0)
@@ -53,6 +56,9 @@ namespace sbid._V
                 VM.State.Name = name_TextBox.Text;
                 ResourceManager.mainWindowVM.Tips = "为状态设置了名称：" + VM.State.Name;
             }
+
+            // 关闭窗口
+            this.Close();
         }
 
         #endregion

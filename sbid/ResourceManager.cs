@@ -29,6 +29,8 @@ namespace sbid
         public static string proVerifPath = null;
         // 维护Beagle可执行文件位置（在首选项中编辑）
         public static string beaglePath = null;
+        // 开发者模式（在首选项中编辑）
+        public static bool devMode = false;
 
         // 性质验证命令所在脚本
         public static string justVerifyCommmad_file = "./resource/verify";

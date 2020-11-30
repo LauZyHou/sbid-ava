@@ -535,6 +535,12 @@ namespace sbid._VM
             codeGeneration_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
+        public void MockLoad()
+        {
+            string mockFilePath = "./classpath/lib.sbid";
+            bool res = DoReload(mockFilePath);
+        }
+
         #endregion
 
         #region 私有
@@ -1430,13 +1436,22 @@ namespace sbid._VM
             // 项目文件去除后缀名".sbid"部分
             string cleanName = fileName.Substring(0, fileName.Length - 5);
 
-            // 重置项目中的各项元数据，如id计数器等
-            cleanProject();
-
             // 读取".sbid"文件，以创建相应的协议面板
             XmlDocument doc = new XmlDocument();
-            XmlReader reader = XmlReader.Create(fileName);
-            doc.Load(reader);
+            XmlReader reader;
+            try
+            {
+                reader = XmlReader.Create(fileName);
+                doc.Load(reader);
+            }
+            catch (System.Exception)
+            {
+                return false;
+            }
+
+            // 能读取成功时，才重置项目中的各项元数据，如id计数器等
+            cleanProject();
+
             XmlNode projectNode = doc.SelectSingleNode("Project");
             XmlNodeList protocolList = projectNode.ChildNodes;
             foreach (XmlNode protocolNode in protocolList)
@@ -1453,8 +1468,15 @@ namespace sbid._VM
                 // 当前协议
                 Protocol_VM protocolVM = protocolVMs[i];
                 // 每个协议文件名是"项目名_i.xml"
-                reader = XmlReader.Create(cleanName + "_" + i.ToString() + ".xml");
-                doc.Load(reader);
+                try
+                {
+                    reader = XmlReader.Create(cleanName + "_" + i.ToString() + ".xml");
+                    doc.Load(reader);
+                }
+                catch (System.Exception)
+                {
+                    return false;
+                }
 
                 #region 概览>类图面板（第一遍扫描）
                 /*

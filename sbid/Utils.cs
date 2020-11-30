@@ -19,7 +19,6 @@ namespace sbid
         /// <param name="e"></param>
         public static void ListBox_Tapped(object sender, RoutedEventArgs e)
         {
-            ResourceManager.mainWindowVM.Tips = e.Source.ToString();
             ListBox listBox = (ListBox)sender;
             // 如果点击的位置不是TextBlock（点到文字上）或者ContentPresenter非ScrollContentPresenter（点到选项里没有文字的部分），就取消选中
             if (!(e.Source is TextBlock || e.Source is ContentPresenter && !(e.Source is ScrollContentPresenter)))

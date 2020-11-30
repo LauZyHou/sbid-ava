@@ -17,7 +17,7 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="23"/>
-      <RowDefinition Height="5*" MinHeight="23"/>
+      <RowDefinition Height="5*" MinHeight="40"/>
       <RowDefinition Height="90*"/>
       <RowDefinition Height="5*" MinHeight="20"/>
     </Grid.RowDefinitions>
@@ -91,7 +91,8 @@
       <Button Command="{Binding GrammarCheck}" ToolTip.Tip="语法检查" Foreground="DarkGreen">
         语法检查
       </Button>
-      <TextBlock Text="        "/>
+      <!--<TextBlock Text="        "/>-->
+      <Button Command="{Binding MockLoad}" BorderThickness="0" Background="Transparent" Width="30"/>
       <Button Command="{Binding JustVerify}" ToolTip.Tip="性质验证">
         性质验证
       </Button>
