@@ -96,11 +96,12 @@
             <Button Command="{Binding $parent[Window].Delete_Attribute}">删除</Button>
           </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Margin="10,0" Name="attr_ListBox" Items="{Binding UserType.Attributes}">
-          <ListBox.ItemTemplate>
-            <DataTemplate>
-              <!--使用多源绑定-->
-              <!--
+        <Grid Grid.Column="1" RowDefinitions="*,30" Margin="10,0">
+          <ListBox Grid.Row="0" Name="attr_ListBox" Items="{Binding UserType.Attributes}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <!--使用多源绑定-->
+                <!--
               <TextBlock>
                 <TextBlock.Text>
                   <MultiBinding StringFormat=" {0} {1};">
@@ -109,17 +110,23 @@
                   </MultiBinding>
                 </TextBlock.Text>
               </TextBlock>-->
-              <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Type.Name}"/>
-                <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
-                <TextBlock Text=" "/>
-                <TextBlock Text="{Binding Identifier}"/>
-                <TextBlock Text=" #" IsVisible="{Binding $parent[Window].DataContext.UserType.IsExtendByteVec}"/>
-                <TextBlock Text="{Binding Len}" IsVisible="{Binding $parent[Window].DataContext.UserType.IsExtendByteVec}"/>
-              </StackPanel>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Type.Name}"/>
+                  <TextBlock Text="[]" IsVisible="{Binding IsArray}"/>
+                  <TextBlock Text=" "/>
+                  <TextBlock Text="{Binding Identifier}"/>
+                  <TextBlock Text=" #" IsVisible="{Binding $parent[Window].DataContext.UserType.IsExtendByteVec}"/>
+                  <TextBlock Text="{Binding Len}" IsVisible="{Binding $parent[Window].DataContext.UserType.IsExtendByteVec}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <Grid Grid.Row="1" ColumnDefinitions="1*,1*,1*,1*,1*">
+            <Button Grid.Column="1" Command="{Binding $parent[Window].Move_Up}">▲</Button>
+            <Button Grid.Column="3" Command="{Binding $parent[Window].Move_Down}">▼</Button>
+          </Grid>
+        </Grid>
+        
       </Grid>
     </TabItem>
     <TabItem Header="方法">

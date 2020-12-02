@@ -408,6 +408,52 @@ namespace sbid._V
             ResourceManager.mainWindowVM.Tips = "实现方法：" + method;
         }
 
+        public void Move_Up()
+        {
+            ListBox attr_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(attr_ListBox));
+            if (attr_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要上移的Attribute！";
+                return;
+            }
+
+            if (attr_ListBox.SelectedIndex == 0)
+            {
+                ResourceManager.mainWindowVM.Tips = "已经是第一个了！";
+                return;
+            }
+
+            Attribute attribute = (Attribute)attr_ListBox.SelectedItem;
+            int newIndex = VM.UserType.Attributes.IndexOf(attribute) - 1;
+            VM.UserType.Attributes.Remove(attribute);
+            VM.UserType.Attributes.Insert(newIndex, attribute);
+            ResourceManager.mainWindowVM.Tips = "上移了属性：" + attribute.ToString();
+            attr_ListBox.SelectedItem = attribute;
+        }
+        
+        public void Move_Down()
+        {
+            ListBox attr_ListBox = ControlExtensions.FindControl<ListBox>(this, nameof(attr_ListBox));
+            if (attr_ListBox.SelectedItem == null)
+            {
+                ResourceManager.mainWindowVM.Tips = "需要选定要上移的Attribute！";
+                return;
+            }
+
+            if (attr_ListBox.SelectedIndex == VM.UserType.Attributes.Count - 1)
+            {
+                ResourceManager.mainWindowVM.Tips = "已经是最后一个了！";
+                return;
+            }
+
+            Attribute attribute = (Attribute)attr_ListBox.SelectedItem;
+            int newIndex = VM.UserType.Attributes.IndexOf(attribute) + 1;
+            VM.UserType.Attributes.Remove(attribute);
+            VM.UserType.Attributes.Insert(newIndex, attribute);
+            ResourceManager.mainWindowVM.Tips = "下移了属性：" + attribute.ToString();
+            attr_ListBox.SelectedItem = attribute;
+        }
+
         #endregion
 
         #region 事件
