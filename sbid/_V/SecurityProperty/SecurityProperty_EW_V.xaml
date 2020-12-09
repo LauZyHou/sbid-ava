@@ -94,7 +94,7 @@
       </Grid>
     </TabItem>
     <!--认证性-->
-    <TabItem Header="认证性" IsVisible="False">
+    <TabItem Header="认证性">
       <Grid ColumnDefinitions="50*,50*">
         <StackPanel Grid.Column="0" Margin="10,0">
           <StackPanel Classes="HoriStack">
