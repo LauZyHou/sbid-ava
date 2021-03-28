@@ -21,11 +21,6 @@
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.12" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Assets\Fonts\STZHONGS2.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Icons\settings.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Products\UPPAAL\" />
   </ItemGroup>
 </Project>

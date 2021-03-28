@@ -535,12 +535,6 @@ namespace sbid._VM
             codeGeneration_SW_V.ShowDialog(ResourceManager.mainWindowV);
         }
 
-        public void MockLoad()
-        {
-            string mockFilePath = "./classpath/lib.sbid";
-            bool res = DoReload(mockFilePath);
-        }
-
         #endregion
 
         #region 私有
@@ -3639,6 +3633,18 @@ namespace sbid._VM
 
         // 锚点是否可见
         public bool ConnectorVisible { get => connectorVisible; set => this.RaiseAndSetIfChanged(ref connectorVisible, value); }
+
+        #endregion
+
+        #region 开发者测试
+
+        /// <summary>
+        /// 测试UPPAALTranslator
+        /// </summary>
+        private void TestUPPAALTrans()
+        {
+            _T.UPPAALTranslator.Translate();
+        }
 
         #endregion
     }

@@ -57,6 +57,9 @@
       <MenuItem Header="设置">
         <MenuItem Header="首选项" Command="{Binding Preference}"/>
       </MenuItem>
+      <MenuItem Header="白盒测试">
+        <MenuItem Header="UPPAAL转换" Command="{Binding TestUPPAALTrans}"/>
+      </MenuItem>
     </Menu>
 
     <!--快捷按键-->
@@ -91,8 +94,7 @@
       <Button Command="{Binding GrammarCheck}" ToolTip.Tip="语法检查" Foreground="DarkGreen">
         语法检查
       </Button>
-      <!--<TextBlock Text="        "/>-->
-      <Button Command="{Binding MockLoad}" BorderThickness="0" Background="Transparent" Width="30"/>
+      <TextBlock Text="        "/>
       <Button Command="{Binding JustVerify}" ToolTip.Tip="性质验证">
         性质验证
       </Button>
